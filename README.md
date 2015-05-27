@@ -163,7 +163,7 @@ Response:
 	}
 
 #### `GET /user/doctors`
-Request parameters: `limit` (default 25), `offset` (default 0)
+Request parameters: `limit` (default 25), `offset` (default 0), `sort_by` (`id` or `name`; default `id`), `sort_order` (`asc` or `desc`; default `asc`), `name` (optional, fuzzy-matching)
 
 Headers: `Authorization`
 
@@ -272,7 +272,8 @@ Response:
 	}
 
 #### `GET /user/pharmacies`
-Request parameters: `limit` (default 25), `offset` (default 0)
+Request parameters: `limit` (default 25), `offset` (default 0), `sort_by` (`id` or `name`; default `id`), `sort_order` (`asc` or `desc`; default `asc`), `name` (optional, fuzzy-matching)
+
 
 Headers: `Authorization`
 
@@ -416,7 +417,7 @@ Response:
 
 
 #### `GET /user/medications`
-Request parameters: `limit` (default 25), `offset` (default 0)
+Request parameters: `limit` (default 25), `offset` (default 0), `sort_by` (`id`, `name`, `dose`, `quantity`; default `id`), `sort_order` (`asc` or `desc`; default `asc`), `name` (optional, fuzzy-matching), `route` (optional), `form` (optional), `type` (optional)
 
 Headers: `Authorization`
 
@@ -466,7 +467,8 @@ Response:
 	}
 
 #### `GET /user/medications/1/adherences`
-Request parameters: `limit` (default 25), `offset` (default 0)
+Request parameters: `limit` (default 25), `offset` (default 0), `sort_by` (`id` or `date`; default `date`), `sort_order` (`asc` or `desc`; default `desc`)
+
 
 Headers: `Authorization`
 
@@ -568,7 +570,7 @@ Response:
 	}
 	
 #### `GET /user/adherences`
-Request parameters: `limit` (default 25), `offset` (default 0)
+Request parameters: `limit` (default 25), `offset` (default 0), `sort_by` (`id` or `date`; default `date`), `sort_order` (`asc` or `desc`; default `desc`)
 
 Headers: `Authorization`
 
@@ -650,7 +652,8 @@ Response:
 ## Sharing
 ### Share with Others
 #### `GET /shared_to`
-Request parameters: `limit` (default 25), `offset` (default 0)
+Request parameters: `limit` (default 25), `offset` (default 0), `sort_by` (`id` or `email`; default `id`), `sort_order` (`asc` or `desc`; default `asc`)
+
 
 Headers: `Authorization`
 
@@ -707,7 +710,7 @@ Response:
 
 ### Data Shared with Me
 #### `GET /shared`
-Request parameters: `limit` (default 25), `offset` (default 0)
+Request parameters: `limit` (default 25), `offset` (default 0), `sort_by` (`id` or `email`; default `id`), `sort_order` (`asc` or `desc`; default `asc`)
 
 Headers: `Authorization`
 
