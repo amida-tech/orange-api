@@ -465,6 +465,27 @@ Response:
 		error: "error-key" # if unsuccessful
 	}
 
+#### `GET /user/medications/1/adherences`
+Request parameters: `limit` (default 25), `offset` (default 0)
+
+Headers: `Authorization`
+
+	{
+		adherences: [
+			{
+				id: 1,
+				medication_id: 1,
+				date: 2015-05-27T18:25:43.511Z,
+				notes: "Noticed effect immediately!"
+			},
+			...
+		],
+		count: 46,
+		success: true,
+		error: "error-key" # if unsuccessful
+	}
+
+
 #### `PUT /user/medications/1`
 Request (all *top-level* keys optional):
 
@@ -549,8 +570,6 @@ Response:
 #### `GET /user/adherences`
 Request parameters: `limit` (default 25), `offset` (default 0)
 
-TODO searching
-
 Headers: `Authorization`
 
 Response:
@@ -588,8 +607,6 @@ Response:
 		success: true,
 		error: "error-key" # if unsuccessful
 	}
-	
-	TODO meta info like on schedule or not
 	
 #### `PUT /user/adherences/1`
 Request (all keys optional):
@@ -751,5 +768,4 @@ See `GET /user/adherences/1`.
  - `invalid_id`
  - `user_already_exists`
  - `invalid_email_password_combination`
-TODO rest of these
-
+TODO list the rest of these once established
