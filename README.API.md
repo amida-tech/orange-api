@@ -32,7 +32,7 @@ Request:
 		password: "foobar"
 	}
 	
-Response:
+Response (200 on success, 403 on authentication error)
 
 	{
 		access_token: ACCESS_TOKEN,
@@ -45,6 +45,8 @@ On initial registration, but also whenever meds/doses/etc change.
 
 ### User Info
 #### `POST /user`
+Registers a user
+
 Request:
 
 	{
@@ -53,7 +55,7 @@ Request:
 		name: "Foo Bar"
 	}
 
-Response:
+Response (200 on success, 500 on error):
 
 	{
 		email: "foo@bar.com",
