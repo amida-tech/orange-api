@@ -24,7 +24,11 @@ Access token model. The email/password are initially used to obtain a (nonexpiri
 
 `Authorization: Bearer ACCESS_TOKEN`
 
+The access token should not be base64 encoded (and contrary to popular belief, the same is true of OAuth2).
+
 #### `POST /auth/token`
+Obtains an access token (described above)
+
 Request:
 
 	{
@@ -65,11 +69,13 @@ Response (200 on success, 500 on error):
 	}		
 
 #### `GET /user`
+Returns basic metadata about the current user (email, name)
+
 Request parameters: none
 
 Headers: `Authorization`
 
-Response:
+Response (200 on success, 403 on authentication error)
 
 	{
 		email: "foo@bar.com",
@@ -767,5 +773,6 @@ See `GET /user/adherences/1`.
  - `invalid_email_password`
  - `user_already_exists`
  - `access_token_required`
+ - `invalid_access_token`
 
 TODO list the rest of these once established
