@@ -1,0 +1,40 @@
+{
+  "author": "Amida",
+  "name": "orange-api",
+  "description": "API for Orange medication adherance apps",
+  "version": "0.1.0",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:amida-tech/orange-api.git"
+  },
+  "bugs": {
+    "url": "https://github.com/amida-tech/orange-api/issues"
+  },
+  "licenses": [
+    {
+      "type": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  ],
+	"dependencies": {
+    "express": "4.2.x",
+	},
+  "devDependencies": {
+    "chai": "1.9.x",
+    "chai-datetime": "1.3.x",
+    "coveralls": "~2.10.0",
+    "grunt": "0.4.x",
+    "grunt-contrib-jshint": "0.8.x",
+    "grunt-contrib-watch": "0.6.x",
+    "grunt-coveralls": "*",
+    "grunt-express-server": "^0.5.1",
+    "grunt-istanbul-coverage": "*",
+    "grunt-jsbeautifier": "^0.2.7",
+    "grunt-mocha-test": "^0.12.7",
+    "mocha": "^2.2.5",
+    "mocha-lcov-reporter": "0.0.1",
+  },
+  "engines": {
+    "node": "0.10.x"
+  }
+}
