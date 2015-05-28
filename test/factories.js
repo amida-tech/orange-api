@@ -1,3 +1,4 @@
+var User = require('../lib/models/user.js');
 
 // Don't save anything to the DB here
 
@@ -19,8 +20,17 @@ function name() {
     return "Foo Bar";
 }
 
+function user() {
+    return new User({
+        email: email(),
+        password: password(),
+        name: name()
+    });
+}
+
 module.exports = {
     email: email,
     password: password,
-    name: name
+    name: name,
+    user: user
 };

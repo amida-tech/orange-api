@@ -26,6 +26,9 @@ app.use(bodyParser.json());
 var usersController = require('./lib/controllers/users.js');
 app.use(usersController);
 
+var authController = require('./lib/controllers/auth.js');
+app.use(authController);
+
 // Error handling
 app.use(function (err, req, res, next) {
     console.error(err.stack);

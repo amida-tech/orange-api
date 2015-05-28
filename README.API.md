@@ -17,37 +17,27 @@ quasi-REST API (Node + Mongo) for Orange medication adherence apps to:
 		 - Via email/sms
 	 - See data shared with me (via app)
 	 
-The rest of this `README` is filled with endpoints. Note that all endpoints *must* be prefixed with a version number (e.g., `POST /v1/oauth/token`).
+The rest of this `README` is filled with endpoints. Note that all endpoints *must* be prefixed with a version number (e.g., `POST /v1/auth/token`).
 
 ## Authentication
-Basic (non-compatible) subset of OAuth2 resource owner password flow. Authentication needed for everything apart from user signup and authentication (login).
-
-The email/password are used to obtain an initial access token and refresh token. The access token can then be sent as a header (see below) to authenticate all other API requests.
+Access token model. The email/password are initially used to obtain a (nonexpiring) access token, which can then be sent as a header (see below) to authenticate all other API requests.
 
 `Authorization: Bearer ACCESS_TOKEN`
 
-At some point, the access token will expire. Rather than having to reauthenticate, the refresh token can be used to obtain an access token without email/password.
-
-#### `POST /oauth/token`
+#### `POST /auth/token`
 Request:
 
-	# With email/password
 	{
 		email: "foo@bar.com",
 		password: "foobar"
-	}
-	
-	# With refresh token
-	{
-		refresh_token: REFRESH_TOKEN
 	}
 	
 Response:
 
 	{
 		access_token: ACCESS_TOKEN,
-		refresh_token: REFRESH_TOKEN,
-		expiry: 2016-04-23T18:25:43.511Z
+		success: true,
+		errors: ["error-key1", "error-key2"] # if unsuccessful
 	}
 
 ## Setup Phase
@@ -769,8 +759,11 @@ See `GET /user/adherences/1`.
 
 ## Error Slugs
  - `email_required`
+ - `password_required`
  - `name_required`
  - `unknown_error`
+ - `invalid_email_password`
  - `user_already_exists`
+ - `access_token_required`
 
 TODO list the rest of these once established
