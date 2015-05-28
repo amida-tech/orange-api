@@ -50,7 +50,11 @@ module.exports = function (grunt) {
         express: {
             dev: {
                 options: {
-                    script: './app.js'
+                    script: './app.js',
+                    logs: {
+                        out: './tmp/test_log.out',
+                        err: './tmp/test_log.err'
+                    }
                 }
             }
         },
