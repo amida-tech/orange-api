@@ -1,6 +1,6 @@
 var supertest = require('supertest');
 var api = supertest('http://localhost:3000/v1');
-var clearDB = require('mocha-mongoose')('mongodb://localhost/orange-api'); // Local db for testing
+var mongoose = require('mongoose');
 
 // Common test methods
 var common = require('./common.js');

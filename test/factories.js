@@ -1,3 +1,6 @@
+
+// Don't save anything to the DB here
+
 var emailCounter = 0;
 
 function email(i) {

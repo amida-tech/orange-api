@@ -1,5 +1,10 @@
+// Web
 var express = require('express');
 var app = express();
+
+// Database
+var mongoose = require('mongoose');
+mongoose.connect('mongodb://localhost/orange-api');
 
 // CORS
 app.use(function (req, res, next) {
