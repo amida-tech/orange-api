@@ -13,6 +13,14 @@ app.use(function (req, res, next) {
 // Prevent caching
 app.disable('etag');
 
+// Parse body params
+var bodyParser = require('body-parser');
+app.use(bodyParser.json());
+
+// Require controllers
+var usersController = require('./lib/controllers/users.js');
+app.use(usersController);
+
 // Error handling
 app.use(function (err, req, res, next) {
     console.error(err.stack);
