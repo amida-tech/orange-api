@@ -1,3 +1,4 @@
+"use strict";
 // Check a request returns status code 200 and has key success
 // with value true
 function success(res) {

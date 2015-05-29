@@ -22,8 +22,7 @@
     "express": "4.2.x",
     "mongodb": "^1.4.38",
     "mongoose": "^4.0.3",
-    "mongoose-unique-validator": "^0.4.1",
-    "use-strict": "^1.0.1"
+    "mongoose-unique-validator": "^0.4.1"
   },
   "devDependencies": {
     "chai": "1.9.x",

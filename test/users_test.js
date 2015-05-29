@@ -1,3 +1,4 @@
+"use strict";
 var supertest = require('supertest');
 var api = supertest('http://localhost:3000/v1');
 var mongoose = require('mongoose');

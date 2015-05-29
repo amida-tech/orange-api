@@ -1,3 +1,4 @@
+"use strict";
 module.exports = function (grunt) {
 
     grunt.loadNpmTasks('grunt-mocha-test');
@@ -37,7 +38,9 @@ module.exports = function (grunt) {
                     'it': true,
                     'describe': true,
                     'before': true,
+                    'beforeEach': true,
                     'after': true,
+                    'afterEach': true,
                     'done': true
                 }
             }

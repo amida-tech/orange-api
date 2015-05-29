@@ -1,3 +1,4 @@
+"use strict";
 var User = require('../lib/models/user.js');
 
 // Don't save anything to the DB here
