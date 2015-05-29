@@ -6,6 +6,7 @@ before(function (done) {
     }
 
     mongoose.connect('mongodb://localhost/orange-api', done);
+    mongoose.connection.db.dropDatabase(done);
 });
 
 after(function (done) {
