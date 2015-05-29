@@ -7,6 +7,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-jsbeautifier');
 
     grunt.registerTask('default', ['jshint', 'jsbeautifier', 'express:dev', 'mochaTest']);
+    grunt.registerTask('server', ['jshint', 'jsbeautifier', 'express:dev', 'watch']);
 
     // Print a timestamp (useful for when watching)
     grunt.registerTask('timestamp', function () {
