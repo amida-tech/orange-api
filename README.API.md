@@ -121,11 +121,14 @@ Response (200 on success, 403 on authentication error):
 
 ### Habits
 #### `PUT /user/habits`
-Request (all keys optional):
+Request (all keys optional, values in the specific ISO 8601 format "hh:mm"):
 
 	{
-		lunchTime: "1300",
-		dinnerTime: "1900"
+        wake: "07:00",
+        sleep: "23:00",
+        breakfast: "08:00",
+        lunch: "12:00",
+        dinner: "19:00"
 	}
 	
 Headers: `Authorization`
@@ -133,8 +136,11 @@ Headers: `Authorization`
 Response:
 
 	{
-		lunchTime: "1300",
-		dinnerTime: "1900",
+        wake: "07:00",
+        sleep: "23:00",
+        breakfast: "08:00",
+        lunch: "12:00",
+        dinner: "19:00"
 		success: true
 	}
 
@@ -146,8 +152,11 @@ Headers: `Authorization`
 Response:
 
 	{
-		lunchTime: "1300",
-		dinnerTime: "1900",
+        wake: "07:00",
+        sleep: "23:00",
+        breakfast: "08:00",
+        lunch: "12:00",
+        dinner: "19:00"
 		success: true
 	}
 
@@ -158,7 +167,8 @@ Request:
 
 	{
 		name: "Dr. X",
-		phone: "(617) 617-6177"
+		phone: "(617) 617-6177",
+		address: "Doctor Street, DC, 2052"
 	}
 	
 Headers: `Authorization`
@@ -169,6 +179,7 @@ Response:
 		id: 1,
 		name: "Dr. X",
 		phone: "(617) 617-6177",
+		address: "Doctor Street, DC, 2052"
 		success: true
 	}
 
@@ -184,7 +195,8 @@ Response:
 			{
 				id: 1,
 				name: "Dr. X",
-				phone: "(617) 617-6177"
+				phone: "(617) 617-6177",
+                address: "Doctor Street, DC, 2052"
 			},
 			...
 		],
@@ -203,6 +215,7 @@ Response:
 		id: 1,
 		name: "Dr. X",
 		phone: "(617) 617-6177",
+        address: "Doctor Street, DC, 2052",
 		success: true
 	}
 
@@ -211,7 +224,8 @@ Request (all keys optional):
 
 	{
 		name: "Dr. Y",
-		phone: "(716) 716-7166"
+		phone: "(716) 716-7166",
+        address: "Doctor Street, DC, 2052"
 	}
 	
 Headers: `Authorization`
@@ -222,6 +236,7 @@ Response:
 		id: 1,
 		name: "Dr. Y",
 		phone: "(716) 716-7166",
+        address: "Doctor Street, DC, 2052",
 		success: true
 	}
 
@@ -237,6 +252,7 @@ Response:
 		id: 1,
 		name: "Dr. X",
 		phone: "(617) 617-6177",
+        address: "Doctor Street, DC, 2052",
 		success: true
 	}
 
@@ -381,7 +397,12 @@ Request:
 
 	{
 		name: "Loratadine",
-		dose: "100mg",
+        rxNorm: "324026",
+        ndc: "33261-0228",
+		dose: {
+            quantity: 100,
+            unit: "mg"
+        },
 		route: "oral",
 		form: "pill",
 		rxNumber: "123456789",
@@ -401,7 +422,12 @@ Response:
 	{
 		id: 1,
 		name: "Loratadine",
-		dose: "100mg",
+        rxNorm: "324026",
+        ndc: "33261-0228",
+		dose: {
+            quantity: 100,
+            unit: "mg"
+        },
 		route: "oral",
 		form: "pill",
 		rxNumber: "123456789",
@@ -490,7 +516,12 @@ Request (all *top-level* keys optional):
 
 	{
 		name: "Fexofenadine",
-		dose: "150mg",
+        rxNorm: "324026",
+        ndc: "33261-0228",
+		dose: {
+            quantity: 150,
+            unit: "mg"
+        },
 		route: "nasal",
 		form: "spray",
 		rxNumber: "1987654321"",
@@ -510,7 +541,12 @@ Response:
 	{
 		id: 1,
 		name: "Fexofenadine",
-		dose: "150mg",
+        rxNorm: "324026",
+        ndc: "33261-0228",
+		dose: {
+            quantity: 100,
+            unit: "mg"
+        },
 		route: "nasal",
 		form: "spray",
 		rxNumber: "1987654321"",
