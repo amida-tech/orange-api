@@ -776,5 +776,6 @@ See `GET /user/adherences/1`.
  - `user_already_exists`
  - `access_token_required`
  - `invalid_access_token`
+ - `login_attempts_exceeded` (Too many access token authorization attempts with the wrong password. Try again in an hour)
 
 TODO list the rest of these once established

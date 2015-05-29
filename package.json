@@ -39,6 +39,7 @@
     "mocha": "^2.2.5",
     "mocha-lcov-reporter": "0.0.1",
     "mocha-mongoose": "^1.0.4",
+    "sinon": "^1.14.1",
     "supertest": "^1.0.1"
   },
   "engines": {
