@@ -20,7 +20,7 @@ module.exports = function (grunt) {
             files: ['./lib/*.js', './test/*.js', './test/**/*.js', 'gruntfile.js', 'package.json', 'app.js'],
             options: {
                 browser: true,
-                curly: true,
+                curly: false,
                 eqeqeq: true,
                 immed: true,
                 latedef: true,

@@ -24,9 +24,7 @@ describe("account locking", function () {
             // store password separately as user.password becomes the hash
             password = user.password;
             user.save(function (err, data) {
-                if (err) {
-                    done(err);
-                }
+                if (err) return done(err);
 
                 // repeatedly try to get an access token with the wrong password
                 function attemptAuthentication(attemptNo) {
@@ -37,9 +35,7 @@ describe("account locking", function () {
                         })
                         .expect(403)
                         .end(function (err, res) {
-                            if (err) {
-                                done(err);
-                            }
+                            if (err) return done(err);
                             if (attemptNo + 1 < TIMES_TO_TRY) {
                                 attemptAuthentication(attemptNo + 1);
                             } else {

@@ -86,9 +86,8 @@ describe('registration', function () {
                     name: factories.name()
                 })
                 .end(function (err, res) {
-                    if (err) {
-                        throw err;
-                    }
+                    if (err) return done(err);
+
                     // Re register the user
                     api.post('/user')
                         .send({

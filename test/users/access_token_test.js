@@ -28,9 +28,8 @@ describe('getting an access token', function () {
             .expect(success)
             .expect(keys(['access_token']))
             .end(function (err, res) {
-                if (err) {
-                    throw err;
-                }
+                if (err) return done(err);
+
                 // Access token should let us access protected resources
                 var token = res.body.access_token;
                 api.get('/user')

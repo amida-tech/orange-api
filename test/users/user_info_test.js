@@ -8,42 +8,25 @@ var common = require('../common.js');
 var factories = require('../factories.js');
 var success = common.success,
     failure = common.failure,
-    keys = common.keys;
+    keys = common.keys,
+    authenticate = common.authenticate;
 
 describe('user info', function () {
     describe('when authenticated', function () {
-        var user, password, accessToken, authHeader;
-
         // beforeEach because we're playing around with revoking access tokens in here
+        var user;
         beforeEach(function (done) {
-            user = factories.user();
-            // store password separately as user.password becomes the hash
-            password = user.password;
-            user.save(function (err, data) {
-                if (err) {
-                    done(err);
-                }
-                // get access token
-                api.post('/auth/token')
-                    .send({
-                        email: user.email,
-                        password: password
-                    })
-                    .end(function (err, res) {
-                        if (err) {
-                            done(err);
-                        }
-                        accessToken = res.body.access_token;
-                        authHeader = 'Bearer ' + accessToken;
-                        done();
-                    });
+            authenticate(function (err, u) {
+                if (err) return done(err);
+                user = u;
+                done();
             });
         });
 
         describe('when viewing', function () {
             it('should return user info', function (done) {
                 api.get('/user')
-                    .set('Authorization', authHeader)
+                    .set('Authorization', user.authHeader)
                     .expect(success)
                     .expect(keys(['email', 'name']))
                     .end(done);
@@ -54,9 +37,9 @@ describe('user info', function () {
             describe('when changing password', function () {
                 it('should change the password', function (done) {
                     api.put('/user')
-                        .set('Authorization', authHeader)
+                        .set('Authorization', user.authHeader)
                         .send({
-                            password: password + "new"
+                            password: user.plainPassword + "new"
                         })
                         .expect(success)
                         .expect(keys(['email', 'name']))
@@ -64,13 +47,13 @@ describe('user info', function () {
                 });
                 it('should revoke our access token', function (done) {
                     api.put('/user')
-                        .set('Authorization', authHeader)
+                        .set('Authorization', user.authHeader)
                         .send({
-                            password: password + "new"
+                            password: user.plainPassword + "new"
                         })
                         .end(function (err, res) {
                             api.get('/user')
-                                .set('Authorization', authHeader)
+                                .set('Authorization', user.authHeader)
                                 .expect(403)
                                 .end(done);
                         });
@@ -80,7 +63,7 @@ describe('user info', function () {
             describe('when changing name', function () {
                 it('should change the name', function (done) {
                     api.put('/user')
-                        .set('Authorization', authHeader)
+                        .set('Authorization', user.authHeader)
                         .send({
                             name: user.name + "someMore"
                         })
@@ -90,7 +73,7 @@ describe('user info', function () {
                 });
                 it('should not revoke our access token', function (done) {
                     api.get('/user')
-                        .set('Authorization', authHeader)
+                        .set('Authorization', user.authHeader)
                         .expect(200)
                         .end(done);
                 });
