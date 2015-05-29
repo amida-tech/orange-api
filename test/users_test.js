@@ -177,22 +177,12 @@ describe('getting an access token', function () {
     });
 });
 
-function authenticate(callback) {
-    user = factories.user();
-    // user.password will become hash, we store the original
-    // password back in as user.plaintextPassword
-    password = user.password;
-    user.save(function (err, data) {
-        user.plaintextPassword = password;
-        callback(err, user);
-    });
-}
-
 describe('user info', function () {
     describe('when authenticated', function () {
         var user, password, accessToken, authHeader;
 
-        before(function (done) {
+        // beforeEach because we're playing around with revoking access tokens in here
+        beforeEach(function (done) {
             user = factories.user();
             // store password separately as user.password becomes the hash
             password = user.password;
@@ -226,6 +216,53 @@ describe('user info', function () {
                     .end(done);
             });
         });
+
+        describe('when editing', function () {
+            describe('when changing password', function () {
+                it('should change the password', function (done) {
+                    api.put('/user')
+                        .set('Authorization', authHeader)
+                        .send({
+                            password: password + "new"
+                        })
+                        .expect(success)
+                        .expect(keys(['email', 'name']))
+                        .end(done);
+                });
+                it('should revoke our access token', function (done) {
+                    api.put('/user')
+                        .set('Authorization', authHeader)
+                        .send({
+                            password: password + "new"
+                        })
+                        .end(function (err, res) {
+                            api.get('/user')
+                                .set('Authorization', authHeader)
+                                .expect(403)
+                                .end(done);
+                        });
+                });
+            });
+
+            describe('when changing name', function () {
+                it('should change the name', function (done) {
+                    api.put('/user')
+                        .set('Authorization', authHeader)
+                        .send({
+                            name: user.name + "someMore"
+                        })
+                        .expect(success)
+                        .expect(keys(['email', 'name']))
+                        .end(done);
+                });
+                it('should not revoke our access token', function (done) {
+                    api.get('/user')
+                        .set('Authorization', authHeader)
+                        .expect(200)
+                        .end(done);
+                });
+            });
+        });
     });
 
     // just test this on one endpoint to make sure authentication is doing
@@ -245,6 +282,16 @@ describe('user info', function () {
         describe('when viewing', function () {
             it('should return an error', function (done) {
                 api.get('/user')
+                    .expect(403)
+                    .expect(failure(403, ['access_token_required']))
+                    .expect(keys([]))
+                    .end(done);
+            });
+        });
+
+        describe('when editing', function () {
+            it('should return an error', function (done) {
+                api.put('/user')
                     .expect(403)
                     .expect(failure(403, ['access_token_required']))
                     .expect(keys([]))

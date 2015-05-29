@@ -86,6 +86,8 @@ Response (200 on success, 403 on authentication error)
 
 
 #### `PUT /user`
+Changes basic metadata (name, password) aobut the current user. Note that changing the password will force expire all access tokens.
+
 Request (all keys optional):
 
 	{
@@ -96,7 +98,7 @@ Request (all keys optional):
 
 Headers: `Authorization`
 
-Response:
+Response (200 on success, 403 on authentication error):
 
 	{
 		email: "foo@bar.com",
