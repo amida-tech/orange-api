@@ -106,7 +106,6 @@ describe('user info', function () {
                 .set('Authorization', 'Bearer probablynotanaccesstoken')
                 .expect(403)
                 .expect(failure(403, ['invalid_access_token']))
-                .expect(keys([]))
                 .end(done);
         });
     });
@@ -117,7 +116,6 @@ describe('user info', function () {
                 api.get('/user')
                     .expect(403)
                     .expect(failure(403, ['access_token_required']))
-                    .expect(keys([]))
                     .end(done);
             });
         });
@@ -127,7 +125,6 @@ describe('user info', function () {
                 api.put('/user')
                     .expect(403)
                     .expect(failure(403, ['access_token_required']))
-                    .expect(keys([]))
                     .end(done);
             });
         });

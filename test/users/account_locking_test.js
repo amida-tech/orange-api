@@ -59,7 +59,6 @@ describe("account locking", function () {
                 })
                 .expect(403)
                 .expect(failure(403, ['login_attempts_exceeded']))
-                .expect(keys([]))
                 .end(done);
         });
 

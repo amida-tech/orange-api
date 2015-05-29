@@ -32,7 +32,6 @@ describe('registration', function () {
                 })
                 .expect(500)
                 .expect(failure(500, ['email_required']))
-                .expect(keys(['email', 'name']))
                 .end(done);
         });
     });
@@ -46,7 +45,6 @@ describe('registration', function () {
                 })
                 .expect(500)
                 .expect(failure(500, ['password_required']))
-                .expect(keys(['email', 'name']))
                 .end(done);
         });
     });
@@ -74,7 +72,6 @@ describe('registration', function () {
                 })
                 .expect(500)
                 .expect(failure(500, ['invalid_email']))
-                .expect(keys(['email', 'name']))
                 .end(done);
         });
     });
@@ -101,7 +98,6 @@ describe('registration', function () {
                         })
                         .expect(500)
                         .expect(failure(500, ['user_already_exists']))
-                        .expect(keys(['email', 'name']))
                         .end(done);
                 });
         });

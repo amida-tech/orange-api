@@ -10,6 +10,35 @@ function success(res) {
     }
 }
 
+// Check a JSON response has exactly the specified keys
+// Ignore error keys (checked in success/failure) and always require success key
+function keys(keyList) {
+    keyList.push('success');
+
+    // Curry out so we can pass keyList
+    return function (res) {
+        var actualKeys = Object.keys(res.body);
+        if (!('success' in res.body)) {
+            throw new Error("success status not specified in res.body");
+        }
+
+        // Check all required keys present
+        for (var i = 0; i < keyList.length; i++) {
+            if (actualKeys.indexOf(keyList[i]) < 0) {
+                throw new Error("Key " + keyList[i] + " not present but should be ");
+            }
+        }
+
+        // Check no extra keys are present
+        for (i = 0; i < actualKeys.length; i++) {
+            var key = actualKeys[i];
+            if (key !== 'errors' && keyList.indexOf(key) < 0) {
+                throw new Error("Key " + key + " present but shouldn't be");
+            }
+        }
+    };
+}
+
 // Converse of the above, but takes the error code we are looking for and the specific
 // errors
 function failure(errorCode, errors) {
@@ -39,35 +68,8 @@ function failure(errorCode, errors) {
                 }
             }
         }
-    };
-}
-
-// Check a JSON response has exactly the specified keys
-// Ignore error keys (checked in success/failure) and always require success key
-function keys(keyList) {
-    keyList.push('success');
-
-    // Curry out so we can pass keyList
-    return function (res) {
-        var actualKeys = Object.keys(res.body);
-        if (!('success' in res.body)) {
-            throw new Error("success status not specified in res.body");
-        }
-
-        // Check all required keys present
-        for (var i = 0; i < keyList.length; i++) {
-            if (actualKeys.indexOf(keyList[i]) < 0) {
-                throw new Error("Key " + keyList[i] + " not present but should be ");
-            }
-        }
-
-        // Check no extra keys are present
-        for (i = 0; i < actualKeys.length; i++) {
-            var key = actualKeys[i];
-            if (key !== 'errors' && keyList.indexOf(key) < 0) {
-                throw new Error("Key " + key + " present but shouldn't be");
-            }
-        }
+        // check no non-success/error fields are present
+        keys([])(res);
     };
 }
 

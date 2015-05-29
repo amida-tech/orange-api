@@ -45,9 +45,8 @@ describe('getting an access token', function () {
                 .send({
                     email: user.email
                 })
-                .expect(403)
-                .expect(failure(403, ['password_required']))
-                .expect(keys([]))
+                .expect(500)
+                .expect(failure(500, ['password_required']))
                 .end(done);
         });
     });
@@ -58,9 +57,8 @@ describe('getting an access token', function () {
                 .send({
                     password: user.password
                 })
-                .expect(403)
-                .expect(failure(403, ['email_required']))
-                .expect(keys([]))
+                .expect(500)
+                .expect(failure(500, ['email_required']))
                 .end(done);
         });
     });
@@ -73,8 +71,7 @@ describe('getting an access token', function () {
                     password: user.password + "1"
                 })
                 .expect(403)
-                .expect(failure(403, ['invalid_email_password']))
-                .expect(keys([]))
+                .expect(failure(403, ['wrong_email_password']))
                 .end(done);
         });
     });

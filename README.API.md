@@ -19,6 +19,22 @@ quasi-REST API (Node + Mongo) for Orange medication adherence apps to:
 	 
 The rest of this `README` is filled with endpoints. Note that all endpoints *must* be prefixed with a version number (e.g., `POST /v1/auth/token`).
 
+## Errors
+Every response is structured as a top-level JSON object with key `success`. When `true`, the responses as detailed below are shown. When `false` this indicates an error ocurred, and an `errors` key with an array of error slugs will also be present (and no other keys than `success` and `errors` are present).
+
+The possible error slugs are:
+ - `email_required` (500)
+ - `password_required` (500)
+ - `invalid_email` (500)
+ - `user_already_exists` (500)
+ - `wrong_email_password` (403)
+ - `login_attempts_exceeded` (Too many access token authorization attempts with the wrong password. Try again in an hour) (403)
+ - `invalid_access_token` (403)
+ - `access_token_required` (403)
+ - `unknown_error` (500)
+
+TODO list the rest of these once established
+
 ## Authentication
 Access token model. The email/password are initially used to obtain a (nonexpiring) access token, which can then be sent as a header (see below) to authenticate all other API requests.
 
@@ -40,8 +56,7 @@ Response (200 on success, 403 on authentication error)
 
 	{
 		access_token: ACCESS_TOKEN,
-		success: true,
-		errors: ["error-key1", "error-key2"] # if unsuccessful
+		success: true
 	}
 
 ## Setup Phase
@@ -64,8 +79,7 @@ Response (200 on success, 500 on error):
 	{
 		email: "foo@bar.com",
 		name: "Foo Bar",
-		success: true,
-		errors: ["error-key1", "error-key2"] # if unsuccessful
+		success: true
 	}		
 
 #### `GET /user`
@@ -80,8 +94,7 @@ Response (200 on success, 403 on authentication error)
 	{
 		email: "foo@bar.com",
 		name: "Foo Bar",
-		success: true,
-		errors: ["error-key1", "error-key2"] # if unsuccessful
+		success: true
 	}
 
 
@@ -103,8 +116,7 @@ Response (200 on success, 403 on authentication error):
 	{
 		email: "foo@bar.com",
 		name: "Foo Bar Baz",
-		success: true,
-		errors: ["error-key1", "error-key2"] # if unsuccessful
+		success: true
 	}
 
 ### Habits
@@ -123,8 +135,7 @@ Response:
 	{
 		lunchTime: "1300",
 		dinnerTime: "1900",
-		success: true,
-		errors: ["error-key1", "error-key2"] # if unsuccessful
+		success: true
 	}
 
 #### `GET /user/habits`
@@ -137,8 +148,7 @@ Response:
 	{
 		lunchTime: "1300",
 		dinnerTime: "1900",
-		success: true,
-		errors: ["error-key1", "error-key2"] # if unsuccessful
+		success: true
 	}
 
 ### Doctors
@@ -159,8 +169,7 @@ Response:
 		id: 1,
 		name: "Dr. X",
 		phone: "(617) 617-6177",
-		success: true,
-		errors: ["error-key1", "error-key2"] # if unsuccessful
+		success: true
 	}
 
 #### `GET /user/doctors`
@@ -180,8 +189,7 @@ Response:
 			...
 		],
 		count: 5,
-		success: true,
-		errors: ["error-key1", "error-key2"] # if unsuccessful
+		success: true
 	}
 	
 #### `GET /users/doctors/1`
@@ -195,8 +203,7 @@ Response:
 		id: 1,
 		name: "Dr. X",
 		phone: "(617) 617-6177",
-		success: true,
-		errors: ["error-key1", "error-key2"] # if unsuccessful
+		success: true
 	}
 
 #### `PUT /user/doctors/1`
@@ -215,8 +222,7 @@ Response:
 		id: 1,
 		name: "Dr. Y",
 		phone: "(716) 716-7166",
-		success: true,
-		errors: ["error-key1", "error-key2"] # if unsuccessful
+		success: true
 	}
 
 
@@ -231,8 +237,7 @@ Response:
 		id: 1,
 		name: "Dr. X",
 		phone: "(617) 617-6177",
-		success: true,
-		errors: ["error-key1", "error-key2"] # if unsuccessful
+		success: true
 	}
 
 ### Pharmacies
@@ -268,8 +273,7 @@ Response:
 		name: "Pharmacy X",
 		...
 		hours: {...},
-		success: true,
-		errors: ["error-key1", "error-key2"] # if unsuccessful
+		success: true
 	}
 
 #### `GET /user/pharmacies`
@@ -293,8 +297,7 @@ Response:
 			...
 		]
 		count: 6,
-		success: true,
-		errors: ["error-key1", "error-key2"] # if unsuccessful
+		success: true
 	}
 	
 #### `GET /user/pharmacies/1`
@@ -309,8 +312,7 @@ Response:
 		name: "Pharmacy X",
 		...
 		hours: {...},
-		success: true,
-		errors: ["error-key1", "error-key2"] # if unsuccessful
+		success: true
 	}
  
 #### `PUT /user/pharmacies/1`
@@ -355,8 +357,7 @@ Response:
 			saturday: {..},
 			sunday: {..}
 		},
-		success: true,
-		errors: ["error-key1", "error-key2"] # if unsuccessful
+		success: true
 	}
 
 #### `DELETE /user/pharmacies/1`
@@ -371,8 +372,7 @@ Response:
 		name: "Pharmacy X",
 		...
 		hours: {...},
-		success: true,
-		errors: ["error-key1", "error-key2"] # if unsuccessful
+		success: true
 	}
 
 ### Medications
@@ -412,8 +412,7 @@ Response:
 		},
 		doctor_id: 1,
 		pharmacy_id: 1
-		success: true,
-		errors: ["error-key1", "error-key2"] # if unsuccessful
+		success: true
 	}
 
 
@@ -441,8 +440,7 @@ Response:
 			...
 		],
 		count: 6,
-		success: true,
-		errors: ["error-key1", "error-key2"] # if unsuccessful
+		success: true
 	}
 
 #### `GET /user/medications/1`
@@ -463,8 +461,7 @@ Response:
 		doctor: {
 			# populated with info of doctor
 		},
-		success: true,
-		errors: ["error-key1", "error-key2"] # if unsuccessful
+		success: true
 	}
 
 #### `GET /user/medications/1/adherences`
@@ -484,8 +481,7 @@ Headers: `Authorization`
 			...
 		],
 		count: 46,
-		success: true,
-		errors: ["error-key1", "error-key2"] # if unsuccessful
+		success: true
 	}
 
 
@@ -525,8 +521,7 @@ Response:
 		},
 		doctor_id: 2,
 		pharmacy_id: 3,
-		success: true,
-		errors: ["error-key1", "error-key2"] # if unsuccessful
+		success: true
 	}
 
 #### `DELETE /user/medications/1`
@@ -541,8 +536,7 @@ Response:
 		name: "Fexofenadine",
 		...
 		pharmacy_id: 3,
-		success: true,
-		errors: ["error-key1", "error-key2"] # if unsuccessful
+		success: true
 	}
 
 ## Adherence
@@ -566,8 +560,7 @@ Response:
 		medication_id: 1,
 		date: 2015-05-27T18:25:43.511Z,
 		notes: "Noticed effect immediately!",
-		success: true,
-		errors: ["error-key1", "error-key2"] # if unsuccessful
+		success: true
 	}
 	
 #### `GET /user/adherences`
@@ -588,8 +581,7 @@ Response:
 			...
 		],
 		count: 170,
-		success: true,
-		errors: ["error-key1", "error-key2"] # if unsuccessful
+		success: true
 	}
 
 #### `GET /user/adherences/1`
@@ -607,8 +599,7 @@ Response:
 		},
 		date: 2015-05-27T18:25:43.511Z,
 		notes: "Noticed effect immediately!"
-		success: true,
-		errors: ["error-key1", "error-key2"] # if unsuccessful
+		success: true
 	}
 	
 #### `PUT /user/adherences/1`
@@ -629,8 +620,7 @@ Response:
 		medication_id: 2,
 		date: 2015-05-28T18:25:43.511Z,
 		notes: "Didn't feel anything"
-		success: true,
-		errors: ["error-key1", "error-key2"] # if unsuccessful
+		success: true
 	}
 
 #### `DELETE /user/adherences/1`
@@ -645,8 +635,7 @@ Response:
 		medication_id: 2,
 		date: 2015-05-28T18:25:43.511Z,
 		notes: "Didn't feel anything"
-		success: true,
-		errors: ["error-key1", "error-key2"] # if unsuccessful
+		success: true
 	}
 
 
@@ -673,8 +662,7 @@ Response:
 			...
 		]
 		count: 17,
-		success: true,
-		errors: ["error-key1", "error-key2"] # if unsuccessful
+		success: true
 	}
 
 #### `POST /shared_to`
@@ -691,8 +679,7 @@ Response:
 	{
 		id: 5,
 		email: "foo@bar.com"
-		success: true,
-		errors: ["error-key1", "error-key2"] # if unsuccessful
+		success: true
 	}
 
 #### `DELETE /shared_to/1`
@@ -705,8 +692,7 @@ Response:
 	{
 		id: 5,
 		email: "foo@bar.com"
-		success: true,
-		errors: ["error-key1", "error-key2"] # if unsuccessful
+		success: true
 	}
 
 ### Data Shared with Me
@@ -730,8 +716,7 @@ Response:
 			...
 		]
 		count: 17,
-		success: true,
-		errors: ["error-key1", "error-key2"] # if unsuccessful
+		success: true
 	}
 	
 #### `GET /shared/1`
@@ -745,8 +730,7 @@ Response:
 		id: 1, # unique to the user viewing *and* the user sharing
 		email: "foo@bar.com",
 		name: "Foo Bar",
-		success: true,
-		errors: ["error-key1", "error-key2"] # if unsuccessful
+		success: true
 	}
 
 #### `GET /shared/1/habits`
@@ -766,16 +750,3 @@ See `GET /user/adherences`.
 
 #### `GET /shared/1/adherences/1`
 See `GET /user/adherences/1`. 
-
-## Error Slugs
- - `email_required`
- - `password_required`
- - `name_required`
- - `unknown_error`
- - `invalid_email_password`
- - `user_already_exists`
- - `access_token_required`
- - `invalid_access_token`
- - `login_attempts_exceeded` (Too many access token authorization attempts with the wrong password. Try again in an hour)
-
-TODO list the rest of these once established

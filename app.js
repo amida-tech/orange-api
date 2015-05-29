@@ -31,10 +31,8 @@ var authController = require('./lib/controllers/auth.js');
 app.use(authController);
 
 // Error handling
-app.use(function (err, req, res, next) {
-    console.error(err.stack);
-    res.status(500).send('Something broke!');
-});
+var errorHandler = require('./lib/error_handler.js');
+app.use(errorHandler);
 
 // Run server
 var server = app.listen(3000, function () {
