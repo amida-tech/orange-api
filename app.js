@@ -30,6 +30,9 @@ app.use(usersController);
 var authController = require('./lib/controllers/auth.js');
 app.use(authController);
 
+var habitsController = require('./lib/controllers/habits.js');
+app.use(habitsController);
+
 // Error handling
 var errorHandler = require('./lib/error_handler.js');
 app.use(errorHandler);
