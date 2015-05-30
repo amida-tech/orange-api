@@ -24,9 +24,7 @@ describe("account locking", function () {
             // store password separately as user.password becomes the hash
             password = user.password;
             user.save(function (err, data) {
-                if (err) {
-                    done(err);
-                }
+                if (err) return done(err);
 
                 // repeatedly try to get an access token with the wrong password
                 function attemptAuthentication(attemptNo) {
@@ -35,11 +33,9 @@ describe("account locking", function () {
                             email: user.email,
                             password: password + "wrongpassword"
                         })
-                        .expect(403)
+                        .expect(401)
                         .end(function (err, res) {
-                            if (err) {
-                                done(err);
-                            }
+                            if (err) return done(err);
                             if (attemptNo + 1 < TIMES_TO_TRY) {
                                 attemptAuthentication(attemptNo + 1);
                             } else {
@@ -57,8 +53,8 @@ describe("account locking", function () {
                     email: user.email,
                     password: password
                 })
-                .expect(403)
-                .expect(failure(403, ['login_attempts_exceeded']))
+                .expect(401)
+                .expect(failure(401, ['login_attempts_exceeded']))
                 .end(done);
         });
 
