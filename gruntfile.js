@@ -6,9 +6,11 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-express-server');
     grunt.loadNpmTasks('grunt-jsbeautifier');
+    grunt.loadNpmTasks('grunt-exec');
 
     grunt.registerTask('default', ['jshint', 'jsbeautifier', 'express:dev', 'mochaTest']);
     grunt.registerTask('server', ['jshint', 'jsbeautifier', 'express:dev', 'watch']);
+    grunt.registerTask('docs', ['exec:docs']);
 
     // Print a timestamp (useful for when watching)
     grunt.registerTask('timestamp', function () {
@@ -75,6 +77,12 @@ module.exports = function (grunt) {
                     timeout: '10000'
                 },
                 src: ['test/*.js', 'test/**/*.js']
+            }
+        },
+        exec: {
+            docs: {
+                cwd: 'docs',
+                cmd: './build.sh'
             }
         }
     });

@@ -1,10 +1,23 @@
 Orange Backend API
 =========
 
-API for Orange medication adherence apps. quasi-REST and implemented in Node & Mongo.
+API for Orange medication adherence apps. quasi-REST and implemented in Node & Mongo. Implements:
+ - Setup user/patient
+   - Save meds/docs/pharmacies
+	   - Manually (main method)
+		 - Via Oauth2 and FHIR from e.g., DRE
+	 - Get meds
+	 - Likewise for user info and habits
+ - Adherence
+   - Save adherence datapoint 
+	 - Get adherence data
+ - Share
+ 	 - Share with other users
+	   - Other users of app (main method)
+		 - Via email/sms
+	 - See data shared with me (via app)
 
 ##Quick up and running quide
-
 For a detailed list of endpoints and other documentation see [here] (./README.API.md)
 
 ###Prerequisites

@@ -25,6 +25,7 @@
     "mongoose-unique-validator": "^0.4.1"
   },
   "devDependencies": {
+    "aglio": "^2.0.0-beta2",
     "chai": "1.9.x",
     "chai-datetime": "1.3.x",
     "coveralls": "~2.10.0",
@@ -32,6 +33,7 @@
     "grunt-contrib-jshint": "0.8.x",
     "grunt-contrib-watch": "0.6.x",
     "grunt-coveralls": "*",
+    "grunt-exec": "^0.4.6",
     "grunt-express-server": "^0.5.1",
     "grunt-istanbul-coverage": "*",
     "grunt-jsbeautifier": "^0.2.7",
