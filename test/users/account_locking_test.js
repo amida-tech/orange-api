@@ -67,7 +67,7 @@ describe("account locking", function () {
                     email: user.email,
                     password: password
                 })
-                .expect(success)
+                .expect(success(201))
                 .expect(keys(['access_token']))
                 .end(function (err, res) {
                     clock.restore();

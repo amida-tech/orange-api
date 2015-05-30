@@ -33,7 +33,7 @@ describe('user habits', function () {
         it('should initially return blank values', function (done) {
             api.get('/user/habits')
                 .set('Authorization', user.authHeader)
-                .expect(success)
+                .expect(success(200))
                 .expect(keys(['wake', 'sleep', 'breakfast', 'lunch', 'dinner']))
                 .end(function (err, res) {
                     if (err) return done(err);
@@ -56,7 +56,7 @@ describe('user habits', function () {
                     lunch: lunch,
                     dinner: dinner
                 })
-                .expect(success)
+                .expect(success(200))
                 .expect(keys(['wake', 'sleep', 'breakfast', 'lunch', 'dinner']))
                 .end(function (err, res) {
                     if (err) return done(err);
@@ -72,7 +72,7 @@ describe('user habits', function () {
         it('should persist those values', function (done) {
             api.get('/user/habits')
                 .set('Authorization', user.authHeader)
-                .expect(success)
+                .expect(success(200))
                 .expect(keys(['wake', 'sleep', 'breakfast', 'lunch', 'dinner']))
                 .end(function (err, res) {
                     if (err) return done(err);
@@ -102,7 +102,7 @@ describe('user habits', function () {
             it('should not have changed values', function (done) {
                 api.get('/user/habits')
                     .set('Authorization', user.authHeader)
-                    .expect(success)
+                    .expect(success(200))
                     .expect(keys(['wake', 'sleep', 'breakfast', 'lunch', 'dinner']))
                     .end(function (err, res) {
                         if (err) return done(err);
@@ -129,7 +129,7 @@ describe('user habits', function () {
                     .send({
                         wake: newWake
                     })
-                    .expect(success)
+                    .expect(success(200))
                     .expect(keys(['wake', 'sleep', 'breakfast', 'lunch', 'dinner']))
                     .end(function (err, res) {
                         if (err) return done(err);
@@ -150,7 +150,7 @@ describe('user habits', function () {
                     .send({
                         wake: ""
                     })
-                    .expect(success)
+                    .expect(success(200))
                     .expect(keys(['wake', 'sleep', 'breakfast', 'lunch', 'dinner']))
                     .end(function (err, res) {
                         if (err) return done(err);
