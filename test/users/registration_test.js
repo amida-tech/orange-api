@@ -30,8 +30,8 @@ describe('registration', function () {
                     password: factories.password(),
                     name: factories.name()
                 })
-                .expect(500)
-                .expect(failure(500, ['email_required']))
+                .expect(400)
+                .expect(failure(400, ['email_required']))
                 .end(done);
         });
     });
@@ -43,8 +43,8 @@ describe('registration', function () {
                     email: factories.email(),
                     name: factories.name()
                 })
-                .expect(500)
-                .expect(failure(500, ['password_required']))
+                .expect(400)
+                .expect(failure(400, ['password_required']))
                 .end(done);
         });
     });
@@ -70,8 +70,8 @@ describe('registration', function () {
                     password: factories.password(),
                     name: factories.name()
                 })
-                .expect(500)
-                .expect(failure(500, ['invalid_email']))
+                .expect(400)
+                .expect(failure(400, ['invalid_email']))
                 .end(done);
         });
     });
@@ -95,8 +95,8 @@ describe('registration', function () {
                             password: factories.password(),
                             name: factories.name()
                         })
-                        .expect(500)
-                        .expect(failure(500, ['user_already_exists']))
+                        .expect(400)
+                        .expect(failure(400, ['user_already_exists']))
                         .end(done);
                 });
         });

@@ -54,7 +54,7 @@ describe('user info', function () {
                         .end(function (err, res) {
                             api.get('/user')
                                 .set('Authorization', user.authHeader)
-                                .expect(403)
+                                .expect(401)
                                 .end(done);
                         });
                 });
@@ -87,8 +87,8 @@ describe('user info', function () {
         it('should return an error', function (done) {
             api.get('/user')
                 .set('Authorization', 'Bearer probablynotanaccesstoken')
-                .expect(403)
-                .expect(failure(403, ['invalid_access_token']))
+                .expect(401)
+                .expect(failure(401, ['invalid_access_token']))
                 .end(done);
         });
     });
@@ -97,8 +97,8 @@ describe('user info', function () {
         describe('when viewing', function () {
             it('should return an error', function (done) {
                 api.get('/user')
-                    .expect(403)
-                    .expect(failure(403, ['access_token_required']))
+                    .expect(401)
+                    .expect(failure(401, ['access_token_required']))
                     .end(done);
             });
         });
@@ -106,8 +106,8 @@ describe('user info', function () {
         describe('when editing', function () {
             it('should return an error', function (done) {
                 api.put('/user')
-                    .expect(403)
-                    .expect(failure(403, ['access_token_required']))
+                    .expect(401)
+                    .expect(failure(401, ['access_token_required']))
                     .end(done);
             });
         });

@@ -94,8 +94,8 @@ describe('user habits', function () {
                     .send({
                         wake: invalidWake
                     })
-                    .expect(500)
-                    .expect(failure(500, ['invalid_wake']))
+                    .expect(400)
+                    .expect(failure(400, ['invalid_wake']))
                     .end(done);
             });
 
@@ -170,8 +170,8 @@ describe('user habits', function () {
         describe('when viewing', function () {
             it('should return an error', function (done) {
                 api.get('/user/habits')
-                    .expect(403)
-                    .expect(failure(403, ['access_token_required']))
+                    .expect(401)
+                    .expect(failure(401, ['access_token_required']))
                     .end(done);
             });
         });
@@ -182,8 +182,8 @@ describe('user habits', function () {
                     .send({
                         wake: factories.wake()
                     })
-                    .expect(403)
-                    .expect(failure(403, ['access_token_required']))
+                    .expect(401)
+                    .expect(failure(401, ['access_token_required']))
                     .end(done);
             });
         });

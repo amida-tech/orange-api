@@ -62,6 +62,10 @@ function failure(errorCode, errors) {
                 }
             }
         }
+        // in specific case of 401 error code, we need a WWW-Authenticate header field
+        if (errorCode === 401 && !(typeof res.get('WWW-Authenticate') !== 'undefined' && res.get('WWW-Authenticate').length > 0)) {
+            throw new Error("401 status code but no WWW-Authenticate header");
+        }
         // check no non-success/error fields are present
         keys([])(res);
     };

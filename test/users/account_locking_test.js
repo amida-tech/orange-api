@@ -33,7 +33,7 @@ describe("account locking", function () {
                             email: user.email,
                             password: password + "wrongpassword"
                         })
-                        .expect(403)
+                        .expect(401)
                         .end(function (err, res) {
                             if (err) return done(err);
                             if (attemptNo + 1 < TIMES_TO_TRY) {
@@ -53,8 +53,8 @@ describe("account locking", function () {
                     email: user.email,
                     password: password
                 })
-                .expect(403)
-                .expect(failure(403, ['login_attempts_exceeded']))
+                .expect(401)
+                .expect(failure(401, ['login_attempts_exceeded']))
                 .end(done);
         });
 

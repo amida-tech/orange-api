@@ -23,14 +23,26 @@ The rest of this `README` is filled with endpoints. Note that all endpoints *mus
 Every response is structured as a top-level JSON object with key `success`. When `true`, the responses as detailed below are shown. When `false` this indicates an error ocurred, and an `errors` key with an array of error slugs will also be present (and no other keys than `success` and `errors` are present).
 
 The possible error slugs are:
- - `email_required` (500)
- - `password_required` (500)
- - `invalid_email` (500)
- - `user_already_exists` (500)
- - `wrong_email_password` (403)
- - `login_attempts_exceeded` (Too many access token authorization attempts with the wrong password. Try again in an hour) (403)
- - `invalid_access_token` (403)
- - `access_token_required` (403)
+### Registration
+ - `email_required` (400)
+ - `password_required` (400)
+ - `invalid_email` (400)
+ - `user_already_exists` (400)
+
+### Authentication
+ - `wrong_email_password` (401)
+ - `login_attempts_exceeded` (Too many access token authorization attempts with the wrong password. Try again in an hour) (401)
+ - `invalid_access_token` (401)
+ - `access_token_required` (401)
+
+### Habits
+ - `invalid_wake` (400)
+ - `invalid_sleep` (400)
+ - `invalid_breakfast` (400)
+ - `invalid_lunch` (400)
+ - `invalid_dinner` (400)
+
+### Other
  - `unknown_error` (500)
 
 TODO list the rest of these once established
