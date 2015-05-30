@@ -7,10 +7,11 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-express-server');
     grunt.loadNpmTasks('grunt-jsbeautifier');
     grunt.loadNpmTasks('grunt-exec');
+    grunt.loadNpmTasks('grunt-gh-pages');
 
     grunt.registerTask('default', ['jshint', 'jsbeautifier', 'express:dev', 'mochaTest']);
     grunt.registerTask('server', ['jshint', 'jsbeautifier', 'express:dev', 'watch']);
-    grunt.registerTask('docs', ['exec:docs']);
+    grunt.registerTask('docs', ['exec:docs', 'gh-pages']);
 
     // Print a timestamp (useful for when watching)
     grunt.registerTask('timestamp', function () {
@@ -84,6 +85,12 @@ module.exports = function (grunt) {
                 cwd: 'docs',
                 cmd: './build.sh'
             }
+        },
+        'gh-pages': {
+            options: {
+                base: 'docs/output'
+            },
+            src: ['**']
         }
     });
 };

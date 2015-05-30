@@ -20,3 +20,4 @@ npm-debug.log
 
 *.swp
 tmp
+.grunt/grunt-gh-pages
