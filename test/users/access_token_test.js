@@ -25,7 +25,7 @@ describe('getting an access token', function () {
                 email: user.email,
                 password: password
             })
-            .expect(success)
+            .expect(success(201))
             .expect(keys(['access_token']))
             .end(function (err, res) {
                 if (err) return done(err);

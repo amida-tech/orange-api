@@ -18,7 +18,7 @@ describe('registration', function () {
                 password: factories.password(),
                 name: factories.name()
             })
-            .expect(success)
+            .expect(success(201))
             .expect(keys(['email', 'name']))
             .end(done);
     });
@@ -56,7 +56,7 @@ describe('registration', function () {
                     email: factories.email(),
                     password: factories.password()
                 })
-                .expect(success)
+                .expect(success(201))
                 .expect(keys(['email', 'name']))
                 .end(done);
         });

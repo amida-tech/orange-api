@@ -5,11 +5,13 @@ var mongoose = require('mongoose');
 
 var factories = require('./factories.js');
 
-// Check a request returns status code 200 and has key success
+// Check a request returns status code 200/201 and has key success
 // with value true
-function success(res) {
-    if (res.status !== 200) throw new Error("Status code " + res.status + " not 200");
-    if (res.body.success !== true) throw new Error("body.success " + res.body.success + " not true");
+function success(responseCode) {
+    return function (res) {
+        if (res.status !== responseCode) throw new Error("Status code " + res.status + " not " + responseCode);
+        if (res.body.success !== true) throw new Error("body.success " + res.body.success + " not true");
+    };
 }
 
 // Check a JSON response has exactly the specified keys

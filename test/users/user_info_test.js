@@ -27,7 +27,7 @@ describe('user info', function () {
             it('should return user info', function (done) {
                 api.get('/user')
                     .set('Authorization', user.authHeader)
-                    .expect(success)
+                    .expect(success(200))
                     .expect(keys(['email', 'name']))
                     .end(done);
             });
@@ -41,7 +41,7 @@ describe('user info', function () {
                         .send({
                             password: user.plainPassword + "new"
                         })
-                        .expect(success)
+                        .expect(success(200))
                         .expect(keys(['email', 'name']))
                         .end(done);
                 });
@@ -67,7 +67,7 @@ describe('user info', function () {
                         .send({
                             name: user.name + "someMore"
                         })
-                        .expect(success)
+                        .expect(success(200))
                         .expect(keys(['email', 'name']))
                         .end(done);
                 });
