@@ -1,48 +1,5 @@
 **Documentation is being transferred to [here](src/api.mid)**
 
-## Sharing
-### Share with Others
-#### `GET /shared_to`
-Request parameters: `limit` (default 25), `offset` (default 0), `sort_by` (`id` or `email`; default `id`), `sort_order` (`asc` or `desc`; default `asc`)
-
-
-Headers: `Authorization`
-
-Response:
-
-	{
-		sharedTo: [
-			{
-				id: 5, # unique to the user viewing *and* the user sharing
-				email: "foo@bar.com"
-			},
-			{
-				id: 99,
-				email: "baz@qux.com"
-			},
-			...
-		]
-		count: 17,
-		success: true
-	}
-
-#### `POST /shared_to`
-Request:
-
-	{
-		email: "foo@bar.com"
-	}
-	
-Headers: `Authorization`
-
-Response:
-
-	{
-		id: 5,
-		email: "foo@bar.com"
-		success: true
-	}
-
 #### `DELETE /shared_to/1`
 Request: `{}`
 
