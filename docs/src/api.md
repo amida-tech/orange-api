@@ -12,12 +12,12 @@ All API endpoints must be prefixed with a version number: for example,
 All data should be sent JSON-encoded, and all responses are returned in JSON.
 
 ### Response Status Codes
-##### Success
+#### Success
 All successful requests return responses with the following error codes:
  - `GET`, `PUT` and `DELETE` return `200` on success
  - `POST` returns `201` on success
 
-##### Error
+#### Error
 Error responses have [standard HTTP error codes](http://www.restapitutorial.com/httpstatuscodes.html),
 along with an array of machine-readable error slugs in the `errors` key of the JSON response.
 

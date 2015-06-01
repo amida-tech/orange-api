@@ -17,7 +17,7 @@ taken their medication).
 
     + notes (string, optional)
 
-        free-text field for things such as observations and reactions recorded by the suer
+        free-text field for things such as observations and reactions recorded by the user
 
 + Request
     + Headers

@@ -9,7 +9,7 @@ of the app, then their data is shared with that user. Otherwise an email is
 sent out inviting the new user to the app, and as soon as they sign up
 they'll be able to see the shared data.
 
-## Caregivers Collection [/users/caregivers]
+## Caregivers Collection [/user/caregivers]
 ### Share with a Caregiver [POST]
 Share the user's data with a new caregiver specified by email address.
 As detailed above, that email address can be an existing app user, but is not
@@ -52,7 +52,7 @@ required to be.
         }
 
 ### List all Caregivers [GET]
-Get a list of all the caregivers the user has shared data with. Includes full information on each.
+Get a list of all the caregivers the user has shared data with.
 
 + Parameters
     + limit (integer, optional)
@@ -99,16 +99,19 @@ Get a list of all the caregivers the user has shared data with. Includes full in
     + Body
 
         {
-            caregivers: {
-                id: 1,
-                email: "care@giver.com",
-                is_user: true
-            },
+            caregivers: [
+                {
+                    id: 1,
+                    email: "care@giver.com",
+                    is_user: true
+                },
+                ...
+            ],
             count: 2,
             success: true
         }
 
-## Caregiver [/users/caregivers/{id}]
+## Caregiver [/user/caregivers/{id}]
 ### Stop Sharing [DELETE]
 Stop sharing the current user's data with this caregiver. Note that the caregiver
 ID has to be sent, rather than the email address, but the caregiver ID can be
