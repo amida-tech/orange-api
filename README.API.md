@@ -1,28 +1,5 @@
 **Documentation is being transferred to [here](src/api.mid)**
 
-#### `GET /user/medications/1/adherences`
-Request parameters: `limit` (default 25), `offset` (default 0), `sort_by` (`id` or `date`; default `date`), `sort_order` (`asc` or `desc`; default `desc`)
-
-
-Headers: `Authorization`
-
-	{
-		adherences: [
-			{
-				id: 1,
-				medication_id: 1,
-				date: 2015-05-27T18:25:43.511Z,
-				notes: "Noticed effect immediately!"
-			},
-			...
-		],
-		count: 46,
-		success: true
-	}
-
-
-
-
 ## Sharing
 ### Share with Others
 #### `GET /shared_to`

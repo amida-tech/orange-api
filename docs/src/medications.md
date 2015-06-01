@@ -441,4 +441,77 @@ Remove a single medication.
             success: true
         }
 
+## Medication Adherences [/users/medications/{id}/adherences]
+### Retrieve all Adherences [GET]
+Get a list of all adherence events for **this specific medication** for the
+user. Includes full information on each adherence, although for brevity
+`medication_id` is filtered out of each adherence result.
+
++ Parameters
+    + id (integer, required)
+
+        unique ID of the medication (*url*)
+    + limit (integer, optional)
+
+        Maximum number of results to return. Defaults to 25.
+
+     + offset (integer, optional)
+
+         Number of initial results to ignore (used in combination with `limit`)
+         for pagination. Defaults to 0.
+
+    + sort_by (string, optional)
+    
+        Field to sort results by. Must by either `id` or `date`, and defaults
+        to `id`.
+
+    + sort_order (string, optional)
+    
+        The order to sort results by: either `asc` or `desc`. Defaults to
+        `asc`.
+
+    + start_date (string, optional)
+
+        Restrict results to adherence events that took place after this date.
+        Must be a valid ISO 8601 datetime. Defaults to 0.
+
+    + end_date (string, optional)
+
+        Restrict results to adherence events that took place before this date.
+        Must be a valid ISO 8601 datetime. Defaults to infinity.
+
++ Request
+    + Headers
+
+        Authorization: Bearer ACCESS_TOKEN
+
++ Response 200
+    Errors
+    + `access_token_required` (401) - no access token specified in
+    `Authorization` header
+    + `invalid_access_token` (401) - the access token specified is invalid
+    + `invalid_medication_id` (404) - a medication with that ID was not found
+    + `invalid_limit` (400) - the specified result limit is invalid
+    + `invalid_offset` (400) - the specified result offset is invalid
+    + `invalid_sort_by` (400) - the specified sort field is invalid
+    + `invalid_sort_order` (400) - the specified sort order is invalid
+    + `invalid_start_date` (400) - the specified start date is an invalid ISO 8601 datetime
+    + `invalid_end_date` (400) - the specified end date is an invalid ISO 8601 datetime
+
+    + Body
+
+            {
+                adherences: [
+                    {
+                        id: 1,
+                        date: "2015-05-31T19:27:09+00:00",
+                        notes: "Feeling sleepy now!"
+                    },
+                    ...
+                ],
+                count: 46,
+                success: true
+            }
+
+
 

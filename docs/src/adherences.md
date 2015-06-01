@@ -50,7 +50,7 @@ taken their medication).
                 success: true
             }
 
-### Retrieve all Adherence [GET]
+### Retrieve all Adherences [GET]
 Get a list of all adherence events for the user. Includes full information on each,
 but `medication_id` is not expanded out into `medication`.
 
@@ -120,7 +120,8 @@ but `medication_id` is not expanded out into `medication`.
 
 ## Adherence Event [/users/adherence/{id}]
 ### Retrieve One Adherence [GET]
-View information on an individual adherence event.
+View information on an individual adherence event. `medication_id` is helpfully
+expanded out into `medication`.
 
 + Parameters
     + id (integer, required)
@@ -143,11 +144,35 @@ View information on an individual adherence event.
 
             {
                 id: 1,
-                medication_id: 1,
                 date: "2015-05-31T19:27:09+00:00",
                 notes: "Feeling sleepy now!",
+                medication: {
+                    id: 1,
+                    name: "Loratadine",
+                    rx_norm: "324026",
+                    ndc: "33261-0228",
+                    dose: {
+                        quantity: 100,
+                        unit: "mg"
+                    },
+                    route: "oral",
+                    form: "pill",
+                    rx_number: "123456789",
+                    quantity: 50,
+                    type: "OTC",
+                    schedule: {
+                        type: "regularly",
+                        frequency: 1,
+                        number_of_times: 2,
+                        times_of_day: ["after_lunch", "before_sleep"]
+                    },
+                    doctor_id: 1,
+                    pharmacy_id: 1,
+                    success: true
+                },
                 success: true
             }
+
 
 ### Change an Adherence [PUT]
 Change information (medication, date and/or notes) of a single adherence event.
