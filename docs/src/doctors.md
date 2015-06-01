@@ -111,7 +111,7 @@ View information on an individual doctor.
 + Parameters
     + id (integer, required)
 
-        unique ID of the doctor (*url*)
+        unique ID of the doctor
 
 + Request
     + Headers
@@ -123,7 +123,7 @@ View information on an individual doctor.
     + `access_token_required` (401) - no access token specified in
     `Authorization` header
     + `invalid_access_token` (401) - the access token specified is invalid
-    + `invalid_resource_id` (400) - a doctor with that ID was not found
+    + `invalid_doctor_id` (404) - a doctor with that ID was not found
 
     + Body
 
@@ -169,7 +169,7 @@ Change information (name, phone and/or address) of an individual doctor.
     + `invalid_access_token` (401) - the access token specified is invalid
     + `invalid_phone` (400) - the phone number passed is not valid (it must
     only contain numbers, hyphens, spaces, parantheses and pluses)
-    + `invalid_resource_id` (400) - a doctor with that ID was not found
+    + `invalid_doctor_id` (404) - a doctor with that ID was not found
     
     + Body
 
@@ -199,7 +199,7 @@ Remove information on a single doctor.
     + `access_token_required` (401) - no access token specified in
     `Authorization` header
     + `invalid_access_token` (401) - the access token specified is invalid
-    + `invalid_resource_id` (400) - a doctor with that ID was not found
+    + `invalid_doctor_id` (404) - a doctor with that ID was not found
 
     + Body
 

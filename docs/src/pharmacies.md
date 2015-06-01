@@ -176,7 +176,7 @@ View information on an individual pharmacy.
 + Parameters
     + id (integer, required)
 
-        unique ID of the pharmacy (*url*)
+        unique ID of the pharmacy
 
 + Request
     + Headers
@@ -188,7 +188,7 @@ View information on an individual pharmacy.
     + `access_token_required` (401) - no access token specified in
     `Authorization` header
     + `invalid_access_token` (401) - the access token specified is invalid
-    + `invalid_resource_id` (400) - a pharmacy with that ID was not found
+    + `invalid_pharmacy_id` (404) - a pharmacy with that ID was not found
 
     + Body
 
@@ -275,7 +275,7 @@ Change information (name, phone, address and/or hours) of an individual pharmacy
     only contain numbers, hyphens, spaces, parantheses and pluses)
     - `invalid_hours` (400) - the opening/closing hours dictionary is not in the
     form specified above in `POST`
-    + `invalid_resource_id` (400) - a pharmacy with that ID was not found
+    + `invalid_pharmacy_id` (404) - a pharmacy with that ID was not found
     
     + Body
 
@@ -335,7 +335,7 @@ Remove information on a single pharmacy.
     + `access_token_required` (401) - no access token specified in
     `Authorization` header
     + `invalid_access_token` (401) - the access token specified is invalid
-    + `invalid_resource_id` (400) - a pharmacy with that ID was not found
+    + `invalid_pharmacy_id` (404) - a pharmacy with that ID was not found
 
     + Body
 
