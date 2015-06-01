@@ -24,7 +24,7 @@ Store details of a new doctor.
         {
             name: "Dr. X",
             phone: "(617) 617-6177",
-            address: "Doctor Street, DC, 2052"
+            address: "Doctor Street, DC, 20052"
         }
 
 + Response 200
@@ -41,7 +41,7 @@ Store details of a new doctor.
                 id: 1,
                 name: "Dr. X",
                 phone: "(617) 617-6177",
-                address: "Doctor Street, DC, 2052"
+                address: "Doctor Street, DC, 20052"
                 success: true
             }
 
@@ -95,7 +95,7 @@ Get a list of all the user's doctors. Includes full information on each.
                         id: 1,
                         name: "Dr. X",
                         phone: "(617) 617-6177",
-                        address: "Doctor Street, DC, 2052"
+                        address: "Doctor Street, DC, 20052"
                     },
                     ...
                 ],
@@ -104,9 +104,9 @@ Get a list of all the user's doctors. Includes full information on each.
             }
 
 
-## Doctor [/users/doctor/{id}]
+## Doctor [/users/doctors/{id}]
 ### Retrieve a Doctor [GET]
-View information on an individual doctor. test
+View information on an individual doctor.
 
 + Parameters
     + id (integer, required)
@@ -123,6 +123,7 @@ View information on an individual doctor. test
     + `access_token_required` (401) - no access token specified in
     `Authorization` header
     + `invalid_access_token` (401) - the access token specified is invalid
+    + `invalid_resource_id` (400) - a doctor with that ID was not found
 
     + Body
 
@@ -130,7 +131,7 @@ View information on an individual doctor. test
                 id: 1,
                 name: "Dr. X",
                 phone: "(617) 617-6177",
-                address: "Doctor Street, DC, 2052",
+                address: "Doctor Street, DC, 20052",
                 success: true
             }
 
@@ -146,7 +147,7 @@ Change information (name, phone and/or address) of an individual doctor.
         Full name of the doctor. Must not be blank.
 
     + phone (string, optional) - contact phone number for the doctor
-    + address (string, optional)
+    + address (string, optional) - postal address, in the format specified above in `POST`
 
 + Request
     + Headers
@@ -158,7 +159,7 @@ Change information (name, phone and/or address) of an individual doctor.
             {
                 name: "Dr. Y",
                 phone: "(716) 716-7166",
-                address: "Doctor Street, DC, 2052"
+                address: "Doctor Street, DC, 20052"
             }
 
 + Response 200
@@ -168,6 +169,7 @@ Change information (name, phone and/or address) of an individual doctor.
     + `invalid_access_token` (401) - the access token specified is invalid
     + `invalid_phone` (400) - the phone number passed is not valid (it must
     only contain numbers, hyphens, spaces, parantheses and pluses)
+    + `invalid_resource_id` (400) - a doctor with that ID was not found
     
     + Body
 
@@ -175,7 +177,7 @@ Change information (name, phone and/or address) of an individual doctor.
                 id: 1,
                 name: "Dr. Y",
                 phone: "(716) 716-7166",
-                address: "Doctor Street, DC, 2052",
+                address: "Doctor Street, DC, 20052",
                 success: true
             }
 
@@ -197,6 +199,7 @@ Remove information on a single doctor.
     + `access_token_required` (401) - no access token specified in
     `Authorization` header
     + `invalid_access_token` (401) - the access token specified is invalid
+    + `invalid_resource_id` (400) - a doctor with that ID was not found
 
     + Body
 
@@ -204,6 +207,7 @@ Remove information on a single doctor.
                 id: 1,
                 name: "Dr. X",
                 phone: "(617) 617-6177",
-                address: "Doctor Street, DC, 2052",
+                address: "Doctor Street, DC, 20052",
                 success: true
             }
+
