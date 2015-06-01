@@ -299,7 +299,7 @@ View information on an individual medication. Doctor and pharmacy details are ex
             success: true
         }
 
-### Change a Medications's Info [PUT]
+### Change a Med's Info [PUT]
 Change information (all keys apart from `id`) of an individual medication.
 
 + Parameters
