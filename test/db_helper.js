@@ -1,15 +1,14 @@
 "use strict";
 var mongoose = require('mongoose');
+var async = require('async');
 
-before(function (done) {
-    if (mongoose.connection.db) {
-        return done();
-    }
+function dropDatabase(done) {
+    mongoose.createConnection('localhost', function (err) {
+        if (err) return done(err);
+        mongoose.connection.db.dropDatabase(done);
+    });
+    console.log("Database dropped");
+}
 
-    mongoose.connect('mongodb://localhost/orange-api', done);
-    mongoose.connection.db.dropDatabase(done);
-});
-
-after(function (done) {
-    mongoose.connection.db.dropDatabase(done);
-});
+before(dropDatabase);
+after(dropDatabase);

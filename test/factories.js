@@ -1,5 +1,9 @@
 "use strict";
-var User = require('../lib/models/user.js');
+
+var mongoose = require('mongoose');
+
+var User = mongoose.model('User');
+var Patient = mongoose.model('Patient');
 
 // Don't save anything to the DB here
 
@@ -22,9 +26,21 @@ function name() {
 }
 
 function user() {
-    return new User({
+    var u = new User({
         email: email(),
         password: password(),
+        name: name()
+    });
+    // save password as user.password will become the hash
+    u.rawPassword = u.password;
+    u.wrongPassword = u.password + 'wrong';
+    u.wrongEmail = u.email + 'wrong';
+    u.invalidEmail = "thisisnotanemail";
+    return u;
+}
+
+function patient() {
+    return new Patient({
         name: name()
     });
 }
@@ -52,5 +68,7 @@ module.exports = {
     sleep: time,
     breakfast: time,
     lunch: time,
-    dinner: time
+    dinner: time,
+    patient: patient,
+    invalidAuthHeader: "not an auth header"
 };
