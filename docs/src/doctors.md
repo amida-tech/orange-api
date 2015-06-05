@@ -1,12 +1,16 @@
 # Group Doctors
 Basic contact details for all of the doctors who've prescribed medication to
-the current user.
+a specified patient.
 
-## Doctors Collection [/user/doctors]
+## Doctors Collection [/patients/{patientid}/doctors]
 ### Create a Doctor [POST]
-Store details of a new doctor.
+Store details of a new doctor for the specified patient (the current user will
+need write access to the patient).
 
 + Parameters
+    + patientid (integer, required)
+
+        unique ID of the patient (*url*)
     + name (string, required) - full name of the doctor
     + phone (string, optional) - contact phone number for the doctor
     + address (string, optional)
@@ -17,20 +21,22 @@ Store details of a new doctor.
 + Request
     + Headers
 
-        Authorization: Bearer ACCESS_TOKEN
+            Authorization: Bearer ACCESS_TOKEN
 
     + Body
     
-        {
-            name: "Dr. X",
-            phone: "(617) 617-6177",
-            address: "Doctor Street, DC, 20052"
-        }
+            {
+                name: "Dr. X",
+                phone: "(617) 617-6177",
+                address: "Doctor Street, DC, 20052"
+            }
 
-+ Response 200
++ Response 201
     Errors
     + `access_token_required` (401) - no access token specified in
     `Authorization` header
+    + `unauthorized` (403) - the current user does not have write access to this patient
+    + `invalid_patient_id` (404) - a patient with the specified ID was not found
     + `invalid_access_token` (401) - the access token specified is invalid
     + `invalid_phone` (400) - the phone number passed is not valid (it must
     only contain numbers, hyphens, spaces, parantheses and pluses)
@@ -46,9 +52,13 @@ Store details of a new doctor.
             }
 
 ### Retrieve all Doctors [GET]
-Get a list of all the user's doctors. Includes full information on each.
+Get a list of all the patient's doctors. Includes full information on each. The
+current user will need read access to the patient.
 
 + Parameters
+    + patientid (integer, required)
+
+        unique ID of the patient (*url*)
     + limit (integer, optional)
 
         Maximum number of results to return. Defaults to 25.
@@ -75,12 +85,14 @@ Get a list of all the user's doctors. Includes full information on each.
 + Request
     + Headers
 
-        Authorization: Bearer ACCESS_TOKEN
+            Authorization: Bearer ACCESS_TOKEN
 
 + Response 200
     Errors
     + `access_token_required` (401) - no access token specified in
     `Authorization` header
+    + `unauthorized` (403) - the current user does not have read access to this patient
+    + `invalid_patient_id` (404) - a patient with the specified ID was not found
     + `invalid_access_token` (401) - the access token specified is invalid
     + `invalid_limit` (400) - the specified result limit is invalid
     + `invalid_offset` (400) - the specified result offset is invalid
@@ -104,24 +116,30 @@ Get a list of all the user's doctors. Includes full information on each.
             }
 
 
-## Doctor [/users/doctors/{id}]
+## Doctor [/patients/{patientid}/doctors/{doctorid}]
 ### Retrieve a Doctor [GET]
-View information on an individual doctor.
+View information on an individual doctor. The current user will need read access to the
+patient's data.
 
 + Parameters
-    + id (integer, required)
+    + patientid (integer, required)
+
+        unique ID of the patient
+    + doctorid (integer, required)
 
         unique ID of the doctor
 
 + Request
     + Headers
 
-        Authorization: Bearer ACCESS_TOKEN
+            Authorization: Bearer ACCESS_TOKEN
 
 + Response 200
     Errors
     + `access_token_required` (401) - no access token specified in
     `Authorization` header
+    + `unauthorized` (403) - the current user does not have read access to this patient
+    + `invalid_patient_id` (404) - a patient with the specified ID was not found
     + `invalid_access_token` (401) - the access token specified is invalid
     + `invalid_doctor_id` (404) - a doctor with that ID was not found
 
@@ -136,10 +154,14 @@ View information on an individual doctor.
             }
 
 ### Change a Doctor's Info [PUT]
-Change information (name, phone and/or address) of an individual doctor.
+Change information (name, phone and/or address) of an individual doctor. The current user will need
+write access to the patient's data.
 
 + Parameters
-    + id (integer, required)
+    + patientid (integer, required)
+
+        unique ID of the patient (*url*)
+    + doctorid (integer, required)
 
         unique ID of the doctor (*url*)
     + name (string, optional) 
@@ -152,7 +174,7 @@ Change information (name, phone and/or address) of an individual doctor.
 + Request
     + Headers
 
-        Authorization: Bearer ACCESS_TOKEN
+            Authorization: Bearer ACCESS_TOKEN
 
     + Body
 
@@ -167,6 +189,8 @@ Change information (name, phone and/or address) of an individual doctor.
     + `access_token_required` (401) - no access token specified in
     `Authorization` header
     + `invalid_access_token` (401) - the access token specified is invalid
+    + `unauthorized` (403) - the current user does not have write access to this patient
+    + `invalid_patient_id` (404) - a patient with the specified ID was not found
     + `invalid_phone` (400) - the phone number passed is not valid (it must
     only contain numbers, hyphens, spaces, parantheses and pluses)
     + `invalid_doctor_id` (404) - a doctor with that ID was not found
@@ -182,22 +206,28 @@ Change information (name, phone and/or address) of an individual doctor.
             }
 
 ### Delete a Doctor [DELETE]
-Remove information on a single doctor.
+Remove information on a single doctor. The current user will need write access to the patient's
+data.
 
 + Parameters
-    + id (integer, required)
+    + patientid (integer, required)
+
+        unique ID of the patient (*url*)
+    + doctorid (integer, required)
 
         unique ID of the doctor (*url*)
 
 + Request
     + Headers
 
-        Authorization: Bearer ACCESS_TOKEN
+            Authorization: Bearer ACCESS_TOKEN
 
 + Response 200
     Errors
     + `access_token_required` (401) - no access token specified in
     `Authorization` header
+    + `unauthorized` (403) - the current user does not have write access to this patient
+    + `invalid_patient_id` (404) - a patient with the specified ID was not found
     + `invalid_access_token` (401) - the access token specified is invalid
     + `invalid_doctor_id` (404) - a doctor with that ID was not found
 

@@ -1,44 +1,46 @@
 # Group Adherences
-An adherence event is when the user takes their medication (either when they're
-supposed to, _adhering_, or not, _nonadhering_).
+An adherence event is when the patient takes their medication (either when they're
+supposed to, _adhering_, or not, _non-adhering_).
 
-## Adherence Events Collection [/user/adherences]
+## Adherence Events Collection [/patients/{patientid}/adherences]
 ### Create an Adherence [POST]
-Store details of a new adherence event (e.g., when a user signifies they've
-taken their medication).
+Store details of a new adherence event (e.g., when a patient signifies they've
+taken their medication). The current user will need write access to the patient's data.
 
 + Parameters
     + medication_id (integer, required)
 
-        unique ID of the medication for which the user has adhered
+        unique ID of the medication for which the patient has adhered
     + date (string, required, 2015-05-31T19:27:09+00:00)
         
-        ISO 8601 combined date-time in UTC representing the date and time at which _the user took the medication_
+        ISO 8601 combined date-time in UTC representing the date and time at which _the patient took the medication_
 
     + notes (string, optional)
 
-        free-text field for things such as observations and reactions recorded by the user
+        free-text field for things such as observations and reactions recorded by the patient
 
 + Request
     + Headers
 
-        Authorization: Bearer ACCESS_TOKEN
+            Authorization: Bearer ACCESS_TOKEN
 
     + Body
     
-        {
-            medication_id: 1,
-            date: "2015-05-31T19:27:09+00:00",
-            notes: "Feeling sleepy now!"
-        }
+            {
+                medication_id: 1,
+                date: "2015-05-31T19:27:09+00:00",
+                notes: "Feeling sleepy now!"
+            }
 
-+ Response 200
++ Response 201
     Errors
     + `access_token_required` (401) - no access token specified in
     `Authorization` header
     + `invalid_access_token` (401) - the access token specified is invalid
     + `invalid_date` (400) - the date field specified is not in valid ISO 8601 format
     + `invalid_medication_id` (400) - no medication with the specified ID can be found
+    + `unauthorized` (403) - the current user does not have write access to this patient
+    + `invalid_patient_id` (404) - a patient with the specified ID was not found
 
     + Body
 
@@ -51,8 +53,9 @@ taken their medication).
             }
 
 ### Retrieve all Adherences [GET]
-Get a list of all adherence events for the user. Includes full information on each,
-but `medication_id` is not expanded out into `medication`.
+Get a list of all adherence events for the patient. Includes full information on each,
+but `medication_id` is not expanded out into `medication`. The current user will need
+read access to the patient's data.
 
 + Parameters
     + limit (integer, optional)
@@ -87,13 +90,15 @@ but `medication_id` is not expanded out into `medication`.
 + Request
     + Headers
 
-        Authorization: Bearer ACCESS_TOKEN
+            Authorization: Bearer ACCESS_TOKEN
 
 + Response 200
     Errors
     + `access_token_required` (401) - no access token specified in
     `Authorization` header
     + `invalid_access_token` (401) - the access token specified is invalid
+    + `unauthorized` (403) - the current user does not have read access to this patient
+    + `invalid_patient_id` (404) - a patient with the specified ID was not found
     + `invalid_limit` (400) - the specified result limit is invalid
     + `invalid_offset` (400) - the specified result offset is invalid
     + `invalid_sort_by` (400) - the specified sort field is invalid
@@ -118,26 +123,29 @@ but `medication_id` is not expanded out into `medication`.
             }
 
 
-## Adherence Event [/users/adherence/{id}]
+## Adherence Event [/patients/{patientid}/adherence/{adherenceid}]
 ### Retrieve One Adherence [GET]
 View information on an individual adherence event. `medication_id` is helpfully
-expanded out into `medication`.
+expanded out into `medication`. The current user will need read access to the
+patient's data.
 
 + Parameters
-    + id (integer, required)
+    + adherenceid (integer, required)
 
         unique ID of the adherence
 
 + Request
     + Headers
 
-        Authorization: Bearer ACCESS_TOKEN
+            Authorization: Bearer ACCESS_TOKEN
 
 + Response 200
     Errors
     + `access_token_required` (401) - no access token specified in
     `Authorization` header
     + `invalid_access_token` (401) - the access token specified is invalid
+    + `unauthorized` (403) - the current user does not have read access to this patient
+    + `invalid_patient_id` (404) - a patient with the specified ID was not found
     + `invalid_adherence_id` (404) - an adherence with that ID was not found
 
     + Body
@@ -175,10 +183,11 @@ expanded out into `medication`.
 
 
 ### Change an Adherence [PUT]
-Change information (medication, date and/or notes) of a single adherence event.
+Change information (medication, date and/or notes) of a single adherence event. The current
+user will need write access to the patient's data.
 
 + Parameters
-    + id (integer, required)
+    + adherenceid (integer, required)
 
         unique ID of the adherence (*url*)
 
@@ -197,7 +206,7 @@ Change information (medication, date and/or notes) of a single adherence event.
 + Request
     + Headers
 
-        Authorization: Bearer ACCESS_TOKEN
+            Authorization: Bearer ACCESS_TOKEN
 
     + Body
 
@@ -212,6 +221,8 @@ Change information (medication, date and/or notes) of a single adherence event.
     + `access_token_required` (401) - no access token specified in
     `Authorization` header
     + `invalid_access_token` (401) - the access token specified is invalid
+    + `unauthorized` (403) - the current user does not have write access to this patient
+    + `invalid_patient_id` (404) - a patient with the specified ID was not found
     + `invalid_adherence_id` (404) - an adherence with that ID was not found
     + `invalid_date` (400) - the date field specified is not in valid ISO 8601 format
     + `invalid_medication_id` (400) - no medication with the specified ID can be found
@@ -228,22 +239,25 @@ Change information (medication, date and/or notes) of a single adherence event.
 
 ### Delete an Adherence [DELETE]
 Remove a single adherence event (this will update generated statistics correspondingly, so be careful!)
+The current user will need write access to the patient's data.
 
 + Parameters
-    + id (integer, required)
+    + adherenceid (integer, required)
 
         unique ID of the adherence (*url*)
 
 + Request
     + Headers
 
-        Authorization: Bearer ACCESS_TOKEN
+            Authorization: Bearer ACCESS_TOKEN
 
 + Response 200
     Errors
     + `access_token_required` (401) - no access token specified in
     `Authorization` header
     + `invalid_access_token` (401) - the access token specified is invalid
+    + `unauthorized` (403) - the current user does not have write access to this patient
+    + `invalid_patient_id` (404) - a patient with the specified ID was not found
     + `invalid_adherence_id` (404) - an adherence event with that ID was not found
 
     + Body
