@@ -1,6 +1,10 @@
 Orange Backend API
 =========
 
+[![Build Status](https://travis-ci.org/amida-tech/orange-api.svg?branch=master)](https://travis-ci.org/amida-tech/orange-api)
+[![Coverage Status](https://coveralls.io/repos/amida-tech/orange-api/badge.svg?branch=master)](https://coveralls.io/r/amida-tech/orange-api?branch=master)
+
+
 **For detailed API documentation see [here](http://amida-tech.github.io/orange-api/)**
 
 API for Orange medication adherence apps. quasi-REST and implemented in Node & Mongo. Implements:
