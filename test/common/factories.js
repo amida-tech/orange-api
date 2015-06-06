@@ -39,11 +39,18 @@ factories.user = function () {
         email: factories.email(),
         name: factories.name(),
         password: factories.password()
-    }
+    };
 };
 factories.minimumUser = function () {
     return {
         email: factories.email(),
         password: factories.password()
-    }
+    };
 };
+
+// patients
+factories.patient = function () {
+    return {
+        name: factories.name()
+    };
+}
