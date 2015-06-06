@@ -22,3 +22,4 @@ npm-debug.log
 tmp
 .grunt/grunt-gh-pages
 docs/output
+.coveralls.yml

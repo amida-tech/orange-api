@@ -11,6 +11,14 @@ All API endpoints must be prefixed with a version number: for example,
 
 All data should be sent JSON-encoded, and all responses are returned in JSON.
 
+Throughout this document, we make the distinction between a user and a patient.
+A user is an email/password pair, used to sign into the app, authenticate with the API,
+and so on. A patient is someone we hold medication/adherence/etc data for. There is
+a many-to-many association between users and patients: one user may own many patients
+(for example, a mother collecting data both for herself and her son), and one patient
+can be owned by many users (the concept of caregivers: the care of the son -- the patient
+-- can be managed by both the mother and the father -- the users).
+
 ### Response Status Codes
 #### Success
 All successful requests return responses with the following error codes:

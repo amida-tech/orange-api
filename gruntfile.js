@@ -1,98 +1,102 @@
 "use strict";
 module.exports = function (grunt) {
+    // load all grunt task libraries
+    require("load-grunt-tasks")(grunt);
 
-    grunt.loadNpmTasks('grunt-mocha-test');
-    grunt.loadNpmTasks('grunt-contrib-jshint');
-    grunt.loadNpmTasks('grunt-contrib-watch');
-    grunt.loadNpmTasks('grunt-express-server');
-    grunt.loadNpmTasks('grunt-jsbeautifier');
-    grunt.loadNpmTasks('grunt-exec');
-    grunt.loadNpmTasks('grunt-gh-pages');
+    // clean up code and run tests
+    grunt.registerTask("default", ["eslint", "test"]);
+    grunt.registerTask("test", ["dropDatabase", "express:test", "mochaTest"]);
+    
+    // generate code coverage using bash istanbul wrapper
+    grunt.registerTask('coverage', ['exec:coverage']);
 
-    grunt.registerTask('default', ['jshint', 'jsbeautifier', 'express:dev', 'mochaTest']);
-    grunt.registerTask('server', ['jshint', 'jsbeautifier', 'express:dev', 'watch']);
-    grunt.registerTask('docs', ['exec:docs']);
-    grunt.registerTask('docs:push', ['docs', 'gh-pages']);
+    // generate documentation locally
+    grunt.registerTask("docs", ["exec:docs"]);
+    // generate documentation and push it to github
+    grunt.registerTask("docs:push", ["docs", "gh-pages"]);
 
-    // Print a timestamp (useful for when watching)
-    grunt.registerTask('timestamp', function () {
-        grunt.log.subhead(Date());
+    var mongoose = require("mongoose");
+    grunt.registerTask("dropDatabase", function () {
+        // force grunt into async
+        var done = this.async();
+        mongoose.connect("mongodb://localhost/orange-api", function (err) {
+            if (err) return done(err);
+            mongoose.connection.db.dropDatabase(function(err) {
+                if (err) return done(err);
+                console.log("Database dropped");
+                mongoose.connection.close(done);
+            });
+        });
     });
 
     grunt.initConfig({
-        jshint: {
-            files: ['./lib/*.js', './test/*.js', './test/**/*.js', 'gruntfile.js', 'package.json', 'app.js'],
-            options: {
-                browser: true,
-                curly: false,
-                eqeqeq: true,
-                immed: true,
-                latedef: true,
-                newcap: true,
-                noarg: true,
-                sub: true,
-                undef: false,
-                boss: true,
-                eqnull: true,
-                node: true,
-                expr: true,
-                globals: {
-                    'xit': true,
-                    'xdescribe': true,
-                    'it': true,
-                    'describe': true,
-                    'before': true,
-                    'beforeEach': true,
-                    'after': true,
-                    'afterEach': true,
-                    'done': true
-                }
-            }
+        // detect code smells
+        eslint: {
+            target: ["Gruntfile.js", "app.js", "lib/*.js", "lib/**/*.js", "test/*.js", "test/**/*.js"]
         },
+
+        // beautify all javascript to conform with jsbeautifier's style guide
+        /*
         jsbeautifier: {
-            files: ['Gruntfile.js', 'app.js', 'lib/*.js', 'test/**/*.js'],
-            options: {
-                config: '.jsbeautifyrc'
+            // TODO: test files here as well
+            //files: ["Gruntfile.js", "app.js", "lib/*.js", "lib/**///*.js", "test/*.js", "test/**/*.js"],
+            /*options: {
+                config: ".jsbeautifyrc"
             }
         },
-        express: {
-            dev: {
-                options: {
-                    script: './app.js',
-                    logs: {
-                        out: './tmp/test_log.out',
-                        err: './tmp/test_log.err'
-                    }
-                }
-            }
-        },
-        watch: {
-            all: {
-                files: ['./lib/*.js', './test/*/*.js', 'app.js', 'gruntfile.js'],
-                tasks: ['default']
-            }
-        },
+        */
+
+        // run tests: make sure to close all express/db/sinon/etc connections or this
+        // will hang
         mochaTest: {
             test: {
                 options: {
-                    reporter: 'spec',
-                    timeout: '10000'
+                    reporter: "spec",
+                    timeout: "10000"
                 },
-                src: ['test/*.js', 'test/**/*.js']
+                src: ["test/common.js", "test/**/*.js"]
             }
         },
+
+        // run test server
+        express: {
+            test: {
+                options: {
+                    script: "run.js"
+                }
+            }
+        },
+
         exec: {
+            // build documentation locally: latest version of aglio doesn't play well with grunt-aglio
+            // so we use a shell script instead
             docs: {
-                cwd: 'docs',
-                cmd: './build.sh'
+                cwd: "docs",
+                cmd: "./build.sh"
+            },
+            // generate code coverage: bash wrapper around istanbul as their cli makes things a lot easier
+            // than playing around with js hooks
+            coverage: './cover.sh'
+        },
+
+        // coveralls.io code coverage service
+        coveralls: {
+            options: {
+                force: false
+            },
+            api: {
+                src: 'coverage/lcov.info'
             }
         },
-        'gh-pages': {
+
+        // push generated documentation straight to gh pages (with fixed commit message, but that's not
+        // the end of the world)
+        "gh-pages": {
             options: {
-                base: 'docs/output',
-                message: 'Documentation updates (gh-pages commit message autogenerated by grunt)'
+                base: "docs/output",
+                message: "Documentation updates (gh-pages commit message autogenerated by grunt)"
             },
-            src: ['**']
+            src: ["**"]
         }
     });
 };

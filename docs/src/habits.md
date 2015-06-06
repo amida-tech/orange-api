@@ -1,32 +1,41 @@
 # Group Habits
-## User Habits [/user/habits]
-Habits are real-life *preferences* of the user: what time they usually wake up
+## Patient Habits [/patients/{patientid}/habits]
+Habits are real-life *preferences* of the patient: what time they usually wake up
 in the morning, what time they usually eat lunch, and so on. Exactly one set of
-preferences is stored for each user.
+preferences is stored for each patient. The current user will need read access
+to the patient.
 
 Currently all habits are of the `time` datatype. This means they must be in the
 specific `HH:MM` format of ISO 8601. For example, `03:59` and `23:20`.
 
 Habits (all may be blank, and initially are after registration):
-+ `wake` (*time*) - what time the user normally wakes up in the morning
-+ `sleep` (*time*) - what time the user normally goes to sleep at night
-+ `breakfast` (*time*) - what time the user normally eats breakfast
-+ `lunch` (*time*) - what time the user normally eats lunch
-+ `dinner` (*time*) - what time the user normally eats dinner
++ `wake` (*time*) - what time the patient normally wakes up in the morning
++ `sleep` (*time*) - what time the patient normally goes to sleep at night
++ `breakfast` (*time*) - what time the patient normally eats breakfast
++ `lunch` (*time*) - what time the patient normally eats lunch
++ `dinner` (*time*) - what time the patient normally eats dinner
 
 
-### Get User Habits [GET]
-View the user's current habits.
+### Get Patient Habits [GET]
+View the patient's current habits.
+
++ Parameters
+    + patientid (integer, required)
+
+        unique ID of the patient (*url*)
 
 + Request
     + Headers
-        Authorization: Bearer ACCESS_TOKEN
+
+            Authorization: Bearer ACCESS_TOKEN
 
 + Response 200
     Errors
     + `access_token_required` (401) - no access token specified in `Authorization`
     header
     + `invalid_access_token` (401) - the access token specified is invalid
+    + `unauthorized` (403) - the current user does not have read access to this patient
+    + `invalid_patient_id` (404) - a patient with the specified ID was not found
 
     + Body
 
@@ -39,19 +48,23 @@ View the user's current habits.
                 success: true
             }
 
-### Set User Habits [PUT]
-Set the current user's habits.
+### Set Patient Habits [PUT]
+Set the patient's habits. The current user will need write access to the patient.
 
 + Parameters
-    + wake (time, optional) - what time the user normally wakes up in the morning
-    + sleep (time, optional) - what time the user normally goes to sleep at night
-    + breakfast (time, optional) - what time the user normally eats breakfast
-    + lunch (time, optional) - what time the user normally eats lunch
-    + dinner (time, optional) - what time the user normally eats dinner
+    + patientid (integer, required)
+
+        unique ID of the patient (*url*)
+    + wake (time, optional) - what time the patient normally wakes up in the morning
+    + sleep (time, optional) - what time the patient normally goes to sleep at night
+    + breakfast (time, optional) - what time the patient normally eats breakfast
+    + lunch (time, optional) - what time the patient normally eats lunch
+    + dinner (time, optional) - what time the patient normally eats dinner
 
 + Request
     + Headers
-        Authorization: Bearer ACCESS_TOKEN
+
+            Authorization: Bearer ACCESS_TOKEN
     + Body
 
             {
@@ -66,6 +79,8 @@ Set the current user's habits.
     Errors
     + `access_token_required` (401) - no access token specified in `Authorization`
     header
+    + `unauthorized` (403) - the current user does not have read access to this patient
+    + `invalid_patient_id` (404) - a patient with the specified ID was not found
     + `invalid_access_token` (401) - the access token specified is invalid
     + `invalid_wake` (400) - the wake time passed is not formatted as `HH:MM`
     + `invalid_sleep` (400) - the wake time passed is not formatted as `HH:MM`

@@ -1,11 +1,9 @@
 "use strict";
 // Web
-var express = require('express');
-var app = express();
+var express = require("express");
+var app = module.exports = express();
 
-// Database
-var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/orange-api');
+// Setup database in run.js
 
 // CORS
 app.use(function (req, res, next) {
@@ -17,30 +15,40 @@ app.use(function (req, res, next) {
 });
 
 // Prevent caching
-app.disable('etag');
+app.disable("etag");
 
-// Parse body params
-var bodyParser = require('body-parser');
+// Parse body params from JSON
+var bodyParser = require("body-parser");
 app.use(bodyParser.json());
 
-// Require controllers
-var usersController = require('./lib/controllers/users.js');
-app.use(usersController);
+// All models: in all other files, just used mongoose.model(NAME)
+// rather than requiring these directly
+require("./lib/models/user.js");
+require("./lib/models/patient.js");
 
-var authController = require('./lib/controllers/auth.js');
-app.use(authController);
+// App-level router containing all routes
+/*eslint-disable new-cap */
+var router = express.Router();
+/*eslint-enable new-cap */
 
-var habitsController = require('./lib/controllers/habits.js');
-app.use(habitsController);
+// Authentication tokens
+router.use("/auth", require("./lib/controllers/auth.js"));
 
-// Error handling
-var errorHandler = require('./lib/error_handler.js');
+// User registration/signup
+router.use("/user", require("./lib/controllers/users.js"));
+
+// Patient CRUD and sharing
+router.use("/patients", require("./lib/controllers/patients.js"));
+
+// Routes for a specific patient
+// var userRouter = express.Router();
+// userRouter.use(require("./lib/controllers/habits.js"));
+// userRouter.use("doctors", require("./lib/controllers/doctors.js"));
+// router.use("/user/", userRouter);
+
+// Mount everything under versioned endpoint
+app.use("/v1", router);
+
+// Error handling middleware
+var errorHandler = require("./lib/error_handler.js");
 app.use(errorHandler);
-
-// Run server
-var server = app.listen(3000, function () {
-    var host = server.address().address;
-    var port = server.address().port;
-
-    console.log('Orange API listening at http://%s:%s', host, port);
-});

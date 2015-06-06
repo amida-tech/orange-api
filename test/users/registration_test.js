@@ -1,104 +1,57 @@
 "use strict";
-var supertest = require('supertest');
-var api = supertest('http://localhost:3000/v1');
-var mongoose = require('mongoose');
+var util        = require("util"),
+    async       = require("async"),
+    factories   = require("../common/factories.js"),
+    requests    = require("../common/requests.js"),
+    Crud        = require("../common/crud.js"),
+    auth        = require("../common/auth.js");
 
-// Common test methods
-var common = require('../common.js');
-var factories = require('../factories.js');
-var success = common.success,
-    failure = common.failure,
-    keys = common.keys;
+var crud = new Crud("User");
 
-describe('registration', function () {
-    it('should register', function (done) {
-        api.post('/user')
-            .send({
-                email: factories.email(),
-                password: factories.password(),
-                name: factories.name()
-            })
-            .expect(success(201))
-            .expect(keys(['email', 'name']))
-            .end(done);
+// check registraion succeeds for a given set of user data
+var registersSuccessfully = async.apply(crud.successfullyCreates, "/user", ["email", "name"]);
+// check registration fails with the specified error for a given set of user data
+function registerFails (data, error) {
+    return crud.failsToCreate("/user", data, 400, error);
+};
+
+describe("user registration (POST /user)", function () {
+    describe("with full data", function () {
+        registersSuccessfully(factories.user());
     });
 
-    describe('with no email', function () {
-        it('should not register', function (done) {
-            api.post('/user')
-                .send({
-                    password: factories.password(),
-                    name: factories.name()
-                })
-                .expect(400)
-                .expect(failure(400, ['email_required']))
-                .end(done);
-        });
+    describe("with minimum working data", function () {
+        registersSuccessfully(factories.minimumUser());
     });
 
-    describe('with no password', function () {
-        it('should not register', function (done) {
-            api.post('/user')
-                .send({
-                    email: factories.email(),
-                    name: factories.name()
-                })
-                .expect(400)
-                .expect(failure(400, ['password_required']))
-                .end(done);
-        });
+    describe("with no email", function () {
+        registerFails({
+            name: factories.name(),
+            password: factories.password()
+        }, 'email_required');
     });
 
-    describe('with no name', function () {
-        it('should register', function (done) {
-            api.post('/user')
-                .send({
-                    email: factories.email(),
-                    password: factories.password()
-                })
-                .expect(success(201))
-                .expect(keys(['email', 'name']))
-                .end(done);
-        });
+    describe("with no password", function () {
+        registerFails({
+            email: factories.email(),
+            name: factories.name()
+        }, 'password_required');
     });
 
-    describe('with invalid email', function () {
-        it('should not register', function (done) {
-            api.post('/user')
-                .send({
-                    email: 'foo',
-                    password: factories.password(),
-                    name: factories.name()
-                })
-                .expect(400)
-                .expect(failure(400, ['invalid_email']))
-                .end(done);
-        });
+    describe("with invalid email", function () {
+        registerFails({
+            name: factories.name(),
+            password: factories.password(),
+            email: factories.invalidEmail()
+        }, 'invalid_email');
     });
 
-    describe('with existing email', function () {
-        it('should not register', function (done) {
-            var mEmail = factories.email();
-            api.post('/user')
-                .send({
-                    email: mEmail,
-                    password: factories.password(),
-                    name: factories.name()
-                })
-                .end(function (err, res) {
-                    if (err) return done(err);
-
-                    // Re register the user
-                    api.post('/user')
-                        .send({
-                            email: mEmail,
-                            password: factories.password(),
-                            name: factories.name()
-                        })
-                        .expect(400)
-                        .expect(failure(400, ['user_already_exists']))
-                        .end(done);
-                });
+    describe("with existing user", function () {
+        var user = auth.newUser();
+        before(function (done) {
+            // save the user above
+            user.save(done);
         });
+        registerFails(user, 'user_already_exists');
     });
 });

@@ -1,11 +1,15 @@
 # Group Pharmacies
-Details for all pharmacies from whom the current user receives medication.
+Details for all pharmacies from whom the selected patient receives medication.
 
-## Pharmacies Collection [/user/pharmacies]
+## Pharmacies Collection [/patients/{patientid}/pharmacies]
 ### Create a Pharmacy [POST]
-Store details of a new pharmacy.
+Store details of a new pharmacy. The current user will need write access to the
+patient's data.
 
 + Parameters
+    + patientid (integer, required)
+
+        unique ID of the patient (*url*)
     + name (string, required) - name of the pharmacy
     + address (string, optional)
 
@@ -21,51 +25,53 @@ Store details of a new pharmacy.
 + Request
     + Headers
 
-        Authorization: Bearer ACCESS_TOKEN
+            Authorization: Bearer ACCESS_TOKEN
 
     + Body
-    
-        {
-            name: "Pharmacy X",
-            address: "Pharmacy Street, DC, 20052"
-            phone: "(617) 617-6177",
-            hours: {
-                monday: {
-                    open: "0900",
-                    close: "1700"
-                },
-                tuesday: {
-                    open: "0900",
-                    close: "1700"
-                },
-                wednesday: {
-                    open: "0900",
-                    close: "1700"
-                },
-                thursday: {
-                    open: "0900",
-                    close: "1700"
-                },
-                friday: {
-                    open: "0900",
-                    close: "1700"
-                },
-                saturday: {
-                    open: "0900",
-                    close: "1700"
-                },
-                sunday: {
-                    open: "0900",
-                    close: "1700"
+        
+            {
+                name: "Pharmacy X",
+                address: "Pharmacy Street, DC, 20052"
+                phone: "(617) 617-6177",
+                hours: {
+                    monday: {
+                        open: "0900",
+                        close: "1700"
+                    },
+                    tuesday: {
+                        open: "0900",
+                        close: "1700"
+                    },
+                    wednesday: {
+                        open: "0900",
+                        close: "1700"
+                    },
+                    thursday: {
+                        open: "0900",
+                        close: "1700"
+                    },
+                    friday: {
+                        open: "0900",
+                        close: "1700"
+                    },
+                    saturday: {
+                        open: "0900",
+                        close: "1700"
+                    },
+                    sunday: {
+                        open: "0900",
+                        close: "1700"
+                    }
                 }
             }
-        }
 
-+ Response 200
++ Response 201
     Errors
     + `access_token_required` (401) - no access token specified in
     `Authorization` header
     + `invalid_access_token` (401) - the access token specified is invalid
+    + `unauthorized` (403) - the current user does not have write access to this patient
+    + `invalid_patient_id` (404) - a patient with the specified ID was not found
     + `invalid_phone` (400) - the phone number passed is not valid (it must
     only contain numbers, hyphens, spaces, parantheses and pluses)
     - `invalid_hours` (400) - the opening/closing hours dictionary is not in the
@@ -111,10 +117,14 @@ Store details of a new pharmacy.
                 success: true
             }
 
-### Retrieve all Pharmarcies [GET]
-Get a list of all the user's pharmacies. Includes full information on each.
+### Retrieve all Pharmacies [GET]
+Get a list of all the patient's pharmacies. Includes full information on each.. The current
+user will need read access to the patient's data.
 
 + Parameters
+    + patientid (integer, required)
+
+        unique ID of the patient 
     + limit (integer, optional)
 
         Maximum number of results to return. Defaults to 25.
@@ -141,13 +151,15 @@ Get a list of all the user's pharmacies. Includes full information on each.
 + Request
     + Headers
 
-        Authorization: Bearer ACCESS_TOKEN
+            Authorization: Bearer ACCESS_TOKEN
 
 + Response 200
     Errors
     + `access_token_required` (401) - no access token specified in
     `Authorization` header
     + `invalid_access_token` (401) - the access token specified is invalid
+    + `unauthorized` (403) - the current user does not have read access to this patient
+    + `invalid_patient_id` (404) - a patient with the specified ID was not found
     + `invalid_limit` (400) - the specified result limit is invalid
     + `invalid_offset` (400) - the specified result offset is invalid
     + `invalid_sort_by` (400) - the specified sort field is invalid
@@ -169,25 +181,31 @@ Get a list of all the user's pharmacies. Includes full information on each.
             }
 
 
-## Pharmacy [/users/pharmacies/{id}]
+## Pharmacy [/patients/{patientid}/pharmacies/{pharmacyid}]
 ### Retrieve a Pharmacy [GET]
-View information on an individual pharmacy.
+View information on an individual pharmacy. The current user will need read access
+to the patient's data.
 
 + Parameters
-    + id (integer, required)
+    + patientid (integer, required)
+
+        unique ID of the patient 
+    + pharmacyid (integer, required)
 
         unique ID of the pharmacy
 
 + Request
     + Headers
 
-        Authorization: Bearer ACCESS_TOKEN
+            Authorization: Bearer ACCESS_TOKEN
 
 + Response 200
     Errors
     + `access_token_required` (401) - no access token specified in
     `Authorization` header
     + `invalid_access_token` (401) - the access token specified is invalid
+    + `unauthorized` (403) - the current user does not have read access to this patient
+    + `invalid_patient_id` (404) - a patient with the specified ID was not found
     + `invalid_pharmacy_id` (404) - a pharmacy with that ID was not found
 
     + Body
@@ -231,10 +249,14 @@ View information on an individual pharmacy.
             }
 
 ### Change a Pharmacy's Info [PUT]
-Change information (name, phone, address and/or hours) of an individual pharmacy.
+Change information (name, phone, address and/or hours) of an individual pharmacy. The
+current user will need write access to the patient's data.
 
 + Parameters
-    + id (integer, required)
+    + patientid (integer, required)
+
+        unique ID of the patient  (*url*)
+    + pharmacyid (integer, required)
 
         unique ID of the pharmacy (*url*)
     + name (string, optional) 
@@ -251,7 +273,7 @@ Change information (name, phone, address and/or hours) of an individual pharmacy
 + Request
     + Headers
 
-        Authorization: Bearer ACCESS_TOKEN
+            Authorization: Bearer ACCESS_TOKEN
 
     + Body
 
@@ -271,6 +293,8 @@ Change information (name, phone, address and/or hours) of an individual pharmacy
     + `access_token_required` (401) - no access token specified in
     `Authorization` header
     + `invalid_access_token` (401) - the access token specified is invalid
+    + `unauthorized` (403) - the current user does not have write access to this patient
+    + `invalid_patient_id` (404) - a patient with the specified ID was not found
     + `invalid_phone` (400) - the phone number passed is not valid (it must
     only contain numbers, hyphens, spaces, parantheses and pluses)
     - `invalid_hours` (400) - the opening/closing hours dictionary is not in the
@@ -318,23 +342,29 @@ Change information (name, phone, address and/or hours) of an individual pharmacy
             }
 
 ### Delete a Pharmacy [DELETE]
-Remove information on a single pharmacy.
+Remove information on a single pharmacy. The current user will need write access to
+the patient's data.
 
 + Parameters
-    + id (integer, required)
+    + patientid (integer, required)
+
+        unique ID of the patient  (*url*)
+    + pharmacyid (integer, required)
 
         unique ID of the pharmacy (*url*)
 
 + Request
     + Headers
 
-        Authorization: Bearer ACCESS_TOKEN
+            Authorization: Bearer ACCESS_TOKEN
 
 + Response 200
     Errors
     + `access_token_required` (401) - no access token specified in
     `Authorization` header
     + `invalid_access_token` (401) - the access token specified is invalid
+    + `unauthorized` (403) - the current user does not have write access to this patient
+    + `invalid_patient_id` (404) - a patient with the specified ID was not found
     + `invalid_pharmacy_id` (404) - a pharmacy with that ID was not found
 
     + Body

@@ -1,10 +1,9 @@
 <!-- include(api.md) -->
 <!-- include(authentication.md) -->
 <!-- include(user.md) -->
+<!-- include(patients.md) -->
 <!-- include(habits.md) -->
 <!-- include(doctors.md) -->
 <!-- include(pharmacies.md) -->
 <!-- include(medications.md) -->
 <!-- include(adherences.md) -->
-<!-- include(caregivers.md) -->
-<!-- include(dependents.md) -->

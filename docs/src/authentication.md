@@ -9,7 +9,7 @@ need this authentication.
 Precisely, the access token should be sent in the `Authorization` header in the
 form
 
-    Authorization: Bearer ACCESS_TOKEN
+            Authorization: Bearer ACCESS_TOKEN
 
 and should be sent in plaintext, _not_ base64 encoded.
 
@@ -35,8 +35,8 @@ access token does not expire until the user changes password.**
     Errors
     + `email_required` (400) - no email address specified
     + `password_required` (400) - no password specified
-    + `wrong_email_password` (403) - wrong email address/password combination
-    + `login_attempts_exceeded` (401) - there have been too many incorrect email
+    + `wrong_email_password` (401) - wrong email address/password combination
+    + `login_attempts_exceeded` (403) - there have been too many incorrect email
 
     + Body
 
