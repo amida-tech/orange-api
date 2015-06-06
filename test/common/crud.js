@@ -27,12 +27,12 @@ module.exports = function Crud (className) {
     };
 
     // check a resource is created and returned
-    this.successfullyCreates = function (endpoint, data, keys) {
+    this.successfullyCreates = function (endpoint, keys, data) {
         before(this.countFunc.bind(this));
 
         // check REST response
         describe("the response", function() {
-            requests.successfullyCreates(endpoint, data, keys);
+            requests.successfullyCreates(endpoint, keys, data);
         });
 
         describe("the database", function() {
@@ -41,7 +41,7 @@ module.exports = function Crud (className) {
                 this.checkCount(1, done);
             }.bind(this));
         }.bind(this));
-    };
+    }.bind(this);
 
     // check a resource is not created and an appropriate error response
     // is returned
@@ -59,15 +59,15 @@ module.exports = function Crud (className) {
                 this.checkCount(0, done);
             }.bind(this));
         }.bind(this));
-    };
+    }.bind(this);
 
     // check a resource is modified and returned
-    this.successfullyEdits = function (endpoint, data, keys, accessToken) {
+    this.successfullyEdits = function (endpoint, keys, data, accessToken) {
         // check REST response
         describe("the response", function() {
-            requests.successfullyEdits(endpoint, data, keys, accessToken);
+            requests.successfullyEdits(endpoint, keys, data, accessToken);
         });
-    }
+    }.bind(this);
     
     // check a resource is not modified and an appropriate error response code
     // is returned
@@ -76,7 +76,7 @@ module.exports = function Crud (className) {
         describe("the response", function() {
             requests.failsToEdit(endpoint, data, responseCode, errors, accessToken);
         });
-    }
+    }.bind(this);
 
     this.successfullyShows = requests.successfullyShows;
     this.failsToShow = requests.failsToShow;

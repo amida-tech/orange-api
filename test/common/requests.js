@@ -9,7 +9,11 @@ var requests = module.exports = {};
 
 // store response abstraction
 function storeRes(done, err, res) {
-    if (err) return done(err);
+    if (err) {
+        // output errors for debugging as mocha's stacktrace is useless here
+        console.log(res.body);
+        return done(err);
+    }
     this.res = res;
     done();
 }
@@ -23,7 +27,7 @@ function generateAuthHeader(token) {
     return "Bearer " + token;
 }
 
-requests.successfullyCreates = function (endpoint, data, keys, accessToken) {
+requests.successfullyCreates = function (endpoint, keys, data, accessToken) {
     // POST data to endpoint
     before(function (done) {
         var authHeader = generateAuthHeader(accessToken);
@@ -42,7 +46,7 @@ requests.failsToCreate = function (endpoint, data, responseCode, errors, accessT
     responses.isAFailedCreateResponse(responseCode, errors);
 };
 
-requests.successfullyEdits = function (endpoint, data, keys, accessToken) {
+requests.successfullyEdits = function (endpoint, keys, data, accessToken) {
     // PUT data to endpoint
     before(function (done) {
         var authHeader = generateAuthHeader(accessToken);

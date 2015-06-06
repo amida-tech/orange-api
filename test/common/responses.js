@@ -35,6 +35,9 @@ responses.isASuccessfulResponse = function (responseCode, keys) {
 };
 
 responses.isAFailedResponse = function (responseCode, errors) {
+    // allow single error strings
+    if (typeof errors === 'string') errors = [errors];
+
     it("has response code " + responseCode, function () {
         expect(this.res.status).to.equal(responseCode);
     });

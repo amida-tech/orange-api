@@ -48,9 +48,9 @@ module.exports.setupTestUser = function (context) {
 // taking data, access token, response code and error
 module.exports.requiresAuthentication = function (failMethod) {
     describe("with no access token", function () {
-        failMethod({}, null, 401, "access_token_required");
+        failMethod(401, "access_token_required", null);
     });
     describe("with invalid access token", function () {
-        failMethod({}, factories.invalidAccessToken(), 401, "invalid_access_token");
+        failMethod(401, "invalid_access_token", factories.invalidAccessToken());
     });
 }
