@@ -6,6 +6,14 @@ module.exports = function (grunt) {
     // clean up code and run tests
     grunt.registerTask("default", ["eslint", "test"]);
     grunt.registerTask("test", ["dropDatabase", "express:test", "mochaTest"]);
+    
+    // generate code coverage using bash istanbul wrapper
+    grunt.registerTask('coverage', ['exec:coverage']);
+
+    // generate documentation locally
+    grunt.registerTask("docs", ["exec:docs"]);
+    // generate documentation and push it to github
+    grunt.registerTask("docs:push", ["docs", "gh-pages"]);
 
     var mongoose = require("mongoose");
     grunt.registerTask("dropDatabase", function () {
@@ -20,11 +28,6 @@ module.exports = function (grunt) {
             });
         });
     });
-
-    // generate documentation locally
-    grunt.registerTask("docs", ["exec:docs"]);
-    // generate documentation and push it to github
-    grunt.registerTask("docs:push", ["docs", "gh-pages"]);
 
     grunt.initConfig({
         // detect code smells
@@ -64,12 +67,25 @@ module.exports = function (grunt) {
             }
         },
 
-        // build documentation locally: latest version of aglio doesn't play well with grunt-aglio
-        // so we use a shell script instead
         exec: {
+            // build documentation locally: latest version of aglio doesn't play well with grunt-aglio
+            // so we use a shell script instead
             docs: {
                 cwd: "docs",
                 cmd: "./build.sh"
+            },
+            // generate code coverage: bash wrapper around istanbul as their cli makes things a lot easier
+            // than playing around with js hooks
+            coverage: './cover.sh'
+        },
+
+        // coveralls.io code coverage service
+        coveralls: {
+            options: {
+                force: false
+            },
+            api: {
+                src: 'coverage/lcov.info'
             }
         },
 
