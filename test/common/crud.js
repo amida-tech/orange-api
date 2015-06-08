@@ -5,7 +5,9 @@ var mongoose = require("mongoose"),
     requests = require("./requests.js"),
     app      = require("../../app.js");
 
-module.exports = function Crud (className) {
+module.exports = function Crud (className, collectionName) {
+    this.className = className;
+    this.collectionName = collectionName;
     this.model = mongoose.model(className);
 
     // keep track of count of records
@@ -81,6 +83,48 @@ module.exports = function Crud (className) {
 
     this.successfullyShows = requests.successfullyShows;
     this.failsToShow = requests.failsToShow;
+
+    // check a resource is listed and counted appropriately
+    this.successfullyLists = function (endpoint, keys, data, accessToken) {
+        requests.successfullyLists(endpoint, this.collectionName, keys, data, accessToken);
+    }.bind(this);
+    this.failsToList = requests.failsToList;
+
+    // check a resource is deleted and returned
+    this.successfullyDeletes = function (endpoint, keys, data, accessToken) {
+        before(this.countFunc.bind(this));
+
+        // check REST response
+        describe("the response", function() {
+            requests.successfullyDeletes.bind(this)(endpoint, keys, data, accessToken);
+        });
+
+        describe("the database", function() {
+            // check a record was removed
+            it("has a record removed", function (done) {
+                this.checkCount(-1, done);
+            }.bind(this));
+        }.bind(this));
+
+    }.bind(this);
+
+    // check a resource is not deleted and an appropriate error response
+    // is returned
+    this.failsToDelete = function (endpoint, data, responseCode, errors, accessToken) {
+        before(this.countFunc.bind(this));
+
+        // check REST response
+        describe("the response", function() {
+            requests.failsToDelete(endpoint, data, responseCode, errors, accessToken);
+        });
+
+        describe("the database", function() {
+            // check a record was not deleted
+            it("has the same number of items", function (done) {
+                this.checkCount(0, done);
+            }.bind(this));
+        }.bind(this));
+    }.bind(this);
 
     return this;
 }

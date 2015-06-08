@@ -18,6 +18,12 @@ function storeRes(done, err, res) {
     done();
 }
 
+// endpoint may be a getter function
+function parseEndpoint(endpoint) {
+    if (!!(endpoint && endpoint.constructor && endpoint.call && endpoint.apply)) return endpoint();
+    return endpoint;
+}
+
 function generateAuthHeader(token) {
     // access token may be a getter function
     if (!!(token && token.constructor && token.call && token.apply)) token = token();
@@ -27,55 +33,63 @@ function generateAuthHeader(token) {
     return "Bearer " + token;
 }
 
-requests.successfullyCreates = function (endpoint, keys, data, accessToken) {
-    // POST data to endpoint
+function isGenericRequest (getEndpoint, method, data, responseCode, accessToken) {
     before(function (done) {
+        // endpoint may be a getter function
+        var endpoint = parseEndpoint(getEndpoint);
+        // handles undefineds
         var authHeader = generateAuthHeader(accessToken);
-        request.post(endpoint).set('Authorization', authHeader).send(data).end(async.apply(storeRes.bind(this), done));
+        request[method](endpoint).set('Authorization', authHeader).send(data).expect(responseCode).end(async.apply(storeRes.bind(this), done));
     });
+};
+
+
+// POST
+requests.successfullyCreates = function (endpoint, keys, data, accessToken) {
+    isGenericRequest(endpoint, 'post', data, 201, accessToken);
     responses.isASuccessfulCreateResponse(keys);
 };
 requests.failsToCreate = function (endpoint, data, responseCode, errors, accessToken) {
-    // POST data to endpoint
-    before(function (done) {
-        var authHeader = generateAuthHeader(accessToken);
-        // have to explicitly set the response code we're looking for as otherwise
-        // supertest throws errors on response codes apart from 200/1/2
-        request.post(endpoint).set('Authorization', authHeader).send(data).expect(responseCode).end(async.apply(storeRes.bind(this), done));
-    });
+    isGenericRequest(endpoint, 'post', data, responseCode, accessToken);
     responses.isAFailedCreateResponse(responseCode, errors);
 };
 
+// PUT
 requests.successfullyEdits = function (endpoint, keys, data, accessToken) {
-    // PUT data to endpoint
-    before(function (done) {
-        var authHeader = generateAuthHeader(accessToken);
-        request.put(endpoint).set('Authorization', authHeader).send(data).end(async.apply(storeRes.bind(this), done));
-    });
+    isGenericRequest(endpoint, 'put', data, 200, accessToken);
     responses.isASuccessfulEditResponse(keys);
 };
 requests.failsToEdit = function (endpoint, data, responseCode, errors, accessToken) {
-    // PUT data to endpoint
-    before(function (done) {
-        var authHeader = generateAuthHeader(accessToken);
-        request.put(endpoint).set('Authorization', authHeader).send(data).expect(responseCode).end(async.apply(storeRes.bind(this), done));
-    });
+    isGenericRequest(endpoint, 'put', data, responseCode, accessToken);
     responses.isAFailedEditResponse(responseCode, errors);
 };
 
+// GET (one)
 requests.successfullyShows = function (endpoint, keys, accessToken) {
-    // GET data from endpoint
-    before(function (done) {
-        var authHeader = generateAuthHeader(accessToken);
-        request.get(endpoint).set('Authorization', authHeader).end(async.apply(storeRes.bind(this), done));
-    });
+    isGenericRequest(endpoint, 'get', {}, 200, accessToken);
     responses.isASuccessfulShowResponse(keys);
 }
 requests.failsToShow = function (endpoint, responseCode, errors, accessToken) {
-    // GET data from endpoint
-    before(function (done) {
-        var authHeader = generateAuthHeader(accessToken);
-        request.get(endpoint).set('Authorization', authHeader).expect(responseCode).end(async.apply(storeRes.bind(this), done));
-    });
+    isGenericRequest(endpoint, 'get', {}, responseCode, accessToken);
     responses.isAFailedShowResponse(responseCode, errors);
+};
+
+// GET (list)
+requests.successfullyLists = function (endpoint, slug, keys, data, accessToken) {
+    isGenericRequest(endpoint, 'get', data, 200, accessToken);
+    responses.isASuccessfulListResponse(slug, keys);
 }
+requests.failsToList = function (endpoint, data, responseCode, errors, accessToken) {
+    isGenericRequest(endpoint, 'get', data, responseCode, accessToken);
+    responses.isAFailedListResponse(responseCode, errors);
+};
+
+// DELETE
+requests.successfullyDeletes = function (endpoint, keys, accessToken) {
+    isGenericRequest(endpoint, 'delete', {}, 200, accessToken);
+    responses.isASuccessfulShowResponse(keys);
+}
+requests.failsToDelete = function (endpoint, responseCode, errors, accessToken) {
+    isGenericRequest(endpoint, 'delete', {}, responseCode, accessToken);
+    responses.isAFailedShowResponse(responseCode, errors);
+};

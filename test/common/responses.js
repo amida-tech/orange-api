@@ -66,3 +66,40 @@ responses.isASuccessfulEditResponse = async.apply(responses.isASuccessfulRespons
 responses.isAFailedEditResponse = responses.isAFailedResponse;
 responses.isASuccessfulDeleteResponse = async.apply(responses.isASuccessfulResponse, 200);
 responses.isAFailedDeleteResponse = responses.isAFailedResponse;
+
+// check count is accurate on a list response
+responses.isASuccessfulListResponse = function (slug, keys) {
+    responses.isASuccessfulResponse(200, [slug, 'count']);
+
+    it("has the right count value", function () {
+        expect(this.res.body.count).to.eql(this.res.body[slug].length);
+    });
+
+    /*eslint-disable no-loop-func */
+    // loop over keys
+    for (var i = 0; i < keys.length; i++) {
+        (function(key) {
+            it(util.format("contains key '%s' in each item returned", key), function () {
+                // loop over items
+                for (var j = 0; j < this.res.body.count; j++) {
+                    expect(this.res.body[slug][j]).to.include.keys(key);
+                }
+            });
+        })(keys[i]);
+    }
+    /*eslint-enable no-loop-func */
+
+    it("does not contain any extra keys in any item returned", function () {
+        // loop over items
+        for (var j = 0; j < keys.length; j++) {
+            var resKeys = Object.keys(this.res.body[slug][j]);
+            for (var i = 0; i < resKeys.length; i++) {
+                // don't ignore success and error keys as they shouldn't be here
+                expect(keys).to.include(resKeys[i]);
+            }
+        }
+    });
+
+    // TODO verify each return
+};
+responses.isAFailedListResponse = responses.isAFailedResponse;
