@@ -9,6 +9,8 @@ module.exports = function (grunt) {
     
     // generate code coverage using bash istanbul wrapper
     grunt.registerTask('coverage', ['exec:coverage']);
+    // push code coverage to coveralls.io
+    grunt.registerTask('coverage:push', ['exec:coverage', 'coveralls']);
 
     // generate documentation locally
     grunt.registerTask("docs", ["exec:docs"]);
