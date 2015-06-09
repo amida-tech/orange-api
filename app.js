@@ -25,7 +25,7 @@ app.use(bodyParser.json());
 // rather than requiring these directly
 require("./lib/models/counter.js"); // Require first
 require("./lib/models/user.js");
-require("./lib/models/patient.js");
+require("./lib/models/patient/patient.js");
 
 // App-level router containing all routes
 /*eslint-disable new-cap */
