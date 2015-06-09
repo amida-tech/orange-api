@@ -23,7 +23,6 @@
     "express": "4.12.x",
     "mongodb": "^1.4.38",
     "mongoose": "^4.0.5",
-    "mongoose-auto-increment": "^4.0.0",
     "mongoose-unique-validator": "^0.4.1",
     "validator": "^3.40.0"
   },
