@@ -64,7 +64,7 @@ factories.patient = function () {
     };
 }
 
-// patient resources
+// doctors
 factories.doctor = function () {
     return {
         name: factories.name(),
@@ -72,3 +72,64 @@ factories.doctor = function () {
         address: factories.address()
     };
 }
+
+// pharmacies
+factories.hour = function () {
+    var h = Math.floor(Math.random() * 24);
+    if (h < 10)
+        return "0" + h.toString();
+    else
+        return h.toString();
+};
+factories.minute = function () {
+    var m = Math.floor(Math.random() * 59);
+    if (m < 10)
+        return "0" + m.toString();
+    else
+        return m.toString();
+};
+factories.time = function () {
+    return util.format("%s:%s", factories.hour(), factories.minute());
+};
+factories.hourDict = function () {
+    return {
+        open: factories.time(),
+        close: factories.time()
+    };
+};
+factories.hours = function () {
+    return {
+        monday: factories.hourDict(),
+        tuesday: factories.hourDict(),
+        wednesday: factories.hourDict(),
+        thursday: factories.hourDict(),
+        friday: factories.hourDict(),
+        saturday: factories.hourDict(),
+        sunday: factories.hourDict()
+    };
+};
+factories.partialHours = function () {
+    return {
+        monday: factories.hourDict(),
+        sunday: factories.hourDict()
+    };
+};
+factories.invalidHours = function () {
+    return {
+        monday: factories.hourDict(),
+        tuesday: factories.hourDict(),
+        wednesday: {open: "foobar", close: "baz"},
+        thursday: factories.hourDict(),
+        friday: factories.hourDict(),
+        saturday: factories.hourDict(),
+        sunday: factories.hourDict()
+    };
+};
+factories.pharmacy = function () {
+    return {
+        name: factories.name(),
+        phone: factories.phone(),
+        address: factories.address(),
+        hours: factories.hours()
+    };
+};

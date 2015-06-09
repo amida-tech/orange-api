@@ -49,6 +49,7 @@ patientRouter.use(auth.authenticate);
 patientRouter.use(require("./lib/controllers/helpers/patient_auth.js"));
 
 patientRouter.use("/doctors", require("./lib/controllers/doctors.js"));
+patientRouter.use("/pharmacies", require("./lib/controllers/pharmacies.js"));
 
 // nest patient-specific resources under /patients/:id
 router.use("/patients/:patientid", patientRouter);

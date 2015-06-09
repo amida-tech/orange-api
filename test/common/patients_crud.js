@@ -184,16 +184,18 @@ module.exports = function PatientsCrud (className, modelName, collectionName) {
         }.bind(this);
 
         var authChecker = function (patientId) {
-            describe("with valid doctor ID", function () {
+            describe(util.format("with valid %s ID", modelName), function () {
                 requests.successfullyShows(this.resourceEndpoint(patientId), keys, this.accessTokenGetter);
             }.bind(this));
 
-            describe("with invalid doctor ID", function () {
-                requests.failsToShow(this.genericEndpoint(patientId, "invaliddoctorid"), 404, 'invalid_doctor_id', this.accessTokenGetter);
+            describe(util.format("with invalid %s ID", modelName), function () {
+                var error = util.format("invalid_%s_id", modelName);
+                requests.failsToShow(this.genericEndpoint(patientId, "invaliddoctorid"), 404, error, this.accessTokenGetter);
             }.bind(this));
 
-            describe("with nonexistent doctor ID", function () {
-                requests.failsToShow(this.genericEndpoint(patientId, 999999), 404, 'invalid_doctor_id', this.accessTokenGetter);
+            describe(util.format("with nonexistent %s ID", modelName), function () {
+                var error = util.format("invalid_%s_id", modelName);
+                requests.failsToShow(this.genericEndpoint(patientId, 999999), 404, error, this.accessTokenGetter);
             }.bind(this));
 
         }.bind(this);
@@ -227,7 +229,7 @@ module.exports = function PatientsCrud (className, modelName, collectionName) {
             // keep track of number of resources
             before(this.countFunc.bind(this));
 
-            describe("with valid doctor ID", function () {
+            describe(util.format("with valid %s ID", modelName), function () {
                 describe("the response", function () {
                     requests.successfullyDeletes(this.resourceEndpoint(patientId), keys, this.accessTokenGetter);
                 }.bind(this));
@@ -239,12 +241,14 @@ module.exports = function PatientsCrud (className, modelName, collectionName) {
                 }.bind(this));
             }.bind(this));
 
-            describe("with invalid doctor ID", function () {
-                requests.failsToDelete(this.genericEndpoint(patientId, "invaliddoctorid"), 404, 'invalid_doctor_id', this.accessTokenGetter);
+            describe(util.format("with invalid %s ID", modelName), function () {
+                var error = util.format("invalid_%s_id", modelName);
+                requests.failsToDelete(this.genericEndpoint(patientId, "invaliddoctorid"), 404, error, this.accessTokenGetter);
             }.bind(this));
 
-            describe("with nonexistent doctor ID", function () {
-                requests.failsToDelete(this.genericEndpoint(patientId, 999999), 404, 'invalid_doctor_id', this.accessTokenGetter);
+            describe(util.format("with nonexistent %s ID", modelName), function () {
+                var error = util.format("invalid_%s_id", modelName);
+                requests.failsToDelete(this.genericEndpoint(patientId, 999999), 404, error, this.accessTokenGetter);
             }.bind(this));
         }.bind(this);
 
@@ -267,12 +271,14 @@ module.exports = function PatientsCrud (className, modelName, collectionName) {
         }.bind(this);
 
         var authChecker = function (patientId) {
-            describe("with invalid doctor ID", function () {
-                requests.failsToEdit(this.genericEndpoint(patientId, "invaliddoctorid"), testEdit, 404, 'invalid_doctor_id', this.accessTokenGetter);
+            describe(util.format("with invalid %s ID", modelName), function () {
+                var error = util.format("invalid_%s_id", modelName);
+                requests.failsToEdit(this.genericEndpoint(patientId, "invaliddoctorid"), testEdit, 404, error, this.accessTokenGetter);
             }.bind(this));
 
-            describe("with nonexistent doctor ID", function () {
-                requests.failsToEdit(this.genericEndpoint(patientId, 999999), testEdit, 404, 'invalid_doctor_id', this.accessTokenGetter);
+            describe(util.format("with nonexistent %s ID", modelName), function () {
+                var error = util.format("invalid_%s_id", modelName);
+                requests.failsToEdit(this.genericEndpoint(patientId, 999999), testEdit, 404, error, this.accessTokenGetter);
             }.bind(this));
 
             generateChecker(function success(data) {
