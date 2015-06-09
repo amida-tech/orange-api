@@ -133,3 +133,50 @@ factories.pharmacy = function () {
         hours: factories.hours()
     };
 };
+
+// medications
+factories.rxNorm = factories.ndc = factories.rxNumber = function () {
+    return "idtypevalue";
+};
+factories.dose = function () {
+    return {
+        quantity: Math.floor(Math.random()*1000),
+        unit: "mg"
+    };
+};
+factories.form = function () {
+    return "pill";
+};
+factories.quantity = function () {
+    return Math.floor(Math.random()*50);
+};
+factories.type = function () {
+    return "otc";
+};
+// TODO: more schedules
+factories.schedule = function () {
+    return {
+        type: "as_needed"
+    };
+};
+factories.route = function () {
+    return "oral";
+};
+factories.medication = function (doctorId, pharmacyId) {
+    var med = {
+        name: factories.name(),
+        rx_norm: factories.rxNorm(),
+        ndc: factories.ndc(),
+        dose: factories.dose(),
+        route: factories.route(),
+        form: factories.form(),
+        rx_number: factories.rxNumber(),
+        quantity: factories.quantity(),
+        type: factories.type(),
+        schedule: factories.schedule()
+    };
+    // we want these to correspond to real doctors/pharmacies, so pass in IDs
+    if (typeof doctorId !== "undefined") med.doctor_id = doctorId;
+    if (typeof pharmacyId !== "undefined") med.pharmacy_id = pharmacyId;
+    return med;
+};
