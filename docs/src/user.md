@@ -91,3 +91,28 @@ Change basic metadata about the current user, including their password.
                 success: true
             }
 
+
+### Delete User [DELETE]
+Permanently remove the user, including all metadata stored on them (e.g., their password).
+If the user has write access to patients that no other users have access to, then that
+patient and all their data (doctors/pharmacies/medications/etc) will also be deleted.
+
++ Request
+    + Headers
+
+            Authorization: Bearer ACCESS_TOKEN
+
++ Response 200
+    Errors
+    + `access_token_required` (401) - no access token specified in `Authorization`
+    header
+    + `invalid_access_token` (401) - the access token specified is invalid
+
+    + Body
+
+            {
+                email: "foo@bar.com",
+                name: "Foo Bar",
+                success: true
+            }
+
