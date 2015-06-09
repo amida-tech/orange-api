@@ -16,3 +16,6 @@ grunt dropDatabase mochaTest dropDatabase
 
 # kill istanbul (--handle-sigint) ensures it generates coverage reports here
 kill -SIGINT $(<coverage/pid)
+
+# wait for istanbul (proceeding grunt tasks may fail otherwise)
+sleep 2

@@ -86,9 +86,7 @@ module.exports = function (grunt) {
             options: {
                 force: false
             },
-            api: {
-                src: 'coverage/lcov.info'
-            }
+            src: ['./coverage/lcov.info']
         },
 
         // push generated documentation straight to gh pages (with fixed commit message, but that's not
