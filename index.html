@@ -1071,39 +1071,40 @@ lines.</p>
 </dd><dt>phone</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>contact phone number for the pharmacy</p>
 </dd><dt>hours</dt><dd><code>dictionary</code>&nbsp;<span>(optional)</span>&nbsp;<p>The hours the pharmacy is open. Keys are full lowercase names of the days of
 the week (e.g., <code>monday</code>), and values are themselves dictionaries of the form
-<code>{open: OPEN_TIME, close: CLOSE_TIME}</code></p>
+<code>{open: OPEN_TIME, close: CLOSE_TIME}</code>, where times are formatted in the <code>HH:MM</code>
+format specified in ISO 8601</p>
 </dd></dl></div><div class="title"><strong>Request</strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><h5>Headers</h5><pre><code><span class="hljs-attribute">Authorization</span>: <span class="hljs-string">Bearer ACCESS_TOKEN</span><br></code></pre><div style="height: 1px;"></div><h5>Body</h5><pre><code>{
     name: <span class="hljs-string">"Pharmacy X"</span>,
     address: <span class="hljs-string">"Pharmacy Street, DC, 20052"</span>
     phone: <span class="hljs-string">"(617) 617-6177"</span>,
     hours: {
         monday: {
-            open: <span class="hljs-string">"0900"</span>,
-            close: <span class="hljs-string">"1700"</span>
+            open: <span class="hljs-string">"09:00"</span>,
+            close: <span class="hljs-string">"17:00"</span>
         },
         tuesday: {
-            open: <span class="hljs-string">"0900"</span>,
-            close: <span class="hljs-string">"1700"</span>
+            open: <span class="hljs-string">"09:00"</span>,
+            close: <span class="hljs-string">"17:00"</span>
         },
         wednesday: {
-            open: <span class="hljs-string">"0900"</span>,
-            close: <span class="hljs-string">"1700"</span>
+            open: <span class="hljs-string">"09:00"</span>,
+            close: <span class="hljs-string">"17:00"</span>
         },
         thursday: {
-            open: <span class="hljs-string">"0900"</span>,
-            close: <span class="hljs-string">"1700"</span>
+            open: <span class="hljs-string">"09:00"</span>,
+            close: <span class="hljs-string">"17:00"</span>
         },
         friday: {
-            open: <span class="hljs-string">"0900"</span>,
-            close: <span class="hljs-string">"1700"</span>
+            open: <span class="hljs-string">"09:00"</span>,
+            close: <span class="hljs-string">"17:00"</span>
         },
         saturday: {
-            open: <span class="hljs-string">"0900"</span>,
-            close: <span class="hljs-string">"1700"</span>
+            open: <span class="hljs-string">"09:00"</span>,
+            close: <span class="hljs-string">"17:00"</span>
         },
         sunday: {
-            open: <span class="hljs-string">"0900"</span>,
-            close: <span class="hljs-string">"1700"</span>
+            open: <span class="hljs-string">"09:00"</span>,
+            close: <span class="hljs-string">"17:00"</span>
         }
     }
 }
@@ -1121,10 +1122,6 @@ the week (e.g., <code>monday</code>), and values are themselves dictionaries of 
 </li>
 <li>
 <p><code>invalid_patient_id</code> (404) - a patient with the specified ID was not found</p>
-</li>
-<li>
-<p><code>invalid_phone</code> (400) - the phone number passed is not valid (it must
-only contain numbers, hyphens, spaces, parantheses and pluses)</p>
 </li>
 </ul>
 <ul>
@@ -1315,10 +1312,6 @@ be partially empty.</p>
 </li>
 <li>
 <p><code>invalid_patient_id</code> (404) - a patient with the specified ID was not found</p>
-</li>
-<li>
-<p><code>invalid_phone</code> (400) - the phone number passed is not valid (it must
-only contain numbers, hyphens, spaces, parantheses and pluses)</p>
 </li>
 </ul>
 <ul>
