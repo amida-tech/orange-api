@@ -9,7 +9,7 @@ need this authentication.
 Precisely, the access token should be sent in the `Authorization` header in the
 form
 
-            Authorization: Bearer ACCESS_TOKEN
+    Authorization: Bearer ACCESS_TOKEN
 
 and should be sent in plaintext, _not_ base64 encoded.
 
