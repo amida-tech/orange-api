@@ -8,6 +8,9 @@ Store details of a new adherence event (e.g., when a patient signifies they've
 taken their medication). The current user will need write access to the patient's data.
 
 + Parameters
+    + patientid (integer, required)
+
+        unique ID of the patient (*url*)
     + medication_id (integer, required)
 
         unique ID of the medication for which the patient has adhered
@@ -58,6 +61,9 @@ but `medication_id` is not expanded out into `medication`. The current user will
 read access to the patient's data.
 
 + Parameters
+    + patientid (integer, required)
+
+        unique ID of the patient
     + limit (integer, optional)
 
         Maximum number of results to return. Defaults to 25.
@@ -130,6 +136,9 @@ expanded out into `medication`. The current user will need read access to the
 patient's data.
 
 + Parameters
+    + patientid (integer, required)
+
+        unique ID of the patient
     + adherenceid (integer, required)
 
         unique ID of the adherence
@@ -187,6 +196,9 @@ Change information (medication, date and/or notes) of a single adherence event. 
 user will need write access to the patient's data.
 
 + Parameters
+    + patientid (integer, required)
+
+        unique ID of the patient (*url*)
     + adherenceid (integer, required)
 
         unique ID of the adherence (*url*)
@@ -242,6 +254,9 @@ Remove a single adherence event (this will update generated statistics correspon
 The current user will need write access to the patient's data.
 
 + Parameters
+    + patientid (integer, required)
+
+        unique ID of the patient (*url*)
     + adherenceid (integer, required)
 
         unique ID of the adherence (*url*)

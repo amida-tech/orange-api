@@ -20,7 +20,8 @@ patient's data.
     
         The hours the pharmacy is open. Keys are full lowercase names of the days of
         the week (e.g., `monday`), and values are themselves dictionaries of the form
-        `{open: OPEN_TIME, close: CLOSE_TIME}`
+        `{open: OPEN_TIME, close: CLOSE_TIME}`, where times are formatted in the `HH:MM`
+        format specified in ISO 8601
 
 + Request
     + Headers
@@ -35,32 +36,32 @@ patient's data.
                 phone: "(617) 617-6177",
                 hours: {
                     monday: {
-                        open: "0900",
-                        close: "1700"
+                        open: "09:00",
+                        close: "17:00"
                     },
                     tuesday: {
-                        open: "0900",
-                        close: "1700"
+                        open: "09:00",
+                        close: "17:00"
                     },
                     wednesday: {
-                        open: "0900",
-                        close: "1700"
+                        open: "09:00",
+                        close: "17:00"
                     },
                     thursday: {
-                        open: "0900",
-                        close: "1700"
+                        open: "09:00",
+                        close: "17:00"
                     },
                     friday: {
-                        open: "0900",
-                        close: "1700"
+                        open: "09:00",
+                        close: "17:00"
                     },
                     saturday: {
-                        open: "0900",
-                        close: "1700"
+                        open: "09:00",
+                        close: "17:00"
                     },
                     sunday: {
-                        open: "0900",
-                        close: "1700"
+                        open: "09:00",
+                        close: "17:00"
                     }
                 }
             }
@@ -72,8 +73,6 @@ patient's data.
     + `invalid_access_token` (401) - the access token specified is invalid
     + `unauthorized` (403) - the current user does not have write access to this patient
     + `invalid_patient_id` (404) - a patient with the specified ID was not found
-    + `invalid_phone` (400) - the phone number passed is not valid (it must
-    only contain numbers, hyphens, spaces, parantheses and pluses)
     - `invalid_hours` (400) - the opening/closing hours dictionary is not in the
     form specified above
 
@@ -295,8 +294,6 @@ current user will need write access to the patient's data.
     + `invalid_access_token` (401) - the access token specified is invalid
     + `unauthorized` (403) - the current user does not have write access to this patient
     + `invalid_patient_id` (404) - a patient with the specified ID was not found
-    + `invalid_phone` (400) - the phone number passed is not valid (it must
-    only contain numbers, hyphens, spaces, parantheses and pluses)
     - `invalid_hours` (400) - the opening/closing hours dictionary is not in the
     form specified above in `POST`
     + `invalid_pharmacy_id` (404) - a pharmacy with that ID was not found

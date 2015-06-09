@@ -19,6 +19,14 @@ a many-to-many association between users and patients: one user may own many pat
 can be owned by many users (the concept of caregivers: the care of the son -- the patient
 -- can be managed by both the mother and the father -- the users).
 
+This is a private API, and if you have permission to use it you'll already have a _client
+secret_ in the form of a hexstring. This should be sent in the `X-Client-Secret` header,
+for example
+
+```http
+X-Client-Secret: CLIENT_SECRET
+```
+
 ### Response Status Codes
 #### Success
 All successful requests return responses with the following error codes:
@@ -31,14 +39,16 @@ along with an array of machine-readable error slugs in the `errors` key of the J
 
 For example, when attempting to access user details without authentication
 
-    Status: 401 Access denied
+```http
+Status: 401 Access denied
+```
 
-<!-- seperate -->
-
-    {
-        success: false,
-        errors: ['wrong_email_password']
-    }
+```javascript
+{
+    success: false,
+    errors: ['wrong_email_password']
+}
+```
 
 If an unknown error occurs, the response code will be `500` and `errors` will
 contain the `unknown_error` key.

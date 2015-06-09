@@ -28,4 +28,8 @@ describe("create new patient (POST /patients)", function () {
     describe("without name", function () {
         createFails({}, 400, "name_required", this.accessTokenGetter);
     }.bind(this));
+
+    describe("with blank name", function () {
+        createFails({name: ""}, 400, "name_required", this.accessTokenGetter);
+    }.bind(this));
 });

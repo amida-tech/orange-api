@@ -20,6 +20,10 @@ var authorizedPatientChecker = function (patientId, access) {
         editsSuccessfully.bind(this)(patientId, {name: "newname"});
     }.bind(this));
 
+    describe("when changing name to blank", function () {
+        editFails.bind(this)(patientId, {name: ""}, 400, "name_required", this.accessTokenGetter);
+    }.bind(this));
+
     // by virtue of common.requiresPatientAuthorization, we're only calling this on patients
     // we have write access to
     describe("when changing access", function () {
