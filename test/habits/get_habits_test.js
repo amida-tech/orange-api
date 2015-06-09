@@ -6,30 +6,22 @@ var mongoose    = require("mongoose"),
     factories   = require("../common/factories.js"),
     auth        = require("../common/auth.js"),
     crud        = require("../common/crud.js"),
-    patients    = require("../patients/common.js");
+    patients    = require("../patients/common.js"),
+    common      = require("./common.js");
 
 var keys = ["wake", "sleep", "breakfast", "lunch", "dinner"];
 
 describe("view patient habits (GET /patients/:patientid/habits)", function () {
-    // setup test patients, users and resources
+    // setup test patients, users
     auth.setupTestUser(this);
     patients.setupTestPatients(this.user, 1, this);
 
-    function endpoint (patientId) {
-        return function () {
-            // patientId may be a getter function
-            if (!!(patientId && patientId.constructor && patientId.call && patientId.apply)) patientId = patientId();
-            console.log( util.format("/patients/%s/habits", patientId));
-            return util.format("/patients/%s/habits", patientId);
-        };
-    };
-
     var noAuthChecker = function (patientId, responseCode, errors, accessToken) {
-        requests.failsToShow(endpoint(patientId), responseCode, errors, accessToken);
+        requests.failsToShow(common.endpoint(patientId), responseCode, errors, accessToken);
     }.bind(this);
 
     var authChecker = function (patientId) {
-        requests.successfullyShows(endpoint(patientId), keys, this.accessTokenGetter);
+        requests.successfullyShows(common.endpoint(patientId), keys, this.accessTokenGetter);
     }.bind(this);
 
     patients.requiresPatientAuthorization("read", noAuthChecker, authChecker, this);
