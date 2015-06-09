@@ -8,6 +8,9 @@ Store details of a new medication the patient has started taking. The current us
 must have write access to the patient's data.
 
 + Parameters
+    + patientid (integer, required)
+
+        unique ID of the patient (*url*)
     + name (string, required) - human-formatted name of the medication
     + rx_norm (string, optional) - rxNorm ID code for the medication
     + ndc (string, optional) - NDC ID code for the medication
@@ -135,6 +138,9 @@ doctor and pharmacy details are not expanded out. The current user must have rea
 access to the patient's data.
 
 + Parameters
+    + patientid (integer, required)
+
+        unique ID of the patient (*url*)
     + limit (integer, optional)
 
         Maximum number of results to return. Defaults to 25.
@@ -223,6 +229,9 @@ View information on an individual medication. Doctor and pharmacy details are ex
 The current user must have read access to the patient's data.
 
 + Parameters
+    + patientid (integer, required)
+
+        unique ID of the patient (*url*)
     + medicationid (integer, required)
 
         unique ID of the medication (*url*)
@@ -313,6 +322,9 @@ Change information (all keys apart from `id`) of an individual medication. The c
 user must have write access to the patient's data.
 
 + Parameters
+    + patientid (integer, required)
+
+        unique ID of the patient (*url*)
     + medicationid (integer, required)
 
         unique ID of the medication (*url*)
@@ -411,6 +423,9 @@ Remove a single medication. The current user must have write access to the patie
 data.
 
 + Parameters
+    + patientid (integer, required)
+
+        unique ID of the patient (*url*)
     + medicationid (integer, required)
 
         unique ID of the medication (*url*)
@@ -464,6 +479,9 @@ patient. Includes full information on each adherence, although for brevity
 read access to the patient's data.
 
 + Parameters
+    + patientid (integer, required)
+
+        unique ID of the patient (*url*)
     + medicationid (integer, required)
 
         unique ID of the medication (*url*)
