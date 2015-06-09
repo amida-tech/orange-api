@@ -23,7 +23,6 @@ describe("list patients (GET /patients)", function () {
 
     listsSuccessfully({}, this.accessTokenGetter);
 
-
     // TODO test and implement all these
     describe('with pagination', function () {
         describe('with a limit parameter', function () {
@@ -48,14 +47,4 @@ describe("list patients (GET /patients)", function () {
     describe('with filtering', function () {
         it('filters by name');
     });
-
-    /*
-    describe("with name", function () {
-        createsSuccessfully({ name: factories.name() }, this.accessTokenGetter);
-    }.bind(this));
-
-    describe("without name", function () {
-        createFails({}, 400, "name_required", this.accessTokenGetter);
-    }.bind(this));
-    */
 });

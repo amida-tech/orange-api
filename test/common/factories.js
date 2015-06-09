@@ -22,9 +22,18 @@ factories.password = function () {
     return util.format("password%d", passwordCounter);
 };
 
-// fixed name
+// fixed name, phone, etc
 factories.name = function () {
     return "Foo Bar";
+}
+factories.phone = function () {
+    return "(617) 617-6177";
+}
+factories.invalidPhone = function () {
+    return "foobar";
+}
+factories.address = function () {
+    return "1 Main Street, Cambridge, MA, 02139";
 }
 
 // access tokens
@@ -52,5 +61,14 @@ factories.minimumUser = function () {
 factories.patient = function () {
     return {
         name: factories.name()
+    };
+}
+
+// patient resources
+factories.doctor = function () {
+    return {
+        name: factories.name(),
+        phone: factories.phone(),
+        address: factories.address()
     };
 }

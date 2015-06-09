@@ -33,63 +33,68 @@ function generateAuthHeader(token) {
     return "Bearer " + token;
 }
 
-function isGenericRequest (getEndpoint, method, data, responseCode, accessToken) {
+requests.isGenericRequest = requests.genericRequest = function (getEndpoint, method, data, responseCode, accessToken, posthook) {
     before(function (done) {
         // endpoint may be a getter function
         var endpoint = parseEndpoint(getEndpoint);
         // handles undefineds
         var authHeader = generateAuthHeader(accessToken);
-        request[method](endpoint).set('Authorization', authHeader).send(data).expect(responseCode).end(async.apply(storeRes.bind(this), done));
+
+        request[method](endpoint).set('Authorization', authHeader).send(data).expect(responseCode).end(function (err, res) {
+            // run both, but posthook is optional
+            if (typeof posthook !== 'undefined') posthook(err, res);
+            storeRes.bind(this)(done, err, res);
+        }.bind(this));
     });
 };
 
 
 // POST
 requests.successfullyCreates = function (endpoint, keys, data, accessToken) {
-    isGenericRequest(endpoint, 'post', data, 201, accessToken);
+    requests.isGenericRequest(endpoint, 'post', data, 201, accessToken);
     responses.isASuccessfulCreateResponse(keys);
 };
 requests.failsToCreate = function (endpoint, data, responseCode, errors, accessToken) {
-    isGenericRequest(endpoint, 'post', data, responseCode, accessToken);
+    requests.isGenericRequest(endpoint, 'post', data, responseCode, accessToken);
     responses.isAFailedCreateResponse(responseCode, errors);
 };
 
 // PUT
 requests.successfullyEdits = function (endpoint, keys, data, accessToken) {
-    isGenericRequest(endpoint, 'put', data, 200, accessToken);
+    requests.isGenericRequest(endpoint, 'put', data, 200, accessToken);
     responses.isASuccessfulEditResponse(keys);
 };
 requests.failsToEdit = function (endpoint, data, responseCode, errors, accessToken) {
-    isGenericRequest(endpoint, 'put', data, responseCode, accessToken);
+    requests.isGenericRequest(endpoint, 'put', data, responseCode, accessToken);
     responses.isAFailedEditResponse(responseCode, errors);
 };
 
 // GET (one)
 requests.successfullyShows = function (endpoint, keys, accessToken) {
-    isGenericRequest(endpoint, 'get', {}, 200, accessToken);
+    requests.isGenericRequest(endpoint, 'get', {}, 200, accessToken);
     responses.isASuccessfulShowResponse(keys);
 }
 requests.failsToShow = function (endpoint, responseCode, errors, accessToken) {
-    isGenericRequest(endpoint, 'get', {}, responseCode, accessToken);
+    requests.isGenericRequest(endpoint, 'get', {}, responseCode, accessToken);
     responses.isAFailedShowResponse(responseCode, errors);
 };
 
 // GET (list)
 requests.successfullyLists = function (endpoint, slug, keys, data, accessToken) {
-    isGenericRequest(endpoint, 'get', data, 200, accessToken);
+    requests.isGenericRequest(endpoint, 'get', data, 200, accessToken);
     responses.isASuccessfulListResponse(slug, keys);
 }
 requests.failsToList = function (endpoint, data, responseCode, errors, accessToken) {
-    isGenericRequest(endpoint, 'get', data, responseCode, accessToken);
+    requests.isGenericRequest(endpoint, 'get', data, responseCode, accessToken);
     responses.isAFailedListResponse(responseCode, errors);
 };
 
 // DELETE
 requests.successfullyDeletes = function (endpoint, keys, accessToken) {
-    isGenericRequest(endpoint, 'delete', {}, 200, accessToken);
+    requests.isGenericRequest(endpoint, 'delete', {}, 200, accessToken);
     responses.isASuccessfulShowResponse(keys);
 }
 requests.failsToDelete = function (endpoint, responseCode, errors, accessToken) {
-    isGenericRequest(endpoint, 'delete', {}, responseCode, accessToken);
+    requests.isGenericRequest(endpoint, 'delete', {}, responseCode, accessToken);
     responses.isAFailedShowResponse(responseCode, errors);
 };

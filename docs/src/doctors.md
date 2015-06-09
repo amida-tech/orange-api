@@ -38,8 +38,7 @@ need write access to the patient).
     + `unauthorized` (403) - the current user does not have write access to this patient
     + `invalid_patient_id` (404) - a patient with the specified ID was not found
     + `invalid_access_token` (401) - the access token specified is invalid
-    + `invalid_phone` (400) - the phone number passed is not valid (it must
-    only contain numbers, hyphens, spaces, parantheses and pluses)
+    + `name_required` (400) - a name must be provided
 
     + Body
 
@@ -191,8 +190,7 @@ write access to the patient's data.
     + `invalid_access_token` (401) - the access token specified is invalid
     + `unauthorized` (403) - the current user does not have write access to this patient
     + `invalid_patient_id` (404) - a patient with the specified ID was not found
-    + `invalid_phone` (400) - the phone number passed is not valid (it must
-    only contain numbers, hyphens, spaces, parantheses and pluses)
+    + `name_required` (400) - a name must be provided
     + `invalid_doctor_id` (404) - a doctor with that ID was not found
     
     + Body

@@ -91,15 +91,14 @@ responses.isASuccessfulListResponse = function (slug, keys) {
 
     it("does not contain any extra keys in any item returned", function () {
         // loop over items
-        for (var j = 0; j < keys.length; j++) {
-            var resKeys = Object.keys(this.res.body[slug][j]);
+        var items = this.res.body[slug];
+        for (var j = 0; j < items.lemgth; j++) {
+            var resKeys = Object.keys(items[j]);
             for (var i = 0; i < resKeys.length; i++) {
                 // don't ignore success and error keys as they shouldn't be here
                 expect(keys).to.include(resKeys[i]);
             }
         }
     });
-
-    // TODO verify each return
 };
 responses.isAFailedListResponse = responses.isAFailedResponse;
