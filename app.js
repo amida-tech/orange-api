@@ -48,6 +48,7 @@ var patientRouter = express.Router({ mergeParams: true });
 patientRouter.use(auth.authenticate);
 patientRouter.use(require("./lib/controllers/helpers/patient_auth.js"));
 
+patientRouter.use("/habits", require("./lib/controllers/habits.js"));
 patientRouter.use("/doctors", require("./lib/controllers/doctors.js"));
 patientRouter.use("/pharmacies", require("./lib/controllers/pharmacies.js"));
 patientRouter.use("/medications", require("./lib/controllers/medications.js"));

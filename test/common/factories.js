@@ -91,6 +91,9 @@ factories.minute = function () {
 factories.time = function () {
     return util.format("%s:%s", factories.hour(), factories.minute());
 };
+factories.invalidTime = function () {
+    return "99:99";
+};
 factories.hourDict = function () {
     return {
         open: factories.time(),
