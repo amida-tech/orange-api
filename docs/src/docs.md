@@ -8,3 +8,4 @@
 <!-- include(pharmacies.md) -->
 <!-- include(medications.md) -->
 <!-- include(adherences.md) -->
+<!-- include(schedule.md) -->

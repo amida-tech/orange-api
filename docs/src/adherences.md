@@ -63,7 +63,7 @@ read access to the patient's data.
 + Parameters
     + patientid (integer, required)
 
-        unique ID of the patient (*url*)
+        unique ID of the patient
     + limit (integer, optional)
 
         Maximum number of results to return. Defaults to 25.
@@ -138,7 +138,7 @@ patient's data.
 + Parameters
     + patientid (integer, required)
 
-        unique ID of the patient (*url*)
+        unique ID of the patient
     + adherenceid (integer, required)
 
         unique ID of the adherence

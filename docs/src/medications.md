@@ -249,7 +249,7 @@ access to the patient's data.
 + Parameters
     + patientid (integer, required)
 
-        unique ID of the patient (*url*)
+        unique ID of the patient
     + limit (integer, optional)
 
         Maximum number of results to return. Defaults to 25.
@@ -340,10 +340,10 @@ The current user must have read access to the patient's data.
 + Parameters
     + patientid (integer, required)
 
-        unique ID of the patient (*url*)
+        unique ID of the patient
     + medicationid (integer, required)
 
-        unique ID of the medication (*url*)
+        unique ID of the medication
 
 + Request
     + Headers
@@ -590,10 +590,10 @@ read access to the patient's data.
 + Parameters
     + patientid (integer, required)
 
-        unique ID of the patient (*url*)
+        unique ID of the patient
     + medicationid (integer, required)
 
-        unique ID of the medication (*url*)
+        unique ID of the medication
     + limit (integer, optional)
 
         Maximum number of results to return. Defaults to 25.
