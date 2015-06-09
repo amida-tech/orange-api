@@ -32,6 +32,11 @@ responses.isASuccessfulResponse = function (responseCode, keys) {
             expect(keys).to.include(resKeys[i]);
         }
     });
+
+    it("does not contain a non-numeric ID", function () {
+        if (typeof this.res.body.id !== "undefined")
+            expect(this.res.body.id).to.be.a('number');
+    });
 };
 
 responses.isAFailedResponse = function (responseCode, errors) {
@@ -92,12 +97,20 @@ responses.isASuccessfulListResponse = function (slug, keys) {
     it("does not contain any extra keys in any item returned", function () {
         // loop over items
         var items = this.res.body[slug];
-        for (var j = 0; j < items.lemgth; j++) {
+        for (var j = 0; j < items.length; j++) {
             var resKeys = Object.keys(items[j]);
             for (var i = 0; i < resKeys.length; i++) {
                 // don't ignore success and error keys as they shouldn't be here
                 expect(keys).to.include(resKeys[i]);
             }
+        }
+    });
+
+    it("does not contain any non-numeric ID", function () {
+        // loop over items
+        var items = this.res.body[slug];
+        for (var i = 0; i < items.length; i++) {
+            if (typeof items[i].id !== "undefined") expect(items[i].id).to.be.a('number');
         }
     });
 };

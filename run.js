@@ -1,7 +1,6 @@
 // Setup database
 var mongoose = require("mongoose");
 var async = require("async");
-var autoIncrement = require("mongoose-auto-increment");
 
 var server; // express server
 
@@ -10,12 +9,6 @@ async.waterfall([
     function (callback) {
         // doesn't play with async.apply currying
         mongoose.connect("mongodb://localhost/orange-api", callback);
-    },
-    // setup numerical IDs
-    function (callback) {
-        // synchronous
-        autoIncrement.initialize(mongoose.connection);
-        callback();
     },
     // setup express server
     function (callback) {
