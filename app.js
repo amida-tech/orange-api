@@ -33,8 +33,7 @@ var router = express.Router();
 /*eslint-enable new-cap */
 
 // Authentication tokens
-var auth = require("./lib/controllers/auth.js");
-router.use("/auth", auth);
+router.use("/auth", require("./lib/controllers/auth.js"));
 
 // User registration/signup
 router.use("/user", require("./lib/controllers/users.js"));
@@ -45,8 +44,9 @@ router.use("/patients", require("./lib/controllers/patients.js"));
 // Routes for a specific patient
 // mergeParams lets us access patient ID from these controllers
 var patientRouter = express.Router({ mergeParams: true });
-patientRouter.use(auth.authenticate);
-patientRouter.use(require("./lib/controllers/helpers/patient_auth.js"));
+var auth = require("./lib/controllers/helpers/auth.js");
+patientRouter.use(auth.authenticate); // find user from access token
+patientRouter.use(auth.findPatient); // find patient from patientid in URL
 
 patientRouter.use("/habits", require("./lib/controllers/habits.js"));
 patientRouter.use("/doctors", require("./lib/controllers/doctors.js"));
