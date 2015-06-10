@@ -1,6 +1,6 @@
-// Setup database
-var mongoose = require("mongoose");
-var async = require("async");
+"use strict";
+var mongoose    = require("mongoose"),
+    async       = require("async");
 
 var server; // express server
 
@@ -12,6 +12,7 @@ async.waterfall([
     },
     // setup express server
     function (callback) {
+        // mongo needs to be connected before we require app.js
         server = require("./app.js").listen(3000, callback);
     }
 ], function (err) {
@@ -19,5 +20,5 @@ async.waterfall([
     var host = server.address().address;
     var port = server.address().port;
 
-    console.log('Orange API listening at http://%s:%s', host, port);
+    console.log("Orange API listening at http://%s:%s", host, port);
 });
