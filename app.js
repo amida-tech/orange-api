@@ -24,7 +24,7 @@ app.use(bodyParser.json());
 // All models: in all other files, just used mongoose.model(NAME)
 // rather than requiring these directly
 require("./lib/models/counter.js"); // Require first
-require("./lib/models/user.js");
+require("./lib/models/user/user.js");
 require("./lib/models/patient/patient.js");
 
 // App-level router containing all routes

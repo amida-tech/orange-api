@@ -11,6 +11,7 @@
         "camelcase": 0,
         "no-use-before-define": [2, 'nofunc'],
         "max-len": [1, 120, 4],
+        "new-cap": 0,
         "smells/no-switch": 1,
         "smells/no-complex-switch-case": 1,
         "smells/no-setinterval": 1,
