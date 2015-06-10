@@ -192,7 +192,8 @@ factories.text = function () {
 factories.date = function () {
     var delta = 60 * 60 * 24 * 365;
     var now = (new Date()).getTime();
-    return new Date(now + (Math.random()-0.5) * delta);
+    var date = new Date(now + (Math.random()-0.5) * delta);
+    return date.toISOString(); // full ISO 8601 datetime
 };
 factories.invalidDate = function () {
     return "notadate";
