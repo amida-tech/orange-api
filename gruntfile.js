@@ -6,11 +6,11 @@ module.exports = function (grunt) {
     // clean up code and run tests
     grunt.registerTask("default", ["eslint", "test"]);
     grunt.registerTask("test", ["dropDatabase", "express:test", "mochaTest"]);
-    
+
     // generate code coverage using bash istanbul wrapper
-    grunt.registerTask('coverage', ['exec:coverage']);
+    grunt.registerTask("coverage", ["exec:coverage"]);
     // push code coverage to coveralls.io
-    grunt.registerTask('coverage:push', ['exec:coverage', 'coveralls']);
+    grunt.registerTask("coverage:push", ["exec:coverage", "coveralls"]);
 
     // generate documentation locally
     grunt.registerTask("docs", ["exec:docs"]);
@@ -34,7 +34,7 @@ module.exports = function (grunt) {
     grunt.initConfig({
         // detect code smells
         eslint: {
-            target: ["Gruntfile.js", "app.js", "lib/*.js", "lib/**/*.js", "test/*.js", "test/**/*.js"]
+            target: ["Gruntfile.js", "app.js", "lib/*.js", "lib/**/*.js"]
         },
 
         // beautify all javascript to conform with jsbeautifier's style guide
@@ -78,7 +78,7 @@ module.exports = function (grunt) {
             },
             // generate code coverage: bash wrapper around istanbul as their cli makes things a lot easier
             // than playing around with js hooks
-            coverage: './cover.sh'
+            coverage: "./cover.sh"
         },
 
         // coveralls.io code coverage service
@@ -86,7 +86,7 @@ module.exports = function (grunt) {
             options: {
                 force: false
             },
-            src: ['./coverage/lcov.info']
+            src: ["./coverage/lcov.info"]
         },
 
         // push generated documentation straight to gh pages (with fixed commit message, but that's not
