@@ -32,21 +32,10 @@ module.exports = function (grunt) {
     });
 
     grunt.initConfig({
-        // detect code smells
+        // detect code smells and particularly bad formatting
         eslint: {
             target: ["Gruntfile.js", "app.js", "lib/*.js", "lib/**/*.js"]
         },
-
-        // beautify all javascript to conform with jsbeautifier's style guide
-        /*
-        jsbeautifier: {
-            // TODO: test files here as well
-            //files: ["Gruntfile.js", "app.js", "lib/*.js", "lib/**///*.js", "test/*.js", "test/**/*.js"],
-            /*options: {
-                config: ".jsbeautifyrc"
-            }
-        },
-        */
 
         // run tests: make sure to close all express/db/sinon/etc connections or this
         // will hang
