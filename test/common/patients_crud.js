@@ -11,10 +11,11 @@ var mongoose    = require("mongoose"),
 
 var Patient = mongoose.model("Patient");
 
-module.exports = function PatientsCrud (className, modelName, collectionName) {
+module.exports = function PatientsCrud (className, modelName, collectionName, urlName) {
     this.className = className;
     this.modelName = modelName;
     this.collectionName = collectionName;
+    if (typeof urlName === "undefined") this.urlName = urlName = collectionName;
 
     // keep track of count of overall number of records for all patients
     // TODO: maybe redesign this to track per patient
@@ -62,7 +63,7 @@ module.exports = function PatientsCrud (className, modelName, collectionName) {
 
         // getter function
         return function () {
-            return util.format("/patients/%s/%s/%s", patientId(), collectionName, resourceId());
+            return util.format("/patients/%s/%s/%s", patientId(), urlName, resourceId());
         };
     }.bind(this);
 

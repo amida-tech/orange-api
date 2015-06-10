@@ -9,6 +9,7 @@ var util            = require("util"),
     PatientsCrud    = require("../common/patients_crud.js");
 
 var crud = new PatientsCrud("Medication", "medication", "medications");
+// test for populated doctor/pharmacy rather than just doctor_id/pharmacy_id
 var keys = ["id", "name", "rx_norm", "ndc", "dose", "route", "form", "rx_number", "quantity", "type", "schedule", "doctor", "pharmacy"];
 
 describe("view a medication (GET /patients/:patientid/medications/:medicationid)", function () {

@@ -183,3 +183,26 @@ factories.medication = function (doctorId, pharmacyId) {
     if (typeof pharmacyId !== "undefined") med.pharmacy_id = pharmacyId;
     return med;
 };
+
+// journal
+factories.text = function () {
+    return "Lorem ipsum";
+};
+// return random date within 6 months either side of now
+factories.date = function () {
+    var delta = 60 * 60 * 24 * 365;
+    var now = (new Date()).getTime();
+    return new Date(now + (Math.random()-0.5) * delta);
+};
+factories.invalidDate = function () {
+    return "notadate";
+};
+factories.journal = factories.journalEntry = function (medicationIds) {
+    var entry = {
+        date: factories.date(),
+        text: factories.text()
+    };
+    // medicationIds are optional but should correspond to real medications
+    if (typeof medicationIds !== "undefined") entry.medication_ids = medicationIds;
+    return entry;
+};

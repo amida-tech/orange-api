@@ -23,7 +23,7 @@ the patient).
 
         free-form text field.
 
-    + medications (integers, optional)
+    + medication_ids (integers, optional)
 
         optional list of medication IDs to 'tag' the journal entry with
 
