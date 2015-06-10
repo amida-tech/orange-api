@@ -22,7 +22,9 @@ var bodyParser = require("body-parser");
 app.use(bodyParser.json());
 
 // All models: in all other files, just used mongoose.model(NAME)
-// rather than requiring these directly
+// rather than requiring these directly to avoid circular dependencies
+// Models that are purely nested resources under patient are required
+// in patient.js, so don't require them again here
 require("./lib/models/counter.js"); // Require first
 require("./lib/models/user/user.js");
 require("./lib/models/patient/patient.js");
