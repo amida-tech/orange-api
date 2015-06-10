@@ -1,11 +1,5 @@
 "use strict";
-var util            = require("util"),
-    async           = require("async"),
-    factories       = require("../common/factories.js"),
-    requests        = require("../common/requests.js"),
-    Crud            = require("../common/crud.js"),
-    auth            = require("../common/auth.js"),
-    patients        = require("../patients/common.js"),
+var factories       = require("../common/factories.js"),
     PatientsCrud    = require("../common/patients_crud.js");
 
 var crud = new PatientsCrud("Doctor", "doctor", "doctors");
@@ -25,7 +19,7 @@ describe("create new doctors (POST /patients/:patientid/doctors)", function () {
             error({
                 phone: factories.phone(),
                 address: factories.address()
-            }, 400, 'name_required');
+            }, 400, "name_required");
         });
 
         describe("with blank name", function () {
@@ -33,7 +27,7 @@ describe("create new doctors (POST /patients/:patientid/doctors)", function () {
                 name: "",
                 phone: factories.phone(),
                 address: factories.address()
-            }, 400, 'name_required');
+            }, 400, "name_required");
         });
     });
 });

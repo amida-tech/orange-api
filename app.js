@@ -3,7 +3,7 @@
 var express = require("express");
 var app = module.exports = express();
 
-// Setup database in run.js
+// Database setup in run.js
 
 // CORS
 app.use(function (req, res, next) {
@@ -28,9 +28,7 @@ require("./lib/models/user/user.js");
 require("./lib/models/patient/patient.js");
 
 // App-level router containing all routes
-/*eslint-disable new-cap */
 var router = express.Router();
-/*eslint-enable new-cap */
 
 // Authentication tokens
 router.use("/auth", require("./lib/controllers/auth.js"));
