@@ -13,7 +13,7 @@ the patient).
     + patientid (integer, required)
 
         unique ID of the patient (*url*)
-    + date (string, required, 2015-05-31T19:27:09+00:00)
+    + date (string, required, `2015-05-31T19:27:09+00:00`)
         
         ISO 8601 combined date-time in UTC representing the date and time to be associated
         with the journal entry. Should probably allow user entry of this, but default to the time
