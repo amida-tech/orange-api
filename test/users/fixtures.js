@@ -7,8 +7,9 @@ var monky = module.exports = new Monky(mongoose);
 
 /*eslint-disable key-spacing */
 monky.factory("User", {
-    email:      "foo#n@bar.com",
-    password:   "password#n",
-    name:       "Foo #n Bar"
+    email:          "foo#n@bar.com",
+    password:       "password",
+    rawPassword:    "password",
+    name:           "Foo #n Bar"
 });
 /*eslint-enable key-spacing */

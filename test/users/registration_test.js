@@ -16,7 +16,7 @@ describe("Users", function () {
 
         // all valid data
         it("should return a successful response", function () {
-            return expect(register()).to.be.a.user.success;
+            return expect(register()).to.be.a.user.registerSuccess;
         });
 
         // require email and password
@@ -33,10 +33,10 @@ describe("Users", function () {
             return expect(register({ password: "" })).to.be.an.api.error(400, "password_required");
         });
         it("should not require a name", function () {
-            return expect(register({ name: undefined })).to.be.a.user.success;
+            return expect(register({ name: undefined })).to.be.a.user.registerSuccess;
         });
         it("should accept a blank name", function () {
-            return expect(register({ name: "" })).to.be.a.user.success;
+            return expect(register({ name: "" })).to.be.a.user.registerSuccess;
         });
 
         // require valid email

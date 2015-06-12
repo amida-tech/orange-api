@@ -21,7 +21,8 @@
             "exceptions": {
                 "VariableDeclarator": true
             }
-        }]
+        }],
+        "no-unused-vars": 1
     },
     "plugins": [
         "smells"
