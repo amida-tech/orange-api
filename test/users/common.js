@@ -1,6 +1,8 @@
 "use strict";
 
-var chakram = require("chakram");
+var chakram = require("chakram"),
+    auth    = require("../common/auth.js");
+
 var expect = chakram.expect;
 
 // *must* do this on beforeEach: we may be overriding it on before
@@ -27,3 +29,15 @@ beforeEach(function () {
         expect(respObj).to.have.schema(userSchema);
     });
 });
+
+
+// common endpoints
+// view user info
+module.exports.view = function (accessToken) {
+    return chakram.get("http://localhost:3000/v1/user", auth.genAuthHeaders(accessToken));
+};
+
+// generate access token
+module.exports.token = function (credentials) {
+    return chakram.post("http://localhost:3000/v1/auth/token", credentials);
+};

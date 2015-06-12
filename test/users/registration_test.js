@@ -5,14 +5,12 @@ var expect = chakram.expect;
 
 describe("Users", function () {
     describe("Registration Endpoint (POST /user)", function () {
-        var register; // the endpoint
-        before(function () {
-            register = function (data) {
-                return fixtures.build("User", data).then(function (user) {
-                    return chakram.post("http://localhost:3000/v1/user", user);
-                });
-            };
-        });
+        // the endpoint
+        var register = function (data) {
+            return fixtures.build("User", data).then(function (user) {
+                return chakram.post("http://localhost:3000/v1/user", user);
+            });
+        };
 
         // all valid data
         it("should return a successful response", function () {

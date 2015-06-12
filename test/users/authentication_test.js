@@ -1,7 +1,8 @@
 "use strict";
 var chakram     = require("chakram"),
     Q           = require("q"),
-    fixtures    = require("./fixtures.js");
+    fixtures    = require("./fixtures.js"),
+    token       = require("./common.js").token;
 var expect = chakram.expect;
 
 describe("Users", function () {
@@ -24,13 +25,6 @@ describe("Users", function () {
                 expect(respObj).to.be.an.api.postSuccess;
                 expect(respObj).to.have.schema(tokenSchema);
             });
-        });
-
-        var token; // the endpoint
-        before(function () {
-            token = function (credentials) {
-                return chakram.post("http://localhost:3000/v1/auth/token", credentials);
-            };
         });
 
         // valid user to try testing with: beforeEach to avoid lock out errors
