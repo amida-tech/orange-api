@@ -1,7 +1,8 @@
 "use strict";
 
-var chakram     = require("chakram"),
-    Q           = require("q");
+var chakram         = require("chakram"),
+    Q               = require("q"),
+    userFixtures    = require("../users/fixtures.js");
 
 var expect = chakram.expect;
 
@@ -42,6 +43,19 @@ auth.genAccessToken = function (user) {
         deferred.resolve(t);
     });
     return deferred.promise;
+};
+
+// create a new user from the factory and generate an access token,
+// returning user with user.accessToken present
+auth.createTestUser = function () {
+    var user;
+    return userFixtures.build("User").then(function (u) {
+        user = u;
+        return user;
+    }).then(auth.genAccessToken).then(function (t) {
+        user.accessToken = t;
+        return user;
+    });
 };
 
 // check access token is valid by GETting /user
