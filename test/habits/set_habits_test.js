@@ -25,9 +25,6 @@ describe("Habits", function () {
         };
 
         // helpers to create patients before editing their habits
-        var editMyPatientHabits = function (modifications) {
-            return patients.testMyPatient({}).then(curry(editHabits)(modifications));
-        };
         var editOtherPatientHabits = function (access, modifications) {
             return patients.testOtherPatient({}, access).then(curry(editHabits)(modifications));
         };
@@ -53,13 +50,13 @@ describe("Habits", function () {
             });
 
             it("lets the user set time fields to valid times", function () {
-                return expect(edit({ wake: "13:05" }, patientId, accessToken)).to.be.a.habits.success;
+                return expect(edit({ dinner: "13:05" }, patientId, accessToken)).to.be.a.habits.success;
             });
             it("doesn't lets the user set time fields to invalid times", function () {
-                return expect(edit({ lunch: "13:95" }, patientId, accessToken)).to.be.an.api.error(400, "invalid_lunch");
+                return expect(edit({ wake: "13:95" }, patientId, accessToken)).to.be.an.api.error(400, "invalid_wake");
             });
             it("doesn't lets the user set time fields to non-time values", function () {
-                return expect(edit({ dinner: "foo" }, patientId, accessToken)).to.be.an.api.error(400, "invalid_dinner");
+                return expect(edit({ lunch: "foo" }, patientId, accessToken)).to.be.an.api.error(400, "invalid_lunch");
             });
         });
         describe("with a patient shared read-write", function () {
@@ -78,13 +75,13 @@ describe("Habits", function () {
             });
 
             it("lets the user set time fields to valid times", function () {
-                return expect(edit({ wake: "13:05" }, patientId, accessToken)).to.be.a.habits.success;
+                return expect(edit({ dinner: "13:05" }, patientId, accessToken)).to.be.a.habits.success;
             });
             it("doesn't lets the user set time fields to invalid times", function () {
-                return expect(edit({ lunch: "13:95" }, patientId, accessToken)).to.be.an.api.error(400, "invalid_lunch");
+                return expect(edit({ wake: "13:95" }, patientId, accessToken)).to.be.an.api.error(400, "invalid_wake");
             });
             it("doesn't lets the user set time fields to non-time values", function () {
-                return expect(edit({ dinner: "foo" }, patientId, accessToken)).to.be.an.api.error(400, "invalid_dinner");
+                return expect(edit({ lunch: "foo" }, patientId, accessToken)).to.be.an.api.error(400, "invalid_lunch");
             });
         });
     });

@@ -1,10 +1,6 @@
 "use strict";
 
-var chakram     = require("chakram"),
-    mongoose    = require("mongoose"),
-    curry       = require("curry"),
-    Q           = require("q"),
-    auth        = require("../common/auth.js");
+var chakram     = require("chakram");
 
 var expect = chakram.expect;
 
