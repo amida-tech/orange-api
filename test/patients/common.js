@@ -80,7 +80,7 @@ var createMyPatient = module.exports.createMyPatient = curry(function (data, use
 });
 
 // create a test patient for another user and share with the current
-var createOtherPatient = curry(function (data, access, me, other) {
+var createOtherPatient = module.exports.createOtherPatient = curry(function (data, access, me, other) {
     return createMyPatient(data, other).then(curry(sharePatient)(me)(access)).then(function (patient) {
         // store me in patient
         patient.user = me;
