@@ -127,7 +127,7 @@ and once before sleeping.
 #### Interval
 `interval` should be an integer specifying, in **minutes**, a regular interval that the
 medication should be taken at. For example,
-- Joe should take his Fexofenadine every 8 hours
+- Joe should take his Fexofenadine every 6 hours
 ```javascript
 {
     type: "regularly",
