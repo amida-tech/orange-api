@@ -10,17 +10,17 @@ var expect = chakram.expect;
 var auth = {};
 
 // helper function to check an endpoint requires authentication
-// endpoint should be a getter function returning a
-// function taking an access token and returning a chakram promise
-auth.itRequiresAuthentication = function (endpointGetter) {
+// endpoint should be a function taking an access token and
+// returning a chakram promise
+auth.itRequiresAuthentication = function (endpoint) {
     it("should require an access token", function () {
-        return expect(endpointGetter()(undefined)).to.be.an.api.error(401, "access_token_required");
+        return expect(endpoint(undefined)).to.be.an.api.error(401, "access_token_required");
     });
     it("should not accept a blank access token", function () {
-        return expect(endpointGetter()("")).to.be.an.api.error(401, "invalid_access_token");
+        return expect(endpoint("")).to.be.an.api.error(401, "invalid_access_token");
     });
     it("should not accept an invalid access token", function () {
-        return expect(endpointGetter()("foo")).to.be.an.api.error(401, "invalid_access_token");
+        return expect(endpoint("foo")).to.be.an.api.error(401, "invalid_access_token");
     });
 };
 
@@ -49,7 +49,7 @@ auth.genAccessToken = function (user) {
 // returning user with user.accessToken present
 auth.createTestUser = function () {
     var user;
-    return userFixtures.build("User").then(function (u) {
+    return userFixtures.create("User").then(function (u) {
         user = u;
         return user;
     }).then(auth.genAccessToken).then(function (t) {

@@ -1,12 +1,14 @@
 "use strict";
 var chakram     = require("chakram"),
     fixtures    = require("./fixtures.js"),
+    common      = require("./common.js"),
     auth        = require("../common/auth.js"),
     view        = require("./common.js").view;
 
 var expect = chakram.expect;
 
 describe("Users", function () {
+    common.beforeEach();
     describe("View User Info (GET /user)", function () {
         // create a user with the specified data modifications (to the factory default), generate
         // an access token and then use that token to view the user
@@ -15,7 +17,7 @@ describe("Users", function () {
         };
 
         // check access token authentication
-        auth.itRequiresAuthentication(function () { return view; });
+        auth.itRequiresAuthentication(view);
 
         describe("when user name is present", function () {
             it("should return a successful response", function () {

@@ -143,6 +143,9 @@ permanent** so should not be undertaken lightly: it means the user will never be
 modify (for `read`) or even read (for `none`) any details (or medications or etc) of this
 patient again, unless another user with `write` access reshares the patient with them.
 
+If the user's access is changed to `none` and the patient is not shared with any other
+users, then the patient and all its data _will be deleted_.
+
 + Parameters
     + patientid (integer, required)
 
@@ -365,6 +368,10 @@ Update the access another user has to a patient (the current user of course is r
 to have `write` access to this patient). To modify the current user's access, see the
 convenience method `PUT /patients/:patientid`.
 
+If the user's access is changed to `none` and the patient is not shared with any other
+users, then the patient and all its data _will be deleted_ (this can of course only happen
+with this endpoint if the user who's share is being modified is the current user).
+
 + Parameters
     + patientid (integer, required)
 
@@ -416,6 +423,9 @@ convenience method `PUT /patients/:patientid`.
 Stop sharing the specified patient's data with a specified user. The current user will
 of course need write access to the patient. To stop sharing a patient with the _current_
 user, see the convenience method `PUT /patients/:patientid`.
+
+If this is the last user whom the patient is shared with, then the patient and _all their data_
+will be deleted, so take care.
 
 + Parameters
     + patientid (integer, required)

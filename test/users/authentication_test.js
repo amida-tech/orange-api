@@ -2,10 +2,12 @@
 var chakram     = require("chakram"),
     Q           = require("q"),
     fixtures    = require("./fixtures.js"),
+    common      = require("./common.js"),
     token       = require("./common.js").token;
 var expect = chakram.expect;
 
 describe("Users", function () {
+    common.beforeEach();
     describe("Retrieve Authentication Token (POST /auth/token)", function () {
         // setup authentication-specific chakram methods
         // must be beforeEach because the parent chakram methods we need to override are in

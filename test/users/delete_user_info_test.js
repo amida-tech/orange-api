@@ -1,12 +1,14 @@
 "use strict";
 var chakram     = require("chakram"),
     fixtures    = require("./fixtures.js"),
+    common      = require("./common.js"),
     auth        = require("../common/auth.js"),
     tokenEndpoint   = require("./common.js").token;
 
 var expect = chakram.expect;
 
 describe("Users", function () {
+    common.beforeEach();
     describe("Delete User (DELETE /user)", function () {
         // simple endpoint
         var remove = function (accessToken) {
@@ -27,7 +29,7 @@ describe("Users", function () {
         };
 
         // check access token authentication
-        auth.itRequiresAuthentication(function () { return remove; });
+        auth.itRequiresAuthentication(remove);
 
         describe("with a valid user", function () {
             var request;

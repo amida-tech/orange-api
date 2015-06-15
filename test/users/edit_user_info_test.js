@@ -2,12 +2,14 @@
 var chakram         = require("chakram"),
     curry           = require("curry"),
     fixtures        = require("./fixtures.js"),
+    common          = require("./common.js"),
     auth            = require("../common/auth.js"),
     tokenEndpoint   = require("./common.js").token;
 
 var expect = chakram.expect;
 
 describe("Users", function () {
+    common.beforeEach();
     describe("EDIT User Info (PUT /user)", function () {
         // simple endpoint
         var update = function (modifications, accessToken) {
@@ -35,7 +37,7 @@ describe("Users", function () {
         };
 
         // check access token authentication
-        auth.itRequiresAuthentication(function () { return curry(update)({}); });
+        auth.itRequiresAuthentication(curry(update)({}));
 
         describe("changing name", function () {
             var request;
