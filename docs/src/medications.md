@@ -59,27 +59,27 @@ type: "regularly"
 ```
 
 This is a pretty general type that can be used to encode all regular schemas. In all cases,
-the `n` key **must** be set to an integer, corresponding to the patient needing to take the
-medication every `n` days. For example, a weekly medication should have `n=7`, and a daily
-medication should have `n=1`.
+the `frequency` key **must** be set to an integer, corresponding to the patient needing to take the
+medication every `frequency` days. For example, a weekly medication should have `frequency=7`, and a daily
+medication should have `frequency=1`.
 
 Other keys can be used to specify the times within the day at which the medication should
-occur: combining these with `n=1` allows a schedule that requires a patient to, e.g., take
-a particular medication 4 times every day (`n=1` and `number_of_times=4`).
+occur: combining these with `frequency=1` allows a schedule that requires a patient to, e.g., take
+a particular medication 4 times every day (`frequency=1` and `number_of_times=4`).
 
 There are 3 different ways the times within the day should be specified. *Exactly* one must
 be present (`number_of_times=1` can be used for a standard daily/weekly/etc medication).
 
 #### Specific Number of Times per Day
 Set the `number_of_times` key to an integer representing the number of times the patient should
-take it on each day they take it (so number of times every day for `n=1`, number of times every
-week for `n=7`, etc). For example,
+take it on each day they take it (so number of times every day for `frequency=1`, number of times every
+week for `frequency=7`, etc). For example,
 
 - Joe should take his codeine once every day, at any time
 ```javascript
 {
     type: "regularly",
-    n: 1,
+    frequency: 1,
     number_of_times: 1
 }
 ```
@@ -88,7 +88,7 @@ week for `n=7`, etc). For example,
 ```javascript
 {
     type: "regularly",
-    n: 7,
+    frequency: 7,
     number_of_times: 3
 }
 ```
@@ -109,7 +109,7 @@ and once before sleeping.
 ```javascript
 {
     type: "regularly",
-    n: 7,
+    frequency: 7,
     times_of_day: ["15:00"],
     stop_date: "2015-03-15"
 }
@@ -119,7 +119,7 @@ and once before sleeping.
 ```javascript
 {
     type: "regularly",
-    n: 1,
+    frequency: 1,
     times_of_day: ["after_sleep", "after_lunch"]
 }
 ```
@@ -131,7 +131,7 @@ medication should be taken at. For example,
 ```javascript
 {
     type: "regularly",
-    n: 1,
+    frequency: 1,
     interval: 360
 }
 ```
@@ -194,7 +194,6 @@ must have write access to the patient's data.
                 schedule: {
                     type: "regularly",
                     frequency: 1,
-                    number_of_times: 2,
                     times_of_day: ["after_lunch", "before_sleep"]
                 },
                 doctor_id: 1,
@@ -208,6 +207,7 @@ must have write access to the patient's data.
     + `invalid_access_token` (401) - the access token specified is invalid
     + `unauthorized` (403) - the current user does not have write access to this patient
     + `invalid_patient_id` (404) - a patient with the specified ID was not found
+    + `name_required` (400) - medication must have a non-blank name
     + `invalid_dose` (400) - medication dose specified in the format specified above
     + `invalid_quantity` (400) - quantity not a positive integer
     + `invalid_schedule` (400) - schedule is not specified in the format specified above
@@ -233,7 +233,6 @@ must have write access to the patient's data.
                 schedule: {
                     type: "regularly",
                     frequency: 1,
-                    number_of_times: 2,
                     times_of_day: ["after_lunch", "before_sleep"]
                 },
                 doctor_id: 1,
@@ -320,7 +319,6 @@ access to the patient's data.
                         schedule: {
                             type: "regularly",
                             frequency: 1,
-                            number_of_times: 2,
                             times_of_day: ["after_lunch", "before_sleep"]
                         },
                         doctor_id: 1,
@@ -378,7 +376,6 @@ The current user must have read access to the patient's data.
                 schedule: {
                     type: "regularly",
                     frequency: 1,
-                    number_of_times: 2,
                     times_of_day: ["after_lunch", "before_sleep"]
                 },
                 doctor: {
@@ -479,7 +476,6 @@ user must have write access to the patient's data.
                 schedule: {
                     type: "regularly",
                     frequency: 1,
-                    number_of_times: 2,
                     times_of_day: ["after_lunch", "before_sleep"]
                 },
                 doctor_id: 1,
@@ -493,6 +489,7 @@ user must have write access to the patient's data.
     + `invalid_access_token` (401) - the access token specified is invalid
     + `unauthorized` (403) - the current user does not have write access to this patient
     + `invalid_patient_id` (404) - a patient with the specified ID was not found
+    + `name_required` (400) - medication must have a non-blank name
     + `invalid_dose` (400) - medication dose specified in the format specified above
     + `invalid_quantity` (400) - quantity not a positive integer
     + `invalid_schedule` (400) - schedule is not specified in the format specified above
@@ -518,7 +515,6 @@ user must have write access to the patient's data.
                 schedule: {
                     type: "regularly",
                     frequency: 1,
-                    number_of_times: 2,
                     times_of_day: ["after_lunch", "before_sleep"]
                 },
                 doctor_id: 1,
@@ -572,7 +568,6 @@ data.
                 schedule: {
                     type: "regularly",
                     frequency: 1,
-                    number_of_times: 2,
                     times_of_day: ["after_lunch", "before_sleep"]
                 },
                 doctor_id: 1,
