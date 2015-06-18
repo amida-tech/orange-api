@@ -13,7 +13,7 @@ module.exports.beforeEach = function () {
         /*eslint-disable key-spacing */
         var medicationSchema = {
             required: ["id", "name", "rx_norm", "ndc", "dose", "route", "form", "rx_number",
-                        "quantity", "type", "schedule", "doctor_id", "pharmacy_id"],
+                        "quantity", "type", "schedule"],
             properties: {
                 id:             { type: "number" },
                 name:           { type: "string" },
@@ -34,9 +34,16 @@ module.exports.beforeEach = function () {
                 type:           { type: "string" },
                 schedule:       { type: "object" }, // TODO: full schedule schema here
                 doctor_id:      { type: ["number", "null"] },
-                pharmacy_id:    { type: ["number", "null"] }
+                pharmacy_id:    { type: ["number", "null"] },
+                doctor:         { type: ["object", "null"] }, // TODO: full doctor schema here
+                pharmacy:       { type: ["object", "null"] } // TODO: full pharmacy schema here
             }
         };
+        var medicationViewSchema = JSON.parse(JSON.stringify(medicationSchema)); // easy deep copy
+        medicationViewSchema.required.push("doctor");
+        medicationViewSchema.required.push("pharmacy");
+        medicationSchema.required.push("doctor_id");
+        medicationSchema.required.push("pharmacy_id");
         /*eslint-enable key-spacing */
         chakram.addProperty("success", function (respObj) {
             expect(respObj).to.be.an.api.getSuccess;
@@ -46,5 +53,11 @@ module.exports.beforeEach = function () {
             expect(respObj).to.be.an.api.postSuccess;
             expect(respObj).to.have.schema(medicationSchema);
         });
+        chakram.addProperty("viewSuccess", function (respObj) {
+            expect(respObj).to.be.an.api.getSuccess;
+            expect(respObj).to.have.schema(medicationViewSchema);
+        });
+        // TODO check doctor against schema
+        // TODO check pharmacy against schema
     });
 };
