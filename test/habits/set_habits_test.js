@@ -11,7 +11,7 @@ var expect = chakram.expect;
 
 describe("Habits", function () {
     common.beforeEach();
-    describe("View Patient Habits (/patients/:patientid/habits)", function () {
+    describe("SET Patient Habits (PUT /patients/:patientid/habits)", function () {
         // basic endpoint
         var edit = function (modifications, patientId, accessToken) {
             var url = util.format("http://localhost:3000/v1/patients/%d/habits", patientId);
@@ -57,6 +57,19 @@ describe("Habits", function () {
             });
             it("doesn't lets the user set time fields to non-time values", function () {
                 return expect(edit({ lunch: "foo" }, patientId, accessToken)).to.be.an.api.error(400, "invalid_lunch");
+            });
+
+            it("lets me set a time zone", function () {
+                return expect(edit({ tz: "Europe/London" }, patientId, accessToken)).to.be.a.habits.success;
+            });
+            it("doesn't let me set an invalid time zone", function () {
+                return expect(edit({ tz: "foo/bar" }, patientId, accessToken)).to.be.an.api.error(400, "invalid_tz");
+            });
+            it("doesn't let me set a null time zone", function () {
+                return expect(edit({ tz: null }, patientId, accessToken)).to.be.an.api.error(400, "invalid_tz");
+            });
+            it("doesn't let me set a blank time zone", function () {
+                return expect(edit({ tz: "" }, patientId, accessToken)).to.be.an.api.error(400, "invalid_tz");
             });
         });
         describe("with a patient shared read-write", function () {

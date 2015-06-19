@@ -374,6 +374,20 @@ describe("Medications", function () {
         });
     });
 
+    // TODO: put this into API docs: Timezone Policy
+    // user habits are entered as HH:MM local time and a timezone is sent
+    // medication schedules contain HH:MMs: they're local time and correspond to the timezone in habits
+    // start and end date for schedule generation are sent without time: they're assumed to be in the
+    //      **local** timezone of the user
+    // when moving timezone, the new timezone can be PUT to /habits and
+    //      HH:MM user habits
+    //      HH:MM medication input schedules
+    // are changed
+    //
+    // we want daylight savings handling, so rather than storing UTC offset we store a TZ zone name
+    // e.g., Europe/London
+    //
+    // journal entries, adherence events are sent in ISO8601 UTC
     describe("handles timezone changes", function () {
         it("should handle them");
     });
