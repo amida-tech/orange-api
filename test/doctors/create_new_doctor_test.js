@@ -2,7 +2,6 @@
 var chakram         = require("chakram"),
     util            = require("util"),
     curry           = require("curry"),
-    Q               = require("q"),
     auth            = require("../common/auth.js"),
     patients        = require("../patients/common.js"),
     fixtures        = require("./fixtures.js"),

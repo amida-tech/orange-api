@@ -10,22 +10,17 @@ var parseSchedule = function (schedule) {
     return parser.format();
 };
 
-// from http://jamesroberts.name to convert camelcase to snoke case
-function toSnakeCase (str) {
-    return str.replace(/([A-Z])/g, function ($1) { return "_" + $1.toLowerCase(); });
-}
-
 describe("Medications", function () {
     describe("validates schedules correctly", function () {
-        // checks validation, and further check it's parsed into
-        // the same object as passed modulo camelcase/snakecase
-        var accepts = function (data) {
-            acceptsManual(data, data);
-        };
         // rather than trying to guess what the output should be,
         // explicitly set it
         var acceptsManual = function (data, output) {
             expect(parseSchedule(data)).to.deep.equal(output);
+        };
+        // checks validation, and further check it's parsed into
+        // the same object as passed modulo camelcase/snakecase
+        var accepts = function (data) {
+            acceptsManual(data, data);
         };
         var rejects = function (data) {
             expect(parseSchedule(data)).to.be.false;

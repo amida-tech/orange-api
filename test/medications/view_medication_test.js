@@ -4,7 +4,6 @@ var chakram     = require("chakram"),
     Q           = require("q"),
     util        = require("util"),
     auth        = require("../common/auth.js"),
-    fixtures    = require("./fixtures.js"),
     patients    = require("../patients/common.js"),
     common      = require("./common.js");
 

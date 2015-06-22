@@ -81,7 +81,7 @@ module.exports.itRequiresValidPharmacyId = function (endpoint) {
         });
 
         it("should not accept invalid pharmacy IDs", function () {
-            return expect(endpoint("foo", patient._id, user.accessToken)).to.be.an.api.error(404, "invalid_pharmacy_id");
+            return expect(endpoint("f", patient._id, user.accessToken)).to.be.an.api.error(404, "invalid_pharmacy_id");
         });
         it("should not accept pharmacy IDs not corresponding to real pharmacies", function () {
             return expect(endpoint(9999, patient._id, user.accessToken)).to.be.an.api.error(404, "invalid_pharmacy_id");
