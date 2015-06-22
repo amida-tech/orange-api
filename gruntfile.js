@@ -5,7 +5,7 @@ module.exports = function (grunt) {
 
     // clean up code and run tests
     grunt.registerTask("default", ["eslint", "test"]);
-    grunt.registerTask("test", ["dropDatabase", "express:test", "mochaTest"]);
+    grunt.registerTask("test", ["dropDatabase", "express:test", "mochaTest:all"]);
 
     // generate code coverage using bash istanbul wrapper
     grunt.registerTask("coverage", ["exec:coverage"]);
@@ -40,12 +40,19 @@ module.exports = function (grunt) {
         // run tests: make sure to close all express/db/sinon/etc connections or this
         // will hang
         mochaTest: {
-            test: {
+            all: {
                 options: {
                     reporter: "spec",
                     timeout: "10000"
                 },
                 src: ["test/common/db_helper.js", "test/common/*.js", "test/*.js", "test/**/*.js"]
+            },
+            unit: {
+                options: {
+                    reporter: "spec",
+                    timeout: "10000"
+                },
+                src: ["test/common/db_helper.js", "test/common/*.js", "test/*/unit/*.js", "test/*/unit/**/*.js"]
             }
         },
 
