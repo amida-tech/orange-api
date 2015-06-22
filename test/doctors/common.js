@@ -3,37 +3,32 @@
 var chakram     = require("chakram"),
     Q           = require("q"),
     patients    = require("../patients/common.js"),
+    common      = require("../common/chakram.js"),
     auth        = require("../common/auth.js");
 var expect = chakram.expect;
 
-// *must* do this on beforeEach: we may be overriding it on before
-module.exports.beforeEach = function () {
-    beforeEach(function () {
-        // namespacing
-        chakram.addProperty("doctor", function () {} );
-
-        // verify successful responses
-        /*eslint-disable key-spacing */
-        var doctorSchema = {
-            required: ["id", "name", "phone", "address"],
-            properties: {
-                id:         { type: "number" },
-                name:       { type: "string" },
-                phone:      { type: "string" },
-                address:    { type: "string" }
-            }
-        };
-        /*eslint-enable key-spacing */
-        chakram.addProperty("success", function (respObj) {
-            expect(respObj).to.be.an.api.getSuccess;
-            expect(respObj).to.have.schema(doctorSchema);
-        });
-        chakram.addProperty("createSuccess", function (respObj) {
-            expect(respObj).to.be.an.api.postSuccess;
-            expect(respObj).to.have.schema(doctorSchema);
-        });
-    });
+// verify successful responses
+/*eslint-disable key-spacing */
+var doctorSchema = {
+    required: ["id", "name", "phone", "address"],
+    properties: {
+        id:         { type: "number" },
+        name:       { type: "string" },
+        phone:      { type: "string" },
+        address:    { type: "string" }
+    }
 };
+/*eslint-enable key-spacing */
+common.addApiChain("doctor", {
+    "createSuccess": function (respObj) {
+        expect(respObj).to.be.an.api.postSuccess;
+        expect(respObj).to.have.schema(doctorSchema);
+    },
+    "success": function (respObj) {
+        expect(respObj).to.be.an.api.getSuccess;
+        expect(respObj).to.have.schema(doctorSchema);
+    }
+});
 
 // endpoint takes (doctorId, patientId, accessToken)
 module.exports.itRequiresValidDoctorId = function (endpoint) {

@@ -1,11 +1,9 @@
 "use strict";
 var chakram     = require("chakram"),
-    common      = require("./common.js"),
     fixtures    = require("./fixtures.js");
 var expect = chakram.expect;
 
 describe("Users", function () {
-    common.beforeEach();
     describe("Registration Endpoint (POST /user)", function () {
         // the endpoint
         var register = function (data) {

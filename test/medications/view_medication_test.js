@@ -4,14 +4,11 @@ var chakram     = require("chakram"),
     Q           = require("q"),
     util        = require("util"),
     auth        = require("../common/auth.js"),
-    fixtures    = require("./fixtures.js"),
-    patients    = require("../patients/common.js"),
-    common      = require("./common.js");
+    patients    = require("../patients/common.js");
 
 var expect = chakram.expect;
 
 describe("Patients", function () {
-    common.beforeEach();
     describe("Show Single Medication (GET /patients/:patientid/medications/:medicationid)", function () {
         // given a patient ID, medication ID and acces token, try and show the medication
         var show = function (medicationId, patientId, accessToken) {

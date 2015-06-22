@@ -2,50 +2,44 @@
 
 var chakram     = require("chakram"),
     Q           = require("q"),
+    common      = require("../common/chakram.js"),
     patients    = require("../patients/common.js"),
     auth        = require("../common/auth.js");
 var expect = chakram.expect;
 
-// *must* do this on beforeEach: we may be overriding it on before
-module.exports.beforeEach = function () {
-    beforeEach(function () {
-        // namespacing
-        chakram.addProperty("journal", function () {} );
-
-        // verify successful responses
-        /*eslint-disable key-spacing */
-        var entrySchema = {
-            required: ["id", "date", "text"],
-            properties: {
-                id:             { type: "number" },
-                date:           { type: "string" },
-                text:           { type: "string" },
-                medication_ids: {
-                    type:       "array",
-                    items:  {
-                        type:   "number"
-                    }
-                }
+// verify successful responses
+/*eslint-disable key-spacing */
+var entrySchema = {
+    required: ["id", "date", "text"],
+    properties: {
+        id:             { type: "number" },
+        date:           { type: "string" },
+        text:           { type: "string" },
+        medication_ids: {
+            type:       "array",
+            items:  {
+                type:   "number"
             }
-        };
-        var entryViewSchema = JSON.parse(JSON.stringify(entrySchema)); // easy deep copy
-        entryViewSchema.required.push("medications");
-        entrySchema.required.push("medication_ids");
-        /*eslint-enable key-spacing */
-        chakram.addProperty("success", function (respObj) {
-            expect(respObj).to.be.an.api.getSuccess;
-            expect(respObj).to.have.schema(entrySchema);
-        });
-        chakram.addProperty("viewSuccess", function (respObj) {
-            expect(respObj).to.be.an.api.getSuccess;
-            expect(respObj).to.have.schema(entryViewSchema);
-        });
-        chakram.addProperty("createSuccess", function (respObj) {
-            expect(respObj).to.be.an.api.postSuccess;
-            expect(respObj).to.have.schema(entrySchema);
-        });
-    });
+        }
+    }
 };
+var entryViewSchema = JSON.parse(JSON.stringify(entrySchema)); // easy deep copy
+entryViewSchema.required.push("medications");
+entrySchema.required.push("medication_ids");
+common.addApiChain("journal", {
+    "createSuccess": function (respObj) {
+        expect(respObj).to.be.an.api.postSuccess;
+        expect(respObj).to.have.schema(entrySchema);
+    },
+    "viewSuccess": function (respObj) {
+        expect(respObj).to.be.an.api.getSuccess;
+        expect(respObj).to.have.schema(entryViewSchema);
+    },
+    "success": function (respObj) {
+        expect(respObj).to.be.an.api.getSuccess;
+        expect(respObj).to.have.schema(entrySchema);
+    }
+});
 
 // endpoint takes (entryId, patientId, accessToken)
 module.exports.itRequiresValidEntryId = function (endpoint) {
@@ -64,7 +58,10 @@ module.exports.itRequiresValidEntryId = function (endpoint) {
                     otherPatient = p2;
                 }).then(function () {
                     // setup journal entry for otherPatient
-                    return Q.nbind(otherPatient.createJournalEntry, otherPatient)({ text: "foobar", date: (new Date()).toISOString() });
+                    return Q.nbind(otherPatient.createJournalEntry, otherPatient)({
+                        text: "foobar",
+                        date: (new Date()).toISOString()
+                    });
                 });
             });
         });

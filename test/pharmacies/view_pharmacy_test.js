@@ -11,7 +11,6 @@ var chakram         = require("chakram"),
 var expect = chakram.expect;
 
 describe("Pharmacies", function () {
-    common.beforeEach();
     describe("View Pharmacy (GET /patients/:patientid/pharmacies/:pharmacyid)", function () {
         // basic endpoint
         var show = function (pharmacyId, patientId, accessToken) {

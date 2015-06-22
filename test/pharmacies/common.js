@@ -3,60 +3,55 @@
 var chakram     = require("chakram"),
     Q           = require("q"),
     patients    = require("../patients/common.js"),
+    common      = require("../common/chakram.js"),
     auth        = require("../common/auth.js");
 var expect = chakram.expect;
 
-// *must* do this on beforeEach: we may be overriding it on before
-module.exports.beforeEach = function () {
-    beforeEach(function () {
-        // namespacing
-        chakram.addProperty("pharmacy", function () {} );
-
-        // verify successful responses
-        /*eslint-disable key-spacing */
-        var pharmacySchema = {
-            required: ["id", "name", "phone", "address", "hours"],
-            properties: {
-                id:         { type: "number" },
-                name:       { type: "string" },
-                phone:      { type: "string" },
-                address:    { type: "string" },
-                hours:      {
-                    required:       ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"],
-                    properties:     {
-                        // each of these required, but can be an empty object
-                        monday:         { "$ref": "#/definitions/hours" },
-                        tuesday:        { "$ref": "#/definitions/hours" },
-                        wednesday:      { "$ref": "#/definitions/hours" },
-                        thursday:       { "$ref": "#/definitions/hours" },
-                        friday:         { "$ref": "#/definitions/hours" },
-                        saturday:       { "$ref": "#/definitions/hours" },
-                        sunday:         { "$ref": "#/definitions/hours" }
-                    }
-                }
-            },
-            definitions: {
-                hours: {
-                    type: ["object"],
-                    properties: {
-                        open:   { type: "string", pattern: "^\\d\\d:\\d\\d$" },
-                        close:  { type: "string", pattern: "^\\d\\d:\\d\\d$" }
-                    },
-                    required: []
-                }
+// verify successful responses
+/*eslint-disable key-spacing */
+var pharmacySchema = {
+    required: ["id", "name", "phone", "address", "hours"],
+    properties: {
+        id:         { type: "number" },
+        name:       { type: "string" },
+        phone:      { type: "string" },
+        address:    { type: "string" },
+        hours:      {
+            required:       ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"],
+            properties:     {
+                // each of these required, but can be an empty object
+                monday:         { "$ref": "#/definitions/hours" },
+                tuesday:        { "$ref": "#/definitions/hours" },
+                wednesday:      { "$ref": "#/definitions/hours" },
+                thursday:       { "$ref": "#/definitions/hours" },
+                friday:         { "$ref": "#/definitions/hours" },
+                saturday:       { "$ref": "#/definitions/hours" },
+                sunday:         { "$ref": "#/definitions/hours" }
             }
-        };
-        /*eslint-enable key-spacing */
-        chakram.addProperty("success", function (respObj) {
-            expect(respObj).to.be.an.api.getSuccess;
-            expect(respObj).to.have.schema(pharmacySchema);
-        });
-        chakram.addProperty("createSuccess", function (respObj) {
-            expect(respObj).to.be.an.api.postSuccess;
-            expect(respObj).to.have.schema(pharmacySchema);
-        });
-    });
+        }
+    },
+    definitions: {
+        hours: {
+            type: ["object"],
+            properties: {
+                open:   { type: "string", pattern: "^\\d\\d:\\d\\d$" },
+                close:  { type: "string", pattern: "^\\d\\d:\\d\\d$" }
+            },
+            required: []
+        }
+    }
 };
+/*eslint-enable key-spacing */
+common.addApiChain("pharmacy", {
+    "createSuccess": function (respObj) {
+        expect(respObj).to.be.an.api.postSuccess;
+        expect(respObj).to.have.schema(pharmacySchema);
+    },
+    "success": function (respObj) {
+        expect(respObj).to.be.an.api.getSuccess;
+        expect(respObj).to.have.schema(pharmacySchema);
+    }
+});
 
 // endpoint takes (pharmacyId, patientId, accessToken)
 module.exports.itRequiresValidPharmacyId = function (endpoint) {
@@ -81,7 +76,7 @@ module.exports.itRequiresValidPharmacyId = function (endpoint) {
         });
 
         it("should not accept invalid pharmacy IDs", function () {
-            return expect(endpoint("foo", patient._id, user.accessToken)).to.be.an.api.error(404, "invalid_pharmacy_id");
+            return expect(endpoint("f", patient._id, user.accessToken)).to.be.an.api.error(404, "invalid_pharmacy_id");
         });
         it("should not accept pharmacy IDs not corresponding to real pharmacies", function () {
             return expect(endpoint(9999, patient._id, user.accessToken)).to.be.an.api.error(404, "invalid_pharmacy_id");

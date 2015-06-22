@@ -2,16 +2,13 @@
 var chakram         = require("chakram"),
     util            = require("util"),
     curry           = require("curry"),
-    Q               = require("q"),
     auth            = require("../common/auth.js"),
     patients        = require("../patients/common.js"),
-    fixtures        = require("./fixtures.js"),
-    common          = require("./common.js");
+    fixtures        = require("./fixtures.js");
 
 var expect = chakram.expect;
 
 describe("Pharmacies", function () {
-    common.beforeEach();
     describe("Create New Pharmacy (POST /patients/:patientid/pharmacies)", function () {
         // basic endpoint
         var create = function (data, patientId, accessToken) {

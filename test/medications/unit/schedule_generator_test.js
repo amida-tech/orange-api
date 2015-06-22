@@ -1,7 +1,6 @@
 "use strict";
 var chai        = require("chai"),
     moment      = require("moment-timezone"),
-    curry       = require("curry"),
     mongoose    = require("mongoose"),
     Q           = require("q"),
     patients    = require("../../patients/common.js"),
@@ -194,11 +193,11 @@ describe("Medications", function () {
                         frequency: 3,
                         number_of_times: 2
                     }, weekAgo, weekFromNow, [
-                        takeOn(weekAgo, { exactly : 2 }),
-                        takeOn(moment(weekAgo).add(3, "days"), { exactly : 2 }),
-                        takeOn(moment(weekAgo).add(6, "days"), { exactly : 2 }),
-                        takeOn(moment(weekAgo).add(9, "days"), { exactly : 2 }),
-                        takeOn(moment(weekAgo).add(12, "days"), { exactly : 2 })
+                        takeOn(weekAgo, { exactly: 2 }),
+                        takeOn(moment(weekAgo).add(3, "days"), { exactly: 2 }),
+                        takeOn(moment(weekAgo).add(6, "days"), { exactly: 2 }),
+                        takeOn(moment(weekAgo).add(9, "days"), { exactly: 2 }),
+                        takeOn(moment(weekAgo).add(12, "days"), { exactly: 2 })
                     ]);
                 });
                 it("handles a stop_date", function () {
@@ -209,8 +208,8 @@ describe("Medications", function () {
                         number_of_times: 2,
                         stop_date: moment(weekAgo).add(5, "days")
                     }, weekAgo, weekFromNow, [
-                        takeOn(weekAgo, { exactly : 2 }),
-                        takeOn(moment(weekAgo).add(3, "days"), { exactly : 2 })
+                        takeOn(weekAgo, { exactly: 2 }),
+                        takeOn(moment(weekAgo).add(3, "days"), { exactly: 2 })
                     ]);
                 });
             });
@@ -269,7 +268,7 @@ describe("Medications", function () {
                             takeAt(moment(today).add(6, "days"), "12:00"),
                             takeAt(moment(today).add(6, "days"), "15:15"),
                             takeAt(moment(today).add(6, "days"), "22:00"),
-                            takeAt(moment(tomorrow).add(6, "days"), "04:00"),
+                            takeAt(moment(tomorrow).add(6, "days"), "04:00")
                         ], {
                             wake: "12:00",
                             lunch: "15:00",
@@ -343,7 +342,7 @@ describe("Medications", function () {
                     return check({
                         type: "regularly",
                         frequency: 1,
-                        interval: 480,
+                        interval: 480
                     }, today, tomorrow, [
                         takeAt(today, "09:00"),
                         takeAt(today, "17:00"),
@@ -362,7 +361,7 @@ describe("Medications", function () {
                     return check({
                         type: "regularly",
                         frequency: 1,
-                        interval: 480,
+                        interval: 480
                     }, today, tomorrow, [
                         takeAt(today, "08:00"),
                         takeAt(today, "16:00"),
@@ -391,11 +390,10 @@ describe("Medications", function () {
         // journal entries, adherence events are sent in ISO8601 UTC
         describe("handles timezones", function () {
             describe("with a patient in EST", function () {
-                var user, patient, medication;
+                var patient, medication;
                 before(function () {
                     // create and store patient
                     return patients.testMyPatient({}).then(function (p) {
-                        user = p.user;
                         patient = p;
                     }).then(function () {
                         // set timezone to EST all year round (no EDT in Jamaica)

@@ -6,7 +6,6 @@ var chakram     = require("chakram"),
 var expect = chakram.expect;
 
 describe("Patients", function () {
-    common.beforeEach();
     describe("Remove Single Patient (DELETE /patients/:patientid)", function () {
         // simple endpoint
         var remove = function (patientId, accessToken) {

@@ -5,13 +5,11 @@ var chakram         = require("chakram"),
     Q               = require("q"),
     auth            = require("../common/auth.js"),
     patients        = require("../patients/common.js"),
-    fixtures        = require("./fixtures.js"),
-    common          = require("./common.js");
+    fixtures        = require("./fixtures.js");
 
 var expect = chakram.expect;
 
 describe("Journal", function () {
-    common.beforeEach();
     describe("Add New Journal Entry (POST /patients/:patientid/journal)", function () {
         // basic endpoint
         var create = function (data, patientId, accessToken) {
@@ -80,13 +78,19 @@ describe("Journal", function () {
             return expect(createMyPatientEntry({ medication_ids: [] })).to.be.a.journal.createSuccess;
         });
         it("does not allow invalid medication IDs", function () {
-            return expect(createMyPatientEntry({ medication_ids: ["foo"] })).to.be.an.api.error(400, "invalid_medication_id");
+            return expect(createMyPatientEntry({
+                medication_ids: ["foo"]
+            })).to.be.an.api.error(400, "invalid_medication_id");
         });
         it("does not allow non-array medication IDs", function () {
-            return expect(createMyPatientEntry({ medication_ids: "bar" })).to.be.an.api.error(400, "invalid_medication_id");
+            return expect(createMyPatientEntry({
+                medication_ids: "bar"
+            })).to.be.an.api.error(400, "invalid_medication_id");
         });
         it("does not allow medication IDs not corresponding to real medications", function() {
-            return expect(createMyPatientEntry({ medication_ids: [9999] })).to.be.an.api.error(400, "invalid_medication_id");
+            return expect(createMyPatientEntry({
+                medication_ids: [9999]
+            })).to.be.an.api.error(400, "invalid_medication_id");
         });
         describe("with medications setup", function () {
             var user, patient, otherPatient;

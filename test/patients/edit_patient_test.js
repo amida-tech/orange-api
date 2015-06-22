@@ -7,7 +7,6 @@ var chakram     = require("chakram"),
 var expect = chakram.expect;
 
 describe("Patients", function () {
-    common.beforeEach();
     describe("Update Single Patient (PUT /patients/:patientid)", function () {
         // simple endpoint
         var edit = function (data, patientId, accessToken) {

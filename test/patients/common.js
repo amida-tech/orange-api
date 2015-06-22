@@ -5,37 +5,32 @@ var chakram     = require("chakram"),
     curry       = require("curry"),
     Q           = require("q"),
     auth        = require("../common/auth.js"),
+    common      = require("../common/chakram.js"),
     fixtures    = require("./fixtures.js");
 
 var expect = chakram.expect;
 
-// *must* do this on beforeEach: we may be overriding it on before
-module.exports.beforeEach = function () {
-    beforeEach(function () {
-        // namespacing
-        chakram.addProperty("patient", function () {} );
-
-        // verify successful responses
-        /*eslint-disable key-spacing */
-        var patientSchema = {
-            required: ["id", "name", "access", "success"],
-            properties: {
-                id:     { type: "number" },
-                name:   { type: "string" },
-                access: { type: "string" }
-            }
-        };
-        /*eslint-enable key-spacing */
-        chakram.addProperty("success", function (respObj) {
-            expect(respObj).to.be.an.api.getSuccess;
-            expect(respObj).to.have.schema(patientSchema);
-        });
-        chakram.addProperty("createSuccess", function (respObj) {
-            expect(respObj).to.be.an.api.postSuccess;
-            expect(respObj).to.have.schema(patientSchema);
-        });
-    });
+// verify successful responses
+/*eslint-disable key-spacing */
+var patientSchema = {
+    required: ["id", "name", "access", "success"],
+    properties: {
+        id:     { type: "number" },
+        name:   { type: "string" },
+        access: { type: "string" }
+    }
 };
+/*eslint-enable key-spacing */
+common.addApiChain("patient", {
+    "createSuccess": function (respObj) {
+        expect(respObj).to.be.an.api.postSuccess;
+        expect(respObj).to.have.schema(patientSchema);
+    },
+    "success": function (respObj) {
+        expect(respObj).to.be.an.api.getSuccess;
+        expect(respObj).to.have.schema(patientSchema);
+    }
+});
 
 // endpoint should be a function taking (patientId, accessToken)
 // we verify it needs a valid patient ID

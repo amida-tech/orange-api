@@ -5,13 +5,11 @@ var chakram         = require("chakram"),
     Q               = require("q"),
     auth            = require("../common/auth.js"),
     patients        = require("../patients/common.js"),
-    fixtures        = require("./fixtures.js"),
-    common          = require("./common.js");
+    fixtures        = require("./fixtures.js");
 
 var expect = chakram.expect;
 
 describe("Entries", function () {
-    common.beforeEach();
     describe("Remove Entry (DELETE /patients/:patientid/entries/:journalid)", function () {
         // basic endpoint
         var remove = function (journalId, patientId, accessToken) {

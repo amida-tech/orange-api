@@ -51,3 +51,33 @@ before(function () {
         expect(respObj).to.be.an.api.genericSuccess(200);
     });
 });
+
+module.exports.addApiChain = function (slug, properties) {
+    var plugin = function (chai, utils) {
+        // flag when we're inside this chain for namespacing
+        utils.addChainableMethod(chai.Assertion.prototype, slug, null, function () {
+            utils.flag(this, slug, true);
+        });
+
+        // add each property
+        /*eslint-disable no-loop-func */
+        for (var key in properties) {
+            (function (name) {
+                utils.overwriteProperty(chai.Assertion.prototype, name, function (_super) {
+                    return function () {
+                        if (utils.flag(this, slug)) {
+                            // if we're inside the relevant chain
+                            var respObj = utils.flag(this, "object");
+                            properties[name](respObj);
+                        } else {
+                            // otherwise don't check anything
+                            _super.call(this);
+                        }
+                    };
+                });
+            })(key);
+        }
+        /*eslint-enable no-loop-func */
+    };
+    chakram.initialize(plugin);
+};
