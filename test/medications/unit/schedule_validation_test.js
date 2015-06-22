@@ -5,7 +5,9 @@ var expect = chai.expect;
 
 var parseSchedule = function (schedule) {
     var parser = new ScheduleParser();
-    return parser.parse(schedule);
+    var valid = parser.parse(schedule, { tz: "America/New_York" });
+    if (!valid) return false;
+    return parser.format();
 };
 
 // from http://jamesroberts.name to convert camelcase to snoke case
@@ -18,13 +20,7 @@ describe("Medications", function () {
         // checks validation, and further check it's parsed into
         // the same object as passed modulo camelcase/snakecase
         var accepts = function (data) {
-            // convert camelcase keys back to snakecase
-            var parsed = parseSchedule(data);
-            var output = {};
-            for (var key in parsed) {
-                output[toSnakeCase(key)] = parsed[key];
-            }
-            expect(output).to.deep.equal(data);
+            acceptsManual(data, data);
         };
         // rather than trying to guess what the output should be,
         // explicitly set it

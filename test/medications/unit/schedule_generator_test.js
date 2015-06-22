@@ -1,9 +1,10 @@
 "use strict";
 var chai        = require("chai"),
-    moment      = require("moment"),
+    moment      = require("moment-timezone"),
     curry       = require("curry"),
     mongoose    = require("mongoose"),
     Q           = require("q"),
+    patients    = require("../../patients/common.js"),
     errors      = require("../../../lib/errors.js").ERRORS;
 var expect = chai.expect;
 
@@ -45,7 +46,9 @@ describe("Medications", function () {
         // helpers to get a datetime object given an HH:MM on a specific day
         var yesterday, today, tomorrow, future, past, weekAgo, weekFromNow;
         before(function () {
-            today = moment(moment().format("YYYY-MM-DD"), "YYYY-MM-DD");
+            // for testing we assume we're in a UTC timezone rather than having
+            // to explicitly pass the system timezone
+            today = moment.tz(moment().format("YYYY-MM-DD"), "YYYY-MM-DD", "Etc/UTC");
             yesterday = moment(today).subtract(1, "days");
             tomorrow = moment(today).add(1, "days");
             weekAgo = moment(today).subtract(7, "days");
@@ -59,7 +62,6 @@ describe("Medications", function () {
         // time in HH:MM
         var takeAt = function (date, time) {
             var parts = time.split(":", 2);
-            date.local();
             date.hours(parts[0]);
             date.minutes(parts[1]);
             return {
@@ -372,23 +374,95 @@ describe("Medications", function () {
                 });
             });
         });
-    });
 
-    // TODO: put this into API docs: Timezone Policy
-    // user habits are entered as HH:MM local time and a timezone is sent
-    // medication schedules contain HH:MMs: they're local time and correspond to the timezone in habits
-    // start and end date for schedule generation are sent without time: they're assumed to be in the
-    //      **local** timezone of the user
-    // when moving timezone, the new timezone can be PUT to /habits and
-    //      HH:MM user habits
-    //      HH:MM medication input schedules
-    // are changed
-    //
-    // we want daylight savings handling, so rather than storing UTC offset we store a TZ zone name
-    // e.g., Europe/London
-    //
-    // journal entries, adherence events are sent in ISO8601 UTC
-    describe("handles timezone changes", function () {
-        it("should handle them");
+        // TODO: put this into API docs: Timezone Policy
+        // user habits are entered as HH:MM local time and a timezone is sent
+        // medication schedules contain HH:MMs: they're local time and correspond to the timezone in habits
+        // start and end date for schedule generation are sent without time: they're assumed to be in the
+        //      **local** timezone of the user
+        // when moving timezone, the new timezone can be PUT to /habits and
+        //      HH:MM user habits
+        //      HH:MM medication input schedules
+        // are changed
+        //
+        // we want daylight savings handling, so rather than storing UTC offset we store a TZ zone name
+        // e.g., Europe/London
+        //
+        // journal entries, adherence events are sent in ISO8601 UTC
+        describe("handles timezones", function () {
+            describe("with a patient in EST", function () {
+                var user, patient, medication;
+                before(function () {
+                    // create and store patient
+                    return patients.testMyPatient({}).then(function (p) {
+                        user = p.user;
+                        patient = p;
+                    }).then(function () {
+                        // set timezone to EST all year round (no EDT in Jamaica)
+                        patient.tz = "America/Jamaica";
+                        // set sleep habits
+                        patient.wake = "12:00";
+                        patient.dinner = "19:00";
+                        patient.sleep = "04:00";
+                        return Q.ninvoke(patient, "save");
+                    }).then(function () {
+                        // create a medication for the patient with a schedule
+                        // specified by both times and habits for completeness
+                        return Q.ninvoke(patient, "createMedication", {
+                            name: "test medication",
+                            schedule: {
+                                type: "regularly",
+                                frequency: 1,
+                                times_of_day: ["after_sleep", "14:00", "before_dinner", "before_sleep"]
+                            }
+                        });
+                    }).then(function (m) {
+                        // store medication
+                        medication = m;
+                    });
+                });
+
+                it("should return an EST schedule", function () {
+                    var schedule = medication.generateSchedule(today, tomorrow, patient.habits);
+                    // takeAt takes UTC times
+                    return expect(schedule).to.deep.equal([
+                        takeAt(today, "17:00"),
+                        takeAt(today, "19:00"),
+                        takeAt(tomorrow, "00:00"),
+                        takeAt(tomorrow, "09:00"),
+                        takeAt(tomorrow, "17:00"),
+                        takeAt(tomorrow, "19:00"),
+                        takeAt(moment(today).add(2, "days"), "00:00"),
+                        takeAt(moment(today).add(2, "days"), "09:00")
+                    ]);
+                });
+
+                describe("when timezone updated to PST", function () {
+                    before(function () {
+                        // PST all year round (no PDT)
+                        patient.tz = "America/Metlakatla";
+                    });
+
+                    // habits should not change time modulo local time
+                    // real times should change time
+                    it("should return a PST schedule", function () {
+                        var schedule = medication.generateSchedule(today, tomorrow, patient.habits);
+                        return expect(schedule).to.deep.equal([
+                            takeAt(today, "19:00"), // 2PM *EST* in UTC
+                            takeAt(today, "20:00"), // after sleep: 12PM PST in UTC
+                            takeAt(tomorrow, "03:00"), // before dinner: 7PM PST in UTC
+                            takeAt(tomorrow, "12:00"), // before sleep: 4AM PST in uTC
+                            takeAt(tomorrow, "19:00"),
+                            takeAt(tomorrow, "20:00"),
+                            takeAt(moment(today).add(2, "days"), "03:00"),
+                            takeAt(moment(today).add(2, "days"), "12:00")
+                        ]);
+                    });
+                });
+            });
+
+
+            it("should do something with time zones and start/end schedule dates and overlaps etc");
+        });
     });
 });
