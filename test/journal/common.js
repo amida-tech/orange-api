@@ -10,7 +10,7 @@ var expect = chakram.expect;
 // verify successful responses
 /*eslint-disable key-spacing */
 var entrySchema = {
-    required: ["id", "date", "text"],
+    required: ["id", "date", "text", "mood", "hashtags"],
     properties: {
         id:             { type: "number" },
         date:           { type: "string" },
@@ -19,6 +19,13 @@ var entrySchema = {
             type:       "array",
             items:  {
                 type:   "number"
+            }
+        },
+        mood:           { type: "string" },
+        hashtags:       {
+            type:       "array",
+            items:  {
+                type:   "string"
             }
         }
     }

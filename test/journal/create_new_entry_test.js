@@ -27,6 +27,8 @@ describe("Journal", function () {
                 if ("date" in data) output.date = data.date; // runs on data.date = undefined as well
                 // likewise for med IDs
                 if ("medication_ids" in data) output.medication_ids = data.medication_ids;
+                // likewise for hashtags (to check error)
+                if ("hashtags" in data) output.hashtags = data.hashtags;
                 return create(output, patient._id, patient.user.accessToken);
             });
         };
@@ -62,15 +64,57 @@ describe("Journal", function () {
         it("requires a nonblank date", function () {
             return expect(createMyPatientEntry({ date: "" })).to.be.an.api.error(400, "date_required");
         });
+        it("rejects invalid dates", function () {
+            return expect(createMyPatientEntry({ date: "foobar" })).to.be.an.api.error(400, "invalid_date");
+        });
+
         it("requires a text", function () {
             return expect(createMyPatientEntry({ text: undefined })).to.be.an.api.error(400, "text_required");
         });
         it("requires a nonblank text", function () {
             return expect(createMyPatientEntry({ text: "" })).to.be.an.api.error(400, "text_required");
         });
-        it("rejects invalid dates", function () {
-            return expect(createMyPatientEntry({ date: "foobar" })).to.be.an.api.error(400, "invalid_date");
+
+        it("doesn't require a mood", function () {
+            return expect(createMyPatientEntry({ mood: undefined })).to.be.a.journal.createSuccess;
         });
+        it("allows a blank mood", function () {
+            return expect(createMyPatientEntry({ mood: "" })).to.be.a.journal.createSuccess;
+        });
+        it("allows a mood", function () {
+            return expect(createMyPatientEntry({ mood: "Happy!" })).to.be.a.journal.createSuccess;
+        });
+
+        it("allows + parses text with no hashtags in", function () {
+            return createMyPatientEntry({ text: "no hashtags are present in here!" }).then(function (response) {
+                expect(response).to.be.a.journal.createSuccess;
+                expect(response.body.hashtags).to.deep.equal([]);
+            });
+        });
+        it("allows + parses text with no hashtags in", function () {
+            return createMyPatientEntry({ text: "I #love #my medic#tions and #hashtags!!" }).then(function (response) {
+                expect(response).to.be.a.journal.createSuccess;
+                expect(response.body.hashtags).to.deep.equal(["love", "my", "hashtags"]);
+            });
+        });
+        it("ignores a hashtags field sent", function () {
+            return createMyPatientEntry({
+                text: "I #love #my medic#tions and #hashtags!!",
+                hashtags: ["foo", "bar"]
+            }).then(function (response) {
+                expect(response).to.be.a.journal.createSuccess;
+                expect(response.body.hashtags).to.deep.equal(["love", "my", "hashtags"]);
+            });
+        });
+        it("ignores duplicate hashtags", function () {
+            return createMyPatientEntry({
+                text: "#hashtags #so #hashtags addictive #hashtags"
+            }).then(function (response) {
+                expect(response).to.be.a.journal.createSuccess;
+                expect(response.body.hashtags).to.deep.equal(["hashtags", "so"]);
+            });
+        });
+
         it("allows no medication IDs", function () {
             return expect(createMyPatientEntry({ medication_ids: undefined })).to.be.a.journal.createSuccess;
         });

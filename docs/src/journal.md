@@ -4,6 +4,9 @@ While medications can be tagged in journal entries, entries that correspond
 exactly to adherences should probably just be stored in the `notes` field of an
 adherence event.
 
+*Hashtags* are parsed from each journal entry and returned in a `hashtags` array of
+`string`s.
+
 ## Journal Entries [/patients/{patientid}/journal]
 ### Create an Entry [POST]
 Store details of a new journal entry (the current user will need write access to
@@ -27,6 +30,10 @@ the patient).
 
         optional list of medication IDs to 'tag' the journal entry with
 
+    + mood (string, optional)
+    
+        mood of the patient as they wrote the journal entry
+
 + Request
     + Headers
 
@@ -36,8 +43,10 @@ the patient).
     
             {
                 date: "2015-05-31T19:27:09+00:00",
-                text: "Had an amazing day today, perhaps thanks in part to taking one more Adderall than I was meant to this morning!!",
+                text: "Had an amazing day today, perhaps thanks in part to taking one more #Adderall than I was meant to this morning!! I #love you #Orange guys soooo much it's insane, but I should probably #go now to avoid #typing #too #much #hashtags #omgilovehashtags #Adderall",
                 medication_ids: [1,4],
+                mood: "Happy",
+                hashtags: ["Adderall", "love", "Orange", "go", "typing", "too", "much", "hashtags", "omgilovehashtags"],
                 success: true
             }
 
@@ -58,8 +67,10 @@ the patient).
             {
                 id: 1,
                 date: "2015-05-31T19:27:09+00:00",
-                text: "Had an amazing day today, perhaps thanks in part to taking one more Adderall than I was meant to this morning!!",
+                text: "Had an amazing day today, perhaps thanks in part to taking one more #Adderall than I was meant to this morning!! I #love you #Orange guys soooo much it's insane, but I should probably #go now to avoid #typing #too #much #hashtags #omgilovehashtags #Adderall",
                 medication_ids: [1,4],
+                mood: "Happy",
+                hashtags: ["Adderall", "love", "Orange", "go", "typing", "too", "much", "hashtags", "omgilovehashtags"],
                 success: true
             }
 
@@ -133,7 +144,9 @@ object. The current user will need read access to the patient's data.
                     {
                         id: 1,
                         date: "2015-05-31T19:27:09+00:00",
-                        text: "Had an amazing day today, perhaps thanks in part to taking one more Adderall than I was meant to this morning!!",
+                        text: "Had an amazing day today, perhaps thanks in part to taking one more Adderall than I was meant to this morning!! I #love you #Orange guys soooo much it's insane, but I should probably #go now to avoid #typing #too #much #hashtags #omgilovehashtags #Adderall",
+                        mood: "Happy",
+                        hashtags: ["Adderall", "love", "Orange", "go", "typing", "too", "much", "hashtags", "omgilovehashtags"],
                         medication_ids: [1,4]
                     },
                     ...
@@ -176,7 +189,9 @@ patient's data.
             {
                 id: 1,
                 date: "2015-05-31T19:27:09+00:00",
-                text: "Had an amazing day today, perhaps thanks in part to taking one more Adderall than I was meant to this morning!!",
+                text: "Had an amazing day today, perhaps thanks in part to taking one more Adderall than I was meant to this morning!! I #love you #Orange guys soooo much it's insane, but I should probably #go now to avoid #typing #too #much #hashtags #omgilovehashtags #Adderall",
+                mood: "Happy",
+                hashtags: ["Adderall", "love", "Orange", "go", "typing", "too", "much", "hashtags", "omgilovehashtags"],
                 medications: [
                     {
                         id: 1,
@@ -218,6 +233,10 @@ user will need write access to the patient's data.
 
         String to change the actual text of the entry to. Cannot be blank if present.
 
+    + mood (string, optional)
+    
+        mood of the patient as they wrote the journal entry
+
 + Request
     + Headers
 
@@ -228,6 +247,7 @@ user will need write access to the patient's data.
             {
                 date: "2015-05-31T19:27:09+00:00",
                 text: "Had an absolute amazeballs day today, omg I love Adderall so much it's the greatest thing ever.",
+                mood: "amazeballs",
                 medication_ids: [2,3,8,9,10]
             }
 
@@ -249,6 +269,8 @@ user will need write access to the patient's data.
                 id: 1,
                 date: "2015-05-31T19:27:09+00:00",
                 text: "Had an absolute amazeballs day today, omg I love Adderall so much it's the greatest thing ever.",
+                mood: "amazeballs",
+                hashtags: [],
                 medication_ids: [2,3,8,9,10]
                 success: true
             }
@@ -284,6 +306,8 @@ Remove a single journal entry. The current user will need write access to the pa
                 id: 1,
                 date: "2015-05-31T19:27:09+00:00",
                 text: "Had an absolute amazeballs day today, omg I love Adderall so much it's the greatest thing ever.",
+                mood: "amazeballs",
+                hashtags: [],
                 medication_ids: [2,3,8,9,10]
                 success: true
             }
