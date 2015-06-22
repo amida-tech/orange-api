@@ -11,7 +11,6 @@ var chakram         = require("chakram"),
 var expect = chakram.expect;
 
 describe("Journal", function () {
-    common.beforeEach();
     describe("View Entry (GET /patients/:patientid/journal/:journalid)", function () {
         // basic endpoint
         var show = function (journalId, patientId, accessToken) {

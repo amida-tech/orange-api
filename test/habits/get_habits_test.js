@@ -2,13 +2,11 @@
 var chakram     = require("chakram"),
     util        = require("util"),
     auth        = require("../common/auth.js"),
-    patients    = require("../patients/common.js"),
-    common      = require("./common.js");
+    patients    = require("../patients/common.js");
 
 var expect = chakram.expect;
 
 describe("Habits", function () {
-    common.beforeEach();
     describe("View Patient Habits (/patients/:patientid/habits)", function () {
         // basic endpoint
         var show = function (patientId, accessToken) {

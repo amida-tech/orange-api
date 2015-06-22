@@ -5,7 +5,6 @@ var chakram     = require("chakram"),
 var expect = chakram.expect;
 
 describe("Patients", function () {
-    common.beforeEach();
     describe("Show Single Patient (GET /patients/:patientid)", function () {
         // given a patient and user, try and show the user in the frontend
         var showPatient = function (patient) {

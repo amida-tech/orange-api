@@ -4,13 +4,11 @@ var chakram     = require("chakram"),
     curry       = require("curry"),
     Q           = require("q"),
     auth        = require("../common/auth.js"),
-    patients    = require("../patients/common.js"),
-    common      = require("./common.js");
+    patients    = require("../patients/common.js");
 
 var expect = chakram.expect;
 
 describe("Habits", function () {
-    common.beforeEach();
     describe("SET Patient Habits (PUT /patients/:patientid/habits)", function () {
         // basic endpoint
         var edit = function (modifications, patientId, accessToken) {

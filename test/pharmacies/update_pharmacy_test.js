@@ -11,7 +11,6 @@ var chakram         = require("chakram"),
 var expect = chakram.expect;
 
 describe("Pharmacies", function () {
-    common.beforeEach();
     describe("Edit Pharmacy (PUT /patients/:patientid/pharmacies/:pharmacyid)", function () {
         // basic endpoint
         var update = function (data, pharmacyId, patientId, accessToken) {

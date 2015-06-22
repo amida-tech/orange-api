@@ -2,33 +2,11 @@
 var chakram     = require("chakram"),
     Q           = require("q"),
     fixtures    = require("./fixtures.js"),
-    common      = require("./common.js"),
     token       = require("./common.js").token;
 var expect = chakram.expect;
 
 describe("Users", function () {
-    common.beforeEach();
     describe("Retrieve Authentication Token (POST /auth/token)", function () {
-        // setup authentication-specific chakram methods
-        // must be beforeEach because the parent chakram methods we need to override are in
-        // a (higher) beforeEach
-        beforeEach(function () {
-            // namespacing
-            chakram.addProperty("authentication", function () {} );
-
-            // verify successful responses
-            var tokenSchema = {
-                required: ["access_token"],
-                properties: {
-                    access_token: { type: "string" }
-                }
-            };
-            chakram.addProperty("success", function (respObj) {
-                expect(respObj).to.be.an.api.postSuccess;
-                expect(respObj).to.have.schema(tokenSchema);
-            });
-        });
-
         // valid user to try testing with: beforeEach to avoid lock out errors
         var user;
         beforeEach(function () {
