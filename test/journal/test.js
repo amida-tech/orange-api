@@ -1,4 +1,9 @@
 "use strict";
 describe("Journal", function () {
-    it("should be tested");
+    describe("index endpoint", function () {
+        it("should be tested");
+    });
+    describe("edit endpoint", function () {
+        it("should be tested");
+    });
 });

@@ -73,7 +73,8 @@ patient's data.
     + `invalid_access_token` (401) - the access token specified is invalid
     + `unauthorized` (403) - the current user does not have write access to this patient
     + `invalid_patient_id` (404) - a patient with the specified ID was not found
-    - `invalid_hours` (400) - the opening/closing hours dictionary is not in the
+    + `name_required` (400) - a non-blank name must be provided
+    + `invalid_hours` (400) - the opening/closing hours dictionary is not in the
     form specified above
 
     + Body
@@ -297,6 +298,7 @@ current user will need write access to the patient's data.
     - `invalid_hours` (400) - the opening/closing hours dictionary is not in the
     form specified above in `POST`
     + `invalid_pharmacy_id` (404) - a pharmacy with that ID was not found
+    + `name_required` (400) - the name cannot be changed to a blank name
     
     + Body
 

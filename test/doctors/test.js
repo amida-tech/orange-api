@@ -1,4 +1,4 @@
 "use strict";
 describe("Doctors", function () {
-    it("should be tested");
+    it("list endpoint should be tested");
 });
