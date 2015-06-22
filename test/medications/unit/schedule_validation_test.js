@@ -5,7 +5,8 @@ var expect = chai.expect;
 
 var parseSchedule = function (schedule) {
     var parser = new ScheduleParser();
-    var valid = parser.parse(schedule, { tz: "America/New_York" });
+    var valid = parser.parse(schedule, { tz: "Europe/London" });
+    console.log(valid);
     if (!valid) return false;
     return parser.format();
 };
