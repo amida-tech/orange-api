@@ -1,63 +1,108 @@
 "use strict";
-var util        = require("util"),
-    async       = require("async"),
-    factories   = require("../common/factories.js"),
-    requests    = require("../common/requests.js"),
-    Crud        = require("../common/crud.js"),
+var chakram     = require("chakram"),
+    curry       = require("curry"),
     auth        = require("../common/auth.js"),
     common      = require("./common.js");
 
-var crud = new Crud("Patient");
+var expect = chakram.expect;
 
-// check we successfuly edit the patient and return a response
-var editsSuccessfully = function (patientId, data) {
-    crud.successfullyEdits(common.endpoint(patientId), ["id", "name", "access"], data, this.accessTokenGetter);
-    // TODO: check access
-};
-// check we can edit successfully for all fields given we should have access to a patient
-var authorizedPatientChecker = function (patientId, access) {
-    describe("when changing name", function () {
-        editsSuccessfully.bind(this)(patientId, {name: "newname"});
-    }.bind(this));
+describe("Patients", function () {
+    common.beforeEach();
+    describe("Update Single Patient (PUT /patients/:patientid)", function () {
+        // simple endpoint
+        var edit = function (data, patientId, accessToken) {
+            var headers = auth.genAuthHeaders(accessToken);
+            return chakram.put("http://localhost:3000/v1/patients/" + patientId, data, headers);
+        };
 
-    describe("when changing name to blank", function () {
-        editFails.bind(this)(patientId, {name: ""}, 400, "name_required", this.accessTokenGetter);
-    }.bind(this));
+        // given a patient and user, try and edit the user
+        var editPatient = function (modifications, patient) {
+            return edit(modifications, patient._id, patient.user.accessToken);
+        };
 
-    // by virtue of common.requiresPatientAuthorization, we're only calling this on patients
-    // we have write access to
-    describe("when changing access", function () {
-        describe("changing to invalid access", function () {
-            editFails.bind(this)(patientId, {access: "invalidaccess"}, 400, "invalid_access", this.accessTokenGetter);
-        }.bind(this));
+        // helpers to create patients before removing them
+        var editMyPatient = function (data, modifications) {
+            return common.testMyPatient(data).then(curry(editPatient)(modifications));
+        };
+        var editOtherPatient = function (data, access, modifications) {
+            return common.testOtherPatient(data, access).then(curry(editPatient)(modifications));
+        };
 
-        describe("changing to read access", function () {
-            editsSuccessfully.bind(this)(patientId, {access: "read"});
-            // TODO: check access
-        }.bind(this));
+        common.itRequiresAuthentication(curry(edit)({}));
+        common.itRequiresValidPatientId(curry(edit)({}));
 
-        describe("changing to no access", function () {
-            editsSuccessfully.bind(this)(patientId, {access: "none"});
-            // TODO: check access
-        }.bind(this));
-    }.bind(this));
-};
+        it("should not let me edit patients shared read-only", function () {
+            return expect(editOtherPatient({}, "read", {})).to.be.an.api.error(403, "unauthorized");
+        });
+        it("should not let me edit patients not shared with me", function () {
+            return expect(editOtherPatient({}, "none", {})).to.be.an.api.error(403, "unauthorized");
+        });
 
-// check we get an error response with the specified error
-var editFails = function (patientId, data, responseCode, errors, accessToken) {
-    crud.failsToEdit(common.endpoint(patientId), data, responseCode, errors, accessToken);
-};
-// check we can't perform even a basic edit on a patient (to test authorization)
-var basicEditFails = function (patientId, responseCode, errors, accessToken) {
-    editFails(patientId, {name: 'newname'}, responseCode, errors, accessToken);
-};
+        // dry up so we can do the same thing when a patient is shared with us
+        var allowsChangingAccess = function () {
+            describe("changing my access", function () {
+                // patient ID of patient we can access, and access token
+                var patientId, accessToken;
+                beforeEach(function () {
+                    return auth.createTestUser().then(common.createMyPatient({})).then(function (patient) {
+                        patientId = patient._id;
+                        accessToken = patient.user.accessToken;
+                    });
+                });
 
-describe("edit a patient (PUT /patients/:id)", function () {
-    // setup test patients
-    auth.setupTestUser(this);
-    // creating 3 patients so we can play around with changing statuses above
-    common.setupTestPatients(this.user, 3, this); // auth.setupTestUser has to be called first
+                // checker functions to check access was actually changed
+                var checkWrite = function () {
+                    return expect(edit({}, patientId, accessToken)).to.be.a.patient.success;
+                };
+                var checkWriteFails = function () {
+                    return expect(edit({}, patientId, accessToken)).to.be.an.api.error(403, "unauthorized");
+                };
+                var checkRead = function () {
+                    return expect(common.show(patientId, accessToken)).to.be.a.patient.success;
+                };
+                var checkDeleted = function () {
+                    return expect(common.show(patientId, accessToken)).to.be.an.api.error(404, "invalid_patient_id");
+                };
 
-    // wrapper that passes the relevant patients to us
-    common.requiresPatientAuthorization('write', basicEditFails, authorizedPatientChecker, this);
+                describe("to write", function () {
+                    var endpoint;
+                    beforeEach(function () { endpoint = edit({ access: "write" }, patientId, accessToken); });
+
+                    it("should be successful", function () { return expect(endpoint).to.be.a.patient.success; });
+                    it("should still give me access", function () { return endpoint.then(checkWrite); });
+                });
+
+                describe("to read", function () {
+                    var endpoint;
+                    beforeEach(function () { endpoint = edit({ access: "read" }, patientId, accessToken); });
+
+                    it("should be successful", function () { return expect(endpoint).to.be.a.patient.success; });
+                    it("should still give me read access", function () { return endpoint.then(checkRead); });
+                    it("should not give write access anymore", function () { return endpoint.then(checkWriteFails); });
+                });
+
+                describe("to none", function () {
+                    var endpoint;
+                    beforeEach(function () { endpoint = edit({ access: "none" }, patientId, accessToken); });
+
+                    it("should be successful", function () { return expect(endpoint).to.be.a.patient.success; });
+                    it("should delete the patient", function () { return endpoint.then(checkDeleted); });
+                });
+            });
+        };
+
+        describe("with my patient", function () {
+            it("should let me change the name", function () {
+                return expect(editMyPatient({}, { name: "newname" })).to.be.a.patient.success;
+            });
+
+            allowsChangingAccess();
+        });
+        describe("with a patient I have write access to", function () {
+            it("should let me change the name", function () {
+                return expect(editOtherPatient({}, "write", { name: "newname" })).to.be.a.patient.success;
+            });
+            allowsChangingAccess();
+        });
+    });
 });

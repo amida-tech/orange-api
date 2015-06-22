@@ -12,16 +12,17 @@
         "no-use-before-define": [2, 'nofunc'],
         "max-len": [1, 120, 4],
         "new-cap": 0,
+        "no-unused-expressions": 0,
         "smells/no-switch": 1,
         "smells/no-complex-switch-case": 1,
         "smells/no-setinterval": 1,
-        "smells/no-this-assign": 1,
         "smells/no-complex-string-concat": 1,
         "no-multi-spaces": [2, {
             "exceptions": {
                 "VariableDeclarator": true
             }
-        }]
+        }],
+        "no-unused-vars": 1
     },
     "plugins": [
         "smells"

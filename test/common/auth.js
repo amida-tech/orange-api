@@ -1,56 +1,78 @@
 "use strict";
-var mongoose    = require("mongoose"),
-    async       = require("async"),
-    factories   = require("../common/factories.js");
 
-// don't save
-module.exports.newUser = function () {
-    // mongoose setup on before hook, so find models inside
-    // functions
-    var User = mongoose.model("User");
-    return new User(factories.user());
-};
+var chakram         = require("chakram"),
+    Q               = require("q"),
+    userFixtures    = require("../users/fixtures.js");
 
-// save user and generate access token
-module.exports.saveUser = function (user, callback) {
-    async.series({user: user.save, token: user.generateSaveAccessToken.bind(user)}, function (err, data) {
-        if (err) return callback(err);
-        callback(null, user, data.token);
+var expect = chakram.expect;
+
+// exports
+var auth = {};
+
+// helper function to check an endpoint requires authentication
+// endpoint should be a function taking an access token and
+// returning a chakram promise
+auth.itRequiresAuthentication = function (endpoint) {
+    it("should require an access token", function () {
+        return expect(endpoint(undefined)).to.be.an.api.error(401, "access_token_required");
+    });
+    it("should not accept a blank access token", function () {
+        return expect(endpoint("")).to.be.an.api.error(401, "invalid_access_token");
+    });
+    it("should not accept an invalid access token", function () {
+        return expect(endpoint("foo")).to.be.an.api.error(401, "invalid_access_token");
     });
 };
 
-// save user into context, generate access token, and create getter function
-// context should probably be a describe-level this
-module.exports.setupTestUser = function (context) {
-    context.user = module.exports.newUser();
-    before(function (done) {
-        // generates access token as well
-        module.exports.saveUser(context.user, function (err, u, token) {
-            if (err) return done(err);
-            // store user and access token
-            context.user = u;
-            context.accessToken = token;
-            done();
-        });
-    });
+// generate authentication headers to send from an access token
+auth.genAuthHeaders = function (accessToken) {
+    if (typeof accessToken === "undefined") return {};
+    return {
+        headers: {
+            Authorization: "Bearer " + accessToken
+        }
+    };
+};
 
-    // we usually need to pass a getter function into e.g., our crud helper methods
-    // because we're calling those at require-time, whereas the access token hasn't been
-    // generated until load time
-    context.accessTokenGetter = function() {
-        return context.accessToken;
-    }.bind(context);
-}
-
-
-// check authentication is required for a given method
-// failMethod = helper method like changeFails from put_user_info.js
-// taking data, access token, response code and error
-module.exports.requiresAuthentication = function (failMethod) {
-    describe("with no access token", function () {
-        failMethod(401, "access_token_required", null);
+// generate access token from user, promise-style
+auth.genAccessToken = function (user) {
+    // generate access token
+    var deferred = Q.defer();
+    user.generateSaveAccessToken(function (err, t) {
+        if (err) return deferred.reject(err);
+        deferred.resolve(t);
     });
-    describe("with invalid access token", function () {
-        failMethod(401, "invalid_access_token", factories.invalidAccessToken());
+    return deferred.promise;
+};
+
+// create a new user from the factory and generate an access token,
+// returning user with user.accessToken present
+auth.createTestUser = function () {
+    var user;
+    return userFixtures.create("User").then(function (u) {
+        user = u;
+        return user;
+    }).then(auth.genAccessToken).then(function (t) {
+        user.accessToken = t;
+        return user;
     });
-}
+};
+
+// check access token is valid by GETting /user
+auth.checkTokenWorks = function (token) {
+    return function () {
+        // circular dependency so require here
+        var view = require("../users/common.js").view(token);
+        return expect(view).to.be.an.api.getSuccess;
+    };
+};
+// check access token is invalid (with `invalid_access_token' error) by GETting /user
+auth.checkTokenFails = function (token) {
+    return function () {
+        // circular dependency so require here
+        var view = require("../users/common.js").view(token);
+        return expect(view).to.be.an.api.error(401, "invalid_access_token");
+    };
+};
+
+module.exports = auth;

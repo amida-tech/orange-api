@@ -73,7 +73,8 @@ patient's data.
     + `invalid_access_token` (401) - the access token specified is invalid
     + `unauthorized` (403) - the current user does not have write access to this patient
     + `invalid_patient_id` (404) - a patient with the specified ID was not found
-    - `invalid_hours` (400) - the opening/closing hours dictionary is not in the
+    + `name_required` (400) - a non-blank name must be provided
+    + `invalid_hours` (400) - the opening/closing hours dictionary is not in the
     form specified above
 
     + Body
@@ -85,32 +86,32 @@ patient's data.
                 phone: "(617) 617-6177",
                 hours: {
                     monday: {
-                        open: "0900",
-                        close: "1700"
+                        open: "09:00",
+                        close: "17:00"
                     },
                     tuesday: {
-                        open: "0900",
-                        close: "1700"
+                        open: "09:00",
+                        close: "17:00"
                     },
                     wednesday: {
-                        open: "0900",
-                        close: "1700"
+                        open: "09:00",
+                        close: "17:00"
                     },
                     thursday: {
-                        open: "0900",
-                        close: "1700"
+                        open: "09:00",
+                        close: "17:00"
                     },
                     friday: {
-                        open: "0900",
-                        close: "1700"
+                        open: "09:00",
+                        close: "17:00"
                     },
                     saturday: {
-                        open: "0900",
-                        close: "1700"
+                        open: "09:00",
+                        close: "17:00"
                     },
                     sunday: {
-                        open: "0900",
-                        close: "1700"
+                        open: "09:00",
+                        close: "17:00"
                     }
                 },
                 success: true
@@ -216,32 +217,32 @@ to the patient's data.
                 phone: "(617) 617-6177",
                 hours: {
                     monday: {
-                        open: "0900",
-                        close: "1700"
+                        open: "09:00",
+                        close: "17:00"
                     },
                     tuesday: {
-                        open: "0900",
-                        close: "1700"
+                        open: "09:00",
+                        close: "17:00"
                     },
                     wednesday: {
-                        open: "0900",
-                        close: "1700"
+                        open: "09:00",
+                        close: "17:00"
                     },
                     thursday: {
-                        open: "0900",
-                        close: "1700"
+                        open: "09:00",
+                        close: "17:00"
                     },
                     friday: {
-                        open: "0900",
-                        close: "1700"
+                        open: "09:00",
+                        close: "17:00"
                     },
                     saturday: {
-                        open: "0900",
-                        close: "1700"
+                        open: "09:00",
+                        close: "17:00"
                     },
                     sunday: {
-                        open: "0900",
-                        close: "1700"
+                        open: "09:00",
+                        close: "17:00"
                     }
                 },
                 success: true
@@ -282,7 +283,7 @@ current user will need write access to the patient's data.
                 address: "Pharmacy Street, DC, 20052",
                 hours: {
                     tuesday: {
-                        open: "1000"
+                        open: "10:00"
                     }
                 }
             }
@@ -297,6 +298,7 @@ current user will need write access to the patient's data.
     - `invalid_hours` (400) - the opening/closing hours dictionary is not in the
     form specified above in `POST`
     + `invalid_pharmacy_id` (404) - a pharmacy with that ID was not found
+    + `name_required` (400) - the name cannot be changed to a blank name
     
     + Body
 
@@ -307,32 +309,32 @@ current user will need write access to the patient's data.
                 phone: "(716) 716-7166",
                 hours: {
                     monday: {
-                        open: "0900",
-                        close: "1700"
+                        open: "09:00",
+                        close: "17:00"
                     },
                     tuesday: {
-                        open: "1000",
-                        close: "1700"
+                        open: "10:00",
+                        close: "17:00"
                     },
                     wednesday: {
-                        open: "0900",
-                        close: "1700"
+                        open: "09:00",
+                        close: "17:00"
                     },
                     thursday: {
-                        open: "0900",
-                        close: "1700"
+                        open: "09:00",
+                        close: "17:00"
                     },
                     friday: {
-                        open: "0900",
-                        close: "1700"
+                        open: "09:00",
+                        close: "17:00"
                     },
                     saturday: {
-                        open: "0900",
-                        close: "1700"
+                        open: "09:00",
+                        close: "17:00"
                     },
                     sunday: {
-                        open: "0900",
-                        close: "1700"
+                        open: "09:00",
+                        close: "17:00"
                     }
                 },
                 success: true

@@ -1,57 +1,55 @@
 "use strict";
-var util        = require("util"),
-    async       = require("async"),
-    factories   = require("../common/factories.js"),
-    requests    = require("../common/requests.js"),
-    Crud        = require("../common/crud.js"),
-    auth        = require("../common/auth.js");
+var chakram     = require("chakram"),
+    common      = require("./common.js"),
+    fixtures    = require("./fixtures.js");
+var expect = chakram.expect;
 
-var crud = new Crud("User");
+describe("Users", function () {
+    common.beforeEach();
+    describe("Registration Endpoint (POST /user)", function () {
+        // the endpoint
+        var register = function (data) {
+            return fixtures.build("User", data).then(function (user) {
+                return chakram.post("http://localhost:3000/v1/user", user);
+            });
+        };
 
-// check registraion succeeds for a given set of user data
-var registersSuccessfully = async.apply(crud.successfullyCreates, "/user", ["email", "name"]);
-// check registration fails with the specified error for a given set of user data
-function registerFails (data, error) {
-    return crud.failsToCreate("/user", data, 400, error);
-};
-
-describe("user registration (POST /user)", function () {
-    describe("with full data", function () {
-        registersSuccessfully(factories.user());
-    });
-
-    describe("with minimum working data", function () {
-        registersSuccessfully(factories.minimumUser());
-    });
-
-    describe("with no email", function () {
-        registerFails({
-            name: factories.name(),
-            password: factories.password()
-        }, 'email_required');
-    });
-
-    describe("with no password", function () {
-        registerFails({
-            email: factories.email(),
-            name: factories.name()
-        }, 'password_required');
-    });
-
-    describe("with invalid email", function () {
-        registerFails({
-            name: factories.name(),
-            password: factories.password(),
-            email: factories.invalidEmail()
-        }, 'invalid_email');
-    });
-
-    describe("with existing user", function () {
-        var user = auth.newUser();
-        before(function (done) {
-            // save the user above
-            user.save(done);
+        // all valid data
+        it("should return a successful response", function () {
+            return expect(register()).to.be.a.user.registerSuccess;
         });
-        registerFails(user, 'user_already_exists');
+
+        // require email and password
+        it("should require an email", function () {
+            return expect(register({ email: undefined })).to.be.an.api.error(400, "email_required");
+        });
+        it("should not accept a blank email", function () {
+            return expect(register({ email: "" })).to.be.an.api.error(400, "email_required");
+        });
+        it("should require a password", function () {
+            return expect(register({ password: undefined })).to.be.an.api.error(400, "password_required");
+        });
+        it("should not accept a blank password", function () {
+            return expect(register({ password: "" })).to.be.an.api.error(400, "password_required");
+        });
+        it("should not require a name", function () {
+            return expect(register({ name: undefined })).to.be.a.user.registerSuccess;
+        });
+        it("should accept a blank name", function () {
+            return expect(register({ name: "" })).to.be.a.user.registerSuccess;
+        });
+
+        // require valid email
+        it("should not accept an invalid email", function () {
+            return expect(register({ email: "foobar" })).to.be.an.api.error(400, "invalid_email");
+        });
+
+        // duplication
+        it("should not allow duplicate email addresses", function () {
+            // create existing user then check we can't reregister with same email address
+            return fixtures.create("User").then(function (user) {
+                return expect(register({email: user.email})).to.be.an.api.error(400, "user_already_exists");
+            });
+        });
     });
 });

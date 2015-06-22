@@ -1,28 +1,48 @@
-var mongoose    = require("mongoose"),
-    expect      = require("chai").expect,
-    async       = require("async"),
+"use strict";
+var chakram     = require("chakram"),
     util        = require("util"),
-    requests    = require("../common/requests.js"),
-    factories   = require("../common/factories.js"),
     auth        = require("../common/auth.js"),
-    crud        = require("../common/crud.js"),
     patients    = require("../patients/common.js"),
     common      = require("./common.js");
 
-var keys = ["wake", "sleep", "breakfast", "lunch", "dinner"];
+var expect = chakram.expect;
 
-describe("view patient habits (GET /patients/:patientid/habits)", function () {
-    // setup test patients, users
-    auth.setupTestUser(this);
-    patients.setupTestPatients(this.user, 1, this);
+describe("Habits", function () {
+    common.beforeEach();
+    describe("View Patient Habits (/patients/:patientid/habits)", function () {
+        // basic endpoint
+        var show = function (patientId, accessToken) {
+            var url = util.format("http://localhost:3000/v1/patients/%d/habits", patientId);
+            return chakram.get(url, auth.genAuthHeaders(accessToken));
+        };
 
-    var noAuthChecker = function (patientId, responseCode, errors, accessToken) {
-        requests.failsToShow(common.endpoint(patientId), responseCode, errors, accessToken);
-    }.bind(this);
+        // given a patient and user, try and show the patient's habits
+        var showHabits = function (patient) {
+            return show(patient._id, patient.user.accessToken);
+        };
 
-    var authChecker = function (patientId) {
-        requests.successfullyShows(common.endpoint(patientId), keys, this.accessTokenGetter);
-    }.bind(this);
+        // helpers to create patients before showing their habits
+        var showMyPatientHabits = function () {
+            return patients.testMyPatient({}).then(showHabits);
+        };
+        var showOtherPatientHabits = function (access) {
+            return patients.testOtherPatient({}, access).then(showHabits);
+        };
 
-    patients.requiresPatientAuthorization("read", noAuthChecker, authChecker, this);
+        patients.itRequiresAuthentication(show);
+        patients.itRequiresValidPatientId(show);
+
+        it("should let me view my patient's habits", function () {
+            return expect(showMyPatientHabits()).to.be.a.habits.success;
+        });
+        it("should let me view the habits of a patient shared read-only", function () {
+            return expect(showOtherPatientHabits("read")).to.be.a.habits.success;
+        });
+        it("should let me view the habits of a patient shared read-write", function () {
+            return expect(showOtherPatientHabits("write")).to.be.a.habits.success;
+        });
+        it("should not let me view the habits of a patient not shared with me", function () {
+            return expect(showOtherPatientHabits("none")).to.be.an.api.error(403, "unauthorized");
+        });
+    });
 });

@@ -23,12 +23,12 @@ the `delay`s).
 
     + start_date (string, optional)
 
-        Start schedule at this date. Must be a valid ISO 8601 datetime. Defaults
+        Start schedule at this date. Must be a valid ISO 8601 YYYY-MM-DD date. Defaults
         to the current time.
 
     + end_date (string, optional)
 
-        End schedule at this date. Must be a valid ISO 8601 datetime. Defaults to exactly
+        End schedule at this date. Must be a valid ISO 8601 YYYY-MM-DD date. Defaults to exactly
         one week later than the current time.
 
     + medication_id (integer, optional)
@@ -48,6 +48,8 @@ the `delay`s).
     + `unauthorized` (403) - the current user does not have read access to this patient
     + `invalid_patient_id` (404) - a patient with the specified ID was not found
     + `invalid_medication_id` (400) - a medication with that ID was not found
+    + `invalid_start` (400) - a start date not formatted correctly as YYYY-MM-DD
+    + `invalid_end` (400) - an end date not formatted correctly as YYYY-MM-DD
 
     + Body
 

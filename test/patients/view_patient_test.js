@@ -1,29 +1,40 @@
 "use strict";
-var util        = require("util"),
-    async       = require("async"),
-    factories   = require("../common/factories.js"),
-    requests    = require("../common/requests.js"),
-    Crud        = require("../common/crud.js"),
-    auth        = require("../common/auth.js"),
+var chakram     = require("chakram"),
     common      = require("./common.js");
 
-var crud = new Crud("Patient");
+var expect = chakram.expect;
 
-// check we successfuly return a response
-var showsSuccessfully = function (patientId) {
-    crud.successfullyShows(common.endpoint(patientId), ["id", "name", "access"], this.accessTokenGetter);
-    // TODO: check access
-};
-// check we get an error response with the specified error
-var showFails = function (patientId, responseCode, errors, accessToken) {
-    crud.failsToShow(common.endpoint(patientId), responseCode, errors, accessToken);
-};
+describe("Patients", function () {
+    common.beforeEach();
+    describe("Show Single Patient (GET /patients/:patientid)", function () {
+        // given a patient and user, try and show the user in the frontend
+        var showPatient = function (patient) {
+            return common.show(patient._id, patient.user.accessToken);
+        };
 
-describe("view patient info (GET /patients/:id)", function () {
-    // setup test patients
-    auth.setupTestUser(this);
-    common.setupTestPatients(this.user, 1, this); // auth.setupTestUser has to be called first
+        // helpers to create patients before showing them
+        var showMyPatient = function (data) {
+            return common.testMyPatient(data).then(showPatient);
+        };
+        var showOtherPatient = function (data, access) {
+            return common.testOtherPatient(data, access).then(showPatient);
+        };
 
-    // wrapper that passes the relevant patients to us
-    common.requiresPatientAuthorization('read', showFails, showsSuccessfully.bind(this), this);
+        common.itRequiresAuthentication(common.show);
+        common.itRequiresValidPatientId(common.show);
+
+        // authorization test
+        it("should let me view my patients", function () {
+            return expect(showMyPatient({})).to.be.a.patient.success;
+        });
+        it("should let me view patients shared read-only", function () {
+            return expect(showOtherPatient({}, "read")).to.be.a.patient.success;
+        });
+        it("should let me view patients shared read-write", function () {
+            return expect(showOtherPatient({}, "write")).to.be.a.patient.success;
+        });
+        it("should not let me view patients not shared with me", function () {
+            return expect(showOtherPatient({}, "none")).to.be.an.api.error(403, "unauthorized");
+        });
+    });
 });

@@ -14,7 +14,7 @@ taken their medication). The current user will need write access to the patient'
     + medication_id (integer, required)
 
         unique ID of the medication for which the patient has adhered
-    + date (string, required, 2015-05-31T19:27:09+00:00)
+    + date (string, required, `2015-05-31T19:27:09+00:00`)
         
         ISO 8601 combined date-time in UTC representing the date and time at which _the patient took the medication_
 

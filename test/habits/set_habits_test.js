@@ -1,60 +1,101 @@
-var mongoose    = require("mongoose"),
-    expect      = require("chai").expect,
-    async       = require("async"),
+"use strict";
+var chakram     = require("chakram"),
     util        = require("util"),
-    requests    = require("../common/requests.js"),
-    factories   = require("../common/factories.js"),
+    curry       = require("curry"),
+    Q           = require("q"),
     auth        = require("../common/auth.js"),
-    crud        = require("../common/crud.js"),
     patients    = require("../patients/common.js"),
     common      = require("./common.js");
 
-var keys = ["wake", "sleep", "breakfast", "lunch", "dinner"];
+var expect = chakram.expect;
 
-describe("set patient habits (PUT /patients/:patientid/habits)", function () {
-    // setup test patients, users
-    auth.setupTestUser(this);
-    patients.setupTestPatients(this.user, 1, this);
+describe("Habits", function () {
+    common.beforeEach();
+    describe("SET Patient Habits (PUT /patients/:patientid/habits)", function () {
+        // basic endpoint
+        var edit = function (modifications, patientId, accessToken) {
+            var url = util.format("http://localhost:3000/v1/patients/%d/habits", patientId);
+            return chakram.put(url, modifications, auth.genAuthHeaders(accessToken));
+        };
 
-    var noAuthChecker = function (patientId, responseCode, errors, accessToken) {
-        requests.failsToEdit(common.endpoint(patientId), {}, responseCode, errors, accessToken);
-    }.bind(this);
+        // given a patient and user, try and edit the patient's habits with the
+        // given modifications
+        var editHabits = function (modifications, patient) {
+            return edit(modifications, patient._id, patient.user.accessToken);
+        };
 
-    var authChecker = function (patientId) {
-        // DRY up checking for success and failure (assuming authentication)
-        var success = function (data) {
-            requests.successfullyEdits(common.endpoint(patientId), keys, data, this.accessTokenGetter);
-        }.bind(this);
-        var failure = function (data, responseCode, errors) {
-            requests.failsToEdit(common.endpoint(patientId), data, responseCode, errors, this.accessTokenGetter);
-        }.bind(this);
+        // helpers to create patients before editing their habits
+        var editOtherPatientHabits = function (access, modifications) {
+            return patients.testOtherPatient({}, access).then(curry(editHabits)(modifications));
+        };
 
-        describe("with full data", function () {
-            success({
-                wake: factories.time(),
-                sleep: factories.time(),
-                breakfast: factories.time(),
-                lunch: factories.time(),
-                dinner: factories.time(),
+        patients.itRequiresAuthentication(curry(edit)({}));
+        patients.itRequiresValidPatientId(curry(edit)({}));
+
+        it("should not let me edit the habits of a patient shared read-only", function () {
+            return expect(editOtherPatientHabits("read", {})).to.be.an.api.error(403, "unauthorized");
+        });
+        it("should not let me edit the habits of a patient not shared with me", function () {
+            return expect(editOtherPatientHabits("none", {})).to.be.an.api.error(403, "unauthorized");
+        });
+
+        describe("with my patient", function () {
+            // patient ID of patient we can access, and access token
+            var patientId, accessToken;
+            beforeEach(function () {
+                return auth.createTestUser().then(patients.createMyPatient({})).then(function (patient) {
+                    patientId = patient._id;
+                    accessToken = patient.user.accessToken;
+                });
+            });
+
+            it("lets the user set time fields to valid times", function () {
+                return expect(edit({ dinner: "13:05" }, patientId, accessToken)).to.be.a.habits.success;
+            });
+            it("doesn't lets the user set time fields to invalid times", function () {
+                return expect(edit({ wake: "13:95" }, patientId, accessToken)).to.be.an.api.error(400, "invalid_wake");
+            });
+            it("doesn't lets the user set time fields to non-time values", function () {
+                return expect(edit({ lunch: "foo" }, patientId, accessToken)).to.be.an.api.error(400, "invalid_lunch");
+            });
+
+            it("lets me set a time zone", function () {
+                return expect(edit({ tz: "Europe/London" }, patientId, accessToken)).to.be.a.habits.success;
+            });
+            it("doesn't let me set an invalid time zone", function () {
+                return expect(edit({ tz: "foo/bar" }, patientId, accessToken)).to.be.an.api.error(400, "invalid_tz");
+            });
+            it("doesn't let me set a null time zone", function () {
+                return expect(edit({ tz: null }, patientId, accessToken)).to.be.an.api.error(400, "invalid_tz");
+            });
+            it("doesn't let me set a blank time zone", function () {
+                return expect(edit({ tz: "" }, patientId, accessToken)).to.be.an.api.error(400, "invalid_tz");
             });
         });
-        
-        describe("with partial data", function () {
-            success({
-                lunch: factories.time()
+        describe("with a patient shared read-write", function () {
+            // patient ID of patient we can access, and access token
+            var patientId, accessToken;
+            beforeEach(function () {
+                var createMe = auth.createTestUser().then(function (user) {
+                    accessToken = user.accessToken;
+                    return user;
+                });
+                var createPatient = patients.createOtherPatient({}, "write");
+                return Q.all([createMe, auth.createTestUser()]).spread(createPatient).then(function (patient) {
+                    patientId = patient._id;
+                    accessToken = patient.user.accessToken;
+                });
+            });
+
+            it("lets the user set time fields to valid times", function () {
+                return expect(edit({ dinner: "13:05" }, patientId, accessToken)).to.be.a.habits.success;
+            });
+            it("doesn't lets the user set time fields to invalid times", function () {
+                return expect(edit({ wake: "13:95" }, patientId, accessToken)).to.be.an.api.error(400, "invalid_wake");
+            });
+            it("doesn't lets the user set time fields to non-time values", function () {
+                return expect(edit({ lunch: "foo" }, patientId, accessToken)).to.be.an.api.error(400, "invalid_lunch");
             });
         });
-
-        describe("with invalid data", function () {
-            failure({
-                wake: factories.time(),
-                sleep: factories.time(),
-                breakfast: factories.invalidTime(),
-                lunch: factories.time(),
-                dinner: factories.time(),
-            }, 400, 'invalid_breakfast');
-        });
-    }.bind(this);
-
-    patients.requiresPatientAuthorization("write", noAuthChecker, authChecker, this);
+    });
 });

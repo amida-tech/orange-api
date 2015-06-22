@@ -2,10 +2,13 @@
 
 var mongoose = require("mongoose");
 
+// for models
+require("../../app.js");
+
 // setup DB connection (not used for REST endpoints, but we're doing
 // unit test-esque things in here)
 before(function (done) {
-    mongoose.connect('mongodb://localhost/orange-api', done);
+    mongoose.connect("mongodb://localhost/orange-api", done);
 });
 
 // close DB connection afterwards (and reopen for dropping DB, but

@@ -53,6 +53,7 @@ patientRouter.use("/doctors", require("./lib/controllers/doctors.js"));
 patientRouter.use("/pharmacies", require("./lib/controllers/pharmacies.js"));
 patientRouter.use("/medications", require("./lib/controllers/medications.js"));
 patientRouter.use("/journal", require("./lib/controllers/journal.js"));
+patientRouter.use("/adherences", require("./lib/controllers/adherences.js"));
 
 // nest patient-specific resources under /patients/:id
 router.use("/patients/:patientid", patientRouter);

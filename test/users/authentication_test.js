@@ -1,95 +1,107 @@
 "use strict";
-var util        = require("util"),
-    async       = require("async"),
-    factories   = require("../common/factories.js"),
-    requests    = require("../common/requests.js"),
-    request     = require("supertest")("http://localhost:3000/v1/"),
-    auth        = require("../common/auth.js");
+var chakram     = require("chakram"),
+    Q           = require("q"),
+    fixtures    = require("./fixtures.js"),
+    common      = require("./common.js"),
+    token       = require("./common.js").token;
+var expect = chakram.expect;
 
-// check we get a valid access token back, and that we can use that to access the rest of the API
-var authenticatesSuccessfully = function (data) {
-    describe("getting access token", function () {
-        return requests.successfullyCreates("/auth/token", ["access_token"], data);
-    });
-    describe("verifying access token", function () {
-        it("allows us to access the user info with the access token", function (done) {
-            request.post("/auth/token").send(data).end(function (err, res) {
-                if (err) return done(err);
-                var authHeader = "Bearer " + res.body.access_token;
-                // will err out as status code is 401 without valid access code
-                request.get("/user").set("Authorization", authHeader).end(done);
+describe("Users", function () {
+    common.beforeEach();
+    describe("Retrieve Authentication Token (POST /auth/token)", function () {
+        // setup authentication-specific chakram methods
+        // must be beforeEach because the parent chakram methods we need to override are in
+        // a (higher) beforeEach
+        beforeEach(function () {
+            // namespacing
+            chakram.addProperty("authentication", function () {} );
+
+            // verify successful responses
+            var tokenSchema = {
+                required: ["access_token"],
+                properties: {
+                    access_token: { type: "string" }
+                }
+            };
+            chakram.addProperty("success", function (respObj) {
+                expect(respObj).to.be.an.api.postSuccess;
+                expect(respObj).to.have.schema(tokenSchema);
             });
         });
-    });
-};
-// check we get the desired error and error code back
-var authenticationFails = async.apply(requests.failsToCreate, "/auth/token");
 
-describe("obtaining tokens (POST /auth/token)", function () {
-    // create user to test with
-    var user = auth.newUser();
-    before(function (done) { user.save(done); });
-
-    describe("with valid credentials", function () {
-        authenticatesSuccessfully({
-            email: user.email,
-            password: user.password
+        // valid user to try testing with: beforeEach to avoid lock out errors
+        var user;
+        beforeEach(function () {
+            return fixtures.create("User").then(function (u) {
+                user = u;
+            });
         });
-    });
 
-    describe("with wrong password", function () {
-        authenticationFails({
-            email: user.email,
-            password: user.password + "a"
-        }, 401, "wrong_email_password");
-    });
+        // require email and password
+        it("should require an email", function () {
+            return expect(token({ password: user.rawPassword })).to.be.an.api.error(400, "email_required");
+        });
+        it("should not accept a blank email", function () {
+            return expect(token({ email: "", password: user.rawPassword })).to.be.an.api.error(400, "email_required");
+        });
+        it("should require a password", function () {
+            return expect(token({ email: user.email })).to.be.an.api.error(400, "password_required");
+        });
+        it("should not accept a blank password", function () {
+            return expect(token({ email: user.email, password: "" })).to.be.an.api.error(400, "password_required");
+        });
 
-    describe("with wrong email", function () {
-        authenticationFails({
-            email: user.email + "a",
-            password: user.password + "a"
-        }, 401, "wrong_email_password");
-    });
-
-    describe("with no email", function () {
-        authenticationFails({ password: user.password }, 400, "email_required");
-    });
-
-    describe("with no password", function () {
-        authenticationFails({ email: user.email }, 400, "password_required");
-    });
-
-    describe("with login attempts exceeded", function () {
-        // try password wrong too many times
-        before(function (done) {
-            // whether we've locked the account yet
-            var locked = false;
-            async.until(function () {
-                return locked;
-            }, function (callback) {
-                // try and authenticate with wrong details
-                request.post("/auth/token").send({
-                    email: user.email,
-                    password: user.password + "a" // wrong password
-                }).expect(401).end(function (err, res) {
-                    // will get 403 once locked
-                    if (res.status === 403) locked = true;
-                    else if (err) return callback(err);
-                    callback();
+        describe("with the right credentials", function () {
+            it("should return a working access token", function () {
+                var request = token({ email: user.email, password: user.rawPassword });
+                return expect(request).to.be.an.authentication.success.then(function (response) {
+                    // verify it authenticates us to GET /user
+                    var accessToken = response.body.access_token;
+                    var getInfo = chakram.get("http://localhost:3000/v1/user", {
+                        headers: { Authorization: "Bearer " + accessToken }
+                    });
+                    return expect(getInfo).to.be.an.api.getSuccess;
                 });
-            }, done);
+            });
         });
 
-        describe("when locked out", function () {
-            authenticationFails({
-                email: user.email,
-                password: user.password
-            }, 403, 'login_attempts_exceeded')
+        // require valid credentials
+        it("should not accept the wrong email", function () {
+            var request = token({ email: user.email + "a", password: user.rawPassword });
+            return expect(request).to.be.an.api.error(401, "wrong_email_password");
         });
+        it("should not accept the hashed password", function () {
+            var request = token({ email: user.email, password: user.password });
+            return expect(request).to.be.an.api.error(401, "wrong_email_password");
+        });
+        describe("with the wrong password", function () {
+            it("should return an error", function () {
+                var request = token({ email: user.email, password: user.rawPassword + "a" });
+                return expect(request).to.be.an.api.error(401, "wrong_email_password");
+            });
+            it("should eventually lock us out", function () {
+                // generate promises to try and fail authentication
+                var promises = [];
+                for (var i = 0; i < 25; i++) {
+                    /*eslint-disable no-loop-func */
+                    var promise = function () {
+                        return token({ email: user.email, password: user.rawPassword + "a" });
+                    };
+                    /*eslint-enable no-loop-func */
+                    promises.push(promise);
+                }
 
-        // TODO: how can we test this without having access to the app?
-        // We'd normally use sinon but we're just talking over HTTP now...
-        // Maybe unit test
-        it("lets us back in after a time period");
+                // run sequentially with reduce
+                return promises.reduce(function (promise, f) {
+                    return promise.then(f);
+                }, Q()).then(function (response) {
+                    // check we've been logged out
+                    expect(response).to.be.an.api.error(403, "login_attempts_exceeded");
+                });
+            });
+
+            // unit test this instead as we need to mock time
+            // it("should eventually let us back in");
+        });
     });
 });

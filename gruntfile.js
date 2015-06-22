@@ -34,7 +34,7 @@ module.exports = function (grunt) {
     grunt.initConfig({
         // detect code smells and particularly bad formatting
         eslint: {
-            target: ["Gruntfile.js", "app.js", "lib/*.js", "lib/**/*.js"]
+            target: ["Gruntfile.js", "app.js", "lib/*.js", "lib/**/*.js", "test/*.js", "test/**/*.js"]
         },
 
         // run tests: make sure to close all express/db/sinon/etc connections or this
@@ -45,7 +45,7 @@ module.exports = function (grunt) {
                     reporter: "spec",
                     timeout: "10000"
                 },
-                src: ["test/common.js", "test/common/*.js", "test/**/*.js"]
+                src: ["test/common/db_helper.js", "test/common/*.js", "test/*.js", "test/**/*.js"]
             }
         },
 

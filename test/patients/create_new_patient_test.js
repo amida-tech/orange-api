@@ -1,35 +1,44 @@
 "use strict";
-var util        = require("util"),
-    async       = require("async"),
-    factories   = require("../common/factories.js"),
-    requests    = require("../common/requests.js"),
-    Crud        = require("../common/crud.js"),
-    auth        = require("../common/auth.js"),
-    common      = require("./common.js");
+var chakram     = require("chakram"),
+    curry       = require("curry"),
+    fixtures    = require("./fixtures.js"),
+    common      = require("./common.js"),
+    auth        = require("../common/auth.js");
 
-var crud = new Crud("Patient");
+var expect = chakram.expect;
 
-// check creation succeeds for a given set of patient data
-var createsSuccessfully = function (data, accessToken) {
-    crud.successfullyCreates("/patients", ["id", "name", "access"], data, accessToken);
-    // TODO: test access status is write
-};
-// check creation fails with the specified error for a given set of patient data
-var createFails = async.apply(crud.failsToCreate, "/patients");
+describe("Patients", function () {
+    common.beforeEach();
+    describe("Create New Patient (POST /patients)", function () {
+        // simple endpoint
+        var create = function (data, accessToken) {
+            return chakram.post("http://localhost:3000/v1/patients", data, auth.genAuthHeaders(accessToken));
+        };
 
-describe("create new patient (POST /patients)", function () {
-    auth.setupTestUser(this);
-    auth.requiresAuthentication(async.apply(createFails, {})); // no data
+        // setup a test user and access token, then create a patient (with the specified
+        // data modifications to the factory default) for that user
+        var createPatient = function (data) {
+            // create full patient data from factory
+            return auth.createTestUser().then(function (user) {
+                return fixtures.build("Patient", data).then(function (patient) {
+                    return create(patient, user.accessToken);
+                });
+            });
+        };
 
-    describe("with name", function () {
-        createsSuccessfully({ name: factories.name() }, this.accessTokenGetter);
-    }.bind(this));
+        // check access token authentication
+        auth.itRequiresAuthentication(curry(create)({}));
 
-    describe("without name", function () {
-        createFails({}, 400, "name_required", this.accessTokenGetter);
-    }.bind(this));
+        it("should return a successful response", function () {
+            return expect(createPatient({})).to.be.a.patient.createSuccess;
+        });
 
-    describe("with blank name", function () {
-        createFails({name: ""}, 400, "name_required", this.accessTokenGetter);
-    }.bind(this));
+        it("should require a name", function () {
+            return expect(createPatient({ name: undefined })).to.be.an.api.error(400, "name_required");
+        });
+
+        it("should not accept a blank name", function () {
+            return expect(createPatient({ name: "" })).to.be.an.api.error(400, "name_required");
+        });
+    });
 });
