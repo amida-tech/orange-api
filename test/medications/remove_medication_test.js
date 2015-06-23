@@ -8,7 +8,7 @@ var chakram     = require("chakram"),
 
 var expect = chakram.expect;
 
-describe("Patients", function () {
+describe("Medications", function () {
     describe("Remove A Medication (DELETE /patients/:patientid/medications/:medicationid)", function () {
         // given a patient ID, medication ID and acces token, try and delete the medication
         var remove = function (medicationId, patientId, accessToken) {

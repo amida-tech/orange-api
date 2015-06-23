@@ -8,7 +8,7 @@ var chakram     = require("chakram"),
 
 var expect = chakram.expect;
 
-describe("Patients", function () {
+describe("Medications", function () {
     describe("Show Single Medication (GET /patients/:patientid/medications/:medicationid)", function () {
         // given a patient ID, medication ID and acces token, try and show the medication
         var show = function (medicationId, patientId, accessToken) {

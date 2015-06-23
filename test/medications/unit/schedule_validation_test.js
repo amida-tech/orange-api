@@ -30,8 +30,12 @@ describe("Medications", function () {
             return acceptsManual(null, {});
         });
 
-        it("rejects empty schedules", function () {
-            return rejects({});
+        it("allows an empty schedule and parses it into an empty object", function () {
+            return accepts({});
+        });
+
+        it("rejects non-object schedules", function () {
+            return rejects("foo");
         });
 
         it("rejects invalid types", function () {

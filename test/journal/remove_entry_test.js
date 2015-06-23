@@ -9,7 +9,7 @@ var chakram         = require("chakram"),
 
 var expect = chakram.expect;
 
-describe("Entries", function () {
+describe("Journal", function () {
     describe("Remove Entry (DELETE /patients/:patientid/entries/:journalid)", function () {
         // basic endpoint
         var remove = function (journalId, patientId, accessToken) {
