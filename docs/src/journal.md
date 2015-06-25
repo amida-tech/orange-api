@@ -1,8 +1,8 @@
 # Group Journal Entries
 Basic free-text journal for the patient to enter notes about their day and such in.
 While medications can be tagged in journal entries, entries that correspond
-exactly to adherences should probably just be stored in the `notes` field of an
-adherence event.
+exactly to dose events should probably just be stored in the `notes` field of a
+dose event.
 
 *Hashtags* are parsed from each journal entry and returned in a `hashtags` array of
 `string`s.

@@ -193,7 +193,7 @@ users, then the patient and all its data _will be deleted_.
 
 ### Delete Patient [DELETE]
 Remove a patient for whom the user has write access to. **This permanently removes
-the patient, all of their associated habits, doctors, pharmacies, medications and adherences
+the patient, all of their associated habits, doctors, pharmacies, medications and dose events
 _for all users the patient is shared with_** and as such should be used with extreme caution.
 
 To completely remove a patient from the user's sphere of influence, note that `PUT` should be

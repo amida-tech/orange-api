@@ -7,5 +7,5 @@
 <!-- include(doctors.md) -->
 <!-- include(pharmacies.md) -->
 <!-- include(medications.md) -->
-<!-- include(adherences.md) -->
+<!-- include(doses.md) -->
 <!-- include(schedule.md) -->
