@@ -3,9 +3,14 @@ module.exports = function (grunt) {
     // load all grunt task libraries
     require("load-grunt-tasks")(grunt);
 
+    // run app
+    grunt.registerTask("server:dev", ["exec:matcherStop", "exec:matcherStart", "express:dev", "watch", "exec:matcherStop"]);
+    grunt.registerTask("server:test", ["exec:matcherStop", "exec:matcherStart", "express:test"]);
+    grunt.registerTask("dev", ["eslint", "server:dev"]);
+
     // clean up code and run tests
-    grunt.registerTask("default", ["eslint", "test"]);
-    grunt.registerTask("test", ["dropDatabase", "express:test", "mochaTest:all"]);
+    grunt.registerTask("default", ["eslint", "test", "exec:matcherStop"]);
+    grunt.registerTask("test", ["dropDatabase", "server:test", "mochaTest:all"]);
 
     // generate code coverage using bash istanbul wrapper
     grunt.registerTask("coverage", ["exec:coverage"]);
@@ -45,7 +50,7 @@ module.exports = function (grunt) {
                     reporter: "spec",
                     timeout: "10000"
                 },
-                src: ["test/common/db_helper.js", "test/common/*.js", "test/*.js", "test/**/*.js"]
+                src: ["test/common/db_helper.js", "test/common/*.js", "test/*.js", "test/schedule/unit/schedule_matchup_test.js"]
             },
             unit: {
                 options: {
@@ -62,6 +67,23 @@ module.exports = function (grunt) {
                 options: {
                     script: "run.js"
                 }
+            },
+            dev: {
+                options: {
+                    script: "run.js",
+                    backround: false
+                }
+            }
+        },
+
+        watch: {
+            express: {
+                // reloading broken on OSX because of EMFILE hence this hack
+                files:  [ "gruntfile.js" ],
+                tasks:  [ "express:dev" ],
+                options: {
+                    spawn: false
+                }
             }
         },
 
@@ -74,7 +96,17 @@ module.exports = function (grunt) {
             },
             // generate code coverage: bash wrapper around istanbul as their cli makes things a lot easier
             // than playing around with js hooks
-            coverage: "./cover.sh"
+            coverage: "./cover.sh",
+            // python ZeroMQ server to perform schedule/dose event matching (a little computationally non-trivial
+            // so we use python for faster results)
+            matcherStart: {
+                cwd: "lib/matching",
+                cmd: "./matcher_rpc.py start"
+            },
+            matcherStop: {
+                cwd: "lib/matching",
+                cmd: "./matcher_rpc.py stop"
+            }
         },
 
         // coveralls.io code coverage service

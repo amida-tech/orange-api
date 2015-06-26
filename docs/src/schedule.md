@@ -14,12 +14,13 @@ it will be negative.
 The schedule will also contain an overall `statistics` object, containing floats `took_medication`
 (a mean average value for `took_medication` as a percentage out of 100), `delta` (a mean average
 value of all of the `delay`s) and `delay` (a mean average value of the **absolute values** of all
-the `delay`s).
+the `delay`s). Each number in `statistics` will be `null` if there are no schedule events in
+the past found (for example, if start date is in the future).
 
 + Parameters
     + patientid (integer, required)
 
-        unique ID of the patient (*url*)
+        unique ID of the patient
 
     + start_date (string, optional)
 
@@ -59,21 +60,36 @@ the `delay`s).
             {
                 schedule: [
                     {
+                        type: "time",
                         date: "2015-03-31T19:27:09+00:00",
                         medication_id: 1,
                         took_medication: true,
                         delay: -17,
-                        adherence_id: 14
+                        dose_id: 14
                     },
                     {
+                        type: "time",
+                        date: "2015-03-31T19:27:09+00:00",
+                        medication_id: 1,
+                        took_medication: false
+                    },
+                    {
+                        type: "time",
                         date: "2015-03-31T19:27:09+00:00",
                         medication_id: 1,
                         took_medication: false
                     },
                     ... // more events that have already taken place
                     {
+                        type: "time",
                         date: "2015-05-31T19:27:09+00:00",
                         medication_id: 1
+                    },
+                    {
+                        // no time specified, just the date
+                        type: "date",
+                        date: "2015-05-31",
+                        medication_id: 3
                     },
                     ... // more events in the future
                 ],

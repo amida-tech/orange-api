@@ -96,8 +96,7 @@ module.exports.testOtherPatient = function (data, access) {
     return Q.all([auth.createTestUser(), auth.createTestUser()]).spread(createOtherPatient(data, access));
 };
 
-// wrapper around auth.itRequiresAuthentication to generate patient IDs to
-// test with
+// wrapper around auth.itRequiresAuthentication to generate patient IDs to test with
 // check access token authentication
 module.exports.itRequiresAuthentication = function (endpoint) {
     describe("testing authentication", function () {

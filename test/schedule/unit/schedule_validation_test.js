@@ -10,7 +10,7 @@ var parseSchedule = function (schedule) {
     return parser.format();
 };
 
-describe("Medications", function () {
+describe("Schedule", function () {
     describe("validates schedules correctly", function () {
         // rather than trying to guess what the output should be,
         // explicitly set it

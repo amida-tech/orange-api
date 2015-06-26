@@ -7,9 +7,7 @@ var chai        = require("chai"),
     errors      = require("../../../lib/errors.js").ERRORS;
 var expect = chai.expect;
 
-// TODO: timezone should be in habits
-
-describe("Medications", function () {
+describe("Schedule", function () {
     // TODO: when adherences are present
     describe("generates schedules correctly in a single timezone", function () {
         // generic method to promise to generate a schedule
@@ -458,9 +456,6 @@ describe("Medications", function () {
                     });
                 });
             });
-
-
-            it("should do something with time zones and start/end schedule dates and overlaps etc");
         });
     });
 });
