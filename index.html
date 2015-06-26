@@ -529,8 +529,13 @@ the same as the user ID)</p>
 in the morning, what time they usually eat lunch, and so on. Exactly one set of
 preferences is stored for each patient. The current user will need read access
 to the patient.</p>
-<p>Currently all habits are of the <code>time</code> datatype. This means they must be in the
-specific <code>HH:MM</code> format of ISO 8601. For example, <code>03:59</code> and <code>23:20</code>.</p>
+<p>Most  habits are of the <code>time</code> datatype. This means they must be in the specific
+<code>HH:MM</code> format of ISO 8601; for example, <code>03:59</code> and <code>23:20</code>. These times are
+in the <em>local timezone</em> of the patient, and will not change if the timezone is updated
+(for example, if <code>breakfast</code> is set to <code>10:00</code> while the timezone is <code>London/Europe</code>,
+<code>breakfast</code> will remain as <code>10:00</code> if the timezone is updated to <code>America/New_York</code>.
+This signifies that if medication is to be taken with food at breakfast every morning,
+the patient should continue doing that even if the timezone shifts).</p>
 <p>Habits (all may be blank, and initially are after registration):</p>
 <ul>
 <li>
@@ -547,6 +552,11 @@ specific <code>HH:MM</code> format of ISO 8601. For example, <code>03:59</code> 
 </li>
 <li>
 <p><code>dinner</code> (<em>time</em>) - what time the patient normally eats dinner</p>
+</li>
+<li>
+<p><code>tz</code> (<em>timezone</em>) - the current timezone of the patient (retrieved automatically
+from the mobile OS without any user participation required). Should be a valid TZ
+database timezone (e.g., <code>/London/Europe</code>). Defaults to <code>Etc/UTC</code> (UTC time).</p>
 </li>
 </ul>
 <div id="habits-patient-habits-get" class="action get"><h4><div class="name">Get Patient Habits</div><a href="#habits-patient-habits-get" class="method get">GET</a><code class="uri">/patients/{patientid}/habits</code></h4><p>View the patient’s current habits.</p>
@@ -573,6 +583,7 @@ header</p>
     breakfast: <span class="hljs-string">"08:00"</span>,
     lunch: <span class="hljs-string">"12:00"</span>,
     dinner: <span class="hljs-string">"19:00"</span>,
+    tz: <span class="hljs-string">"Etc/UTC"</span>,
     success: <span class="hljs-literal">true</span>
 }
 </code></pre><div style="height: 1px;"></div></div></div></div><div id="habits-patient-habits-put" class="action put"><h4><div class="name">Set Patient Habits</div><a href="#habits-patient-habits-put" class="method put">PUT</a><code class="uri">/patients/{patientid}/habits</code></h4><p>Set the patient’s habits. The current user will need write access to the patient.</p>
@@ -587,6 +598,7 @@ header</p>
     sleep: <span class="hljs-string">"22:00"</span>,
     breakfast: <span class="hljs-string">"07:00"</span>,
     lunch: <span class="hljs-string">"11:00"</span>,
+    tz: <span class="hljs-string">"London/Europe"</span>,
     dinner: <span class="hljs-string">"18:00"</span>
 }
 </code></pre><div style="height: 1px;"></div></div></div><div class="title"><strong>Response&nbsp;&nbsp;<code>200</code></strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><div class="description"><p>Errors</p>
@@ -626,6 +638,7 @@ header</p>
     breakfast: <span class="hljs-string">"07:00"</span>,
     lunch: <span class="hljs-string">"11:00"</span>,
     dinner: <span class="hljs-string">"18:00"</span>,
+    tz: <span class="hljs-string">"London/Europe"</span>,
     success: <span class="hljs-literal">true</span>
 }
 </code></pre><div style="height: 1px;"></div></div></div></div></div></section><section id="journal-entries" class="resource-group"><h2>Journal Entries<a href="#journal-entries" class="permalink"><i class="fa fa-link"></i></a></h2><p>Basic free-text journal for the patient to enter notes about their day and such in.
@@ -898,10 +911,12 @@ need write access to the patient).</p>
 </dd><dt>phone</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>contact phone number for the doctor</p>
 </dd><dt>address</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>Postal address of the doctor. Newlines can optionally be used to split
 lines.</p>
+</dd><dt>notes</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>freeform text notes about the doctor by the patient</p>
 </dd></dl></div><div class="title"><strong>Request</strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><h5>Headers</h5><pre><code><span class="hljs-attribute">Authorization</span>: <span class="hljs-string">Bearer ACCESS_TOKEN</span><br></code></pre><div style="height: 1px;"></div><h5>Body</h5><pre><code>{
     name: <span class="hljs-string">"Dr. X"</span>,
     phone: <span class="hljs-string">"(617) 617-6177"</span>,
-    address: <span class="hljs-string">"Doctor Street, DC, 20052"</span>
+    address: <span class="hljs-string">"Doctor Street, DC, 20052"</span>,
+    notes: <span class="hljs-string">"Love this doc!"</span>
 }
 </code></pre><div style="height: 1px;"></div></div></div><div class="title"><strong>Response&nbsp;&nbsp;<code>201</code></strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><div class="description"><p>Errors</p>
 <ul>
@@ -927,6 +942,7 @@ lines.</p>
     name: <span class="hljs-string">"Dr. X"</span>,
     phone: <span class="hljs-string">"(617) 617-6177"</span>,
     address: <span class="hljs-string">"Doctor Street, DC, 20052"</span>
+    notes: <span class="hljs-string">"Love this doc!"</span>,
     success: <span class="hljs-literal">true</span>
 }
 </code></pre><div style="height: 1px;"></div></div></div></div><div id="doctors-doctors-collection-get" class="action get"><h4><div class="name">Retrieve all Doctors</div><a href="#doctors-doctors-collection-get" class="method get">GET</a><code class="uri">/patients/{patientid}/doctors</code></h4><p>Get a list of all the patient’s doctors. Includes full information on each. The
@@ -977,7 +993,8 @@ to <code>id</code>.</p>
             id: <span class="hljs-number">1</span>,
             name: <span class="hljs-string">"Dr. X"</span>,
             phone: <span class="hljs-string">"(617) 617-6177"</span>,
-            address: <span class="hljs-string">"Doctor Street, DC, 20052"</span>
+            address: <span class="hljs-string">"Doctor Street, DC, 20052"</span>,
+            notes: <span class="hljs-string">"Love this doc!"</span>
         },
         ...
     ],
@@ -1012,6 +1029,7 @@ patient’s data.</p>
     name: <span class="hljs-string">"Dr. X"</span>,
     phone: <span class="hljs-string">"(617) 617-6177"</span>,
     address: <span class="hljs-string">"Doctor Street, DC, 20052"</span>,
+    notes: <span class="hljs-string">"Love this doc!"</span>,
     success: <span class="hljs-literal">true</span>
 }
 </code></pre><div style="height: 1px;"></div></div></div></div><div id="doctors-doctor-put" class="action put"><h4><div class="name">Change a Doctor's Info</div><a href="#doctors-doctor-put" class="method put">PUT</a><code class="uri">/patients/{patientid}/doctors/{doctorid}</code></h4><p>Change information (name, phone and/or address) of an individual doctor. The current user will need
@@ -1021,10 +1039,12 @@ write access to the patient’s data.</p>
 </dd><dt>name</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>Full name of the doctor. Must not be blank.</p>
 </dd><dt>phone</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>contact phone number for the doctor</p>
 </dd><dt>address</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>postal address, in the format specified above in <code>POST</code></p>
+</dd><dt>notes</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>freeform text notes about the doctor by the patient</p>
 </dd></dl></div><div class="title"><strong>Request</strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><h5>Headers</h5><pre><code><span class="hljs-attribute">Authorization</span>: <span class="hljs-string">Bearer ACCESS_TOKEN</span><br></code></pre><div style="height: 1px;"></div><h5>Body</h5><pre><code>{
     name: <span class="hljs-string">"Dr. Y"</span>,
     phone: <span class="hljs-string">"(716) 716-7166"</span>,
-    address: <span class="hljs-string">"Doctor Street, DC, 20052"</span>
+    address: <span class="hljs-string">"Doctor Street, DC, 20052"</span>,
+    notes: <span class="hljs-string">"Love this doc the most!"</span>
 }
 </code></pre><div style="height: 1px;"></div></div></div><div class="title"><strong>Response&nbsp;&nbsp;<code>200</code></strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><div class="description"><p>Errors</p>
 <ul>
@@ -1053,6 +1073,7 @@ write access to the patient’s data.</p>
     name: <span class="hljs-string">"Dr. Y"</span>,
     phone: <span class="hljs-string">"(716) 716-7166"</span>,
     address: <span class="hljs-string">"Doctor Street, DC, 20052"</span>,
+    notes: <span class="hljs-string">"Love this doc the most!"</span>,
     success: <span class="hljs-literal">true</span>
 }
 </code></pre><div style="height: 1px;"></div></div></div></div><div id="doctors-doctor-delete" class="action delete"><h4><div class="name">Delete a Doctor</div><a href="#doctors-doctor-delete" class="method delete">DELETE</a><code class="uri">/patients/{patientid}/doctors/{doctorid}</code></h4><p>Remove information on a single doctor. The current user will need write access to the patient’s
@@ -1083,6 +1104,7 @@ data.</p>
     name: <span class="hljs-string">"Dr. X"</span>,
     phone: <span class="hljs-string">"(617) 617-6177"</span>,
     address: <span class="hljs-string">"Doctor Street, DC, 20052"</span>,
+    notes: <span class="hljs-string">"Love this doc the most!"</span>,
     success: <span class="hljs-literal">true</span>
 }
 </code></pre><div style="height: 1px;"></div></div></div></div></div></section><section id="pharmacies" class="resource-group"><h2>Pharmacies<a href="#pharmacies" class="permalink"><i class="fa fa-link"></i></a></h2><p>Details for all pharmacies from whom the selected patient receives medication.</p>
@@ -1096,7 +1118,9 @@ lines.</p>
 </dd><dt>hours</dt><dd><code>dictionary</code>&nbsp;<span>(optional)</span>&nbsp;<p>The hours the pharmacy is open. Keys are full lowercase names of the days of
 the week (e.g., <code>monday</code>), and values are themselves dictionaries of the form
 <code>{open: OPEN_TIME, close: CLOSE_TIME}</code>, where times are formatted in the <code>HH:MM</code>
-format specified in ISO 8601</p>
+format specified in ISO 8601. These hours should be in the local timezone of
+the patient.</p>
+</dd><dt>notes</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>freeform text notes about the pharmacy by the patient</p>
 </dd></dl></div><div class="title"><strong>Request</strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><h5>Headers</h5><pre><code><span class="hljs-attribute">Authorization</span>: <span class="hljs-string">Bearer ACCESS_TOKEN</span><br></code></pre><div style="height: 1px;"></div><h5>Body</h5><pre><code>{
     name: <span class="hljs-string">"Pharmacy X"</span>,
     address: <span class="hljs-string">"Pharmacy Street, DC, 20052"</span>
@@ -1130,7 +1154,8 @@ format specified in ISO 8601</p>
             open: <span class="hljs-string">"09:00"</span>,
             close: <span class="hljs-string">"17:00"</span>
         }
-    }
+    },
+    notes: <span class="hljs-string">"Great pharmacy! Love the smell"</span>
 }
 </code></pre><div style="height: 1px;"></div></div></div><div class="title"><strong>Response&nbsp;&nbsp;<code>201</code></strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><div class="description"><p>Errors</p>
 <ul>
@@ -1190,6 +1215,7 @@ form specified above</p>
             close: <span class="hljs-string">"17:00"</span>
         }
     },
+    notes: <span class="hljs-string">"Great pharmacy! Love the smell"</span>,
     success: <span class="hljs-literal">true</span>
 }
 </code></pre><div style="height: 1px;"></div></div></div></div><div id="pharmacies-pharmacies-collection-get" class="action get"><h4><div class="name">Retrieve all Pharmacies</div><a href="#pharmacies-pharmacies-collection-get" class="method get">GET</a><code class="uri">/patients/{patientid}/pharmacies</code></h4><p>Get a list of all the patient’s pharmacies. Includes full information on each… The current
@@ -1304,6 +1330,7 @@ to the patient’s data.</p>
             close: <span class="hljs-string">"17:00"</span>
         }
     },
+    notes: <span class="hljs-string">"Great pharmacy! Love the smell"</span>,
     success: <span class="hljs-literal">true</span>
 }
 </code></pre><div style="height: 1px;"></div></div></div></div><div id="pharmacies-pharmacy-put" class="action put"><h4><div class="name">Change a Pharmacy's Info</div><a href="#pharmacies-pharmacy-put" class="method put">PUT</a><code class="uri">/patients/{patientid}/pharmacies/{pharmacyid}</code></h4><p>Change information (name, phone, address and/or hours) of an individual pharmacy. The
@@ -1315,6 +1342,7 @@ current user will need write access to the patient’s data.</p>
 </dd><dt>address</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>postal address, in the format specified in <code>POST</code></p>
 </dd><dt>hours</dt><dd><code>dictionary</code>&nbsp;<span>(optional)</span>&nbsp;<p>Opening/closing hours, in the format specified in <code>POST</code>. The dictionary can
 be partially empty.</p>
+</dd><dt>notes</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>freeform text notes about the pharmacy by the patient</p>
 </dd></dl></div><div class="title"><strong>Request</strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><h5>Headers</h5><pre><code><span class="hljs-attribute">Authorization</span>: <span class="hljs-string">Bearer ACCESS_TOKEN</span><br></code></pre><div style="height: 1px;"></div><h5>Body</h5><pre><code>{
     name: <span class="hljs-string">"Pharmacy. Y"</span>,
     phone: <span class="hljs-string">"(716) 716-7166"</span>,
@@ -1323,7 +1351,8 @@ be partially empty.</p>
         tuesday: {
             open: <span class="hljs-string">"10:00"</span>
         }
-    }
+    },
+    notes: <span class="hljs-string">"Doesn't smell like it used to"</span>
 }
 </code></pre><div style="height: 1px;"></div></div></div><div class="title"><strong>Response&nbsp;&nbsp;<code>200</code></strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><div class="description"><p>Errors</p>
 <ul>
@@ -1388,6 +1417,7 @@ form specified above in <code>POST</code></li>
             close: <span class="hljs-string">"17:00"</span>
         }
     },
+    notes: <span class="hljs-string">"Doesn't smell like it used to"</span>,
     success: <span class="hljs-literal">true</span>
 }
 </code></pre><div style="height: 1px;"></div></div></div></div><div id="pharmacies-pharmacy-delete" class="action delete"><h4><div class="name">Delete a Pharmacy</div><a href="#pharmacies-pharmacy-delete" class="method delete">DELETE</a><code class="uri">/patients/{patientid}/pharmacies/{pharmacyid}</code></h4><p>Remove information on a single pharmacy. The current user will need write access to
@@ -1432,7 +1462,8 @@ differently. The schedule type should be passed in a <code>type</code> key.</p>
 value (specifically ISO-2014, i.e., <code>YYYY-MM-DD</code>) on which the patient should stop taking
 the medication (i.e., the last event at which they should take the medication should be the
 last event generated on <code>stop_date</code>). This is useful with, for example, antibiotics, when they
-must be rigorously taken until a certain date, and not at all after that date.</p>
+must be rigorously taken until a certain date, and not at all after that date. <code>stop_date</code> corresponds
+to a date in the patient’s local timezone.</p>
 <h3 id="header-as-needed">As Needed<a class="permalink" href="#header-as-needed"><i class="fa fa-link"></i></a></h3>
 <pre><code class="language-javascript">type: <span class="hljs-string">"as_needed"</span>
 </code></pre>
@@ -1503,12 +1534,19 @@ week for <code>frequency=7</code>, etc). For example,</p>
 <h4 id="header-times-of-day">Times of Day<a class="permalink" href="#header-times-of-day"><i class="fa fa-link"></i></a></h4>
 <p><code>times_of_day</code> should be an array of strings specifying the specific times of the day on which the
 patient should take the medication. Times should be formatted in the <code>HH:MM</code> format of ISO 8601, for
-example <code>03:59</code> and <code>23:20</code>.</p>
+example <code>03:59</code> and <code>23:20</code>. These times are in the local timezone of the patient, and if that timezone
+is updated then the times will shift accordingly. For example, if the patient’s timezone is initially
+<code>London/Europe</code> and they have a medication scheduled for <code>15:00</code> every day, if the timezone is updated
+to <code>America/New_York</code> then the schedule will shift to <code>10:00</code> every day.</p>
 <p>Times based on the patient’s habits can also be specified with the strings
 <code>&quot;before_sleep&quot;</code>, <code>&quot;after_sleep&quot;</code>, <code>&quot;before_breakfast&quot;</code>, <code>&quot;after_breakfast&quot;</code>,
 <code>&quot;before_lunch&quot;</code>, <code>&quot;after_lunch&quot;</code>, <code>&quot;before_dinner&quot;</code> and <code>&quot;after_dinner&quot;</code>, allowing the schedule
 to specify, for example, that the patient should take the medication once after waking up
-and once before sleeping.</p>
+and once before sleeping. These are not affected by timezone changes: for example, if <code>breakfast</code>
+is set to <code>10:00</code> while the timezone is <code>London/Europe</code>, <code>breakfast</code> will remain as <code>10:00</code> if
+the timezone is updated to <code>America/New_York</code>.  This signifies that if medication is to be taken
+with food at breakfast every morning, the patient should continue doing that even if the timezone
+shifts.</p>
 <ul>
 <li>Joe should take his anti-Parkinsons meds at 3PM every week, until March 15</li>
 </ul>
@@ -1758,6 +1796,7 @@ The current user must have read access to the patient’s data.</p>
         name: <span class="hljs-string">"Dr. Y"</span>,
         phone: <span class="hljs-string">"(716) 716-7166"</span>,
         address: <span class="hljs-string">"Doctor Street, DC, 20052"</span>,
+        notes: <span class="hljs-string">"Love this doc the most!"</span>,
         success: <span class="hljs-literal">true</span>
     },
     pharmacy: {
@@ -1792,7 +1831,8 @@ The current user must have read access to the patient’s data.</p>
             sunday: {
                 open: <span class="hljs-string">"0900"</span>,
                 close: <span class="hljs-string">"1700"</span>
-            }
+            },
+            notes: <span class="hljs-string">"Great pharmacy! Love the smell"</span>
         }
     },
     success: <span class="hljs-literal">true</span>
@@ -1942,7 +1982,8 @@ supposed to, <em>adhering</em>, or not, <em>non-adhering</em>).</p>
 taken their medication). The current user will need write access to the patient’s data.</p>
 <div class="title"><strong>Parameters</strong><div class="collapse-button show"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><dl class="inner"><dt>patientid</dt><dd><code>integer</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>unique ID of the patient (<em>url</em>)</p>
 </dd><dt>medication_id</dt><dd><code>integer</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>unique ID of the medication for which the patient has adhered</p>
-</dd><dt>date</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>2015-05-31T19:27:09+00:00</span></span><p>ISO 8601 combined date-time in UTC representing the date and time at which <em>the patient took the medication</em></p>
+</dd><dt>date</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>2015-05-31T19:27:09+00:00</span></span><p>ISO 8601 combined date-time in UTC representing the date and time at which
+<em>the patient took the medication</em></p>
 </dd><dt>notes</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>free-text field for things such as observations and reactions recorded by the patient</p>
 </dd></dl></div><div class="title"><strong>Request</strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><h5>Headers</h5><pre><code><span class="hljs-attribute">Authorization</span>: <span class="hljs-string">Bearer ACCESS_TOKEN</span><br></code></pre><div style="height: 1px;"></div><h5>Body</h5><pre><code>{
     medication_id: <span class="hljs-number">1</span>,
@@ -2186,6 +2227,11 @@ whether the patient took the medication when they were required. If they did, th
 <code>delay</code> integer field will be present indicating the number of minutes late the patient was
 when taking the medication. <code>delay</code> is signed: if the patient took the medication too early,
 it will be negative.</p>
+<p>Each event item can be one of two times: <code>time</code> and <code>date</code>. <code>time</code> items represent a specific
+datetime at which the medication should be taken (and are formatted as an ISO-8601 datetime
+in the patient’s <em>local</em> timezone). <code>date</code> items indicate that the medication can be taken at
+any time on the specified day, and have the date formatted as <code>YYYY-MM-DD</code> in the patient’s
+<em>local</em> timezone.</p>
 <p>The schedule will also contain an overall <code>statistics</code> object, containing floats <code>took_medication</code>
 (a mean average value for <code>took_medication</code> as a percentage out of 100), <code>delta</code> (a mean average
 value of all of the <code>delay</code>s) and <code>delay</code> (a mean average value of the <strong>absolute values</strong> of all
@@ -2269,7 +2315,7 @@ one week later than the current time.</p>
     },
     success: <span class="hljs-literal">true</span>
 }
-</code></pre><div style="height: 1px;"></div></div></div></div></div></section></div></div></div><p style="text-align: center;" class="text-muted">Generated by&nbsp;<a href="https://github.com/danielgtaylor/aglio" class="aglio">aglio</a>&nbsp;on 25 Jun 2015</p><script>function toggleCollapse(event) {
+</code></pre><div style="height: 1px;"></div></div></div></div></div></section></div></div></div><p style="text-align: center;" class="text-muted">Generated by&nbsp;<a href="https://github.com/danielgtaylor/aglio" class="aglio">aglio</a>&nbsp;on 26 Jun 2015</p><script>function toggleCollapse(event) {
     var button = event.target.parentNode;
     var content = button.parentNode.nextSibling;
     var inner = content.children[0];
