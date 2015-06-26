@@ -391,6 +391,7 @@ The current user must have read access to the patient's data.
                     name: "Dr. Y",
                     phone: "(716) 716-7166",
                     address: "Doctor Street, DC, 20052",
+                    notes: "Love this doc the most!",
                     success: true
                 },
                 pharmacy: {
@@ -425,7 +426,8 @@ The current user must have read access to the patient's data.
                         sunday: {
                             open: "0900",
                             close: "1700"
-                        }
+                        },
+                        notes: "Great pharmacy! Love the smell"
                     }
                 },
                 success: true

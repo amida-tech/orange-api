@@ -17,6 +17,7 @@ need write access to the patient).
 
         Postal address of the doctor. Newlines can optionally be used to split
         lines.
+    + notes (string, optional) - freeform text notes about the doctor by the patient
 
 + Request
     + Headers
@@ -28,7 +29,8 @@ need write access to the patient).
             {
                 name: "Dr. X",
                 phone: "(617) 617-6177",
-                address: "Doctor Street, DC, 20052"
+                address: "Doctor Street, DC, 20052",
+                notes: "Love this doc!"
             }
 
 + Response 201
@@ -47,6 +49,7 @@ need write access to the patient).
                 name: "Dr. X",
                 phone: "(617) 617-6177",
                 address: "Doctor Street, DC, 20052"
+                notes: "Love this doc!",
                 success: true
             }
 
@@ -106,7 +109,8 @@ current user will need read access to the patient.
                         id: 1,
                         name: "Dr. X",
                         phone: "(617) 617-6177",
-                        address: "Doctor Street, DC, 20052"
+                        address: "Doctor Street, DC, 20052",
+                        notes: "Love this doc!"
                     },
                     ...
                 ],
@@ -149,6 +153,7 @@ patient's data.
                 name: "Dr. X",
                 phone: "(617) 617-6177",
                 address: "Doctor Street, DC, 20052",
+                notes: "Love this doc!",
                 success: true
             }
 
@@ -169,6 +174,7 @@ write access to the patient's data.
 
     + phone (string, optional) - contact phone number for the doctor
     + address (string, optional) - postal address, in the format specified above in `POST`
+    + notes (string, optional) - freeform text notes about the doctor by the patient
 
 + Request
     + Headers
@@ -180,7 +186,8 @@ write access to the patient's data.
             {
                 name: "Dr. Y",
                 phone: "(716) 716-7166",
-                address: "Doctor Street, DC, 20052"
+                address: "Doctor Street, DC, 20052",
+                notes: "Love this doc the most!"
             }
 
 + Response 200
@@ -200,6 +207,7 @@ write access to the patient's data.
                 name: "Dr. Y",
                 phone: "(716) 716-7166",
                 address: "Doctor Street, DC, 20052",
+                notes: "Love this doc the most!",
                 success: true
             }
 
@@ -236,6 +244,7 @@ data.
                 name: "Dr. X",
                 phone: "(617) 617-6177",
                 address: "Doctor Street, DC, 20052",
+                notes: "Love this doc the most!",
                 success: true
             }
 
