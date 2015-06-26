@@ -21,7 +21,8 @@ patient's data.
         The hours the pharmacy is open. Keys are full lowercase names of the days of
         the week (e.g., `monday`), and values are themselves dictionaries of the form
         `{open: OPEN_TIME, close: CLOSE_TIME}`, where times are formatted in the `HH:MM`
-        format specified in ISO 8601
+        format specified in ISO 8601. These hours should be in the local timezone of
+        the patient.
 
 + Request
     + Headers

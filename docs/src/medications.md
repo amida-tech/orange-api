@@ -15,7 +15,8 @@ All schedule types can include a `stop_date` field, containing an ISO8601-format
 value (specifically ISO-2014, i.e., `YYYY-MM-DD`) on which the patient should stop taking
 the medication (i.e., the last event at which they should take the medication should be the
 last event generated on `stop_date`). This is useful with, for example, antibiotics, when they
-must be rigorously taken until a certain date, and not at all after that date.
+must be rigorously taken until a certain date, and not at all after that date. `stop_date` corresponds
+to a date in the patient's local timezone.
 
 ### As Needed
 ```javascript
@@ -97,13 +98,20 @@ week for `frequency=7`, etc). For example,
 #### Times of Day
 `times_of_day` should be an array of strings specifying the specific times of the day on which the
 patient should take the medication. Times should be formatted in the `HH:MM` format of ISO 8601, for
-example `03:59` and `23:20`.
+example `03:59` and `23:20`. These times are in the local timezone of the patient, and if that timezone
+is updated then the times will shift accordingly. For example, if the patient's timezone is initially
+`London/Europe` and they have a medication scheduled for `15:00` every day, if the timezone is updated
+to `America/New_York` then the schedule will shift to `10:00` every day.
 
 Times based on the patient's habits can also be specified with the strings 
 `"before_sleep"`, `"after_sleep"`, `"before_breakfast"`, `"after_breakfast"`,
 `"before_lunch"`, `"after_lunch"`, `"before_dinner"` and `"after_dinner"`, allowing the schedule
 to specify, for example, that the patient should take the medication once after waking up
-and once before sleeping.
+and once before sleeping. These are not affected by timezone changes: for example, if `breakfast`
+is set to `10:00` while the timezone is `London/Europe`, `breakfast` will remain as `10:00` if
+the timezone is updated to `America/New_York`.  This signifies that if medication is to be taken
+with food at breakfast every morning, the patient should continue doing that even if the timezone
+shifts.
 
 - Joe should take his anti-Parkinsons meds at 3PM every week, until March 15
 ```javascript

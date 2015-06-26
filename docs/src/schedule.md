@@ -11,6 +11,12 @@ whether the patient took the medication when they were required. If they did, th
 when taking the medication. `delay` is signed: if the patient took the medication too early,
 it will be negative.
 
+Each event item can be one of two times: `time` and `date`. `time` items represent a specific
+datetime at which the medication should be taken (and are formatted as an ISO-8601 datetime
+in the patient's _local_ timezone). `date` items indicate that the medication can be taken at
+any time on the specified day, and have the date formatted as `YYYY-MM-DD` in the patient's
+_local_ timezone.
+
 The schedule will also contain an overall `statistics` object, containing floats `took_medication`
 (a mean average value for `took_medication` as a percentage out of 100), `delta` (a mean average
 value of all of the `delay`s) and `delay` (a mean average value of the **absolute values** of all
