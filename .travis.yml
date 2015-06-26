@@ -3,11 +3,11 @@ node_js:
     - "0.10"
 services:
     - mongodb
-before_install:
+install:
   - sudo apt-get update
   - sudo apt-get install libzmq3-dev
-  - pip install zerorpc
+  - sudo pip install zerorpc
   - npm install -g grunt-cli
-install: npm install
+  - npm install
 script: grunt test
 after_success: grunt coverage:push
