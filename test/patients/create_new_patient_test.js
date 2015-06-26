@@ -31,12 +31,54 @@ describe("Patients", function () {
             return expect(createPatient({})).to.be.a.patient.createSuccess;
         });
 
+        // validation
         it("should require a name", function () {
             return expect(createPatient({ name: undefined })).to.be.an.api.error(400, "name_required");
         });
-
         it("should not accept a blank name", function () {
             return expect(createPatient({ name: "" })).to.be.an.api.error(400, "name_required");
+        });
+        it("doesn't require a sex and defaults to unspecified", function () {
+            return createPatient({ sex: undefined }).then(function (response) {
+                expect(response).to.be.a.patient.createSuccess;
+                expect(response.body.sex).to.equal("unspecified");
+            });
+        });
+        it("allows a null sex and changes it to unspecified", function () {
+            return createPatient({ sex: null }).then(function (response) {
+                expect(response).to.be.a.patient.createSuccess;
+                expect(response.body.sex).to.equal("unspecified");
+            });
+        });
+        it("rejects a blank sex", function () {
+            return expect(createPatient({ sex: "" })).to.be.an.api.error(400, "invalid_sex");
+        });
+        it("rejects an invalid sex", function () {
+            return expect(createPatient({ sex: "foo" })).to.be.an.api.error(400, "invalid_sex");
+        });
+        it("accepts a valid sex", function () {
+            return expect(createPatient({ sex: "male" })).to.be.a.patient.createSuccess;
+        });
+        it("doesn't require a birthdate and defaults to null", function () {
+            return createPatient({ birthdate: undefined }).then(function (response) {
+                expect(response).to.be.a.patient.createSuccess;
+                expect(response.body.birthdate).to.equal(null);
+            });
+        });
+        it("allows a null birthdate and leaves it as null", function () {
+            return createPatient({ birthdate: null }).then(function (response) {
+                expect(response).to.be.a.patient.createSuccess;
+                expect(response.body.birthdate).to.equal(null);
+            });
+        });
+        it("rejects a blank birthdate", function () {
+            return expect(createPatient({ birthdate: "" })).to.be.an.api.error(400, "invalid_birthdate");
+        });
+        it("rejects an invalid birthdate", function () {
+            return expect(createPatient({ birthdate: "foo" })).to.be.an.api.error(400, "invalid_birthdate");
+        });
+        it("accepts a valid birthdate", function () {
+            return expect(createPatient({ birthdate: "1995-01-01" })).to.be.a.patient.createSuccess;
         });
     });
 });

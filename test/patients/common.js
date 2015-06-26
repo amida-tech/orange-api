@@ -13,11 +13,13 @@ var expect = chakram.expect;
 // verify successful responses
 /*eslint-disable key-spacing */
 var patientSchema = {
-    required: ["id", "name", "access", "success"],
+    required: ["id", "name", "access", "sex", "birthdate"],
     properties: {
-        id:     { type: "number" },
-        name:   { type: "string" },
-        access: { type: "string" }
+        id:         { type: "number" },
+        name:       { type: "string" },
+        access:     { type: "string" },
+        sex:        { type: "string" },
+        birthdate:  { type: ["string", "null"] }
     }
 };
 /*eslint-enable key-spacing */

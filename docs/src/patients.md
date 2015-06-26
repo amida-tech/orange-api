@@ -16,6 +16,12 @@ the child of the patient.
 
 + Parameters
     + name (string, required) - the full human name of the patient
+    + birthdate (string, optional)
+
+        Optional date of birth of the patient, formatted as an ISO 8601 YYYY-MM-DD
+    + sex (string, optional)
+
+        String representing sex of the user. Must be "male", "female", "other" or "unspecified".
     
 + Request
     + Headers
@@ -25,7 +31,9 @@ the child of the patient.
     + Body
     
             {
-                name: "Dependent Patient"
+                name: "Dependent Patient",
+                birthdate: "1990-01-01",
+                sex: "male"
             }
 
 + Response 201
@@ -34,12 +42,19 @@ the child of the patient.
     `Authorization` header
     + `invalid_access_token` (401) - the access token specified is invalid
     + `name_required` (400) - no name specified
+    + `invalid_sex` (400)
+
+        the sex field, if passed, must be either `male`, `female`, `other` or `unspecified`
+
+    + `invalid_birthdate` (400) - the birthdate field, if passed, must be a valid `YYYY-MM-DD` date
 
     + Body
 
             {
                 id: 1,
                 name: "Dependent Patient",
+                birthdate: "1990-01-01",
+                sex: "male",
                 access: "write",
                 success: true
             }
@@ -94,6 +109,8 @@ View a list of all patients the current user has access to: both read
                     {
                         id: 1,
                         name: "Dependent Patient",
+                        birthdate: "1990-01-01",
+                        sex: "male",
                         access: "write"
                     },
                     ...
@@ -132,6 +149,8 @@ View the name of a specific patient as well as the current user's access (`read`
             {
                 id: 1,
                 name: "Dependent Patient",
+                birthdate: "1990-01-01",
+                sex: "male",
                 access: "write",
                 success: true
             }
@@ -152,6 +171,12 @@ users, then the patient and all its data _will be deleted_.
         unique ID of the patient (**not** user-specific) (*url*)
 
     + name (string, optional) - new full human name of the patient
+    + birthdate (string, optional)
+
+        Optional date of birth of the patient, formatted as an ISO 8601 YYYY-MM-DD
+    + sex (string, optional)
+
+        String representing sex of the user. Must be "male", "female", "other" or "unspecified".
 
     + access (string, optional)
     
@@ -169,7 +194,9 @@ users, then the patient and all its data _will be deleted_.
     + Body
     
             {
-                name: "John Smith"
+                name: "Gin Smith",
+                birthdate: "1991-01-01",
+                sex: "female"
             }
 
 
@@ -181,12 +208,18 @@ users, then the patient and all its data _will be deleted_.
     + `invalid_patient_id` (404) - a patient with the specified ID was not found
     + `unauthorized` (403) - the current user does not have write access to this patient
     + `invalid_access` (400) - the access string is not `none` or `read`
+    + `invalid_sex` (400)
+
+        the sex field, if passed, must be either `male`, `female`, `other` or `unspecified`
+    + `invalid_birthdate` (400) - the birthdate field, if passed, must be a valid `YYYY-MM-DD` date
 
     + Body
 
             {
                 id: 1,
-                name: "John Smith",
+                name: "Gin Smith",
+                birthdate: "1991-01-01",
+                sex: "female",
                 access: "write",
                 success: true
             }
@@ -221,7 +254,9 @@ called with `access="none"` rather than this method.
 
             {
                 id: 1,
-                name: "John Smith",
+                name: "Gin Smith",
+                birthdate: "1991-01-01",
+                sex: "female",
                 access: "write",
                 success: true
             }
