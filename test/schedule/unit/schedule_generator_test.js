@@ -120,53 +120,37 @@ describe("Schedule", function () {
         });
 
         describe("with type as_needed", function () {
-            it("generates a day-level schedule", function () {
+            it("generates an empty schedule", function () {
                 return check({
                     type: "as_needed"
-                }, yesterday, tomorrow, [
-                    takeOn(yesterday),
-                    takeOn(today),
-                    takeOn(tomorrow)
-                ]);
+                }, yesterday, tomorrow, []);
             });
             it("handles a not_to_exceed", function () {
                 return check({
                     type: "as_needed",
                     not_to_exceed: 7
-                }, yesterday, tomorrow, [
-                    takeOn(yesterday, { maximum: 7 }),
-                    takeOn(today, { maximum: 7 }),
-                    takeOn(tomorrow, { maximum: 7 })
-                ]);
+                }, yesterday, tomorrow, []);
             });
             describe("with a stop date", function () {
                 it("handles a stop date in the future", function () {
                     return check({
                         type: "as_needed",
                         stop_date: future
-                    }, yesterday, tomorrow, [
-                        takeOn(yesterday),
-                        takeOn(today),
-                        takeOn(tomorrow)
-                    ]);
+                    }, yesterday, tomorrow, []);
                 });
 
                 it("handles a stop date in the past", function () {
                     return check({
                         type: "as_needed",
                         stop_date: past
-                    }, yesterday, tomorrow, [
-                    ]);
+                    }, yesterday, tomorrow, []);
                 });
 
                 it("handles a stop date in the range", function () {
                     return check({
                         type: "as_needed",
                         stop_date: today
-                    }, yesterday, tomorrow, [
-                        takeOn(yesterday),
-                        takeOn(today)
-                    ]);
+                    }, yesterday, tomorrow, []);
                 });
 
                 it("handles a stop_date and not_to_exceed", function () {
@@ -174,10 +158,7 @@ describe("Schedule", function () {
                         type: "as_needed",
                         stop_date: today,
                         not_to_exceed: 5
-                    }, yesterday, tomorrow, [
-                        takeOn(yesterday, { maximum: 5 }),
-                        takeOn(today, { maximum: 5 })
-                    ]);
+                    }, yesterday, tomorrow, []);
                 });
             });
         });
