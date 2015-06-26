@@ -4,8 +4,9 @@ module.exports = function (grunt) {
     require("load-grunt-tasks")(grunt);
 
     // run app
-    grunt.registerTask("server:dev", ["exec:matcherStop", "exec:matcherStart", "express:dev", "watch", "exec:matcherStop"]);
-    grunt.registerTask("server:test", ["exec:matcherStop", "exec:matcherStart", "express:test"]);
+    grunt.registerTask("matchStart", ["exec:matcherStop", "exec:matcherStart"]);
+    grunt.registerTask("server:dev", ["matchStart", "express:dev", "watch", "exec:matcherStop"]);
+    grunt.registerTask("server:test", ["matchStart", "express:test"]);
     grunt.registerTask("dev", ["eslint", "server:dev"]);
 
     // clean up code and run tests
@@ -50,7 +51,7 @@ module.exports = function (grunt) {
                     reporter: "spec",
                     timeout: "10000"
                 },
-                src: ["test/common/db_helper.js", "test/common/*.js", "test/*.js", "test/schedule/unit/schedule_matchup_test.js"]
+                src: ["test/common/db_helper.js", "test/common/*.js", "test/*.js", "test/**/*.js"]
             },
             unit: {
                 options: {
@@ -79,8 +80,8 @@ module.exports = function (grunt) {
         watch: {
             express: {
                 // reloading broken on OSX because of EMFILE hence this hack
-                files:  [ "gruntfile.js" ],
-                tasks:  [ "express:dev" ],
+                files: [ "gruntfile.js" ],
+                tasks: [ "express:dev" ],
                 options: {
                     spawn: false
                 }

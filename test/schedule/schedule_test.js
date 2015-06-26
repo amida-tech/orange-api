@@ -32,8 +32,9 @@ describe("Schedule", function () {
             if (typeof startDate !== "undefined") query.start_date = startDate;
             if (typeof startDate !== "undefined") query.end_date = endDate;
             if (typeof medicationId !== "undefined") query.medication_id = medicationId;
+            query = querystring.stringify(query);
 
-            var url = util.format("http://localhost:3000/v1/patients/%d/schedule?%s", patientId, querystring.stringify(query));
+            var url = util.format("http://localhost:3000/v1/patients/%d/schedule?%s", patientId, query);
             return chakram.get(url, auth.genAuthHeaders(accessToken));
         };
 
@@ -48,7 +49,7 @@ describe("Schedule", function () {
             // only to be used for testing access permissions: the generated schedule will be
             // blank
             var showSchedule = function (patient) {
-                return Q.nbind(patient.createMedication, patient)({ name: "foobar" }).then(function (medication) {
+                return Q.nbind(patient.createMedication, patient)({ name: "foobar" }).then(function () {
                     // we don't pass medication._id because we're just checking the overall
                     // schedule endpoint here (medication_id is optional)
                     return show(null, null, null, patient._id, patient.user.accessToken);

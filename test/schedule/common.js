@@ -2,10 +2,7 @@
 
 var chakram     = require("chakram"),
     extend      = require("xtend"),
-    Q           = require("q"),
-    common      = require("../common/chakram.js"),
-    patients    = require("../patients/common.js"),
-    auth        = require("../common/auth.js");
+    common      = require("../common/chakram.js");
 var expect = chakram.expect;
 
 // verify successful responses
