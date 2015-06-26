@@ -54,7 +54,12 @@ patientRouter.use("/pharmacies", require("./lib/controllers/pharmacies.js"));
 patientRouter.use("/medications", require("./lib/controllers/medications.js"));
 patientRouter.use("/journal", require("./lib/controllers/journal.js"));
 patientRouter.use("/doses", require("./lib/controllers/doses.js"));
-patientRouter.use("/schedule", require("./lib/controllers/schedule.js"));
+// scheduleController requires a getter function for the zerorpc client, set
+// as an express 'setting' in run.js
+var scheduleController = require("./lib/controllers/schedule.js")(function () {
+    return app.settings.zerorpc;
+});
+patientRouter.use("/schedule", scheduleController);
 
 // nest patient-specific resources under /patients/:id
 router.use("/patients/:patientid", patientRouter);

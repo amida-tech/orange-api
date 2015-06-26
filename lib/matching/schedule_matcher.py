@@ -1,23 +1,59 @@
 import bisect, random, math
-from termcolor import colored
 
 class ScheduleMatcher(object):
-    def __init__(self, scheduled, doses):
+    # scheduled = array of numbers representing the times of scheduled doses
+    # doses = array of numbers representing the times doses were actually taken
+    # params:
+        # population_size: number of states to initialise
+        # alpha: weighting of # of unmatched schedule events in cost function
+        # beta: weighting of # of unmatched dose events in cost function
+        # gamma: weighting of time delta between schedule and dose events in cost function
+        # iota: weighting to give duplicates (one dose matched to two schedule events) in
+        #       cost function
+        # eta: weighting to give monotonicity breakers (schedule events who are matched up
+        #       with a dose event that tooks place before the dose event the previous
+        #       schedule matches) in the cost function
+        # chi: proportion of population who should breed offspring for the next generation
+        #      rather than being copied across
+        # mu: proportion of population who should be randomly mutated in each evolve step
+        # max_iterations: maximum number of iterations to run before returning the best match
+        #                 so far
+        # kappa: scaling constant used in kernel function on time delta between scheduled and
+        #        dose events. when delta = kappa, kernel(radius) = 1/2 (kernel is a standard
+        #        fast sigmoid)
+        # fitness_threshold: if the fitness of a state is greater than this, stop evolving and
+        #                    just use that state
+        # 
+
+    def __init__(self, scheduled, doses, params):
         # we assume these are sorted in e.g., cost generation
         self.scheduled = sorted(scheduled)
         self.doses = sorted(doses)
 
-        # TODO pass these constants
+        # store parameters with sensible defaults
+        # TODO: these are probably pretty terrible defaults, CV some better ones!
         self.population_size = 1000
+        if "population_size" in params: self.population_size = params["population_size"]
         self.alpha = 3
+        if "alpha" in params: self.alpha = params["alpha"]
         self.beta = 2
+        if "beta" in params: self.beta = params["beta"]
         self.gamma = 1
+        if "gamma" in params: self.gamma = params["gamma"]
         self.chi = 0.8
+        if "chi" in params: self.chi = params["chi"]
         self.mu = 0.1
+        if "mu" in params: self.mu = params["mu"]
         self.max_iterations = 1000
+        if "max_iterations" in params: self.max_iterations = params["max_iterations"]
         self.iota = 5
-        self.kappa = 2 # when radius = kappa, kernel(radius) = 1/2
+        if "iota" in params: self.iota = params["iota"]
+        self.kappa = 2
+        if "kappa" in params: self.kappa = params["kappa"]
         self.eta = 5
+        if "eta" in params: self.eta = params["eta"]
+        self.fitness_threshold = 0.10
+        if "fitness_threshold" in params: self.fitness_threshold = params["fitness_threshold"]
 
         # m = number of schedule events
         self.m = len(self.scheduled)
@@ -168,20 +204,43 @@ class ScheduleMatcher(object):
         self.population = population
         self.evaluate()
 
+    # evolve the population til a good enough match is found and return it
+    # note that this is blocking and synchronous
     def match(self):
         for iteration in range(self.max_iterations):
-            sm.evolve()
+            self.evolve()
+            # check if new generation meets the threshold
             index, fitness = self.best()
-            state = self.population[index]
-            # we chunk state into m chunk_length-bit chunks
-            for i in range(self.m):
-                # want to get bits from i*chunk_length to (i+1)*chunk_length-1
-                match = (state >> (i*self.chunk_length)) & self.chunk_mask;
-                if (match == self.n):
-                    print "%d NO MATCH" % self.scheduled[i]
-                else:
-                    print "%d %d" % (self.scheduled[i], self.doses[match])
-            print()
+            if fitness > self.fitness_threshold:
+                # stop evolving
+                break
 
-sm = ScheduleMatcher([5, 7, 15, 17, 25, 27, 35, 37], [8, 9, 12, 16, 28, 34, 36])
-sm.match()
+        # whether we've reached the max number of iterations or the population
+        # is 'good enough' (fitness > threshold), we return the best state here anyway
+        result = {
+            "fitness": fitness,
+            "match": []
+        }
+
+        # format state for output
+        state = self.population[index]
+        # we chunk state into m chunk_length-bit chunks
+        for i in range(self.m):
+            # want to get bits from i*chunk_length to (i+1)*chunk_length-1
+            match = (state >> (i*self.chunk_length)) & self.chunk_mask;
+            # no match
+            if (match == self.n):
+                result["match"].append({
+                    "scheduled": i,
+                    "match": False
+                })
+            else:
+                result["match"].append({
+                    "scheduled": i,
+                    "match": True,
+                    "dose": match
+                })
+        return result
+
+# sm = ScheduleMatcher([5, 7, 15, 17, 25, 27, 35, 37], [8, 9, 12, 16, 28, 34, 36], {})
+# print sm.match()

@@ -23,3 +23,4 @@ tmp
 .grunt/grunt-gh-pages
 docs/output
 .coveralls.yml
+*.pyc

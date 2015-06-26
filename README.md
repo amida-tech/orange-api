@@ -29,6 +29,8 @@ API for Orange medication adherence apps. quasi-REST and implemented in Node & M
 - Node.js (v0.10+) and NPM
 - Grunt.js
 - MongoDB
+- ZeroMQ
+- ZeroRPC python library (for schedule matching)
 
 ```
 # you need Node.js and Grunt.js installed
@@ -36,7 +38,7 @@ API for Orange medication adherence apps. quasi-REST and implemented in Node & M
 
 #install dependencies and build
 npm install
-grunt
+grunt dev
 
 ```
 
