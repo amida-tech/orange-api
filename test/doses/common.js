@@ -56,8 +56,6 @@ module.exports.itRequiresValidDoseId = function (endpoint) {
                     // create medication for otherPatient
                     return Q.nbind(otherPatient.createMedication, otherPatient)({ name: "foobar" });
                 }).then(function (d) {
-                    console.log(d);
-                    console.log(otherPatient);
                     // setup dose for otherPatient
                     return Q.nbind(otherPatient.createDose, otherPatient)({
                         medication_id: otherPatient.medications[0]._id,

@@ -12,7 +12,7 @@ describe("Patients", function () {
         };
 
         // helpers to create patients before showing them
-        var showMyPatient = function (data) {
+        var showMyPatient = module.exports.showMyPatient = function (data) {
             return common.testMyPatient(data).then(showPatient);
         };
         var showOtherPatient = function (data, access) {

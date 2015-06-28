@@ -7,6 +7,11 @@ There are two types of access a user can have to a patient: read-write (write) a
 Read-write gives a user full access to everything, even allowing them to delete the
 patient and change who the patient is shared with.
 
+Each patient returned by the API has an `avatar` field containing the URL of that patient's
+avatar (image) endpoint. As documented below, `GET`ting this URL returns the user's avatar
+(initially a default image) and `POST`ing to this URL with raw image data sets the avatar
+to the POSTed data.
+
 ## User's Patients [/patients]
 ### Create new Patient [POST]
 Create a new patient, initially shared with the current user with write permissions,
@@ -33,7 +38,8 @@ the child of the patient.
             {
                 name: "Dependent Patient",
                 birthdate: "1990-01-01",
-                sex: "male"
+                sex: "male",
+                avatar: "http://orangeapi.amida/api/v1/patients/1/avatar.jpg"
             }
 
 + Response 201
@@ -55,6 +61,7 @@ the child of the patient.
                 name: "Dependent Patient",
                 birthdate: "1990-01-01",
                 sex: "male",
+                avatar: "http://orangeapi.amida/api/v1/patients/1/avatar.jpg",
                 access: "write",
                 success: true
             }
@@ -111,6 +118,7 @@ View a list of all patients the current user has access to: both read
                         name: "Dependent Patient",
                         birthdate: "1990-01-01",
                         sex: "male",
+                        avatar: "http://orangeapi.amida/api/v1/patients/1/avatar.jpg",
                         access: "write"
                     },
                     ...
@@ -151,6 +159,7 @@ View the name of a specific patient as well as the current user's access (`read`
                 name: "Dependent Patient",
                 birthdate: "1990-01-01",
                 sex: "male",
+                avatar: "http://orangeapi.amida/api/v1/patients/1/avatar.jpg",
                 access: "write",
                 success: true
             }
@@ -220,6 +229,7 @@ users, then the patient and all its data _will be deleted_.
                 name: "Gin Smith",
                 birthdate: "1991-01-01",
                 sex: "female",
+                avatar: "http://orangeapi.amida/api/v1/patients/1/avatar.jpg",
                 access: "write",
                 success: true
             }
@@ -257,7 +267,80 @@ called with `access="none"` rather than this method.
                 name: "Gin Smith",
                 birthdate: "1991-01-01",
                 sex: "female",
+                avatar: "http://orangeapi.amida/api/v1/patients/1/avatar.jpg",
                 access: "write",
+                success: true
+            }
+
+## Patient's Avatar [/patients/{patientid}/avatar(.ext)]
+### View Patient Avatar [GET]
+View the image avatar of a specific patient. File extensions can be added to the URL
+(for example, `/patients/1/avatar.jpg`, `/patients/1/avatar.gif`) but the image 
+**will not** be converted to the format associated with the extension, but instead
+just returned in whatever format it was stored in. The URL in the avatar field in
+a patient's details will **automatically include the correct extension** for the image.
+
+The `Content-Type` header will be populated with the correct MIME type.
+
++ Parameters
+    + patientid (integer, required)
+
+        unique ID of the patient (**not** user-specific)
+
++ Request
+    + Headers
+
+            Authorization: Bearer ACCESS_TOKEN
+
++ Response 200
+    Errors
+    + `access_token_required` (401) - no access token specified in
+    `Authorization` header
+    + `invalid_access_token` (401) - the access token specified is invalid
+    + `invalid_patient_id` (404) - a patient with the specified ID was not found
+    + `unauthorized` (403) - the current user does not have write access to this patient
+
+    + Body
+
+            raw image data
+
+### Upload Patient Avatar [POST]
+Upload the image avatar of a specific patient. Again, file extensions can be added to
+the URL but are ignored and will not be used to convert the image format. It's
+important that the `Content-Type` request header is populated with the correct
+MIME type of the image.
+
+Note that unlike every other API endpoint, data should be `POST`ed with `multipart/form-data`
+encoding (**this is vitally important**) rather than `application/json`.
+
+Also note that this endpoint uses `POST` not `PUT` contrary to REST resource routing
+conventions.
+
++ Parameters
+    + patientid (integer, required)
+
+        unique ID of the patient (**not** user-specific) (*url*)
+
++ Request
+    + Headers
+
+            Authorization: Bearer ACCESS_TOKEN
+
+    + Body
+
+            raw image data
+
++ Response 200
+    Errors
+    + `access_token_required` (401) - no access token specified in
+    `Authorization` header
+    + `invalid_access_token` (401) - the access token specified is invalid
+    + `invalid_patient_id` (404) - a patient with the specified ID was not found
+    + `unauthorized` (403) - the current user does not have write access to this patient
+
+    + Body
+
+            {
                 success: true
             }
 
