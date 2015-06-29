@@ -3,9 +3,29 @@ Remember, patients are the resources for which we actually store medication/etc
 data, rather than users (and we have a many to many association between patients
 and users).
 
-There are two types of access a user can have to a patient: read-write (write) and read-only.
-Read-write gives a user full access to everything, even allowing them to delete the
-patient and change who the patient is shared with.
+When a user is created, a corresponding patient for them is also created. The user can then
+optionally create more patients for e.g., children dependents.
+
+Patients can then be shared with other users. There are three levels of sharing: *family prime*,
+*family* and *anyone*. *Family prime* is intended to represent family extremely close to the patient
+(e.g., parents) who should have access to almost everything, *family* is intended for wider
+family of the patient, and *anyone* is intended for everyone else (e.g., doctors).
+
+At the patient level, a user's access to data is determined by which one of the above three groups
+they're a member of. A patient can set global *read* or *write* permissions for each of the three
+share categories, as well as an additional overriding *read*/*write* permission for each user
+the patient is shared with.
+
+These generic permissions control access to most of a patient's resources, but medications and
+journal entries are slightly more complicated. As described in the medications section, each
+medication has its own additional set of access controls. For each of their medications, the patient
+can explicitly set the access level of *family prime*, *family* and *anyone*.
+
+There are four levels here: `read`, `write`, `implicit` and `none`. `read`, `write` and `none` do as
+expected, and `implicit` allows users access to information _related to_ the medication, but not
+specifically about the medication. This means they can view journal entries with the medication
+tagged in, but not the medication data itself. At the moment, it doesn't grant any other permissions
+over `none`, but there is the capability for expansion in the future.
 
 Each patient returned by the API has an `avatar` field containing the URL of that patient's
 avatar (image) endpoint. As documented below, `GET`ting this URL returns the user's avatar
