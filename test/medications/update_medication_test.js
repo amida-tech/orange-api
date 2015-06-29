@@ -76,10 +76,32 @@ describe("Medications", function () {
 
             return setup.then(check);
         });
-        it("should also validate some things");
 
         it("should not allow a blank name", function () {
             return expect(updateMyPatientMedication({}, { name: "" })).to.be.an.api.error(400, "name_required");
+        });
+
+        it("should accept a null fill_date", function () {
+            return updateMyPatientMedication({}, { fill_date: null }).then(function (response) {
+                expect(response).to.be.a.medication.success;
+                expect(response.body.number_left).to.be.null;
+            });
+        });
+        it("should not accept a blank fill_date", function () {
+            return expect(updateMyPatientMedication({}, {
+                fill_date: ""
+            })).to.be.an.api.error(400, "invalid_fill_date");
+        });
+        it("should not accept an invalid fill_date", function () {
+            return expect(updateMyPatientMedication({}, {
+                fill_date: "foo"
+            })).to.be.an.api.error(400, "invalid_fill_date");
+        });
+        it("should accept a valid fill_date", function () {
+            return updateMyPatientMedication({}, { fill_date: "2015-05-01" }).then(function (response) {
+                expect(response).to.be.a.medication.success;
+                expect(response.body.number_left).to.not.be.null;
+            });
         });
 
         // dose testing

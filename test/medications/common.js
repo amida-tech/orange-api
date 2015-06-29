@@ -8,7 +8,7 @@ var expect = chakram.expect;
 /*eslint-disable key-spacing */
 var medicationSchema = {
     required: ["id", "name", "rx_norm", "ndc", "dose", "route", "form", "rx_number",
-                "quantity", "type", "schedule"],
+                "quantity", "type", "schedule", "fill_date", "number_left"],
     properties: {
         id:             { type: "number" },
         name:           { type: "string" },
@@ -25,6 +25,8 @@ var medicationSchema = {
         route:          { type: "string" },
         form:           { type: "string" },
         rx_number:      { type: "string" },
+        fill_date:      { type: ["string", "null"] },
+        number_left:    { type: ["number", "null"] },
         quantity:       { type: "number" },
         type:           { type: "string" },
         schedule:       { type: "object" }, // TODO: full schedule schema here
