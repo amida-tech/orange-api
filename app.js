@@ -27,7 +27,11 @@ app.use(bodyParser.json());
 // in patient.js, so don't require them again here
 require("./lib/models/counter.js"); // Require first
 require("./lib/models/user/user.js");
-require("./lib/models/patient/patient.js");
+// Patient requires a getter function for a gridfs client (set as an express
+// setting in run.js but may not be immediately accessible hence the getter function)
+require("./lib/models/patient/patient.js")(function () {
+    return app.settings.gridfs;
+});
 
 // App-level router containing all routes
 var router = express.Router();

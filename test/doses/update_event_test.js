@@ -80,13 +80,19 @@ describe("Doses", function () {
         });
 
         it("rejects a blank medication ID", function () {
-            return expect(updateMyPatientDose({}, { medication_id: "" })).to.be.an.api.error(400, "invalid_medication_id");
+            return expect(updateMyPatientDose({}, {
+                medication_id: ""
+            })).to.be.an.api.error(400, "invalid_medication_id");
         });
         it("rejects an invalid medication ID", function () {
-            return expect(updateMyPatientDose({}, { medication_id: "foo" })).to.be.an.api.error(400, "invalid_medication_id");
+            return expect(updateMyPatientDose({}, {
+                medication_id: "foo"
+            })).to.be.an.api.error(400, "invalid_medication_id");
         });
         it("rejects a medication ID not corresponding to a real medication", function () {
-            return expect(updateMyPatientDose({}, { medication_id: 9999 })).to.be.an.api.error(400, "invalid_medication_id");
+            return expect(updateMyPatientDose({}, {
+                medication_id: 9999
+            })).to.be.an.api.error(400, "invalid_medication_id");
         });
 
         describe("with multiple doses and medications setup", function () {

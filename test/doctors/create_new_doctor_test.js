@@ -58,7 +58,13 @@ describe("Doctors", function () {
         it("should not require anything other than a name", function () {
             return expect(createMyPatientDoctor({
                 phone: undefined,
-                address: undefined
+                address: undefined,
+                notes: undefined
+            })).to.be.a.doctor.createSuccess;
+        });
+        it("should allow a blank notes field", function () {
+            return expect(createMyPatientDoctor({
+                notes: ""
             })).to.be.a.doctor.createSuccess;
         });
     });

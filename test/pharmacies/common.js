@@ -10,7 +10,7 @@ var expect = chakram.expect;
 // verify successful responses
 /*eslint-disable key-spacing */
 var pharmacySchema = {
-    required: ["id", "name", "phone", "address", "hours"],
+    required: ["id", "name", "phone", "address", "hours", "notes"],
     properties: {
         id:         { type: "number" },
         name:       { type: "string" },
@@ -28,7 +28,8 @@ var pharmacySchema = {
                 saturday:       { "$ref": "#/definitions/hours" },
                 sunday:         { "$ref": "#/definitions/hours" }
             }
-        }
+        },
+        notes:      { type: "string" }
     },
     definitions: {
         hours: {

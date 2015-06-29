@@ -7,12 +7,12 @@ var expect = chakram.expect;
 describe("Patients", function () {
     describe("Show Single Patient (GET /patients/:patientid)", function () {
         // given a patient and user, try and show the user in the frontend
-        var showPatient = function (patient) {
+        var showPatient = module.exports.showPatient = function (patient) {
             return common.show(patient._id, patient.user.accessToken);
         };
 
         // helpers to create patients before showing them
-        var showMyPatient = function (data) {
+        var showMyPatient = module.exports.showMyPatient = function (data) {
             return common.testMyPatient(data).then(showPatient);
         };
         var showOtherPatient = function (data, access) {

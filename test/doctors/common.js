@@ -10,12 +10,13 @@ var expect = chakram.expect;
 // verify successful responses
 /*eslint-disable key-spacing */
 var doctorSchema = {
-    required: ["id", "name", "phone", "address"],
+    required: ["id", "name", "phone", "address", "notes"],
     properties: {
         id:         { type: "number" },
         name:       { type: "string" },
         phone:      { type: "string" },
-        address:    { type: "string" }
+        address:    { type: "string" },
+        notes:      { type: "string" }
     }
 };
 /*eslint-enable key-spacing */

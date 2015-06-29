@@ -7,6 +7,8 @@ var monky = module.exports = new Monky(mongoose);
 
 /*eslint-disable key-spacing */
 monky.factory("Patient", {
-    name: "Patient number #n"
+    name: "Patient number #n",
+    sex: "male",
+    birthdate: "1990-01-01"
 });
 /*eslint-enable key-spacing */

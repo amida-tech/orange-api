@@ -57,6 +57,9 @@ describe("Pharmacies", function () {
         it("doesn't allow a blank name", function () {
             return expect(updateMyPatientPharmacy({}, {name: ""})).to.be.an.api.error(400, "name_required");
         });
+        it("allows a blank notes field", function () {
+            return expect(updateMyPatientPharmacy({}, {notes: ""})).to.be.a.pharmacy.success;
+        });
 
         describe("schedule mergins", function () {
             it("merges schedules");

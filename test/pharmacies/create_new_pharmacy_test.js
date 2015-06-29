@@ -59,7 +59,8 @@ describe("Pharmacies", function () {
             return expect(createMyPatientPharmacy({
                 phone: undefined,
                 address: undefined,
-                hours: undefined
+                hours: undefined,
+                notes: undefined
             })).to.be.a.pharmacy.createSuccess;
         });
         it("should allow partially filled hours", function () {
@@ -72,6 +73,11 @@ describe("Pharmacies", function () {
                         close: "19:00"
                     }
                 }
+            })).to.be.a.pharmacy.createSuccess;
+        });
+        it("allows a blank notes field", function () {
+            return expect(createMyPatientPharmacy({
+                notes: ""
             })).to.be.a.pharmacy.createSuccess;
         });
     });

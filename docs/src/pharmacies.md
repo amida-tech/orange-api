@@ -21,7 +21,9 @@ patient's data.
         The hours the pharmacy is open. Keys are full lowercase names of the days of
         the week (e.g., `monday`), and values are themselves dictionaries of the form
         `{open: OPEN_TIME, close: CLOSE_TIME}`, where times are formatted in the `HH:MM`
-        format specified in ISO 8601
+        format specified in ISO 8601. These hours should be in the local timezone of
+        the patient.
+    + notes (string, optional) - freeform text notes about the pharmacy by the patient
 
 + Request
     + Headers
@@ -63,7 +65,8 @@ patient's data.
                         open: "09:00",
                         close: "17:00"
                     }
-                }
+                },
+                notes: "Great pharmacy! Love the smell"
             }
 
 + Response 201
@@ -114,6 +117,7 @@ patient's data.
                         close: "17:00"
                     }
                 },
+                notes: "Great pharmacy! Love the smell",
                 success: true
             }
 
@@ -245,6 +249,7 @@ to the patient's data.
                         close: "17:00"
                     }
                 },
+                notes: "Great pharmacy! Love the smell",
                 success: true
             }
 
@@ -269,6 +274,7 @@ current user will need write access to the patient's data.
 
         Opening/closing hours, in the format specified in `POST`. The dictionary can
         be partially empty.
+    + notes (string, optional) - freeform text notes about the pharmacy by the patient
 
 + Request
     + Headers
@@ -285,7 +291,8 @@ current user will need write access to the patient's data.
                     tuesday: {
                         open: "10:00"
                     }
-                }
+                },
+                notes: "Doesn't smell like it used to"
             }
 
 + Response 200
@@ -337,6 +344,7 @@ current user will need write access to the patient's data.
                         close: "17:00"
                     }
                 },
+                notes: "Doesn't smell like it used to",
                 success: true
             }
 

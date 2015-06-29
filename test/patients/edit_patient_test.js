@@ -91,17 +91,39 @@ describe("Patients", function () {
         };
 
         describe("with my patient", function () {
-            it("should let me change the name", function () {
-                return expect(editMyPatient({}, { name: "newname" })).to.be.a.patient.success;
-            });
-
             allowsChangingAccess();
         });
         describe("with a patient I have write access to", function () {
-            it("should let me change the name", function () {
-                return expect(editOtherPatient({}, "write", { name: "newname" })).to.be.a.patient.success;
-            });
             allowsChangingAccess();
+        });
+
+        // validations
+        it("allows a valid name", function () {
+            return expect(editMyPatient({}, { name: "newname" })).to.be.a.patient.success;
+        });
+        it("rejects a blank name", function () {
+            return expect(editMyPatient({}, { name: "" })).to.be.an.api.error(400, "name_required");
+        });
+        it("doesn't require any data", function () {
+            return expect(editMyPatient({}, {})).to.be.a.patient.success;
+        });
+        it("rejects a blank sex", function () {
+            return expect(editMyPatient({}, { sex: "" })).to.be.an.api.error(400, "invalid_sex");
+        });
+        it("rejects an invalid sex", function () {
+            return expect(editMyPatient({}, { sex: "foo" })).to.be.an.api.error(400, "invalid_sex");
+        });
+        it("accepts a valid sex", function () {
+            return expect(editMyPatient({}, { sex: "male" })).to.be.a.patient.success;
+        });
+        it("rejects a blank birthdate", function () {
+            return expect(editMyPatient({}, { birthdate: "" })).to.be.an.api.error(400, "invalid_birthdate");
+        });
+        it("rejects an invalid birthdate", function () {
+            return expect(editMyPatient({}, { birthdate: "foo" })).to.be.an.api.error(400, "invalid_birthdate");
+        });
+        it("accepts a valid birthdate", function () {
+            return expect(editMyPatient({}, { birthdate: "1995-01-01" })).to.be.a.patient.success;
         });
     });
 });

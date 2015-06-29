@@ -29,7 +29,6 @@ describe("Doses", function () {
                     if (!("medication_id" in data)) dose.medicationId = medication._id;
 
                     dose.setData(data);
-                    console.log(dose.getData());
                     return dose.getData();
                 }).then(createDose).then(function (dose) {
                     return show(dose._id, patient._id, patient.user.accessToken);

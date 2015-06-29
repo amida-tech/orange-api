@@ -13,11 +13,20 @@ var expect = chakram.expect;
 // verify successful responses
 /*eslint-disable key-spacing */
 var patientSchema = {
-    required: ["id", "name", "access", "success"],
+    required: ["id", "name", "access", "sex", "birthdate", "avatar"],
     properties: {
-        id:     { type: "number" },
-        name:   { type: "string" },
-        access: { type: "string" }
+        id:         { type: "number" },
+        name:       { type: "string" },
+        access:     { type: "string" },
+        sex:        { type: "string" },
+        avatar:     { type: "string" },
+        birthdate:  { type: ["string", "null"] }
+    }
+};
+var avatarSchema = {
+    required: ["avatar"],
+    properties: {
+        avatar:     { type: "string" }
     }
 };
 /*eslint-enable key-spacing */
@@ -29,6 +38,19 @@ common.addApiChain("patient", {
     "success": function (respObj) {
         expect(respObj).to.be.an.api.getSuccess;
         expect(respObj).to.have.schema(patientSchema);
+    }
+});
+
+common.addApiChain("avatar", {
+    "imageSuccess": function (respObj) {
+        expect(respObj).to.have.status(200);
+        expect(respObj).to.have.header("content-type", function (contentType) {
+            expect(contentType).to.not.equal("application/json");
+        });
+    },
+    "setSuccess": function (respObj) {
+        expect(respObj).to.be.an.api.postSuccess;
+        expect(respObj).to.have.schema(avatarSchema);
     }
 });
 

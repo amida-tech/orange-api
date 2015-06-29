@@ -5,8 +5,13 @@ in the morning, what time they usually eat lunch, and so on. Exactly one set of
 preferences is stored for each patient. The current user will need read access
 to the patient.
 
-Currently all habits are of the `time` datatype. This means they must be in the
-specific `HH:MM` format of ISO 8601. For example, `03:59` and `23:20`.
+Most  habits are of the `time` datatype. This means they must be in the specific
+`HH:MM` format of ISO 8601; for example, `03:59` and `23:20`. These times are
+in the *local timezone* of the patient, and will not change if the timezone is updated
+(for example, if `breakfast` is set to `10:00` while the timezone is `London/Europe`,
+`breakfast` will remain as `10:00` if the timezone is updated to `America/New_York`.
+This signifies that if medication is to be taken with food at breakfast every morning,
+the patient should continue doing that even if the timezone shifts).
 
 Habits (all may be blank, and initially are after registration):
 + `wake` (*time*) - what time the patient normally wakes up in the morning
@@ -14,8 +19,10 @@ Habits (all may be blank, and initially are after registration):
 + `breakfast` (*time*) - what time the patient normally eats breakfast
 + `lunch` (*time*) - what time the patient normally eats lunch
 + `dinner` (*time*) - what time the patient normally eats dinner
-
-
++ `tz` (*timezone*) - the current timezone of the patient (retrieved automatically
+    from the mobile OS without any user participation required). Should be a valid TZ
+    database timezone (e.g., `/London/Europe`). Defaults to `Etc/UTC` (UTC time).
+  
 ### Get Patient Habits [GET]
 View the patient's current habits.
 
@@ -45,6 +52,7 @@ View the patient's current habits.
                 breakfast: "08:00",
                 lunch: "12:00",
                 dinner: "19:00",
+                tz: "Etc/UTC",
                 success: true
             }
 
@@ -72,6 +80,7 @@ Set the patient's habits. The current user will need write access to the patient
                 sleep: "22:00",
                 breakfast: "07:00",
                 lunch: "11:00",
+                tz: "London/Europe",
                 dinner: "18:00"
             }
 
@@ -96,6 +105,7 @@ Set the patient's habits. The current user will need write access to the patient
                 breakfast: "07:00",
                 lunch: "11:00",
                 dinner: "18:00",
+                tz: "London/Europe",
                 success: true
             }
 

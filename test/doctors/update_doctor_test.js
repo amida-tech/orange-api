@@ -57,5 +57,8 @@ describe("Doctors", function () {
         it("doesn't allow a blank name", function () {
             return expect(updateMyPatientDoctor({}, {name: ""})).to.be.an.api.error(400, "name_required");
         });
+        it("allows a blank notes", function () {
+            return expect(updateMyPatientDoctor({}, {notes: ""})).to.be.a.doctor.success;
+        });
     });
 });
