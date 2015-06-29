@@ -39,7 +39,7 @@ the child of the patient.
                 name: "Dependent Patient",
                 birthdate: "1990-01-01",
                 sex: "male",
-                avatar: "http://orangeapi.amida/api/v1/patients/1/avatar.jpg"
+                avatar: "/v1/patients/1/avatar.jpg"
             }
 
 + Response 201
@@ -61,7 +61,7 @@ the child of the patient.
                 name: "Dependent Patient",
                 birthdate: "1990-01-01",
                 sex: "male",
-                avatar: "http://orangeapi.amida/api/v1/patients/1/avatar.jpg",
+                avatar: "/v1/patients/1/avatar.jpg",
                 access: "write",
                 success: true
             }
@@ -118,7 +118,7 @@ View a list of all patients the current user has access to: both read
                         name: "Dependent Patient",
                         birthdate: "1990-01-01",
                         sex: "male",
-                        avatar: "http://orangeapi.amida/api/v1/patients/1/avatar.jpg",
+                        avatar: "/v1/patients/1/avatar.jpg",
                         access: "write"
                     },
                     ...
@@ -159,7 +159,7 @@ View the name of a specific patient as well as the current user's access (`read`
                 name: "Dependent Patient",
                 birthdate: "1990-01-01",
                 sex: "male",
-                avatar: "http://orangeapi.amida/api/v1/patients/1/avatar.jpg",
+                avatar: "/v1/patients/1/avatar.jpg",
                 access: "write",
                 success: true
             }
@@ -229,7 +229,7 @@ users, then the patient and all its data _will be deleted_.
                 name: "Gin Smith",
                 birthdate: "1991-01-01",
                 sex: "female",
-                avatar: "http://orangeapi.amida/api/v1/patients/1/avatar.jpg",
+                avatar: "/v1/patients/1/avatar.jpg",
                 access: "write",
                 success: true
             }
@@ -267,7 +267,7 @@ called with `access="none"` rather than this method.
                 name: "Gin Smith",
                 birthdate: "1991-01-01",
                 sex: "female",
-                avatar: "http://orangeapi.amida/api/v1/patients/1/avatar.jpg",
+                avatar: "/v1/patients/1/avatar.jpg",
                 access: "write",
                 success: true
             }
@@ -306,12 +306,8 @@ The `Content-Type` header will be populated with the correct MIME type.
 
 ### Upload Patient Avatar [POST]
 Upload the image avatar of a specific patient. Again, file extensions can be added to
-the URL but are ignored and will not be used to convert the image format. It's
-important that the `Content-Type` request header is populated with the correct
-MIME type of the image.
-
-Note that unlike every other API endpoint, data should be `POST`ed with `multipart/form-data`
-encoding (**this is vitally important**) rather than `application/json`.
+the URL but are ignored and will not be used to convert the image format. Note that for this
+endpoint, raw binary data should be `POST`ed rather than `application/json`-encoded data.
 
 Also note that this endpoint uses `POST` not `PUT` contrary to REST resource routing
 conventions.
@@ -330,18 +326,20 @@ conventions.
 
             raw image data
 
-+ Response 200
++ Response 201
     Errors
     + `access_token_required` (401) - no access token specified in
     `Authorization` header
     + `invalid_access_token` (401) - the access token specified is invalid
     + `invalid_patient_id` (404) - a patient with the specified ID was not found
     + `unauthorized` (403) - the current user does not have write access to this patient
+    + `invalid_image` (400) - the POSTed data is an invalid image
 
     + Body
 
             {
-                success: true
+                success: true,
+                avatar: "/v1/patients/1/avatar.gif"
             }
 
 ## Patient's Shared Users [/patients/{patientid}/shared]

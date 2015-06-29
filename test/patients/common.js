@@ -23,6 +23,12 @@ var patientSchema = {
         birthdate:  { type: ["string", "null"] }
     }
 };
+var avatarSchema = {
+    required: ["avatar"],
+    properties: {
+        avatar:     { type: "string" }
+    }
+};
 /*eslint-enable key-spacing */
 common.addApiChain("patient", {
     "createSuccess": function (respObj) {
@@ -36,11 +42,15 @@ common.addApiChain("patient", {
 });
 
 common.addApiChain("avatar", {
-    "success": function (respObj) {
+    "imageSuccess": function (respObj) {
         expect(respObj).to.have.status(200);
         expect(respObj).to.have.header("content-type", function (contentType) {
             expect(contentType).to.not.equal("application/json");
         });
+    },
+    "setSuccess": function (respObj) {
+        expect(respObj).to.be.an.api.postSuccess;
+        expect(respObj).to.have.schema(avatarSchema);
     }
 });
 
