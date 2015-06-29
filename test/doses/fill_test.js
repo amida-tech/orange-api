@@ -1,12 +1,9 @@
 "use strict";
 var chakram         = require("chakram"),
     util            = require("util"),
-    curry           = require("curry"),
     Q               = require("q"),
     auth            = require("../common/auth.js"),
-    patients        = require("../patients/common.js"),
-    fixtures        = require("./fixtures.js"),
-    common          = require("./common.js");
+    patients        = require("../patients/common.js");
 
 var expect = chakram.expect;
 
@@ -43,7 +40,8 @@ describe("Doses", function () {
 
         // endpoint to view med details
         var show = function () {
-            var url = util.format("http://localhost:3000/v1/patients/%d/medications/%d", patient._id, patient.medications[0]._id);
+            var url = util.format("http://localhost:3000/v1/patients/%d/medications/%d", patient._id,
+                    patient.medications[0]._id);
             return chakram.get(url, auth.genAuthHeaders(patient.user.accessToken));
         };
 

@@ -3,11 +3,11 @@ var chakram     = require("chakram"),
     util        = require("util"),
     request     = require("request"),
     extend      = require("xtend"),
+    stream      = require("stream"),
     Q           = require("q"),
     fs          = require("fs"),
     curry       = require("curry"),
     imageType   = require("image-type"),
-    fixtures    = require("./fixtures.js"),
     common      = require("./common.js"),
     view        = require("./view_patient_test.js"),
     auth        = require("../common/auth.js");
@@ -19,6 +19,16 @@ describe("Patients", function () {
         // given a patient ID and access token, try and set the patient's avatar from
         // the passed stream
         var set = function (imageStream, patientId, accessToken) {
+            // for convenience allow strings to be passed in and convert those to streams
+            if (typeof imageStream === "string") {
+                // see http://stackoverflow.com/questions/12755997
+                var s = new stream.Readable();
+                s._read = function () {}; // _read method required
+                s.push(imageStream);
+                s.push(null);
+                imageStream = s;
+            }
+
             // chakram doesn't handle streams here so we have to use the raw response library
             var options = {
                 url: util.format("http://localhost:3000/v1/patients/%d/avatar.jpg", patientId),
@@ -66,27 +76,37 @@ describe("Patients", function () {
         var getMyPatient = function () { return common.testMyPatient({}).then(getPatient); };
         var getOtherPatient = function (access) { return common.testOtherPatient({}, access).then(getPatient); };
 
-        /*
         describe("Setting the Avatar", function () {
+            // placeholder = valid image stream
+            var placeholder = function () {
+                return fs.createReadStream("./test/patients/test_image.jpg");
+            };
+
             // test that it requires a valid authentication header and a valid patient ID in the URL
-            common.itRequiresAuthentication(curry(set)(null));
-            common.itRequiresValidPatientId(curry(set)(null));
+            common.itRequiresAuthentication(curry(set)(placeholder()));
+            common.itRequiresValidPatientId(curry(set)(placeholder()));
 
             // check authorization
             it("lets me set images for my patients", function () {
-                return expect(setMyPatient()).to.be.an.avatar.setSuccess;
+                return expect(setMyPatient(placeholder())).to.be.an.avatar.setSuccess;
             });
             it("lets me set images for patients shared read-write", function () {
-                return expect(setOtherPatient("write")).to.be.an.avatar.setSuccess;
+                return expect(setOtherPatient(placeholder(), "write")).to.be.an.avatar.setSuccess;
             });
             it("doesn't let me set images for patients shared read-only", function () {
-                return expect(setOtherPatient("read")).to.be.an.api.error(403, "unauthorized");
+                return expect(setOtherPatient(placeholder(), "read")).to.be.an.api.error(403, "unauthorized");
             });
             it("doesn't let me set images for patients not shared with me", function () {
-                return expect(setOtherPatient("none")).to.be.an.api.error(403, "unauthorized");
+                return expect(setOtherPatient(placeholder(), "none")).to.be.an.api.error(403, "unauthorized");
+            });
+
+            it("should not allow empty images", function () {
+                return expect(setMyPatient("")).to.be.an.api.error(400, "invalid_image");
+            });
+            it("should not allow invalid images", function () {
+                return expect(setMyPatient("foo")).to.be.an.api.error(400, "invalid_image");
             });
         });
-        */
 
         describe("Getting the Avatar", function () {
             // test that it requires a valid authentication header and a valid patient ID in the URL
@@ -166,7 +186,8 @@ describe("Patients", function () {
                 var image = fs.createReadStream("./test/patients/test_image.jpg");
                 return setPatient(image, patient).then(function (response) {
                     expect(response).to.be.an.avatar.setSuccess;
-                    expect(response.body.avatar.split(".").pop()).to.equal("jpg"); // check file extension has been updated
+                    // check file extension has been updated
+                    expect(response.body.avatar.split(".").pop()).to.equal("jpg");
                 });
             });
 
