@@ -146,6 +146,37 @@ describe("Medications", function () {
             })).to.be.an.api.error(400, "invalid_dose");
         });
 
+        it("should allow null values to reset optional fields", function () {
+            return updateMyPatientMedication({}, {
+                rx_norm: null,
+                fill_date: null,
+                ndc: null,
+                dose: null,
+                route: null,
+                form: null,
+                rx_number: null,
+                quantity: null,
+                type: null,
+                schedule: null,
+                doctor_id: null,
+                pharmacy_id: null
+            }).then(function (response) {
+                expect(response).to.be.a.medication.success;
+                expect(response.body.rx_norm).to.equal("");
+                expect(response.body.fill_date).to.equal(null);
+                expect(response.body.ndc).to.equal("");
+                expect(response.body.dose).to.deep.equal({quantity: 1, unit: "dose"});
+                expect(response.body.route).to.equal("");
+                expect(response.body.form).to.equal("");
+                expect(response.body.rx_number).to.equal("");
+                expect(response.body.quantity).to.equal(1);
+                expect(response.body.type).to.equal("");
+                expect(response.body.schedule).to.deep.equal({});
+                expect(response.body.doctor_id).to.equal(null);
+                expect(response.body.pharmacy_id).to.equal(null);
+            });
+        });
+
 
         it("should not allow an invalid dose", function () {
             return expect(updateMyPatientMedication({}, {

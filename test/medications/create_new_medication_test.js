@@ -62,6 +62,9 @@ describe("Medications", function () {
         it("should not allow a blank name", function () {
             return expect(createMyPatientMedication({ name: "" })).to.be.an.api.error(400, "name_required");
         });
+        it("should not allow a null name", function () {
+            return expect(createMyPatientMedication({ name: null })).to.be.an.api.error(400, "name_required");
+        });
         it("should not require anything other than a name", function () {
             return expect(createMyPatientMedication({
                 rx_norm: undefined,
@@ -76,6 +79,22 @@ describe("Medications", function () {
                 schedule: undefined,
                 doctor_id: undefined,
                 pharmacy_id: undefined
+            })).to.be.a.medication.createSuccess;
+        });
+        it("should allow null values for everything other than name", function () {
+            return expect(createMyPatientMedication({
+                rx_norm: null,
+                ndc: null,
+                dose: null,
+                route: null,
+                form: null,
+                rx_number: null,
+                quantity: null,
+                fill_date: null,
+                type: null,
+                schedule: null,
+                doctor_id: null,
+                pharmacy_id: null
             })).to.be.a.medication.createSuccess;
         });
         // for these tests we know the fixture has a valid quantity so can assert the

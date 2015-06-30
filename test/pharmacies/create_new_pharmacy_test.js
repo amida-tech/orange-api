@@ -55,12 +55,23 @@ describe("Pharmacies", function () {
         it("should not allow a blank name", function () {
             return expect(createMyPatientPharmacy({ name: "" })).to.be.an.api.error(400, "name_required");
         });
+        it("should not allow a null name", function () {
+            return expect(createMyPatientPharmacy({ name: null })).to.be.an.api.error(400, "name_required");
+        });
         it("should not require anything other than a name", function () {
             return expect(createMyPatientPharmacy({
                 phone: undefined,
                 address: undefined,
                 hours: undefined,
                 notes: undefined
+            })).to.be.a.pharmacy.createSuccess;
+        });
+        it("should not require non-null fields for anything other than a name", function () {
+            return expect(createMyPatientPharmacy({
+                phone: null,
+                address: null,
+                hours: null,
+                notes: null
             })).to.be.a.pharmacy.createSuccess;
         });
         it("should allow partially filled hours", function () {

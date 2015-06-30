@@ -57,8 +57,53 @@ describe("Pharmacies", function () {
         it("doesn't allow a blank name", function () {
             return expect(updateMyPatientPharmacy({}, {name: ""})).to.be.an.api.error(400, "name_required");
         });
-        it("allows a blank notes field", function () {
-            return expect(updateMyPatientPharmacy({}, {notes: ""})).to.be.a.pharmacy.success;
+        it("doesn't allow a null name", function () {
+            return expect(updateMyPatientPharmacy({}, {name: null})).to.be.an.api.error(400, "name_required");
+        });
+
+        it("allows nulls to reset fields", function () {
+            return updateMyPatientPharmacy({}, {
+                address: null,
+                phone: null,
+                notes: null,
+                hours: null
+            }).then(function (response) {
+                expect(response.body.address).to.equal("");
+                expect(response.body.phone).to.equal("");
+                expect(response.body.notes).to.equal("");
+                expect(response.body.hours).to.deep.equal({
+                    monday: {},
+                    tuesday: {},
+                    wednesday: {},
+                    thursday: {},
+                    friday: {},
+                    saturday: {},
+                    sunday: {}
+                });
+                expect(response).to.be.a.pharmacy.success;
+            });
+        });
+        it("allows empty values to reset fields", function () {
+            return updateMyPatientPharmacy({}, {
+                address: "",
+                phone: "",
+                notes: "",
+                hours: {}
+            }).then(function (response) {
+                expect(response.body.address).to.equal("");
+                expect(response.body.phone).to.equal("");
+                expect(response.body.notes).to.equal("");
+                expect(response.body.hours).to.deep.equal({
+                    monday: {},
+                    tuesday: {},
+                    wednesday: {},
+                    thursday: {},
+                    friday: {},
+                    saturday: {},
+                    sunday: {}
+                });
+                expect(response).to.be.a.pharmacy.success;
+            });
         });
 
         describe("schedule mergins", function () {

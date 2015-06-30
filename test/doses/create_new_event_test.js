@@ -81,6 +81,9 @@ describe("Doses", function () {
         it("allows blank notes", function () {
             return expect(createMyPatientDose({ notes: "" })).to.be.a.dose.createSuccess;
         });
+        it("allows null notes", function () {
+            return expect(createMyPatientDose({ notes: null })).to.be.a.dose.createSuccess;
+        });
 
         it("requires a medication id", function () {
             return expect(createMyPatientDose({
