@@ -2,6 +2,10 @@
 Data on regular medications a patient takes (either manually entered
 or retrieved via OAuth2 + FHIR from e.g., the DRE).
 
+Medication data responses contain the `number_left` integer key: this is an estimation
+of the number of pills left based on `fill_date` and dose events submitted to the API.
+It will only be non-null if `fill_date` is non-null.
+
 ### Schedule
 Various endpoints below take and output `schedule` data items, representing a regular
 schedule the patient should take a certain medication on.  These are used to schedule
@@ -165,6 +169,9 @@ must have write access to the patient's data.
     + route (string, optional) - ROA of medication
     + form (string, optional, `pill`) - form of medication
     + rx_number (string, optional) - RX control number of the prescription
+    + fill_date (string, optional)
+
+        ISO 8601 YYYY-MM-DD in local time of the last date the medication was filled
     + quantity (integer, optional) - number of medication in each 'pack'
     + type (string, optional) - legal medication type: e.g., `"OTC"`
     + schedule (dictionary, optional) - a schedule datum in the form described above
@@ -197,6 +204,7 @@ must have write access to the patient's data.
                 route: "oral",
                 form: "pill",
                 rx_number: "123456789",
+                fill_date: "2015-05-01",
                 quantity: 50,
                 type: "OTC",
                 schedule: {
@@ -218,6 +226,7 @@ must have write access to the patient's data.
     + `name_required` (400) - medication must have a non-blank name
     + `invalid_dose` (400) - medication dose specified in the format specified above
     + `invalid_quantity` (400) - quantity not a positive integer
+    + `invalid_fill_date` (400) - fill date is not a YYYY-MM-DD date
     + `invalid_schedule` (400) - schedule is not specified in the format specified above
     + `invalid_doctor_id` (400) - a doctor with that ID was not found
     + `invalid_pharmacy_id` (400) - a pharmacy with that ID was not found
@@ -236,6 +245,8 @@ must have write access to the patient's data.
                 route: "oral",
                 form: "pill",
                 rx_number: "123456789",
+                fill_date: "2015-05-01",
+                number_left: 17,
                 quantity: 50,
                 type: "OTC",
                 schedule: {
@@ -322,6 +333,8 @@ access to the patient's data.
                         route: "oral",
                         form: "pill",
                         rx_number: "123456789",
+                        fill_date: "2015-05-01",
+                        number_left: 17,
                         quantity: 50,
                         type: "OTC",
                         schedule: {
@@ -379,6 +392,8 @@ The current user must have read access to the patient's data.
                 route: "oral",
                 form: "pill",
                 rx_number: "123456789",
+                fill_date: "2015-05-01",
+                number_left: 17,
                 quantity: 50,
                 type: "OTC",
                 schedule: {
@@ -454,6 +469,9 @@ user must have write access to the patient's data.
     + route (string, optional) - ROA of medication
     + form (string, optional, `pill`) - form of medication
     + rx_number (string, optional) - RX control number of the prescription
+    + fill_date (string, optional)
+
+        ISO 8601 YYYY-MM-DD in local time of the last date the medication was filled
     + quantity (integer, optional) - number of medication in each 'pack'
     + type (string, optional) - legal medication type: e.g., `"OTC"`
     + schedule (dictionary, optional)
@@ -481,6 +499,7 @@ user must have write access to the patient's data.
                 route: "oral",
                 form: "pill",
                 rx_number: "123456789",
+                fill_date: "2015-05-01",
                 quantity: 50,
                 type: "OTC",
                 schedule: {
@@ -502,6 +521,7 @@ user must have write access to the patient's data.
     + `name_required` (400) - medication must have a non-blank name
     + `invalid_dose` (400) - medication dose specified in the format specified above
     + `invalid_quantity` (400) - quantity not a positive integer
+    + `invalid_fill_date` (400) - fill date is not a YYYY-MM-DD date
     + `invalid_schedule` (400) - schedule is not specified in the format specified above
     + `invalid_doctor_id` (400) - a doctor with that ID was not found
     + `invalid_pharmacy_id` (400) - a pharmacy with that ID was not found
@@ -520,6 +540,8 @@ user must have write access to the patient's data.
                 route: "oral",
                 form: "pill",
                 rx_number: "123456789",
+                fill_date: "2015-05-01",
+                number_left: 17,
                 quantity: 50,
                 type: "OTC",
                 schedule: {
@@ -573,6 +595,8 @@ data.
                 route: "oral",
                 form: "pill",
                 rx_number: "123456789",
+                fill_date: "2015-05-01",
+                number_left: 17,
                 quantity: 50,
                 type: "OTC",
                 schedule: {

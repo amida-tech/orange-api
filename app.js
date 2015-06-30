@@ -17,9 +17,19 @@ app.use(function (req, res, next) {
 // Prevent caching
 app.disable("etag");
 
-// Parse body params from JSON
+// Parse body params from JSON unless we're viewing an avatar
 var bodyParser = require("body-parser");
-app.use(bodyParser.json());
+var jsonParser = bodyParser.json();
+app.use(function (req, res, next) {
+    // we can't access req.route in here as no route has been matched so instead
+    // we have to do string magic with req.path
+    // no user defined URLs (params already stripped off) so this is safe
+    // Content-Type headers may not be accurate hence the URL matching
+    if (req.path.indexOf("avatar") >= 0) return next();
+
+    // otherwise delegate to body-parser to parse the JSON body
+    return jsonParser(req, res, next);
+});
 
 // All models: in all other files, just used mongoose.model(NAME)
 // rather than requiring these directly to avoid circular dependencies

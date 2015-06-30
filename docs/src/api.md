@@ -10,6 +10,10 @@ All API endpoints must be prefixed with a version number: for example,
 `/v1/auth/token` not just `/auth/token`. Currently `v1` is the only API version.
 
 All data should be sent JSON-encoded, and all responses are returned in JSON.
+Generally speaking, `null` should be sent to denote an optional field not being
+present (so, for example, sending `null` to a `PUT` update request will remove the
+field from the instance's data, but just leaving out that field in the request
+will leave the field as is in the data).
 
 Throughout this document, we make the distinction between a user and a patient.
 A user is an email/password pair, used to sign into the app, authenticate with the API,

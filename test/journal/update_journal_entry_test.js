@@ -83,10 +83,21 @@ describe("Journal", function () {
                 date: "foobar"
             })).to.be.an.api.error(400, "invalid_date");
         });
-        it("allows a blank mood", function () {
-            return expect(updateMyPatientEntry({}, {
+        it("allows a blank mood to reset", function () {
+            return updateMyPatientEntry({}, {
                 mood: ""
-            })).to.be.a.journal.success;
+            }).then(function (response) {
+                expect(response).to.be.a.journal.success;
+                expect(response.body.mood).to.equal("");
+            });
+        });
+        it("allows a null mood to reset", function () {
+            return updateMyPatientEntry({}, {
+                mood: null
+            }).then(function (response) {
+                expect(response).to.be.a.journal.success;
+                expect(response.body.mood).to.equal("");
+            });
         });
         it("ignores a passed hashtags field", function () {
             return updateMyPatientEntry({
@@ -108,10 +119,19 @@ describe("Journal", function () {
                 expect(response.body.hashtags).to.deep.equal(["example"]);
             });
         });
-        it("allows no medication IDs", function () {
-            return expect(updateMyPatientEntry({}, {
+        it("allows no medication IDs to reset to none", function () {
+            return updateMyPatientEntry({}, {
                 medication_ids: []
-            })).to.be.a.journal.success;
+            }).then(function (response) {
+                expect(response.body.medication_ids).to.deep.equal([]);
+            });
+        });
+        it("allows null medication IDs to reset to none", function () {
+            return updateMyPatientEntry({}, {
+                medication_ids: null
+            }).then(function (response) {
+                expect(response.body.medication_ids).to.deep.equal([]);
+            });
         });
         it("rejects invalid medication IDs", function () {
             return expect(updateMyPatientEntry({}, {

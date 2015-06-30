@@ -57,8 +57,28 @@ describe("Doctors", function () {
         it("doesn't allow a blank name", function () {
             return expect(updateMyPatientDoctor({}, {name: ""})).to.be.an.api.error(400, "name_required");
         });
-        it("allows a blank notes", function () {
-            return expect(updateMyPatientDoctor({}, {notes: ""})).to.be.a.doctor.success;
+        it("allows blanks for all other fields to reset them", function () {
+            return updateMyPatientDoctor({}, {
+                phone: "",
+                address: "",
+                notes: ""
+            }).then(function (response) {
+                expect(response).to.be.a.doctor.success;
+                expect(response.body.phone).to.equal("");
+                expect(response.body.address).to.equal("");
+                expect(response.body.notes).to.equal("");
+            });
         });
+        it("allows nulls for all other fields to reset them");
+            return updateMyPatientDoctor({}, {
+                phone: null,
+                address: null,
+                notes: null
+            }).then(function (response) {
+                expect(response).to.be.a.doctor.success;
+                expect(response.body.phone).to.equal("");
+                expect(response.body.address).to.equal("");
+                expect(response.body.notes).to.equal("");
+            });
     });
 });

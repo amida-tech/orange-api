@@ -81,6 +81,9 @@ describe("Journal", function () {
         it("allows a blank mood", function () {
             return expect(createMyPatientEntry({ mood: "" })).to.be.a.journal.createSuccess;
         });
+        it("allows a null mood", function () {
+            return expect(createMyPatientEntry({ mood: null })).to.be.a.journal.createSuccess;
+        });
         it("allows a mood", function () {
             return expect(createMyPatientEntry({ mood: "Happy!" })).to.be.a.journal.createSuccess;
         });
@@ -117,6 +120,9 @@ describe("Journal", function () {
 
         it("allows no medication IDs", function () {
             return expect(createMyPatientEntry({ medication_ids: undefined })).to.be.a.journal.createSuccess;
+        });
+        it("allows null medication IDs", function () {
+            return expect(createMyPatientEntry({ medication_ids: null })).to.be.a.journal.createSuccess;
         });
         it("allows empty medication IDs", function () {
             return expect(createMyPatientEntry({ medication_ids: [] })).to.be.a.journal.createSuccess;

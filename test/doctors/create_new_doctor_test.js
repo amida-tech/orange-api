@@ -55,6 +55,10 @@ describe("Doctors", function () {
         it("should not allow a blank name", function () {
             return expect(createMyPatientDoctor({ name: "" })).to.be.an.api.error(400, "name_required");
         });
+        it("should not allow a null name", function () {
+            return expect(createMyPatientDoctor({ name: null })).to.be.an.api.error(400, "name_required");
+        });
+
         it("should not require anything other than a name", function () {
             return expect(createMyPatientDoctor({
                 phone: undefined,
@@ -62,8 +66,17 @@ describe("Doctors", function () {
                 notes: undefined
             })).to.be.a.doctor.createSuccess;
         });
-        it("should allow a blank notes field", function () {
+        it("should allow nulls for everything other than name", function () {
             return expect(createMyPatientDoctor({
+                phone: null,
+                address: null,
+                notes: null
+            })).to.be.a.doctor.createSuccess;
+        });
+        it("should allow blank strings for all fields other than name", function () {
+            return expect(createMyPatientDoctor({
+                phone: "",
+                address: "",
                 notes: ""
             })).to.be.a.doctor.createSuccess;
         });

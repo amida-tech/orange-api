@@ -54,6 +54,19 @@ describe("Users", function () {
                     return expect(tokenEndpoint(credentials)).to.be.an.api.postSuccess;
                 });
             });
+
+            it("should allow a null name", function () {
+                return updateUser({}, { name: null }).then(function (response) {
+                    expect(response).to.be.a.user.success;
+                    expect(response.body.name).to.equal("");
+                });
+            });
+            it("should allow a blank name", function () {
+                return updateUser({}, { name: "" }).then(function (response) {
+                    expect(response).to.be.a.user.success;
+                    expect(response.body.name).to.equal("");
+                });
+            });
         });
 
         describe("changing password", function () {
@@ -85,6 +98,12 @@ describe("Users", function () {
                 return request.then(function () {
                     return expect(tokenEndpoint(newCredentials)).to.be.an.api.postSuccess;
                 });
+            });
+            it("should not allow a null password", function () {
+                return expect(updateUser({}, { password: null })).to.be.an.api.error(400, "password_required");
+            });
+            it("should not allow an empty password", function () {
+                return expect(updateUser({}, { password: "" })).to.be.an.api.error(400, "password_required");
             });
         });
     });

@@ -5,6 +5,7 @@ var chakram         = require("chakram"),
     Q               = require("q"),
     auth            = require("../common/auth.js"),
     patients        = require("../patients/common.js"),
+    common          = require("./common.js"),
     fixtures        = require("./fixtures.js");
 
 var expect = chakram.expect;
@@ -39,8 +40,7 @@ describe("Journal", function () {
         // check it requires a valid user, patient and journal entry
         patients.itRequiresAuthentication(curry(remove)(1));
         patients.itRequiresValidPatientId(curry(remove)(1));
-        it("uncomment");
-        //common.itRequiresValidEntryId(remove);
+        common.itRequiresValidEntryId(remove);
 
         it("should let me remove entries for my patients", function () {
             return expect(removeMyPatientEntry({})).to.be.a.journal.success;

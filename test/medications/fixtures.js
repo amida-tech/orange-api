@@ -18,6 +18,7 @@ monky.factory("Medication", {
     form: "pill",
     rx_number: "123456789",
     quantity: 50,
+    fill_date: "2015-05-01",
     type: "OTC"
 });
 /*eslint-enable key-spacing */

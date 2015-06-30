@@ -76,10 +76,32 @@ describe("Medications", function () {
 
             return setup.then(check);
         });
-        it("should also validate some things");
 
         it("should not allow a blank name", function () {
             return expect(updateMyPatientMedication({}, { name: "" })).to.be.an.api.error(400, "name_required");
+        });
+
+        it("should accept a null fill_date", function () {
+            return updateMyPatientMedication({}, { fill_date: null }).then(function (response) {
+                expect(response).to.be.a.medication.success;
+                expect(response.body.number_left).to.be.null;
+            });
+        });
+        it("should not accept a blank fill_date", function () {
+            return expect(updateMyPatientMedication({}, {
+                fill_date: ""
+            })).to.be.an.api.error(400, "invalid_fill_date");
+        });
+        it("should not accept an invalid fill_date", function () {
+            return expect(updateMyPatientMedication({}, {
+                fill_date: "foo"
+            })).to.be.an.api.error(400, "invalid_fill_date");
+        });
+        it("should accept a valid fill_date", function () {
+            return updateMyPatientMedication({}, { fill_date: "2015-05-01" }).then(function (response) {
+                expect(response).to.be.a.medication.success;
+                expect(response.body.number_left).to.not.be.null;
+            });
         });
 
         // dose testing
@@ -122,6 +144,37 @@ describe("Medications", function () {
             return expect(updateMyPatientMedication({}, {
                 dose: { quantity: 50, unit: "" }
             })).to.be.an.api.error(400, "invalid_dose");
+        });
+
+        it("should allow null values to reset optional fields", function () {
+            return updateMyPatientMedication({}, {
+                rx_norm: null,
+                fill_date: null,
+                ndc: null,
+                dose: null,
+                route: null,
+                form: null,
+                rx_number: null,
+                quantity: null,
+                type: null,
+                schedule: null,
+                doctor_id: null,
+                pharmacy_id: null
+            }).then(function (response) {
+                expect(response).to.be.a.medication.success;
+                expect(response.body.rx_norm).to.equal("");
+                expect(response.body.fill_date).to.equal(null);
+                expect(response.body.ndc).to.equal("");
+                expect(response.body.dose).to.deep.equal({quantity: 1, unit: "dose"});
+                expect(response.body.route).to.equal("");
+                expect(response.body.form).to.equal("");
+                expect(response.body.rx_number).to.equal("");
+                expect(response.body.quantity).to.equal(1);
+                expect(response.body.type).to.equal("");
+                expect(response.body.schedule).to.deep.equal({});
+                expect(response.body.doctor_id).to.equal(null);
+                expect(response.body.pharmacy_id).to.equal(null);
+            });
         });
 
 

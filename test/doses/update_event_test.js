@@ -75,8 +75,17 @@ describe("Doses", function () {
         it("allows updating notes", function () {
             return expect(updateMyPatientDose({}, { notes: "foobarbaz" })).to.be.a.dose.success;
         });
-        it("allows blank notes", function () {
-            return expect(updateMyPatientDose({}, { notes: "" })).to.be.a.dose.success;
+        it("resets the notes with an empty value", function () {
+            return updateMyPatientDose({}, { notes: "" }).then(function (response) {
+                expect(response).to.be.a.dose.success;
+                expect(response.body.notes).to.equal("");
+            });
+        });
+        it("resets the notes with null", function () {
+            return updateMyPatientDose({}, { notes: null }).then(function (response) {
+                expect(response).to.be.a.dose.success;
+                expect(response.body.notes).to.equal("");
+            });
         });
 
         it("rejects a blank medication ID", function () {

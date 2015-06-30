@@ -24,11 +24,17 @@ describe("Users", function () {
         it("should not accept a blank email", function () {
             return expect(register({ email: "" })).to.be.an.api.error(400, "email_required");
         });
+        it("should not accept a null email", function () {
+            return expect(register({ email: null })).to.be.an.api.error(400, "email_required");
+        });
         it("should require a password", function () {
             return expect(register({ password: undefined })).to.be.an.api.error(400, "password_required");
         });
         it("should not accept a blank password", function () {
             return expect(register({ password: "" })).to.be.an.api.error(400, "password_required");
+        });
+        it("should not accept a null password", function () {
+            return expect(register({ password: null })).to.be.an.api.error(400, "password_required");
         });
         it("should not require a name", function () {
             return expect(register({ name: undefined })).to.be.a.user.registerSuccess;

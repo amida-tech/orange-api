@@ -56,6 +56,12 @@ describe("Habits", function () {
             it("doesn't lets the user set time fields to non-time values", function () {
                 return expect(edit({ lunch: "foo" }, patientId, accessToken)).to.be.an.api.error(400, "invalid_lunch");
             });
+            it("lets the user set time fields to null to reset them", function () {
+                return edit({ lunch: null }, patientId, accessToken).then(function (response) {
+                    expect(response).to.be.a.habits.success;
+                    expect(response.body.lunch).to.be.null;
+                });
+            });
 
             it("lets me set a time zone", function () {
                 return expect(edit({ tz: "Europe/London" }, patientId, accessToken)).to.be.a.habits.success;

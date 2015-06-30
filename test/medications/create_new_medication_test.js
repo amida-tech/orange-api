@@ -62,6 +62,9 @@ describe("Medications", function () {
         it("should not allow a blank name", function () {
             return expect(createMyPatientMedication({ name: "" })).to.be.an.api.error(400, "name_required");
         });
+        it("should not allow a null name", function () {
+            return expect(createMyPatientMedication({ name: null })).to.be.an.api.error(400, "name_required");
+        });
         it("should not require anything other than a name", function () {
             return expect(createMyPatientMedication({
                 rx_norm: undefined,
@@ -71,11 +74,52 @@ describe("Medications", function () {
                 form: undefined,
                 rx_number: undefined,
                 quantity: undefined,
+                fill_date: undefined,
                 type: undefined,
                 schedule: undefined,
                 doctor_id: undefined,
                 pharmacy_id: undefined
             })).to.be.a.medication.createSuccess;
+        });
+        it("should allow null values for everything other than name", function () {
+            return expect(createMyPatientMedication({
+                rx_norm: null,
+                ndc: null,
+                dose: null,
+                route: null,
+                form: null,
+                rx_number: null,
+                quantity: null,
+                fill_date: null,
+                type: null,
+                schedule: null,
+                doctor_id: null,
+                pharmacy_id: null
+            })).to.be.a.medication.createSuccess;
+        });
+        // for these tests we know the fixture has a valid quantity so can assert the
+        // presence of number_left
+        it("should accept a null fill_date", function () {
+            return createMyPatientMedication({ fill_date: null }).then(function (response) {
+                expect(response).to.be.a.medication.createSuccess;
+                expect(response.body.number_left).to.be.null;
+            });
+        });
+        it("should not accept a blank fill_date", function () {
+            return expect(createMyPatientMedication({
+                fill_date: ""
+            })).to.be.an.api.error(400, "invalid_fill_date");
+        });
+        it("should not accept an invalid fill_date", function () {
+            return expect(createMyPatientMedication({
+                fill_date: "foo"
+            })).to.be.an.api.error(400, "invalid_fill_date");
+        });
+        it("should accept a valid fill_date", function () {
+            return createMyPatientMedication({ fill_date: "2015-05-01" }).then(function (response) {
+                expect(response).to.be.a.medication.createSuccess;
+                expect(response.body.number_left).to.not.be.null;
+            });
         });
 
         // dose testing

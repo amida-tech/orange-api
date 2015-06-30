@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 import zerorpc, sys, time
 from daemon import Daemon
 from schedule_matcher import ScheduleMatcher
