@@ -35,7 +35,8 @@ before(function () {
     // generic method for successful responses (doesn't validate schema)
     chakram.addMethod("genericSuccess", function (respObj, status) {
         expect(respObj).to.have.json("success", true);
-        expect(respObj).to.have.status(status); // usually 200, but 201 for POST
+        if (typeof status !== "undefined" && status !== null)
+            expect(respObj).to.have.status(status); // usually 200, but 201 for POST
     });
     // generic methods for different HTTP types (POST = 201 status code, others = 200)
     chakram.addProperty("postSuccess", function (respObj) {
