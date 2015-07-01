@@ -57,11 +57,8 @@ describe("Patients", function () {
             return set(image, patient._id, patient.user.accessToken);
         };
         // create a patient and try and set their avatar
-        var setMyPatient = function (image) {
+        var setAPatient = function (image) {
             return common.testMyPatient({}).then(curry(setPatient)(image));
-        };
-        var setOtherPatient = function (image, access) {
-            return common.testOtherPatient({}, access).then(curry(setPatient)(image));
         };
 
         // given a patient ID and access token, try and retrieve the patient's avatar
@@ -73,8 +70,7 @@ describe("Patients", function () {
         // given a patient with nested user, try and show the patient's avatar
         var getPatient = function (patient) { return get(patient._id, patient.user.accessToken); };
         // create a patient and try and view their avatar
-        var getMyPatient = function () { return common.testMyPatient({}).then(getPatient); };
-        var getOtherPatient = function (access) { return common.testOtherPatient({}, access).then(getPatient); };
+        var getAPatient = function () { return common.testMyPatient({}).then(getPatient); };
 
         describe("Setting the Avatar", function () {
             // placeholder = valid image stream
@@ -86,25 +82,15 @@ describe("Patients", function () {
             common.itRequiresAuthentication(curry(set)(placeholder()));
             common.itRequiresValidPatientId(curry(set)(placeholder()));
 
-            // check authorization
             it("lets me set images for my patients", function () {
-                return expect(setMyPatient(placeholder())).to.be.an.avatar.setSuccess;
-            });
-            it("lets me set images for patients shared read-write", function () {
-                return expect(setOtherPatient(placeholder(), "write")).to.be.an.avatar.setSuccess;
-            });
-            it("doesn't let me set images for patients shared read-only", function () {
-                return expect(setOtherPatient(placeholder(), "read")).to.be.an.api.error(403, "unauthorized");
-            });
-            it("doesn't let me set images for patients not shared with me", function () {
-                return expect(setOtherPatient(placeholder(), "none")).to.be.an.api.error(403, "unauthorized");
+                return expect(setAPatient(placeholder())).to.be.an.avatar.setSuccess;
             });
 
             it("should not allow empty images", function () {
-                return expect(setMyPatient("")).to.be.an.api.error(400, "invalid_image");
+                return expect(setAPatient("")).to.be.an.api.error(400, "invalid_image");
             });
             it("should not allow invalid images", function () {
-                return expect(setMyPatient("foo")).to.be.an.api.error(400, "invalid_image");
+                return expect(setAPatient("foo")).to.be.an.api.error(400, "invalid_image");
             });
         });
 
@@ -115,22 +101,13 @@ describe("Patients", function () {
 
             // check authorization
             it("lets me set images for my patients", function () {
-                return expect(getMyPatient()).to.be.an.avatar.imageSuccess;
-            });
-            it("lets me set images for patients shared read-write", function () {
-                return expect(getOtherPatient("write")).to.be.an.avatar.imageSuccess;
-            });
-            it("lets me set images for patients shared read-only", function () {
-                return expect(getOtherPatient("read")).to.be.an.avatar.imageSuccess;
-            });
-            it("doesn't let me set images for patients not shared with me", function () {
-                return expect(getOtherPatient("none")).to.be.an.api.error(403, "unauthorized");
+                return expect(getAPatient()).to.be.an.avatar.imageSuccess;
             });
 
             describe("with default avatar image", function () {
                 it("returns an avatar slug", function () {
                     // get patient info and check it returns an avatar slug that is not blank
-                    return view.showMyPatient({}).then(function (response) {
+                    return view.showAPatient({}).then(function (response) {
                         var avatarPath = response.body.avatar;
                         expect(avatarPath).to.not.be.blank;
 
@@ -140,7 +117,7 @@ describe("Patients", function () {
                 });
 
                 it("returns the correct MIME type", function () {
-                    return getMyPatient().then(function (response) {
+                    return getAPatient().then(function (response) {
                         expect(response).to.be.an.avatar.imageSuccess;
 
                         // rather than requiring a specific image MIME type, we check
@@ -150,7 +127,7 @@ describe("Patients", function () {
                     });
                 });
                 it("returns valid image data", function () {
-                    return getMyPatient().then(function (response) {
+                    return getAPatient().then(function (response) {
                         expect(response).to.be.an.avatar.imageSuccess;
 
                         // use the image-type library to perform a rudimentary verification

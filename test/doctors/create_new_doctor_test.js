@@ -24,10 +24,7 @@ describe("Doctors", function () {
             });
         };
         // create patient and user automatically
-        var createOtherPatientDoctor = function (access, data) {
-            return patients.testOtherPatient({}, access).then(curry(createDoctor)(data));
-        };
-        var createMyPatientDoctor = function (data) {
+        var createPatientDoctor = function (data) {
             return patients.testMyPatient({}).then(curry(createDoctor)(data));
         };
 
@@ -35,46 +32,37 @@ describe("Doctors", function () {
         patients.itRequiresAuthentication(curry(create)({}));
         patients.itRequiresValidPatientId(curry(create)({}));
 
-        it("should let me create valid doctors for my patients", function () {
-            return expect(createMyPatientDoctor({})).to.be.a.doctor.createSuccess;
-        });
-        it("should let me create valid doctors for a patient shared read-write with me", function () {
-            return expect(createOtherPatientDoctor("write", {})).to.be.a.doctor.createSuccess;
-        });
-        it("should not let me create doctors for patients shared read-only", function () {
-            return expect(createOtherPatientDoctor("read", {})).to.be.an.api.error(403, "unauthorized");
-        });
-        it("should not let me create doctors for patients not shared with me", function () {
-            return expect(createOtherPatientDoctor("none", {})).to.be.an.api.error(403, "unauthorized");
+        it("should create patients", function () {
+            return expect(createPatientDoctor({})).to.be.a.doctor.createSuccess;
         });
 
         // validation testing
         it("should require a name", function () {
-            return expect(createMyPatientDoctor({ name: undefined })).to.be.an.api.error(400, "name_required");
+            return expect(createPatientDoctor({ name: undefined })).to.be.an.api.error(400, "name_required");
         });
         it("should not allow a blank name", function () {
-            return expect(createMyPatientDoctor({ name: "" })).to.be.an.api.error(400, "name_required");
+            return expect(createPatientDoctor({ name: "" })).to.be.an.api.error(400, "name_required");
         });
         it("should not allow a null name", function () {
-            return expect(createMyPatientDoctor({ name: null })).to.be.an.api.error(400, "name_required");
+            return expect(createPatientDoctor({ name: null })).to.be.an.api.error(400, "name_required");
         });
 
         it("should not require anything other than a name", function () {
-            return expect(createMyPatientDoctor({
+            return expect(createPatientDoctor({
                 phone: undefined,
                 address: undefined,
                 notes: undefined
             })).to.be.a.doctor.createSuccess;
         });
         it("should allow nulls for everything other than name", function () {
-            return expect(createMyPatientDoctor({
+            return expect(createPatientDoctor({
                 phone: null,
                 address: null,
                 notes: null
             })).to.be.a.doctor.createSuccess;
         });
         it("should allow blank strings for all fields other than name", function () {
-            return expect(createMyPatientDoctor({
+            return expect(createPatientDoctor({
                 phone: "",
                 address: "",
                 notes: ""

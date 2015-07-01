@@ -27,10 +27,7 @@ describe("Doctors", function () {
             });
         };
         // create patient and user and show them automatically
-        var showOtherPatientDoctor = function (access, data) {
-            return patients.testOtherPatient({}, access).then(curry(showDoctor)(data));
-        };
-        var showMyPatientDoctor = function (data) {
+        var showPatientDoctor = function (data) {
             return patients.testMyPatient({}).then(curry(showDoctor)(data));
         };
 
@@ -40,16 +37,7 @@ describe("Doctors", function () {
         common.itRequiresValidDoctorId(show);
 
         it("should let me view doctors for my patients", function () {
-            return expect(showMyPatientDoctor({})).to.be.a.doctor.success;
-        });
-        it("should let me view doctors for patients shared read-only", function () {
-            return expect(showOtherPatientDoctor("read", {})).to.be.a.doctor.success;
-        });
-        it("should let me view doctors for patients shared read-write", function () {
-            return expect(showOtherPatientDoctor("write", {})).to.be.a.doctor.success;
-        });
-        it("should not let me view doctors for patients not shared with me", function () {
-            return expect(showOtherPatientDoctor("none", {})).to.be.an.api.error(403, "unauthorized");
+            return expect(showPatientDoctor({})).to.be.a.doctor.success;
         });
     });
 });

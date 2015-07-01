@@ -36,10 +36,7 @@ describe("Doses", function () {
             });
         };
         // create patient, user and dose event, and show them automatically
-        var showOtherPatientDose = function (access, data) {
-            return patients.testOtherPatient({}, access).then(curry(showDose)(data));
-        };
-        var showMyPatientDose = function (data) {
+        var showPatientDose = function (data) {
             return patients.testMyPatient({}).then(curry(showDose)(data));
         };
 
@@ -49,16 +46,7 @@ describe("Doses", function () {
         common.itRequiresValidDoseId(show);
 
         it("should let me view doses for my patients", function () {
-            return expect(showMyPatientDose({})).to.be.a.dose.viewSuccess;
-        });
-        it("should let me view doses for patients shared read-only", function () {
-            return expect(showOtherPatientDose("read", {})).to.be.a.dose.viewSuccess;
-        });
-        it("should let me view doses for patients shared read-write", function () {
-            return expect(showOtherPatientDose("write", {})).to.be.a.dose.viewSuccess;
-        });
-        it("should not let me view doses for patients not shared with me", function () {
-            return expect(showOtherPatientDose("none", {})).to.be.an.api.error(403, "unauthorized");
+            return expect(showPatientDose({})).to.be.a.dose.viewSuccess;
         });
     });
 });

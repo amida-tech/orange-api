@@ -27,10 +27,7 @@ describe("Doctors", function () {
             });
         };
         // create patient and user and update them automatically
-        var updateOtherPatientDoctor = function (access, data, modifications) {
-            return patients.testOtherPatient({}, access).then(curry(updateDoctor)(data, modifications));
-        };
-        var updateMyPatientDoctor = function (data, modifications) {
+        var updatePatientDoctor = function (data, modifications) {
             return patients.testMyPatient({}).then(curry(updateDoctor)(data, modifications));
         };
 
@@ -39,26 +36,16 @@ describe("Doctors", function () {
         patients.itRequiresValidPatientId(curry(update)({}, 1));
         common.itRequiresValidDoctorId(curry(update)({}));
 
-        // access permissions
         it("should let me update doctors for my patients", function () {
-            return expect(updateMyPatientDoctor({}, {})).to.be.a.doctor.success;
-        });
-        it("should not let me update doctors for patients shared read-only", function () {
-            return expect(updateOtherPatientDoctor("read", {}, {})).to.be.an.api.error(403, "unauthorized");
-        });
-        it("should let me update doctors for patients shared read-write", function () {
-            return expect(updateOtherPatientDoctor("write", {}, {})).to.be.a.doctor.success;
-        });
-        it("should not let me update doctors for patients not shared with me", function () {
-            return expect(updateOtherPatientDoctor("none", {}, {})).to.be.an.api.error(403, "unauthorized");
+            return expect(updatePatientDoctor({}, {})).to.be.a.doctor.success;
         });
 
         // validations
         it("doesn't allow a blank name", function () {
-            return expect(updateMyPatientDoctor({}, {name: ""})).to.be.an.api.error(400, "name_required");
+            return expect(updatePatientDoctor({}, {name: ""})).to.be.an.api.error(400, "name_required");
         });
         it("allows blanks for all other fields to reset them", function () {
-            return updateMyPatientDoctor({}, {
+            return updatePatientDoctor({}, {
                 phone: "",
                 address: "",
                 notes: ""
@@ -70,7 +57,7 @@ describe("Doctors", function () {
             });
         });
         it("allows nulls for all other fields to reset them");
-            return updateMyPatientDoctor({}, {
+            return updatePatientDoctor({}, {
                 phone: null,
                 address: null,
                 notes: null

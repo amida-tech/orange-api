@@ -27,10 +27,7 @@ describe("Doctors", function () {
             });
         };
         // create patient and user and remove them automatically
-        var removeOtherPatientDoctor = function (access, data) {
-            return patients.testOtherPatient({}, access).then(curry(removeDoctor)(data));
-        };
-        var removeMyPatientDoctor = function (data) {
+        var removePatientDoctor = function (data) {
             return patients.testMyPatient({}).then(curry(removeDoctor)(data));
         };
 
@@ -40,16 +37,7 @@ describe("Doctors", function () {
         common.itRequiresValidDoctorId(remove);
 
         it("should let me remove doctors for my patients", function () {
-            return expect(removeMyPatientDoctor({})).to.be.a.doctor.success;
-        });
-        it("should not let me remove doctors for patients shared read-only", function () {
-            return expect(removeOtherPatientDoctor("read", {})).to.be.an.api.error(403, "unauthorized");
-        });
-        it("should let me remove doctors for patients shared read-write", function () {
-            return expect(removeOtherPatientDoctor("write", {})).to.be.a.doctor.success;
-        });
-        it("should not let me remove doctors for patients not shared with me", function () {
-            return expect(removeOtherPatientDoctor("none", {})).to.be.an.api.error(403, "unauthorized");
+            return expect(removePatientDoctor({})).to.be.a.doctor.success;
         });
     });
 });

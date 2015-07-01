@@ -27,10 +27,7 @@ describe("Pharmacies", function () {
             });
         };
         // create patient, user and pharmacy and show them automatically
-        var showOtherPatientPharmacy = function (access, data) {
-            return patients.testOtherPatient({}, access).then(curry(showPharmacy)(data));
-        };
-        var showMyPatientPharmacy = function (data) {
+        var showPatientPharmacy = function (data) {
             return patients.testMyPatient({}).then(curry(showPharmacy)(data));
         };
 
@@ -40,16 +37,7 @@ describe("Pharmacies", function () {
         common.itRequiresValidPharmacyId(show);
 
         it("should let me view pharmacies for my patients", function () {
-            return expect(showMyPatientPharmacy({})).to.be.a.pharmacy.success;
-        });
-        it("should let me view pharmacies for patients shared read-only", function () {
-            return expect(showOtherPatientPharmacy("read", {})).to.be.a.pharmacy.success;
-        });
-        it("should let me view pharmacies for patients shared read-write", function () {
-            return expect(showOtherPatientPharmacy("write", {})).to.be.a.pharmacy.success;
-        });
-        it("should not let me view pharmacies for patients not shared with me", function () {
-            return expect(showOtherPatientPharmacy("none", {})).to.be.an.api.error(403, "unauthorized");
+            return expect(showPatientPharmacy({})).to.be.a.pharmacy.success;
         });
     });
 });

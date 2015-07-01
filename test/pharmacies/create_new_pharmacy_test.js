@@ -24,10 +24,7 @@ describe("Pharmacies", function () {
             });
         };
         // create patient and user automatically
-        var createOtherPatientPharmacy = function (access, data) {
-            return patients.testOtherPatient({}, access).then(curry(createPharmacy)(data));
-        };
-        var createMyPatientPharmacy = function (data) {
+        var createPatientPharmacy = function (data) {
             return patients.testMyPatient({}).then(curry(createPharmacy)(data));
         };
 
@@ -36,30 +33,21 @@ describe("Pharmacies", function () {
         patients.itRequiresValidPatientId(curry(create)({}));
 
         it("should let me create valid pharmacies for my patients", function () {
-            return expect(createMyPatientPharmacy({})).to.be.a.pharmacy.createSuccess;
-        });
-        it("should let me create valid pharmacies for a patient shared read-write with me", function () {
-            return expect(createOtherPatientPharmacy("write", {})).to.be.a.pharmacy.createSuccess;
-        });
-        it("should not let me create pharmacies for patients shared read-only", function () {
-            return expect(createOtherPatientPharmacy("read", {})).to.be.an.api.error(403, "unauthorized");
-        });
-        it("should not let me create pharmacies for patients not shared with me", function () {
-            return expect(createOtherPatientPharmacy("none", {})).to.be.an.api.error(403, "unauthorized");
+            return expect(createPatientPharmacy({})).to.be.a.pharmacy.createSuccess;
         });
 
         // validation testing
         it("should require a name", function () {
-            return expect(createMyPatientPharmacy({ name: undefined })).to.be.an.api.error(400, "name_required");
+            return expect(createPatientPharmacy({ name: undefined })).to.be.an.api.error(400, "name_required");
         });
         it("should not allow a blank name", function () {
-            return expect(createMyPatientPharmacy({ name: "" })).to.be.an.api.error(400, "name_required");
+            return expect(createPatientPharmacy({ name: "" })).to.be.an.api.error(400, "name_required");
         });
         it("should not allow a null name", function () {
-            return expect(createMyPatientPharmacy({ name: null })).to.be.an.api.error(400, "name_required");
+            return expect(createPatientPharmacy({ name: null })).to.be.an.api.error(400, "name_required");
         });
         it("should not require anything other than a name", function () {
-            return expect(createMyPatientPharmacy({
+            return expect(createPatientPharmacy({
                 phone: undefined,
                 address: undefined,
                 hours: undefined,
@@ -67,7 +55,7 @@ describe("Pharmacies", function () {
             })).to.be.a.pharmacy.createSuccess;
         });
         it("should not require non-null fields for anything other than a name", function () {
-            return expect(createMyPatientPharmacy({
+            return expect(createPatientPharmacy({
                 phone: null,
                 address: null,
                 hours: null,
@@ -75,7 +63,7 @@ describe("Pharmacies", function () {
             })).to.be.a.pharmacy.createSuccess;
         });
         it("should allow partially filled hours", function () {
-            return expect(createMyPatientPharmacy({
+            return expect(createPatientPharmacy({
                 hours: {
                     monday: {
                         open: "09:00"
@@ -87,7 +75,7 @@ describe("Pharmacies", function () {
             })).to.be.a.pharmacy.createSuccess;
         });
         it("allows a blank notes field", function () {
-            return expect(createMyPatientPharmacy({
+            return expect(createPatientPharmacy({
                 notes: ""
             })).to.be.a.pharmacy.createSuccess;
         });

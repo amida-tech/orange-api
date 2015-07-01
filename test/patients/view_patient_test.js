@@ -12,11 +12,8 @@ describe("Patients", function () {
         };
 
         // helpers to create patients before showing them
-        var showMyPatient = module.exports.showMyPatient = function (data) {
+        var showAPatient = module.exports.showAPatient = function (data) {
             return common.testMyPatient(data).then(showPatient);
-        };
-        var showOtherPatient = function (data, access) {
-            return common.testOtherPatient(data, access).then(showPatient);
         };
 
         common.itRequiresAuthentication(common.show);
@@ -24,16 +21,7 @@ describe("Patients", function () {
 
         // authorization test
         it("should let me view my patients", function () {
-            return expect(showMyPatient({})).to.be.a.patient.success;
-        });
-        it("should let me view patients shared read-only", function () {
-            return expect(showOtherPatient({}, "read")).to.be.a.patient.success;
-        });
-        it("should let me view patients shared read-write", function () {
-            return expect(showOtherPatient({}, "write")).to.be.a.patient.success;
-        });
-        it("should not let me view patients not shared with me", function () {
-            return expect(showOtherPatient({}, "none")).to.be.an.api.error(403, "unauthorized");
+            return expect(showAPatient({})).to.be.a.patient.success;
         });
     });
 });

@@ -85,9 +85,11 @@ var createPatient = function (data, user) {
 };
 
 // promise-ify Patient#share
+/*
 var sharePatient = function (user, access, patient) {
     return Q.nbind(patient.share, patient)(user, access);
 };
+*/
 
 // create a test patient for the current user
 var createMyPatient = module.exports.createMyPatient = curry(function (data, user) {
@@ -96,6 +98,7 @@ var createMyPatient = module.exports.createMyPatient = curry(function (data, use
     });
 });
 
+/*
 // create a test patient for another user and share with the current
 var createOtherPatient = module.exports.createOtherPatient = curry(function (data, access, me, other) {
     return createMyPatient(data, other).then(curry(sharePatient)(me)(access)).then(function (patient) {
@@ -104,6 +107,7 @@ var createOtherPatient = module.exports.createOtherPatient = curry(function (dat
         return patient;
     });
 });
+*/
 
 // setup a test user and patient (with specified data modifications to the factory
 // default) for that user, and then do something to it
@@ -111,12 +115,14 @@ module.exports.testMyPatient = function (data) {
     return auth.createTestUser().then(createMyPatient(data));
 };
 
+/*
 // setup two test users ('me' + 'other') and patient (with specified data modifications to
 // the factory default) for the other user, and share it with the current user with
 // the specified access level and then do something to it (e.g., view it)
 module.exports.testOtherPatient = function (data, access) {
     return Q.all([auth.createTestUser(), auth.createTestUser()]).spread(createOtherPatient(data, access));
 };
+*/
 
 // wrapper around auth.itRequiresAuthentication to generate patient IDs to test with
 // check access token authentication
@@ -139,3 +145,35 @@ module.exports.show = function (patientId, accessToken) {
     return chakram.get("http://localhost:3000/v1/patients/" + patientId, auth.genAuthHeaders(accessToken));
 };
 
+// helper method to check that a resource requires the relevant
+// authorization
+// endpoint should be a function taking (patient)
+// access should be an object containing booleans indicating whether
+// a user should have access to the resource in various different
+// patient sharing scenarios. the keys corresponding to those scenarios
+// are:
+//  - me
+module.exports.itRequiresAuthorization = function (access, endpoint) {
+    // helper function to generate testcase names
+    var accessName = function (level, scenario) {
+        if (level) return "it gives me access to " + scenario;
+        else return "it denies me access to " + scenario;
+    };
+
+    // generate entire testcase
+    var gen = function (slug, scenario, patientPromise) {
+        it(accessName(access[slug], scenario), function () {
+            return patientPromise.then(function (patient) {
+                if (access[slug]) {
+                    // if we should have access check success: true was in response
+                    return expect(endpoint(patient)).to.be.an.api.genericSuccess();
+                } else {
+                    // otherwise check a 403 was returned with the appropriate error slug
+                    return expect(endpoint(patient)).to.be.an.api.error(403, "unauthorized");
+                }
+            });
+        });
+    };
+
+    gen("me", "my patients", auth.createTestUser().then(createMyPatient({})));
+};

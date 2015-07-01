@@ -19,7 +19,7 @@ describe("Medications", function () {
         patients.itRequiresAuthentication(curry(remove)(1));
         patients.itRequiresValidPatientId(curry(remove)(1));
         // helpers to create patient and medication
-        var removeMyPatientMedication = function (data) {
+        var removePatientMedication = function (data) {
             // add name if not present: see reasoning for this over fixtures in create test
             if (!("name" in data)) data.name = "foobar";
 
@@ -29,28 +29,9 @@ describe("Medications", function () {
                 });
             });
         };
-        var removeOtherPatientMedication = function (access, data) {
-            // add name if not present: see reasoning for this over fixtures in create test
-            if (!("name" in data)) data.name = "foobar";
-
-            return patients.testOtherPatient({}, access).then(function (patient) {
-                return Q.nbind(patient.createMedication, patient)(data).then(function (medication) {
-                    return remove(medication._id, patient._id, patient.user.accessToken);
-                });
-            });
-        };
 
         it("should let me delete medications for my patients", function () {
-            return expect(removeMyPatientMedication({})).to.be.a.medication.success;
-        });
-        it("should let me delete medications for patients shared read-write", function () {
-            return expect(removeOtherPatientMedication("write", {})).to.be.a.medication.success;
-        });
-        it("should not let me delete medications for patients shared read-only", function () {
-            return expect(removeOtherPatientMedication("read", {})).to.be.an.api.error(403, "unauthorized");
-        });
-        it("should not let me delete medications for patients not shared with me", function () {
-            return expect(removeOtherPatientMedication("none", {})).to.be.an.api.error(403, "unauthorized");
+            return expect(removePatientMedication({})).to.be.a.medication.success;
         });
         it("should not let me delete medications for the wrong patient", function () {
             // setup current user and two patients for them, one with a medication

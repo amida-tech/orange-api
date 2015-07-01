@@ -30,10 +30,7 @@ describe("Journal", function () {
             });
         };
         // create patient and user and show them automatically
-        var showOtherPatientEntry = function (access, data) {
-            return patients.testOtherPatient({}, access).then(curry(showEntry)(data));
-        };
-        var showMyPatientEntry = function (data) {
+        var showPatientEntry = function (data) {
             return patients.testMyPatient({}).then(curry(showEntry)(data));
         };
 
@@ -43,16 +40,7 @@ describe("Journal", function () {
         common.itRequiresValidEntryId(show);
 
         it("should let me view entries for my patients", function () {
-            return expect(showMyPatientEntry({})).to.be.a.journal.viewSuccess;
-        });
-        it("should let me view entries for patients shared read-only", function () {
-            return expect(showOtherPatientEntry("read", {})).to.be.a.journal.viewSuccess;
-        });
-        it("should let me view entries for patients shared read-write", function () {
-            return expect(showOtherPatientEntry("write", {})).to.be.a.journal.viewSuccess;
-        });
-        it("should not let me view entries for patients not shared with me", function () {
-            return expect(showOtherPatientEntry("none", {})).to.be.an.api.error(403, "unauthorized");
+            return expect(showPatientEntry({})).to.be.a.journal.viewSuccess;
         });
     });
 });

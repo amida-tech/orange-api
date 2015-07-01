@@ -30,10 +30,7 @@ describe("Journal", function () {
             });
         };
         // create patient and user and remove them automatically
-        var removeOtherPatientEntry = function (access, data) {
-            return patients.testOtherPatient({}, access).then(curry(removeEntry)(data));
-        };
-        var removeMyPatientEntry = function (data) {
+        var removePatientEntry = function (data) {
             return patients.testMyPatient({}).then(curry(removeEntry)(data));
         };
 
@@ -43,16 +40,7 @@ describe("Journal", function () {
         common.itRequiresValidEntryId(remove);
 
         it("should let me remove entries for my patients", function () {
-            return expect(removeMyPatientEntry({})).to.be.a.journal.success;
-        });
-        it("should not let me remove entries for patients shared read-only", function () {
-            return expect(removeOtherPatientEntry("read", {})).to.be.an.api.error(403, "unauthorized");
-        });
-        it("should let me remove entries for patients shared read-write", function () {
-            return expect(removeOtherPatientEntry("write", {})).to.be.a.journal.success;
-        });
-        it("should not let me remove entries for patients not shared with me", function () {
-            return expect(removeOtherPatientEntry("none", {})).to.be.an.api.error(403, "unauthorized");
+            return expect(removePatientEntry({})).to.be.a.journal.success;
         });
     });
 });

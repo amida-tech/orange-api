@@ -19,11 +19,8 @@ describe("Patients", function () {
         };
 
         // helpers to create patients before removing them
-        var removeMyPatient = function (data) {
+        var removeAPatient = function (data) {
             return common.testMyPatient(data).then(removePatient);
-        };
-        var removeOtherPatient = function (data, access) {
-            return common.testOtherPatient(data, access).then(removePatient);
         };
 
         common.itRequiresAuthentication(remove);
@@ -31,7 +28,7 @@ describe("Patients", function () {
 
         // authorization test
         it("should let me delete my patients", function () {
-            return expect(removeMyPatient({})).to.be.a.patient.success;
+            return expect(removeAPatient({})).to.be.a.patient.success;
         });
         it("should actually delete the patient", function () {
             return common.testMyPatient({}).then(function (patient) {
@@ -40,15 +37,6 @@ describe("Patients", function () {
                     return expect(endpoint).to.be.an.api.error(404, "invalid_patient_id");
                 });
             });
-        });
-        it("should let me delete patients shared read-only", function () {
-            return expect(removeOtherPatient({}, "read")).to.be.an.api.error(403, "unauthorized");
-        });
-        it("should let me delete patients shared read-write", function () {
-            return expect(removeOtherPatient({}, "write")).to.be.a.patient.success;
-        });
-        it("should not let me delete patients not shared with me", function () {
-            return expect(removeOtherPatient({}, "none")).to.be.an.api.error(403, "unauthorized");
         });
     });
 });

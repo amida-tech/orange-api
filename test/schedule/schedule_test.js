@@ -57,24 +57,12 @@ describe("Schedule", function () {
             };
 
             // helpers to create patients and feed them into showSchedule automatically
-            var showMyPatientSchedule = function () {
+            var showPatientSchedule = function () {
                 return patients.testMyPatient({}).then(showSchedule);
-            };
-            var showOtherPatientSchedule = function (access) {
-                return patients.testOtherPatient({}, access).then(showSchedule);
             };
 
             it("should let me view my patient's schedule", function () {
-                return expect(showMyPatientSchedule()).to.be.a.schedule.success;
-            });
-            it("should let me view the schedule of a patient shared read-only", function () {
-                return expect(showOtherPatientSchedule("read")).to.be.a.schedule.success;
-            });
-            it("should let me view the schedule of a patient shared read-write", function () {
-                return expect(showOtherPatientSchedule("write")).to.be.a.schedule.success;
-            });
-            it("should not let me view the schedule of a patient not shared with me", function () {
-                return expect(showOtherPatientSchedule("none")).to.be.an.api.error(403, "unauthorized");
+                return expect(showPatientSchedule()).to.be.a.schedule.success;
             });
         });
 

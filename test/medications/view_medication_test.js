@@ -19,7 +19,7 @@ describe("Medications", function () {
         patients.itRequiresAuthentication(curry(show)(1));
         patients.itRequiresValidPatientId(curry(show)(1));
         // helpers to create patient and medication
-        var showMyPatientMedication = function (data) {
+        var showPatientMedication = function (data) {
             // add name if not present: see reasoning for this over fixtures in create test
             if (!("name" in data)) data.name = "foobar";
 
@@ -29,28 +29,9 @@ describe("Medications", function () {
                 });
             });
         };
-        var showOtherPatientMedication = function (access, data) {
-            // add name if not present: see reasoning for this over fixtures in create test
-            if (!("name" in data)) data.name = "foobar";
-
-            return patients.testOtherPatient({}, access).then(function (patient) {
-                return Q.nbind(patient.createMedication, patient)(data).then(function (medication) {
-                    return show(medication._id, patient._id, patient.user.accessToken);
-                });
-            });
-        };
 
         it("should let me view medications for my patients", function () {
-            return expect(showMyPatientMedication({})).to.be.a.medication.viewSuccess;
-        });
-        it("should let me view medications for patients shared read-only", function () {
-            return expect(showOtherPatientMedication("read", {})).to.be.a.medication.viewSuccess;
-        });
-        it("should let me view medications for patients shared read-write", function () {
-            return expect(showOtherPatientMedication("write", {})).to.be.a.medication.viewSuccess;
-        });
-        it("should not let me view medications for patients not shared with me", function () {
-            return expect(showOtherPatientMedication("none", {})).to.be.an.api.error(403, "unauthorized");
+            return expect(showPatientMedication({})).to.be.a.medication.viewSuccess;
         });
         it("should not let me view medications for the wrong patient", function () {
             // setup current user and two patients for them, one with a medication
