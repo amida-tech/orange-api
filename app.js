@@ -53,7 +53,7 @@ router.use("/auth", require("./lib/controllers/auth.js"));
 router.use("/user", require("./lib/controllers/users.js"));
 
 // Patient CRUD and sharing
-router.use("/patients", require("./lib/controllers/patients.js"));
+router.use("/patients", require("./lib/controllers/patients/patients.js"));
 
 // Routes for a specific patient
 // mergeParams lets us access patient ID from these controllers

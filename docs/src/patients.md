@@ -384,7 +384,14 @@ patient's) data with the father (another user).
 
         unique ID of the patient (**not** user-specific) (*url*)
     + email (string, required) - the email address of the user to share data with
-    + access (string, required) - `read` or `write` to signify the level of access the user should have to the patient
+    + access (string, required)
+    
+        `read`, `write` or `default` to signify the level of access the user should have to the patient
+        (`default` means the user has whatever access to the patient the patient-wide permissions
+        give them, whereas `read` and `write` explicitly override those patient-wide permissions)
+    + group (string, required)
+
+        The share group to add the user to. Must be either `prime`, `family` or `anyone`.
     
 + Request
     + Headers
@@ -405,8 +412,12 @@ patient's) data with the father (another user).
     + `invalid_access_token` (401) - the access token specified is invalid
     + `invalid_patient_id` (404) - a patient with the specified ID was not found
     + `unauthorized` (403) - the current user does not have write access to this patient
+    + `email_required` (400) - an email address to share with must be specified
     + `invalid_email` (400) - the email address specified is not a valid one
-    + `invalid_access` (400) - the access string specified is not a valid one (must be either `read` or `write`)
+    + `access_required` (400) - the desired access level must be specified
+    + `invalid_access` (400) - the access string specified is not a valid one (must be either `read`, `write` or `default`)
+    + `group_required` (400) - the share group the user should be added to must be specified
+    + `invalid_group` (400) - the share group the user is not a valid one (must be either `prime`, `family` or `anyone`)
 
     Note that this `id` is for the user-patient association, *not* the user ID.
 
