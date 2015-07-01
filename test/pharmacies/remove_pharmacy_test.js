@@ -35,6 +35,7 @@ describe("Pharmacies", function () {
         patients.itRequiresAuthentication(curry(remove)(1));
         patients.itRequiresValidPatientId(curry(remove)(1));
         common.itRequiresValidPharmacyId(remove);
+        patients.itRequiresWriteAuthorization(curry(removePharmacy)({}));
 
         it("should let me remove pharmacies for my patients", function () {
             return expect(removePatientPharmacy({})).to.be.a.pharmacy.success;

@@ -31,6 +31,7 @@ describe("Doctors", function () {
         // check it requires a valid user and patient
         patients.itRequiresAuthentication(curry(create)({}));
         patients.itRequiresValidPatientId(curry(create)({}));
+        patients.itRequiresWriteAuthorization(curry(createDoctor)({}));
 
         it("should create patients", function () {
             return expect(createPatientDoctor({})).to.be.a.doctor.createSuccess;

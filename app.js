@@ -60,7 +60,6 @@ router.use("/patients", require("./lib/controllers/patients.js"));
 var patientRouter = express.Router({ mergeParams: true });
 var auth = require("./lib/controllers/helpers/auth.js");
 patientRouter.use(auth.authenticate); // find user from access token
-patientRouter.use(auth.findPatient); // find patient from patientid in URL
 
 patientRouter.use("/habits", require("./lib/controllers/habits.js"));
 patientRouter.use("/doctors", require("./lib/controllers/doctors.js"));

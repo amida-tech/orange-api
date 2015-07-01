@@ -109,6 +109,15 @@ var createOtherPatient = module.exports.createOtherPatient = curry(function (dat
 });
 */
 
+// create a test patient for another user
+var createOtherPatient = module.exports.createOtherPatient = curry(function (data, me, other) {
+    return createMyPatient(data, other).then(function (patient) {
+        // store me in patient
+        patient.user = me;
+        return patient;
+    });
+});
+
 // setup a test user and patient (with specified data modifications to the factory
 // default) for that user, and then do something to it
 module.exports.testMyPatient = function (data) {
@@ -145,26 +154,21 @@ module.exports.show = function (patientId, accessToken) {
     return chakram.get("http://localhost:3000/v1/patients/" + patientId, auth.genAuthHeaders(accessToken));
 };
 
-// helper method to check that a resource requires the relevant
+// helper methods to check that a resource requires the relevant
 // authorization
 // endpoint should be a function taking (patient)
-// access should be an object containing booleans indicating whether
-// a user should have access to the resource in various different
-// patient sharing scenarios. the keys corresponding to those scenarios
-// are:
-//  - me
-module.exports.itRequiresAuthorization = function (access, endpoint) {
-    // helper function to generate testcase names
+var genAuthorizationTest = function (endpoint, levels) {
+    // generate testcase names
     var accessName = function (level, scenario) {
         if (level) return "it gives me access to " + scenario;
         else return "it denies me access to " + scenario;
     };
 
     // generate entire testcase
-    var gen = function (slug, scenario, patientPromise) {
-        it(accessName(access[slug], scenario), function () {
+    return function (slug, scenario, patientPromise) {
+        it(accessName(levels[slug], scenario), function () {
             return patientPromise.then(function (patient) {
-                if (access[slug]) {
+                if (levels[slug]) {
                     // if we should have access check success: true was in response
                     return expect(endpoint(patient)).to.be.an.api.genericSuccess();
                 } else {
@@ -174,6 +178,86 @@ module.exports.itRequiresAuthorization = function (access, endpoint) {
             });
         });
     };
-
-    gen("me", "my patients", auth.createTestUser().then(createMyPatient({})));
 };
+var requiresAuthentication = module.exports.itRequiresAuthentication = function (levels) {
+    return function (endpoint) {
+        var gen = genAuthorizationTest(endpoint, levels);
+
+        describe("testing authorization", function () {
+            var patientForMe = function () {
+                return auth.createTestUser().then(createMyPatient({}));
+            };
+            var patientForOther = function () {
+                return Q.all([auth.createTestUser(), auth.createTestUser()]).spread(createOtherPatient({}));
+            };
+            var share = function (access, group) {
+                return function (patient) {
+                    return Q.nbind(patient.share, patient)(patient.user, access, group);
+                };
+            };
+            var setPermission = function (group, access) {
+                return function (patient) {
+                    // Q.nbind has issues here
+                    var deferred = Q.defer();
+                    patient.permissions[group] = access;
+                    patient.save(function (err) {
+                        if (err) return deferred.reject(err);
+                        deferred.resolve(patient);
+                    });
+                    return deferred.promise;
+                };
+            };
+
+            gen("me", "my patients", patientForMe());
+            gen("unassociated", "patients not shared with me", patientForOther());
+
+            var p = patientForOther().then(share("read", "anyone"));
+            gen("explicitRead", "patients explicitly shared read-only with me", p);
+
+            p = patientForOther().then(share("write", "anyone"));
+            gen("explicitWrite", "patients explicitly shared read-write with me", p);
+
+            p = patientForOther().then(setPermission("anyone", "read")).then(share("default", "anyone"));
+            gen("anyoneRead", "patients shared as 'anybody' when 'anybody' has read permissions", p);
+
+            p = patientForOther().then(setPermission("anyone", "write")).then(share("default", "anyone"));
+            gen("anyoneWrite", "patients shared as 'anybody' when 'anybody' has write permissions", p);
+
+            p = patientForOther().then(setPermission("family", "read")).then(share("default", "family"));
+            gen("familyRead", "patients shared as 'family' when 'family' has read permissions", p);
+
+            p = patientForOther().then(setPermission("family", "write")).then(share("default", "family"));
+            gen("familyWrite", "patients shared as 'family' when 'family' has write permissions", p);
+
+            p = patientForOther().then(setPermission("prime", "read")).then(share("default", "prime"));
+            gen("primeRead", "patients shared as 'prime' when 'prime' has read permissions", p);
+
+            p = patientForOther().then(setPermission("prime", "write")).then(share("default", "prime"));
+            gen("primeWrite", "patients shared as 'prime' when 'prime' has write permissions", p);
+        });
+    };
+};
+module.exports.itRequiresReadAuthorization = requiresAuthentication({
+    unassociated: false,
+    me: true,
+    explicitRead: true,
+    explicitWrite: true,
+    anyoneRead: true,
+    anyoneWrite: true,
+    familyRead: true,
+    familyWrite: true,
+    primeRead: true,
+    primeWrite: true
+});
+module.exports.itRequiresWriteAuthorization = requiresAuthentication({
+    unassociated: false,
+    me: true,
+    explicitRead: false,
+    explicitWrite: true,
+    anyoneRead: false,
+    anyoneWrite: true,
+    familyRead: false,
+    familyWrite: true,
+    primeRead: false,
+    primeWrite: true
+});

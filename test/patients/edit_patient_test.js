@@ -26,8 +26,8 @@ describe("Patients", function () {
 
         common.itRequiresAuthentication(curry(edit)({}));
         common.itRequiresValidPatientId(curry(edit)({}));
+        common.itRequiresWriteAuthorization(curry(editPatient)({}));
 
-        // dry up so we can do the same thing when a patient is shared with us
         it("should test changing group and access permission");
 
         // validations

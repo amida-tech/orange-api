@@ -35,6 +35,7 @@ describe("Doctors", function () {
         patients.itRequiresAuthentication(curry(update)({}, 1));
         patients.itRequiresValidPatientId(curry(update)({}, 1));
         common.itRequiresValidDoctorId(curry(update)({}));
+        patients.itRequiresWriteAuthorization(curry(updateDoctor)({}, {}));
 
         it("should let me update doctors for my patients", function () {
             return expect(updatePatientDoctor({}, {})).to.be.a.doctor.success;

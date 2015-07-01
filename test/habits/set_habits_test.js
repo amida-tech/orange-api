@@ -14,9 +14,14 @@ describe("Habits", function () {
             var url = util.format("http://localhost:3000/v1/patients/%d/habits", patientId);
             return chakram.put(url, modifications, auth.genAuthHeaders(accessToken));
         };
+        // given a patient and user, try and show the patient's habits
+        var editHabits = function (modifications, patient) {
+            return edit(modifications, patient._id, patient.user.accessToken);
+        };
 
         patients.itRequiresAuthentication(curry(edit)({}));
         patients.itRequiresValidPatientId(curry(edit)({}));
+        patients.itRequiresWriteAuthorization(curry(editHabits)({}));
 
         // patient ID of patient we can access, and access token
         var patientId, accessToken;

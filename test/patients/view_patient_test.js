@@ -1,5 +1,6 @@
 "use strict";
 var chakram     = require("chakram"),
+    curry       = require("curry"),
     common      = require("./common.js");
 
 var expect = chakram.expect;
@@ -18,6 +19,7 @@ describe("Patients", function () {
 
         common.itRequiresAuthentication(common.show);
         common.itRequiresValidPatientId(common.show);
+        common.itRequiresReadAuthorization(curry(showPatient));
 
         // authorization test
         it("should let me view my patients", function () {

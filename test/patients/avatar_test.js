@@ -81,6 +81,10 @@ describe("Patients", function () {
             // test that it requires a valid authentication header and a valid patient ID in the URL
             common.itRequiresAuthentication(curry(set)(placeholder()));
             common.itRequiresValidPatientId(curry(set)(placeholder()));
+            common.itRequiresWriteAuthorization(function (patient) {
+                // placeholder must be called again for each test itRequiresWriteAuthorization generates
+                return setPatient(placeholder(), patient);
+            });
 
             it("lets me set images for my patients", function () {
                 return expect(setAPatient(placeholder())).to.be.an.avatar.setSuccess;
@@ -98,6 +102,9 @@ describe("Patients", function () {
             // test that it requires a valid authentication header and a valid patient ID in the URL
             common.itRequiresAuthentication(get);
             common.itRequiresValidPatientId(get);
+            // TODO: check read authorization
+            // (common.itRequiresReadAuthorization checks for success: true in a JSON response whereas
+            // we should just check error codes here)
 
             // check authorization
             it("lets me set images for my patients", function () {

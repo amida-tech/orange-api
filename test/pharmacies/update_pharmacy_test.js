@@ -35,6 +35,7 @@ describe("Pharmacies", function () {
         patients.itRequiresAuthentication(curry(update)({}, 1));
         patients.itRequiresValidPatientId(curry(update)({}, 1));
         common.itRequiresValidPharmacyId(curry(update)({}));
+        patients.itRequiresWriteAuthorization(curry(updatePharmacy)({}, {}));
 
         // access permissions
         it("should let me update pharmacies for my patients", function () {

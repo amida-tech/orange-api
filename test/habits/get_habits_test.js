@@ -26,6 +26,7 @@ describe("Habits", function () {
 
         patients.itRequiresAuthentication(show);
         patients.itRequiresValidPatientId(show);
+        patients.itRequiresReadAuthorization(showHabits);
 
         it("should let me view my patient's habits", function () {
             return expect(showPatientHabits()).to.be.a.habits.success;

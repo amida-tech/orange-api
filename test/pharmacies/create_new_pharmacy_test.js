@@ -31,6 +31,7 @@ describe("Pharmacies", function () {
         // check it requires a valid user and patient
         patients.itRequiresAuthentication(curry(create)({}));
         patients.itRequiresValidPatientId(curry(create)({}));
+        patients.itRequiresWriteAuthorization(curry(createPharmacy)({}));
 
         it("should let me create valid pharmacies for my patients", function () {
             return expect(createPatientPharmacy({})).to.be.a.pharmacy.createSuccess;

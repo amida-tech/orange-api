@@ -25,6 +25,19 @@ describe("Patients", function () {
 
         common.itRequiresAuthentication(remove);
         common.itRequiresValidPatientId(remove);
+        // only the user who created a patient should be able to delete it
+        common.itRequiresAuthentication({
+            unassociated: false,
+            me: true,
+            explicitRead: false,
+            explicitWrite: false,
+            anyoneRead: false,
+            anyoneWrite: false,
+            familyRead: false,
+            familyWrite: false,
+            primeRead: false,
+            primeWrite: false
+        });
 
         // authorization test
         it("should let me delete my patients", function () {
