@@ -22,6 +22,15 @@ Habits (all may be blank, and initially are after registration):
 + `tz` (*timezone*) - the current timezone of the patient (retrieved automatically
     from the mobile OS without any user participation required). Should be a valid TZ
     database timezone (e.g., `/London/Europe`). Defaults to `Etc/UTC` (UTC time).
++ `access_anyone` (*string*) - the default access permissions that users this patient
+    is shared with under the `anyone` group should have. Must be either `read` or `write`.
+    Defaults to `read`.
++ `access_family` (*string*) - the default access permissions that users this patient
+    is shared with under the `family` group should have. Must be either `read` or `write`.
+    Defaults to `read`.
++ `access_prime` (*string*) - the default access permissions that users this patient
+    is shared with under the `prime` group should have. Must be either `read` or `write`.
+    Defaults to `read`.
   
 ### Get Patient Habits [GET]
 View the patient's current habits.
@@ -68,6 +77,19 @@ Set the patient's habits. The current user will need write access to the patient
     + breakfast (time, optional) - what time the patient normally eats breakfast
     + lunch (time, optional) - what time the patient normally eats lunch
     + dinner (time, optional) - what time the patient normally eats dinner
+    + tz (timezone, optional) - the current user timezone
+    + access_anyone (string, optional)
+    
+        The access permission shared users in the `anyone` group should have. Must be
+        either `read` or `write.
+    + access_family (string, optional)
+    
+        The access permission shared users in the `family` group should have. Must be
+        either `read` or `write.
+    + access_prime (string, optional)
+    
+        The access permission shared users in the `prime` group should have. Must be
+        either `read` or `write.
 
 + Request
     + Headers
@@ -96,6 +118,10 @@ Set the patient's habits. The current user will need write access to the patient
     + `invalid_breakfast` (400) - the wake time passed is not formatted as `HH:MM`
     + `invalid_lunch` (400) - the wake time passed is not formatted as `HH:MM`
     + `invalid_dinner` (400) - the wake time passed is not formatted as `HH:MM`
+    + `invalid_tz` (400) - the timezone passed is not a valid TZ database timezone
+    + `invalid_access_anyone` (400) - the `access_anyone` value passed is not `read` or `write`
+    + `invalid_access_family` (400) - the `access_family` value passed is not `read` or `write`
+    + `invalid_access_prime` (400) - the `access_prime` value passed is not `read` or `write`
 
     + Body
 
