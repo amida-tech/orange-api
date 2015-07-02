@@ -1,5 +1,6 @@
 "use strict";
-var chakram = require("chakram");
+var chakram = require("chakram"),
+    extend  = require("xtend");
 
 var expect = chakram.expect;
 
@@ -53,6 +54,25 @@ before(function () {
     });
     chakram.addProperty("deleteSuccess", function (respObj) {
         expect(respObj).to.be.an.api.genericSuccess(200);
+    });
+
+    // take an object schema and the slug for the list of objects, and validate a list
+    // response (e.g., GET /patients)
+    chakram.addMethod("genericListSuccess", function (respObj, slug, itemSchema) {
+        expect(respObj).to.be.an.api.genericSuccess(200);
+
+        // build up schema for overall response
+        var schema = {
+            required:   [slug, "count"],
+            properties: {
+                count:  { type: "number" }
+            }
+        };
+        schema.properties[slug] = {
+            type: "array",
+            items: [itemSchema]
+        };
+        expect(respObj).to.have.schema(schema);
     });
 });
 

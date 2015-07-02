@@ -152,7 +152,7 @@ View a list of all patients the current user has access to: both read
 ### View Patient Info [GET]
 View the name of a specific patient as well as the current user's access (`read` or
 `write`) to them. To view and modify other user's access to this patient, see the
-`/patients/{id}/shared` endpoint.
+`/patients/{id}/shares` endpoint.
 
 + Parameters
     + patientid (integer, required)
@@ -362,7 +362,7 @@ conventions.
                 avatar: "/v1/patients/1/avatar.gif"
             }
 
-## Patient's Shared Users [/patients/{patientid}/shared]
+## Patient's Shared Users [/patients/{patientid}/shares]
 This endpoint represents all of the users a specific patient is shared with: including
 both `read` and `write` access. The IDs in this section represent patient-user relationships,
 not users themselves, so if patient `1` is shared with user `7` then the shared ID may be `16`,
@@ -496,7 +496,7 @@ who have (either `read` or `write`) access to the patient.
     + Body
 
             {
-                shared: [
+                shares: [
                     {
                         id: 1,
                         email: "care@giver.com",
@@ -509,7 +509,7 @@ who have (either `read` or `write`) access to the patient.
                 success: true
             }
 
-## Shared User [/patients/{patientid}/shared/{sharedid}]
+## Shared User [/patients/{patientid}/shares/{shareid}]
 ### Update Access Level [PUT]
 Update the access another user has to a patient (the current user of course is required
 to have `write` access to this patient). To modify the current user's access, see the
@@ -523,7 +523,7 @@ with this endpoint if the user who's share is being modified is the current user
     + patientid (integer, required)
 
         unique ID of the patient (**not** user-specific) (*url*)
-    + sharedid (integer, required)
+    + shareid (integer, required)
 
         unique ID of the patient-user association (**not** the user ID) (*url*)
 
@@ -549,7 +549,7 @@ with this endpoint if the user who's share is being modified is the current user
     + `invalid_access_token` (401) - the access token specified is invalid
     + `unauthorized` (403) - the current user does not have write access to this patient
     + `invalid_patient_id` (404) - a patient with the specified ID was not found
-    + `invalid_shared_id` (404)
+    + `invalid_share_id` (404)
 
         A patient-user sharing relationship with the specified ID was not found (remember, this is _not_
         the same as the user ID)
@@ -578,7 +578,7 @@ will be deleted, so take care.
     + patientid (integer, required)
 
         unique ID of the patient (**not** user-specific) (*url*)
-    + sharedid (integer, required)
+    + shareid (integer, required)
 
         unique ID of the patient-user association (**not** the user ID) (*url*)
     
@@ -594,7 +594,7 @@ will be deleted, so take care.
     + `invalid_access_token` (401) - the access token specified is invalid
     + `unauthorized` (403) - the current user does not have write access to this patient
     + `invalid_patient_id` (404) - a patient with the specified ID was not found
-    + `invalid_shared_id` (404)
+    + `invalid_share_id` (404)
 
         A patient-user sharing relationship with the specified ID was not found (remember, this is _not_
         the same as the user ID)

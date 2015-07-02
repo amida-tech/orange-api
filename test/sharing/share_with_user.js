@@ -11,10 +11,10 @@ var chakram     = require("chakram"),
 var expect = chakram.expect;
 
 describe("Patients", function () {
-    describe("Share Patient with User (POST /patients/:patientid/shared)", function () {
+    describe("Share Patient with User (POST /patients/:patientid/shares)", function () {
         // share the passed patient with a user (user specified in data)
         var share = function (data, patientId, accessToken) {
-            var url = util.format("http://localhost:3000/v1/patients/%d/shared", patientId);
+            var url = util.format("http://localhost:3000/v1/patients/%d/shares", patientId);
             return chakram.post(url, data, auth.genAuthHeaders(accessToken));
         };
         // data is extended with sensible defaults

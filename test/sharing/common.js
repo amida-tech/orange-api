@@ -12,7 +12,7 @@ var expect = chakram.expect;
 var shareSchema = {
     required: ["id", "email", "access", "group", "is_user"],
     properties: {
-        id:         { type: "string" },
+        id:         { type: "number" },
         email:      { type: "string" },
         access:     { type: "string" },
         group:      { type: "string" },
@@ -27,5 +27,8 @@ common.addApiChain("share", {
     "success": function (respObj) {
         expect(respObj).to.be.an.api.getSuccess;
         expect(respObj).to.have.schema(shareSchema);
+    },
+    "listSuccess": function (respObj) {
+        expect(respObj).to.be.an.api.genericListSuccess("shares", shareSchema);
     }
 });
