@@ -1,4 +1,4 @@
-<!DOCTYPE html><html><head><meta charset="utf-8"><title>API Documentation</title><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css"><style>@import url(http://fonts.googleapis.com/css?family=Roboto:400,700|Inconsolata|Raleway:200);.hljs-comment,.hljs-title{color:#8e908c}.hljs-variable,.hljs-attribute,.hljs-tag,.hljs-regexp,.ruby .hljs-constant,.xml .hljs-tag .hljs-title,.xml .hljs-pi,.xml .hljs-doctype,.html .hljs-doctype,.css .hljs-id,.css .hljs-class,.css .hljs-pseudo{color:#c82829}.hljs-number,.hljs-preprocessor,.hljs-pragma,.hljs-built_in,.hljs-literal,.hljs-params,.hljs-constant{color:#f5871f}.ruby .hljs-class .hljs-title,.css .hljs-rules .hljs-attribute{color:#eab700}.hljs-string,.hljs-value,.hljs-inheritance,.hljs-header,.ruby .hljs-symbol,.xml .hljs-cdata{color:#718c00}.css .hljs-hexcolor{color:#3e999f}.hljs-function,.python .hljs-decorator,.python .hljs-title,.ruby .hljs-function .hljs-title,.ruby .hljs-title .hljs-keyword,.perl .hljs-sub,.javascript .hljs-title,.coffeescript .hljs-title{color:#4271ae}.hljs-keyword,.javascript .hljs-function{color:#8959a8}.hljs{display:block;background:white;color:#4d4d4c;padding:.5em}.coffeescript .javascript,.javascript .xml,.tex .hljs-formula,.xml .javascript,.xml .vbscript,.xml .css,.xml .hljs-cdata{opacity:.5}.hljs-comment,.hljs-title{color:#8e908c}.hljs-variable,.hljs-attribute,.hljs-tag,.hljs-regexp,.ruby .hljs-constant,.xml .hljs-tag .hljs-title,.xml .hljs-pi,.xml .hljs-doctype,.html .hljs-doctype,.css .hljs-id,.css .hljs-class,.css .hljs-pseudo{color:#c82829}.hljs-number,.hljs-preprocessor,.hljs-pragma,.hljs-built_in,.hljs-literal,.hljs-params,.hljs-constant{color:#f5871f}.ruby .hljs-class .hljs-title,.css .hljs-rules .hljs-attribute{color:#eab700}.hljs-string,.hljs-value,.hljs-inheritance,.hljs-header,.ruby .hljs-symbol,.xml .hljs-cdata{color:#718c00}.css .hljs-hexcolor{color:#3e999f}.hljs-function,.python .hljs-decorator,.python .hljs-title,.ruby .hljs-function .hljs-title,.ruby .hljs-title .hljs-keyword,.perl .hljs-sub,.javascript .hljs-title,.coffeescript .hljs-title{color:#4271ae}.hljs-keyword,.javascript .hljs-function{color:#8959a8}.hljs{display:block;background:white;color:#4d4d4c;padding:.5em}.coffeescript .javascript,.javascript .xml,.tex .hljs-formula,.xml .javascript,.xml .vbscript,.xml .css,.xml .hljs-cdata{opacity:.5}body{color:black;background:white;font-family:'Roboto',Helvetica,sans-serif;font-size:14px;line-height:1.42}header{border-bottom:1px solid #ededed;margin-bottom:12px}h1,h2,h3,h4,h5{margin:12px 0}h1 .permalink,h2 .permalink,h3 .permalink,h4 .permalink,h5 .permalink{margin-left:6px;opacity:0;transition:opacity .25s ease}h1:hover .permalink,h2:hover .permalink,h3:hover .permalink,h4:hover .permalink,h5:hover .permalink{opacity:1}h1{font-family:'Raleway',Helvetica,sans-serif;font-size:36px;font-weight:500}h2{font-family:'Raleway',Helvetica,sans-serif;font-size:30px;font-weight:500}h3{font-size:100%;text-transform:uppercase}h5{font-size:100%;font-weight:normal}p{margin:0 0 10px}p.choices{line-height:1.6}a{color:#18bc9c;text-decoration:none}li p{margin:0}dl dt{float:left;width:160px;clear:left;text-align:right;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:700}dl dd{margin-left:180px}blockquote{font-size:17.5px;padding:10px 20px;margin:12px 0;border-left:5px solid #e8e8e8}blockquote p:last-child{margin-bottom:0}pre{background-color:#f5f5f5;padding:12px;border:1px solid #cfcfcf;border-radius:6px}pre code{background-color:transparent;border:none}code{color:#444;background-color:#ddd;font-family:'Inconsolata',monospace;padding:1px 4px;border:1px solid #cfcfcf;border-radius:3px}nav{position:fixed;top:24px;bottom:0;overflow-y:auto}nav .heading a{display:block;color:black;opacity:.7;border-left:2px solid transparent}nav .heading a:hover{border-left:2px solid black}nav ul{list-style-type:none;padding-left:0}nav ul a{display:block;font-size:13px;color:black;opacity:.7;padding:8px 12px;border-top:1px solid #ededed;border-left:2px solid transparent}nav ul a:hover{border-left:2px solid black}nav ul>li{margin:0 -12px}nav ul>li:first-child{margin-top:-12px}nav ul>li:last-child{margin-bottom:-24px}nav ul ul a{padding-left:24px}nav ul ul li{margin:0}nav ul ul li:first-child{margin-top:0}nav ul ul li:last-child{margin-bottom:0}nav>div>ul>li:first-child>a{border-top:none}.preload *{transition:none !important}.pull-left{float:left}.pull-right{float:right}.badge{display:inline-block;float:right;min-width:10px;min-height:14px;padding:3px 7px;font-size:12px;color:#000;background-color:#ededed;border-radius:10px;margin-top:-2px}.badge.get{color:#fff;background-color:#3498db}.badge.put{color:#fff;background-color:#f39c12}.badge.post{color:#fff;background-color:#18bc9c}.badge.delete{color:#fff;background-color:#e74c3c}.collapse-button{float:right}.collapse-button .close{display:none;color:#18bc9c;cursor:pointer}.collapse-button .open{color:#18bc9c;cursor:pointer}.collapse-button.show .close{display:inline}.collapse-button.show .open{display:none}.collapse-content{max-height:0;overflow:hidden;transition:max-height .3s ease-in-out}nav{width:220px}.container{max-width:940px;margin-left:auto;margin-right:auto}.container .row .content{margin-left:244px;width:696px}.container .row:after{content:'';display:block;clear:both}.container-fluid nav{width:22%}.container-fluid .row .content{margin-left:24%;width:76%}@media (max-width:1200px){nav{width:220px}.container{max-width:770px}.container .row .content{margin-left:244px;width:526px}}@media (max-width:992px){nav{width:170px}.container{max-width:720px}.container .row .content{margin-left:194px;width:526px}}@media (max-width:768px){nav{display:none}.container{width:95%;max-width:none}.container .row .content,.container-fluid .row .content{margin-left:auto;margin-right:auto;width:95%}}.back-to-top{position:fixed;z-index:1;bottom:0;right:24px;padding:4px 8px;color:rgba(0,0,0,0.5);background-color:#ededed;text-decoration:none !important;border-top:1px solid #ededed;border-left:1px solid #ededed;border-right:1px solid #ededed;border-top-left-radius:3px;border-top-right-radius:3px}.resource-group{padding:12px;margin-bottom:12px;border:1px solid #ededed;border-radius:6px}.resource-group h2,.resource-group .heading a{padding:12px;margin:-12px -12px 12px -12px;background-color:#ededed;border-bottom:1px solid #ededed;border-top-left-radius:6px;border-top-right-radius:6px;white-space:nowrap;text-overflow:ellipsis;overflow:hidden}.action{margin-bottom:12px;padding:12px 12px 0 12px;overflow:hidden;border:1px solid transparent;border-radius:6px}.action h4{padding:12px;margin:-12px -12px 12px -12px;border-bottom:1px solid transparent;border-top-left-radius:6px;border-top-right-radius:6px;white-space:nowrap;text-overflow:ellipsis;overflow:hidden}.action h4 .name{float:right;font-weight:normal}.action h4 .method{padding:6px 12px;margin-right:12px;border-radius:3px}.action h4 .method.get{color:#000;background-color:white}.action h4 .method.put{color:#000;background-color:white}.action h4 .method.post{color:#000;background-color:white}.action h4 .method.delete{color:#000;background-color:white}.action h4 code{color:#444;background-color:rgba(255,255,255,0.7);border-color:transparent}.action .title{border-bottom:1px solid #ededed;margin:0 -12px -1px -12px;padding:12px}.action.get{border-color:#3498db}.action.get h4{color:white;background:#3498db;border-bottom-color:#3498db}.action.post{border-color:#18bc9c}.action.post h4{color:white;background:#18bc9c;border-bottom-color:#18bc9c}.action.put{border-color:#f39c12}.action.put h4{color:white;background:#f39c12;border-bottom-color:#f39c12}.action.delete{border-color:#e74c3c}.action.delete h4{color:white;background:#e74c3c;border-bottom-color:#e74c3c}</style></head><body class="preload"><a href="#top" class="text-muted back-to-top"><i class="fa fa-toggle-up"></i>&nbsp;Back to top</a><div class="container"><div class="row"><nav><div class="resource-group"><div class="heading"><a href="#authentication">Authentication</a></div><ul><li><a href="#authentication-access-tokens-post">Access Tokens<span class="badge post"><i class="fa fa-plus"></i></span></a></li></ul></div><div class="resource-group"><div class="heading"><a href="#users">Users</a></div><ul><li><a href="#users-user">User</a><ul><li><a href="#users-user-post">Register a New User<span class="badge post"><i class="fa fa-plus"></i></span></a></li><li><a href="#users-user-get">View User Info<span class="badge get"><i class="fa fa-arrow-down"></i></span></a></li><li><a href="#users-user-put">Change User Info<span class="badge put"><i class="fa fa-pencil"></i></span></a></li><li><a href="#users-user-delete">Delete User<span class="badge delete"><i class="fa fa-times"></i></span></a></li></ul></li></ul></div><div class="resource-group"><div class="heading"><a href="#patients">Patients</a></div><ul><li><a href="#patients-user's-patients">User's Patients</a><ul><li><a href="#patients-user's-patients-post">Create new Patient<span class="badge post"><i class="fa fa-plus"></i></span></a></li><li><a href="#patients-user's-patients-get">List Patients<span class="badge get"><i class="fa fa-arrow-down"></i></span></a></li></ul></li><li><a href="#patients-patient">Patient</a><ul><li><a href="#patients-patient-get">View Patient Info<span class="badge get"><i class="fa fa-arrow-down"></i></span></a></li><li><a href="#patients-patient-put">Update Patient Info<span class="badge put"><i class="fa fa-pencil"></i></span></a></li><li><a href="#patients-patient-delete">Delete Patient<span class="badge delete"><i class="fa fa-times"></i></span></a></li></ul></li><li><a href="#patients-patient's-avatar">Patient's Avatar</a><ul><li><a href="#patients-patient's-avatar-get">View Patient Avatar<span class="badge get"><i class="fa fa-arrow-down"></i></span></a></li><li><a href="#patients-patient's-avatar-post">Upload Patient Avatar<span class="badge post"><i class="fa fa-plus"></i></span></a></li></ul></li><li><a href="#patients-patient's-shared-users">Patient's Shared Users</a><ul><li><a href="#patients-patient's-shared-users-post">Share with a User<span class="badge post"><i class="fa fa-plus"></i></span></a></li><li><a href="#patients-patient's-shared-users-get">List all Shared Users<span class="badge get"><i class="fa fa-arrow-down"></i></span></a></li></ul></li><li><a href="#patients-shared-user">Shared User</a><ul><li><a href="#patients-shared-user-put">Update Access Level<span class="badge put"><i class="fa fa-pencil"></i></span></a></li><li><a href="#patients-shared-user-delete">Stop Sharing with User<span class="badge delete"><i class="fa fa-times"></i></span></a></li></ul></li></ul></div><div class="resource-group"><div class="heading"><a href="#habits">Habits</a></div><ul><li><a href="#habits-patient-habits">Patient Habits</a><ul><li><a href="#habits-patient-habits-get">Get Patient Habits<span class="badge get"><i class="fa fa-arrow-down"></i></span></a></li><li><a href="#habits-patient-habits-put">Set Patient Habits<span class="badge put"><i class="fa fa-pencil"></i></span></a></li></ul></li></ul></div><div class="resource-group"><div class="heading"><a href="#journal-entries">Journal Entries</a></div><ul><li><a href="#journal-entries-journal-entries">Journal Entries</a><ul><li><a href="#journal-entries-journal-entries-post">Create an Entry<span class="badge post"><i class="fa fa-plus"></i></span></a></li><li><a href="#journal-entries-journal-entries-get">Retrieve all Entries<span class="badge get"><i class="fa fa-arrow-down"></i></span></a></li></ul></li><li><a href="#journal-entries-journal-entry">Journal Entry</a><ul><li><a href="#journal-entries-journal-entry-get">Retrieve One Entry<span class="badge get"><i class="fa fa-arrow-down"></i></span></a></li><li><a href="#journal-entries-journal-entry-put">Change an Entry<span class="badge put"><i class="fa fa-pencil"></i></span></a></li><li><a href="#journal-entries-journal-entry-delete">Delete an Entry<span class="badge delete"><i class="fa fa-times"></i></span></a></li></ul></li></ul></div><div class="resource-group"><div class="heading"><a href="#doctors">Doctors</a></div><ul><li><a href="#doctors-doctors-collection">Doctors Collection</a><ul><li><a href="#doctors-doctors-collection-post">Create a Doctor<span class="badge post"><i class="fa fa-plus"></i></span></a></li><li><a href="#doctors-doctors-collection-get">Retrieve all Doctors<span class="badge get"><i class="fa fa-arrow-down"></i></span></a></li></ul></li><li><a href="#doctors-doctor">Doctor</a><ul><li><a href="#doctors-doctor-get">Retrieve a Doctor<span class="badge get"><i class="fa fa-arrow-down"></i></span></a></li><li><a href="#doctors-doctor-put">Change a Doctor's Info<span class="badge put"><i class="fa fa-pencil"></i></span></a></li><li><a href="#doctors-doctor-delete">Delete a Doctor<span class="badge delete"><i class="fa fa-times"></i></span></a></li></ul></li></ul></div><div class="resource-group"><div class="heading"><a href="#pharmacies">Pharmacies</a></div><ul><li><a href="#pharmacies-pharmacies-collection">Pharmacies Collection</a><ul><li><a href="#pharmacies-pharmacies-collection-post">Create a Pharmacy<span class="badge post"><i class="fa fa-plus"></i></span></a></li><li><a href="#pharmacies-pharmacies-collection-get">Retrieve all Pharmacies<span class="badge get"><i class="fa fa-arrow-down"></i></span></a></li></ul></li><li><a href="#pharmacies-pharmacy">Pharmacy</a><ul><li><a href="#pharmacies-pharmacy-get">Retrieve a Pharmacy<span class="badge get"><i class="fa fa-arrow-down"></i></span></a></li><li><a href="#pharmacies-pharmacy-put">Change a Pharmacy's Info<span class="badge put"><i class="fa fa-pencil"></i></span></a></li><li><a href="#pharmacies-pharmacy-delete">Delete a Pharmacy<span class="badge delete"><i class="fa fa-times"></i></span></a></li></ul></li></ul></div><div class="resource-group"><div class="heading"><a href="#medications">Medications</a></div><ul><li><a href="#medications-medications-collection">Medications Collection</a><ul><li><a href="#medications-medications-collection-post">Create a new Medication<span class="badge post"><i class="fa fa-plus"></i></span></a></li><li><a href="#medications-medications-collection-get">Retrieve all Medications<span class="badge get"><i class="fa fa-arrow-down"></i></span></a></li></ul></li><li><a href="#medications-medication">Medication</a><ul><li><a href="#medications-medication-get">Retrieve a Medication<span class="badge get"><i class="fa fa-arrow-down"></i></span></a></li><li><a href="#medications-medication-put">Change a Med's Info<span class="badge put"><i class="fa fa-pencil"></i></span></a></li><li><a href="#medications-medication-delete">Delete a Medication<span class="badge delete"><i class="fa fa-times"></i></span></a></li></ul></li></ul></div><div class="resource-group"><div class="heading"><a href="#dose-events">Dose Events</a></div><ul><li><a href="#dose-events-dose-events-collection">Dose Events Collection</a><ul><li><a href="#dose-events-dose-events-collection-post">Create an Event<span class="badge post"><i class="fa fa-plus"></i></span></a></li><li><a href="#dose-events-dose-events-collection-get">Retrieve all Adherences<span class="badge get"><i class="fa fa-arrow-down"></i></span></a></li></ul></li><li><a href="#dose-events-adherence-event">Adherence Event</a><ul><li><a href="#dose-events-adherence-event-get">Retrieve One Adherence<span class="badge get"><i class="fa fa-arrow-down"></i></span></a></li><li><a href="#dose-events-adherence-event-put">Change an Event<span class="badge put"><i class="fa fa-pencil"></i></span></a></li><li><a href="#dose-events-adherence-event-delete">Delete an Event<span class="badge delete"><i class="fa fa-times"></i></span></a></li></ul></li></ul></div><div class="resource-group"><div class="heading"><a href="#schedule">Schedule</a></div><ul><li><a href="#schedule-schedule-get">Schedule<span class="badge get"><i class="fa fa-arrow-down"></i></span></a></li></ul></div></nav><div class="content"><header><h1 id="top">API Documentation</h1></header><style>
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>API Documentation</title><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css"><style>@import url(http://fonts.googleapis.com/css?family=Roboto:400,700|Inconsolata|Raleway:200);.hljs-comment,.hljs-title{color:#8e908c}.hljs-variable,.hljs-attribute,.hljs-tag,.hljs-regexp,.ruby .hljs-constant,.xml .hljs-tag .hljs-title,.xml .hljs-pi,.xml .hljs-doctype,.html .hljs-doctype,.css .hljs-id,.css .hljs-class,.css .hljs-pseudo{color:#c82829}.hljs-number,.hljs-preprocessor,.hljs-pragma,.hljs-built_in,.hljs-literal,.hljs-params,.hljs-constant{color:#f5871f}.ruby .hljs-class .hljs-title,.css .hljs-rules .hljs-attribute{color:#eab700}.hljs-string,.hljs-value,.hljs-inheritance,.hljs-header,.ruby .hljs-symbol,.xml .hljs-cdata{color:#718c00}.css .hljs-hexcolor{color:#3e999f}.hljs-function,.python .hljs-decorator,.python .hljs-title,.ruby .hljs-function .hljs-title,.ruby .hljs-title .hljs-keyword,.perl .hljs-sub,.javascript .hljs-title,.coffeescript .hljs-title{color:#4271ae}.hljs-keyword,.javascript .hljs-function{color:#8959a8}.hljs{display:block;background:white;color:#4d4d4c;padding:.5em}.coffeescript .javascript,.javascript .xml,.tex .hljs-formula,.xml .javascript,.xml .vbscript,.xml .css,.xml .hljs-cdata{opacity:.5}.hljs-comment,.hljs-title{color:#8e908c}.hljs-variable,.hljs-attribute,.hljs-tag,.hljs-regexp,.ruby .hljs-constant,.xml .hljs-tag .hljs-title,.xml .hljs-pi,.xml .hljs-doctype,.html .hljs-doctype,.css .hljs-id,.css .hljs-class,.css .hljs-pseudo{color:#c82829}.hljs-number,.hljs-preprocessor,.hljs-pragma,.hljs-built_in,.hljs-literal,.hljs-params,.hljs-constant{color:#f5871f}.ruby .hljs-class .hljs-title,.css .hljs-rules .hljs-attribute{color:#eab700}.hljs-string,.hljs-value,.hljs-inheritance,.hljs-header,.ruby .hljs-symbol,.xml .hljs-cdata{color:#718c00}.css .hljs-hexcolor{color:#3e999f}.hljs-function,.python .hljs-decorator,.python .hljs-title,.ruby .hljs-function .hljs-title,.ruby .hljs-title .hljs-keyword,.perl .hljs-sub,.javascript .hljs-title,.coffeescript .hljs-title{color:#4271ae}.hljs-keyword,.javascript .hljs-function{color:#8959a8}.hljs{display:block;background:white;color:#4d4d4c;padding:.5em}.coffeescript .javascript,.javascript .xml,.tex .hljs-formula,.xml .javascript,.xml .vbscript,.xml .css,.xml .hljs-cdata{opacity:.5}body{color:black;background:white;font-family:'Roboto',Helvetica,sans-serif;font-size:14px;line-height:1.42}header{border-bottom:1px solid #ededed;margin-bottom:12px}h1,h2,h3,h4,h5{margin:12px 0}h1 .permalink,h2 .permalink,h3 .permalink,h4 .permalink,h5 .permalink{margin-left:6px;opacity:0;transition:opacity .25s ease}h1:hover .permalink,h2:hover .permalink,h3:hover .permalink,h4:hover .permalink,h5:hover .permalink{opacity:1}h1{font-family:'Raleway',Helvetica,sans-serif;font-size:36px;font-weight:500}h2{font-family:'Raleway',Helvetica,sans-serif;font-size:30px;font-weight:500}h3{font-size:100%;text-transform:uppercase}h5{font-size:100%;font-weight:normal}p{margin:0 0 10px}p.choices{line-height:1.6}a{color:#18bc9c;text-decoration:none}li p{margin:0}dl dt{float:left;width:160px;clear:left;text-align:right;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:700}dl dd{margin-left:180px}blockquote{font-size:17.5px;padding:10px 20px;margin:12px 0;border-left:5px solid #e8e8e8}blockquote p:last-child{margin-bottom:0}pre{background-color:#f5f5f5;padding:12px;border:1px solid #cfcfcf;border-radius:6px}pre code{background-color:transparent;border:none}code{color:#444;background-color:#ddd;font-family:'Inconsolata',monospace;padding:1px 4px;border:1px solid #cfcfcf;border-radius:3px}nav{position:fixed;top:24px;bottom:0;overflow-y:auto}nav .heading a{display:block;color:black;opacity:.7;border-left:2px solid transparent}nav .heading a:hover{border-left:2px solid black}nav ul{list-style-type:none;padding-left:0}nav ul a{display:block;font-size:13px;color:black;opacity:.7;padding:8px 12px;border-top:1px solid #ededed;border-left:2px solid transparent}nav ul a:hover{border-left:2px solid black}nav ul>li{margin:0 -12px}nav ul>li:first-child{margin-top:-12px}nav ul>li:last-child{margin-bottom:-24px}nav ul ul a{padding-left:24px}nav ul ul li{margin:0}nav ul ul li:first-child{margin-top:0}nav ul ul li:last-child{margin-bottom:0}nav>div>ul>li:first-child>a{border-top:none}.preload *{transition:none !important}.pull-left{float:left}.pull-right{float:right}.badge{display:inline-block;float:right;min-width:10px;min-height:14px;padding:3px 7px;font-size:12px;color:#000;background-color:#ededed;border-radius:10px;margin-top:-2px}.badge.get{color:#fff;background-color:#3498db}.badge.put{color:#fff;background-color:#f39c12}.badge.post{color:#fff;background-color:#18bc9c}.badge.delete{color:#fff;background-color:#e74c3c}.collapse-button{float:right}.collapse-button .close{display:none;color:#18bc9c;cursor:pointer}.collapse-button .open{color:#18bc9c;cursor:pointer}.collapse-button.show .close{display:inline}.collapse-button.show .open{display:none}.collapse-content{max-height:0;overflow:hidden;transition:max-height .3s ease-in-out}nav{width:220px}.container{max-width:940px;margin-left:auto;margin-right:auto}.container .row .content{margin-left:244px;width:696px}.container .row:after{content:'';display:block;clear:both}.container-fluid nav{width:22%}.container-fluid .row .content{margin-left:24%;width:76%}@media (max-width:1200px){nav{width:220px}.container{max-width:770px}.container .row .content{margin-left:244px;width:526px}}@media (max-width:992px){nav{width:170px}.container{max-width:720px}.container .row .content{margin-left:194px;width:526px}}@media (max-width:768px){nav{display:none}.container{width:95%;max-width:none}.container .row .content,.container-fluid .row .content{margin-left:auto;margin-right:auto;width:95%}}.back-to-top{position:fixed;z-index:1;bottom:0;right:24px;padding:4px 8px;color:rgba(0,0,0,0.5);background-color:#ededed;text-decoration:none !important;border-top:1px solid #ededed;border-left:1px solid #ededed;border-right:1px solid #ededed;border-top-left-radius:3px;border-top-right-radius:3px}.resource-group{padding:12px;margin-bottom:12px;border:1px solid #ededed;border-radius:6px}.resource-group h2,.resource-group .heading a{padding:12px;margin:-12px -12px 12px -12px;background-color:#ededed;border-bottom:1px solid #ededed;border-top-left-radius:6px;border-top-right-radius:6px;white-space:nowrap;text-overflow:ellipsis;overflow:hidden}.action{margin-bottom:12px;padding:12px 12px 0 12px;overflow:hidden;border:1px solid transparent;border-radius:6px}.action h4{padding:12px;margin:-12px -12px 12px -12px;border-bottom:1px solid transparent;border-top-left-radius:6px;border-top-right-radius:6px;white-space:nowrap;text-overflow:ellipsis;overflow:hidden}.action h4 .name{float:right;font-weight:normal}.action h4 .method{padding:6px 12px;margin-right:12px;border-radius:3px}.action h4 .method.get{color:#000;background-color:white}.action h4 .method.put{color:#000;background-color:white}.action h4 .method.post{color:#000;background-color:white}.action h4 .method.delete{color:#000;background-color:white}.action h4 code{color:#444;background-color:rgba(255,255,255,0.7);border-color:transparent}.action .title{border-bottom:1px solid #ededed;margin:0 -12px -1px -12px;padding:12px}.action.get{border-color:#3498db}.action.get h4{color:white;background:#3498db;border-bottom-color:#3498db}.action.post{border-color:#18bc9c}.action.post h4{color:white;background:#18bc9c;border-bottom-color:#18bc9c}.action.put{border-color:#f39c12}.action.put h4{color:white;background:#f39c12;border-bottom-color:#f39c12}.action.delete{border-color:#e74c3c}.action.delete h4{color:white;background:#e74c3c;border-bottom-color:#e74c3c}</style></head><body class="preload"><a href="#top" class="text-muted back-to-top"><i class="fa fa-toggle-up"></i>&nbsp;Back to top</a><div class="container"><div class="row"><nav><div class="resource-group"><div class="heading"><a href="#authentication">Authentication</a></div><ul><li><a href="#authentication-access-tokens-post">Access Tokens<span class="badge post"><i class="fa fa-plus"></i></span></a></li></ul></div><div class="resource-group"><div class="heading"><a href="#users">Users</a></div><ul><li><a href="#users-user">User</a><ul><li><a href="#users-user-post">Register a New User<span class="badge post"><i class="fa fa-plus"></i></span></a></li><li><a href="#users-user-get">View User Info<span class="badge get"><i class="fa fa-arrow-down"></i></span></a></li><li><a href="#users-user-put">Change User Info<span class="badge put"><i class="fa fa-pencil"></i></span></a></li><li><a href="#users-user-delete">Delete User<span class="badge delete"><i class="fa fa-times"></i></span></a></li></ul></li></ul></div><div class="resource-group"><div class="heading"><a href="#patients">Patients</a></div><ul><li><a href="#patients-user's-patients">User's Patients</a><ul><li><a href="#patients-user's-patients-post">Create new Patient<span class="badge post"><i class="fa fa-plus"></i></span></a></li><li><a href="#patients-user's-patients-get">List Patients<span class="badge get"><i class="fa fa-arrow-down"></i></span></a></li></ul></li><li><a href="#patients-patient">Patient</a><ul><li><a href="#patients-patient-get">View Patient Info<span class="badge get"><i class="fa fa-arrow-down"></i></span></a></li><li><a href="#patients-patient-put">Update Patient Info<span class="badge put"><i class="fa fa-pencil"></i></span></a></li><li><a href="#patients-patient-delete">Delete Patient<span class="badge delete"><i class="fa fa-times"></i></span></a></li></ul></li><li><a href="#patients-patient's-avatar">Patient's Avatar</a><ul><li><a href="#patients-patient's-avatar-get">View Patient Avatar<span class="badge get"><i class="fa fa-arrow-down"></i></span></a></li><li><a href="#patients-patient's-avatar-post">Upload Patient Avatar<span class="badge post"><i class="fa fa-plus"></i></span></a></li></ul></li><li><a href="#patients-patient's-shared-users">Patient's Shared Users</a><ul><li><a href="#patients-patient's-shared-users-post">Share with a User<span class="badge post"><i class="fa fa-plus"></i></span></a></li><li><a href="#patients-patient's-shared-users-get">List all Shared Users<span class="badge get"><i class="fa fa-arrow-down"></i></span></a></li></ul></li><li><a href="#patients-shared-user">Shared User</a><ul><li><a href="#patients-shared-user-put">Update Access Level<span class="badge put"><i class="fa fa-pencil"></i></span></a></li><li><a href="#patients-shared-user-delete">Stop Sharing with User<span class="badge delete"><i class="fa fa-times"></i></span></a></li></ul></li></ul></div><div class="resource-group"><div class="heading"><a href="#habits">Habits</a></div><ul><li><a href="#habits-patient-habits">Patient Habits</a><ul><li><a href="#habits-patient-habits-get">Get Patient Habits<span class="badge get"><i class="fa fa-arrow-down"></i></span></a></li><li><a href="#habits-patient-habits-put">Set Patient Habits<span class="badge put"><i class="fa fa-pencil"></i></span></a></li></ul></li></ul></div><div class="resource-group"><div class="heading"><a href="#journal-entries">Journal Entries</a></div><ul><li><a href="#journal-entries-journal-entries">Journal Entries</a><ul><li><a href="#journal-entries-journal-entries-post">Create an Entry<span class="badge post"><i class="fa fa-plus"></i></span></a></li><li><a href="#journal-entries-journal-entries-get">Retrieve all Entries<span class="badge get"><i class="fa fa-arrow-down"></i></span></a></li></ul></li><li><a href="#journal-entries-journal-entry">Journal Entry</a><ul><li><a href="#journal-entries-journal-entry-get">Retrieve One Entry<span class="badge get"><i class="fa fa-arrow-down"></i></span></a></li><li><a href="#journal-entries-journal-entry-put">Change an Entry<span class="badge put"><i class="fa fa-pencil"></i></span></a></li><li><a href="#journal-entries-journal-entry-delete">Delete an Entry<span class="badge delete"><i class="fa fa-times"></i></span></a></li></ul></li></ul></div><div class="resource-group"><div class="heading"><a href="#doctors">Doctors</a></div><ul><li><a href="#doctors-doctors-collection">Doctors Collection</a><ul><li><a href="#doctors-doctors-collection-post">Create a Doctor<span class="badge post"><i class="fa fa-plus"></i></span></a></li><li><a href="#doctors-doctors-collection-get">Retrieve all Doctors<span class="badge get"><i class="fa fa-arrow-down"></i></span></a></li></ul></li><li><a href="#doctors-doctor">Doctor</a><ul><li><a href="#doctors-doctor-get">Retrieve a Doctor<span class="badge get"><i class="fa fa-arrow-down"></i></span></a></li><li><a href="#doctors-doctor-put">Change a Doctor's Info<span class="badge put"><i class="fa fa-pencil"></i></span></a></li><li><a href="#doctors-doctor-delete">Delete a Doctor<span class="badge delete"><i class="fa fa-times"></i></span></a></li></ul></li></ul></div><div class="resource-group"><div class="heading"><a href="#pharmacies">Pharmacies</a></div><ul><li><a href="#pharmacies-pharmacies-collection">Pharmacies Collection</a><ul><li><a href="#pharmacies-pharmacies-collection-post">Create a Pharmacy<span class="badge post"><i class="fa fa-plus"></i></span></a></li><li><a href="#pharmacies-pharmacies-collection-get">Retrieve all Pharmacies<span class="badge get"><i class="fa fa-arrow-down"></i></span></a></li></ul></li><li><a href="#pharmacies-pharmacy">Pharmacy</a><ul><li><a href="#pharmacies-pharmacy-get">Retrieve a Pharmacy<span class="badge get"><i class="fa fa-arrow-down"></i></span></a></li><li><a href="#pharmacies-pharmacy-put">Change a Pharmacy's Info<span class="badge put"><i class="fa fa-pencil"></i></span></a></li><li><a href="#pharmacies-pharmacy-delete">Delete a Pharmacy<span class="badge delete"><i class="fa fa-times"></i></span></a></li></ul></li></ul></div><div class="resource-group"><div class="heading"><a href="#medications">Medications</a></div><ul><li><a href="#medications-medications-collection">Medications Collection</a><ul><li><a href="#medications-medications-collection-post">Create a new Medication<span class="badge post"><i class="fa fa-plus"></i></span></a></li><li><a href="#medications-medications-collection-get">Retrieve all Medications<span class="badge get"><i class="fa fa-arrow-down"></i></span></a></li></ul></li><li><a href="#medications-medication">Medication</a><ul><li><a href="#medications-medication-get">Retrieve a Medication<span class="badge get"><i class="fa fa-arrow-down"></i></span></a></li><li><a href="#medications-medication-put">Change a Med's Info<span class="badge put"><i class="fa fa-pencil"></i></span></a></li><li><a href="#medications-medication-delete">Delete a Medication<span class="badge delete"><i class="fa fa-times"></i></span></a></li></ul></li></ul></div><div class="resource-group"><div class="heading"><a href="#dose-events">Dose Events</a></div><ul><li><a href="#dose-events-dose-events-collection">Dose Events Collection</a><ul><li><a href="#dose-events-dose-events-collection-post">Create an Event<span class="badge post"><i class="fa fa-plus"></i></span></a></li><li><a href="#dose-events-dose-events-collection-get">Retrieve all Doses<span class="badge get"><i class="fa fa-arrow-down"></i></span></a></li></ul></li><li><a href="#dose-events-dose-event">Dose Event</a><ul><li><a href="#dose-events-dose-event-get">Retrieve One Event<span class="badge get"><i class="fa fa-arrow-down"></i></span></a></li><li><a href="#dose-events-dose-event-put">Change an Event<span class="badge put"><i class="fa fa-pencil"></i></span></a></li><li><a href="#dose-events-dose-event-delete">Delete an Event<span class="badge delete"><i class="fa fa-times"></i></span></a></li></ul></li></ul></div><div class="resource-group"><div class="heading"><a href="#schedule">Schedule</a></div><ul><li><a href="#schedule-schedule-get">Schedule<span class="badge get"><i class="fa fa-arrow-down"></i></span></a></li></ul></div></nav><div class="content"><header><h1 id="top">API Documentation</h1></header><style>
     /* wrap code in pre blocks courtesy https://longren.io/wrapping-text-inside-pre-tags/ */
     pre {
         white-space: pre-wrap;       /* CSS 3 */
@@ -15,7 +15,11 @@ HOST: <a href="http://orange.amida-tech.com">http://orange.amida-tech.com</a></p
 backend, primarily allowing sharing between patients and caregivers.</p>
 <p>All API endpoints must be prefixed with a version number: for example,
 <code>/v1/auth/token</code> not just <code>/auth/token</code>. Currently <code>v1</code> is the only API version.</p>
-<p>All data should be sent JSON-encoded, and all responses are returned in JSON.</p>
+<p>All data should be sent JSON-encoded, and all responses are returned in JSON.
+Generally speaking, <code>null</code> should be sent to denote an optional field not being
+present (so, for example, sending <code>null</code> to a <code>PUT</code> update request will remove the
+field from the instance’s data, but just leaving out that field in the request
+will leave the field as is in the data).</p>
 <p>Throughout this document, we make the distinction between a user and a patient.
 A user is an email/password pair, used to sign into the app, authenticate with the API,
 and so on. A patient is someone we hold medication/adherence/etc data for. There is
@@ -90,7 +94,7 @@ access token does not expire until the user changes password.</strong></p>
     access_token: <span class="hljs-string">"abcdefgh123456789"</span>,
     success: <span class="hljs-literal">true</span>
 }
-</code></pre><div style="height: 1px;"></div></div></div></div></div></section><section id="users" class="resource-group"><h2>Users<a href="#users" class="permalink"><i class="fa fa-link"></i></a></h2><div id="users-user" class="resource"><h3>User<a href="#users-user" class="permalink"><i class="fa fa-link"></i></a></h3><div id="users-user-post" class="action post"><h4><div class="name">Register a New User</div><a href="#users-user-post" class="method post">POST</a><code class="uri">/user</code></h4><p>Register a new user.</p>
+</code></pre><div style="height: 1px;"></div></div></div></div></div></section><section id="users" class="resource-group"><h2>Users<a href="#users" class="permalink"><i class="fa fa-link"></i></a></h2><div id="users-user" class="resource"><h3>User<a href="#users-user" class="permalink"><i class="fa fa-link"></i></a></h3><div id="users-user-post" class="action post"><h4><div class="name">Register a New User</div><a href="#users-user-post" class="method post">POST</a><code class="uri">/user</code></h4><p>Register a new user, and create a new patient for them as well.</p>
 <div class="title"><strong>Parameters</strong><div class="collapse-button show"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><dl class="inner"><dt>email</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>The email address of the new user. Validated to make sure it’s a valid
 email address.</p>
 </dd><dt>password</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>the password of the new user</p>
@@ -160,8 +164,8 @@ header</p>
     success: <span class="hljs-literal">true</span>
 }
 </code></pre><div style="height: 1px;"></div></div></div></div><div id="users-user-delete" class="action delete"><h4><div class="name">Delete User</div><a href="#users-user-delete" class="method delete">DELETE</a><code class="uri">/user</code></h4><p>Permanently remove the user, including all metadata stored on them (e.g., their password).
-If the user has write access to patients that no other users have access to, then that
-patient and all their data (doctors/pharmacies/medications/etc) will also be deleted.</p>
+Patients accessible only to this user will be deleted, but patients viewable by other users
+will not be deleted.</p>
 <div class="title"><strong>Request</strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><h5>Headers</h5><pre><code><span class="hljs-attribute">Authorization</span>: <span class="hljs-string">Bearer ACCESS_TOKEN</span><br></code></pre><div style="height: 1px;"></div></div></div><div class="title"><strong>Response&nbsp;&nbsp;<code>200</code></strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><div class="description"><p>Errors</p>
 <ul>
 <li>
@@ -180,12 +184,35 @@ header</p>
 </code></pre><div style="height: 1px;"></div></div></div></div></div></section><section id="patients" class="resource-group"><h2>Patients<a href="#patients" class="permalink"><i class="fa fa-link"></i></a></h2><p>Remember, patients are the resources for which we actually store medication/etc
 data, rather than users (and we have a many to many association between patients
 and users).</p>
-<p>There are two types of access a user can have to a patient: read-write (write) and read-only.
-Read-write gives a user full access to everything, even allowing them to delete the
-patient and change who the patient is shared with.</p>
-<p>Each patient returned by the API has an <code>avatar</code> field containing the URL of that patient’s
-avatar (image) endpoint. As documented below, <code>GET</code>ting this URL returns the user’s avatar
-(initially a default image) and <code>POST</code>ing to this URL with raw image data sets the avatar
+<p>When a user is created, a corresponding patient for them is also created. The user can then
+optionally create more patients for e.g., children dependents.</p>
+<p>Patients can then be shared with other users. There are three levels of sharing: <em>family prime</em>
+(<code>prime</code>), <em>family</em> (<code>family</code>) and <em>anyone</em> (<code>anyone</code>). <em>Family prime</em> is intended to represent
+family extremely close to the patient (e.g., parents) who should have access to almost everything,
+<em>family</em> is intended for wider family of the patient, and <em>anyone</em> is intended for everyone else
+(e.g., doctors).</p>
+<p>At the patient level, a user’s access to data is determined by which one of the above three groups
+they’re a member of. A patient can set global <em>read</em> (<code>read</code>) or <em>read-write</em> (<code>write</code>) permissions
+for each of the three share categories, as well as an additional overriding <em>read</em>/<em>write</em> permission
+for each user the patient is shared with (so each share has either <code>read</code>, <code>write</code> or <code>default</code>
+permissions).</p>
+<p>In a patient response object, <code>access_anyone</code>, <code>access_family</code> and <code>access_prime</code> represent the permissions
+of the <em>anyone</em>/<em>family</em>/<em>family prime</em> share user groups respectively. The <code>access</code> field denotes
+the current user’s access to the patient, and will always be either <code>read</code> or <code>write</code> (if it is set
+to <code>default</code>, it will be changed to the relevant value; this is <strong>not</strong> true of the
+<code>/patients/:id/share/</code> endpoints).</p>
+<p>These generic permissions control access to most of a patient’s resources, but medications, journal
+entries, doses and schedules are slightly more complicated. As described in the medications section, each
+medication has its own additional set of access controls. For each of their medications, the patient
+can explicitly set the access level of <em>family prime</em>, <em>family</em> and <em>anyone</em>. This then controls access
+to that medication, any journal entries tagged with that medication, any schedule events for that
+medication, and any dose events for that medication.</p>
+<p>There are three access levels that can be set for each group on this per-medication basis: <code>read</code>,
+<code>write</code> and <code>none</code>. <code>read</code> and <code>write</code> behave as they do in a patient-wide context, and <code>none</code> means
+that that user group has no access at all to the medication or it’s resources.</p>
+<p>Each patient returned by the API has an <code>avatar</code> field containing the path of that patient’s
+avatar (image) endpoint. As documented below, <code>GET</code>ting this path returns the user’s avatar
+(initially a default image) and <code>POST</code>ing to this path with raw image data sets the avatar
 to the POSTed data.</p>
 <div id="patients-user's-patients" class="resource"><h3>User's Patients<a href="#patients-user's-patients" class="permalink"><i class="fa fa-link"></i></a></h3><div id="patients-user's-patients-post" class="action post"><h4><div class="name">Create new Patient</div><a href="#patients-user's-patients-post" class="method post">POST</a><code class="uri">/patients</code></h4><p>Create a new patient, initially shared with the current user with write permissions,
 and no-one else. For example, this should be called upon initial setup of the app to
@@ -194,11 +221,20 @@ the child of the patient.</p>
 <div class="title"><strong>Parameters</strong><div class="collapse-button show"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><dl class="inner"><dt>name</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>the full human name of the patient</p>
 </dd><dt>birthdate</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>Optional date of birth of the patient, formatted as an ISO 8601 YYYY-MM-DD</p>
 </dd><dt>sex</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>String representing sex of the user. Must be “male”, “female”, “other” or “unspecified”.</p>
+</dd><dt>access_anyone</dt><dd><code>*string*</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>The default access permissions that users this patient is shared with under the <code>anyone</code>
+group should have. Must be either <code>read</code> or <code>write</code>.  Defaults to <code>read</code>.</p>
+</dd><dt>access_family</dt><dd><code>*string*</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>The default access permissions that users this patient is shared with under the <code>family</code>
+group should have. Must be either <code>read</code> or <code>write</code>.  Defaults to <code>read</code>.</p>
+</dd><dt>access_prime</dt><dd><code>*string*</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>The default access permissions that users this patient is shared with under the <code>prime</code> group
+should have. Must be either <code>read</code> or <code>write</code>.  Defaults to <code>write</code>.</p>
 </dd></dl></div><div class="title"><strong>Request</strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><h5>Headers</h5><pre><code><span class="hljs-attribute">Authorization</span>: <span class="hljs-string">Bearer ACCESS_TOKEN</span><br></code></pre><div style="height: 1px;"></div><h5>Body</h5><pre><code>{
     name: <span class="hljs-string">"Dependent Patient"</span>,
     birthdate: <span class="hljs-string">"1990-01-01"</span>,
     sex: <span class="hljs-string">"male"</span>,
-    avatar: <span class="hljs-string">"/v1/patients/1/avatar.jpg"</span>
+    avatar: <span class="hljs-string">"/v1/patients/1/avatar.jpg"</span>,
+    access_anyone: <span class="hljs-string">"read"</span>,
+    access_family: <span class="hljs-string">"read"</span>,
+    access_prime: <span class="hljs-string">"write"</span>
 }
 </code></pre><div style="height: 1px;"></div></div></div><div class="title"><strong>Response&nbsp;&nbsp;<code>201</code></strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><div class="description"><p>Errors</p>
 <ul>
@@ -219,6 +255,15 @@ the child of the patient.</p>
 <li>
 <p><code>invalid_birthdate</code> (400) - the birthdate field, if passed, must be a valid <code>YYYY-MM-DD</code> date</p>
 </li>
+<li>
+<p><code>invalid_access_anyone</code> (400) - the <code>access_anyone</code> field, if passed, must be either <code>read</code> or <code>write</code></p>
+</li>
+<li>
+<p><code>invalid_access_family</code> (400) - the <code>access_family</code> field, if passed, must be either <code>read</code> or <code>write</code></p>
+</li>
+<li>
+<p><code>invalid_access_prime</code> (400) - the <code>access_prime</code> field, if passed, must be either <code>read</code> or <code>write</code></p>
+</li>
 </ul>
 </div><h5>Body</h5><pre><code>{
     id: <span class="hljs-number">1</span>,
@@ -226,11 +271,14 @@ the child of the patient.</p>
     birthdate: <span class="hljs-string">"1990-01-01"</span>,
     sex: <span class="hljs-string">"male"</span>,
     avatar: <span class="hljs-string">"/v1/patients/1/avatar.jpg"</span>,
+    access_anyone: <span class="hljs-string">"read"</span>,
+    access_family: <span class="hljs-string">"read"</span>,
+    access_prime: <span class="hljs-string">"write"</span>,
     access: <span class="hljs-string">"write"</span>,
+    group: <span class="hljs-string">"owner"</span>,
     success: <span class="hljs-literal">true</span>
 }
-</code></pre><div style="height: 1px;"></div></div></div></div><div id="patients-user's-patients-get" class="action get"><h4><div class="name">List Patients</div><a href="#patients-user's-patients-get" class="method get">GET</a><code class="uri">/patients</code></h4><p>View a list of all patients the current user has access to: both read
-(<code>access=&quot;read&quot;</code>) and write (<code>access=&quot;write&quot;</code>).</p>
+</code></pre><div style="height: 1px;"></div></div></div></div><div id="patients-user's-patients-get" class="action get"><h4><div class="name">List Patients</div><a href="#patients-user's-patients-get" class="method get">GET</a><code class="uri">/patients</code></h4><p>View a list of all patients the current user has access to (either read or write).</p>
 <div class="title"><strong>Parameters</strong><div class="collapse-button show"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><dl class="inner"><dt>limit</dt><dd><code>integer</code>&nbsp;<span>(optional)</span>&nbsp;<p>Maximum number of results to return. Defaults to 25.</p>
 </dd><dt>offset</dt><dd><code>integer</code>&nbsp;<span>(optional)</span>&nbsp;<p>Number of initial results to ignore (used in combination with <code>limit</code>)
 for pagination. Defaults to 0.</p>
@@ -269,7 +317,11 @@ to <code>id</code>.</p>
             birthdate: <span class="hljs-string">"1990-01-01"</span>,
             sex: <span class="hljs-string">"male"</span>,
             avatar: <span class="hljs-string">"/v1/patients/1/avatar.jpg"</span>,
-            access: <span class="hljs-string">"write"</span>
+            access_anyone: <span class="hljs-string">"read"</span>,
+            access_family: <span class="hljs-string">"read"</span>,
+            access_prime: <span class="hljs-string">"write"</span>,
+            access: <span class="hljs-string">"write"</span>,
+            group: <span class="hljs-string">"owner"</span>
         },
         ...
     ],
@@ -277,8 +329,9 @@ to <code>id</code>.</p>
     success: <span class="hljs-literal">true</span>
 }
 </code></pre><div style="height: 1px;"></div></div></div></div></div><div id="patients-patient" class="resource"><h3>Patient<a href="#patients-patient" class="permalink"><i class="fa fa-link"></i></a></h3><div id="patients-patient-get" class="action get"><h4><div class="name">View Patient Info</div><a href="#patients-patient-get" class="method get">GET</a><code class="uri">/patients/{patientid}</code></h4><p>View the name of a specific patient as well as the current user’s access (<code>read</code> or
-<code>write</code>) to them. To view and modify other user’s access to this patient, see the
-<code>/patients/{id}/shared</code> endpoint.</p>
+<code>write</code>) to them, and the group the patient is shared with them through (either <code>owner</code>,
+<code>prime</code>, <code>family</code> or <code>anyone</code>). To view and modify other user’s access to this patient, see the
+<code>/patients/{id}/shares</code> endpoint.</p>
 <div class="title"><strong>Parameters</strong><div class="collapse-button show"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><dl class="inner"><dt>patientid</dt><dd><code>integer</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>unique ID of the patient (<strong>not</strong> user-specific) (<em>url</em>)</p>
 </dd></dl></div><div class="title"><strong>Request</strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><h5>Headers</h5><pre><code><span class="hljs-attribute">Authorization</span>: <span class="hljs-string">Bearer ACCESS_TOKEN</span><br></code></pre><div style="height: 1px;"></div></div></div><div class="title"><strong>Response&nbsp;&nbsp;<code>200</code></strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><div class="description"><p>Errors</p>
 <ul>
@@ -302,29 +355,42 @@ to <code>id</code>.</p>
     birthdate: <span class="hljs-string">"1990-01-01"</span>,
     sex: <span class="hljs-string">"male"</span>,
     avatar: <span class="hljs-string">"/v1/patients/1/avatar.jpg"</span>,
+    access_anyone: <span class="hljs-string">"read"</span>,
+    access_family: <span class="hljs-string">"read"</span>,
+    access_prime: <span class="hljs-string">"write"</span>,
     access: <span class="hljs-string">"write"</span>,
+    group: <span class="hljs-string">"prime"</span>,
     success: <span class="hljs-literal">true</span>
 }
-</code></pre><div style="height: 1px;"></div></div></div></div><div id="patients-patient-put" class="action put"><h4><div class="name">Update Patient Info</div><a href="#patients-patient-put" class="method put">PUT</a><code class="uri">/patients/{patientid}</code></h4><p>Update the name of a specific patient whom the user has <code>write</code> access to, as well
-as toggle the current user’s access from <code>write</code> to <code>read</code> or <code>none</code>. <strong>This switch is
-permanent</strong> so should not be undertaken lightly: it means the user will never be able to
-modify (for <code>read</code>) or even read (for <code>none</code>) any details (or medications or etc) of this
-patient again, unless another user with <code>write</code> access reshares the patient with them.</p>
-<p>If the user’s access is changed to <code>none</code> and the patient is not shared with any other
-users, then the patient and all its data <em>will be deleted</em>.</p>
+</code></pre><div style="height: 1px;"></div></div></div></div><div id="patients-patient-put" class="action put"><h4><div class="name">Update Patient Info</div><a href="#patients-patient-put" class="method put">PUT</a><code class="uri">/patients/{patientid}</code></h4><p>Update a patients’ details. This requires the user to have <code>write</code> access to the patient.
+Name, group and access level can be modified here. The access level can be modified in
+two ways: setting <code>access</code> (to <code>read</code>, <code>write</code>, <code>none</code> or <code>default</code>) will set the access level the
+current user has to the patient, and setting <code>access_prime</code>, <code>access_family</code> or <code>access_anyone</code>
+(to <code>read</code> or <code>write</code>) will set the group-wide access levels for the patient.</p>
+<p>Setting <code>access</code> to <code>none</code> will stop sharing the patient with the current user. If the
+patient is not shared with any other users, then the patient and all its data <strong>will be
+deleted</strong>.</p>
 <div class="title"><strong>Parameters</strong><div class="collapse-button show"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><dl class="inner"><dt>patientid</dt><dd><code>integer</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>unique ID of the patient (<strong>not</strong> user-specific) (<em>url</em>)</p>
 </dd><dt>name</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>new full human name of the patient</p>
 </dd><dt>birthdate</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>Optional date of birth of the patient, formatted as an ISO 8601 YYYY-MM-DD</p>
 </dd><dt>sex</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>String representing sex of the user. Must be “male”, “female”, “other” or “unspecified”.</p>
-</dd><dt>access</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>If and only if the user’s current access to the patient is <code>write</code> (which
-is needed to get something other than a 403 <code>unauthorized</code> response from this
-endpoint anyway), then <code>read</code> can be passed here to lower their access down to
-read only, or <code>none</code> to remove their access to the patient’s data at all.
-<strong>This is permanent, and should be used with extreme caution</strong>.</p>
+</dd><dt>access</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>Explicitly set the patient’s access level to <code>read</code>, <code>write</code>, <code>default</code> or <code>none</code>.
+<code>none</code> stops sharing the patient with the user. <strong>This is permanent and potentially
+irreversible, and hence should be used with caution</strong>.</p>
+</dd><dt>group</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>Change the group of the current user. If the user is the <code>owner</code>, their group cannot be changed.
+Otherwise, the group can be changed between <code>prime</code>, <code>family</code> and <code>anyone</code>.</p>
+</dd><dt>access_anyone</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>Change the access level of the <code>anyone</code> user share group. Must be either <code>read</code> or `write.</p>
+</dd><dt>access_family</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>Change the access level of the <code>family</code> user share group. Must be either <code>read</code> or `write.</p>
+</dd><dt>access_prime</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>Change the access level of the <code>prime</code> user share group. Must be either <code>read</code> or `write.</p>
 </dd></dl></div><div class="title"><strong>Request</strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><h5>Headers</h5><pre><code><span class="hljs-attribute">Authorization</span>: <span class="hljs-string">Bearer ACCESS_TOKEN</span><br></code></pre><div style="height: 1px;"></div><h5>Body</h5><pre><code>{
     name: <span class="hljs-string">"Gin Smith"</span>,
     birthdate: <span class="hljs-string">"1991-01-01"</span>,
-    sex: <span class="hljs-string">"female"</span>
+    sex: <span class="hljs-string">"female"</span>,
+    access: <span class="hljs-string">"write"</span>,
+    group: <span class="hljs-string">"family"</span>,
+    access_anyone: <span class="hljs-string">"read"</span>,
+    access_family: <span class="hljs-string">"read"</span>,
+    access_prime: <span class="hljs-string">"read"</span>
 }
 </code></pre><div style="height: 1px;"></div></div></div><div class="title"><strong>Response&nbsp;&nbsp;<code>200</code></strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><div class="description"><p>Errors</p>
 <ul>
@@ -342,14 +408,29 @@ read only, or <code>none</code> to remove their access to the patient’s data a
 <p><code>unauthorized</code> (403) - the current user does not have write access to this patient</p>
 </li>
 <li>
-<p><code>invalid_access</code> (400) - the access string is not <code>none</code> or <code>read</code></p>
-</li>
-<li>
 <p><code>invalid_sex</code> (400)</p>
 <p>the sex field, if passed, must be either <code>male</code>, <code>female</code>, <code>other</code> or <code>unspecified</code></p>
 </li>
 <li>
 <p><code>invalid_birthdate</code> (400) - the birthdate field, if passed, must be a valid <code>YYYY-MM-DD</code> date</p>
+</li>
+<li>
+<p><code>invalid_access</code> (400) - the access field, if passed, must be either <code>read</code>, <code>write</code>, <code>default</code> or <code>none</code></p>
+</li>
+<li>
+<p><code>invalid_group</code> (400) - the group field, if passed, must be either <code>prime</code>, <code>family</code> or <code>anyone</code></p>
+</li>
+<li>
+<p><code>is_owner</code> (400) - the current user owns the patient so cannot change their group from <code>owner</code></p>
+</li>
+<li>
+<p><code>invalid_access_anyone</code> (400) - the <code>access_anyone</code> field, if passed, must be either <code>read</code> or <code>write</code></p>
+</li>
+<li>
+<p><code>invalid_access_family</code> (400) - the <code>access_family</code> field, if passed, must be either <code>read</code> or <code>write</code></p>
+</li>
+<li>
+<p><code>invalid_access_prime</code> (400) - the <code>access_prime</code> field, if passed, must be either <code>read</code> or <code>write</code></p>
 </li>
 </ul>
 </div><h5>Body</h5><pre><code>{
@@ -358,12 +439,16 @@ read only, or <code>none</code> to remove their access to the patient’s data a
     birthdate: <span class="hljs-string">"1991-01-01"</span>,
     sex: <span class="hljs-string">"female"</span>,
     avatar: <span class="hljs-string">"/v1/patients/1/avatar.jpg"</span>,
+    access_anyone: <span class="hljs-string">"read"</span>,
+    access_family: <span class="hljs-string">"read"</span>,
+    access_prime: <span class="hljs-string">"read"</span>,
     access: <span class="hljs-string">"write"</span>,
+    group: <span class="hljs-string">"family"</span>,
     success: <span class="hljs-literal">true</span>
 }
-</code></pre><div style="height: 1px;"></div></div></div></div><div id="patients-patient-delete" class="action delete"><h4><div class="name">Delete Patient</div><a href="#patients-patient-delete" class="method delete">DELETE</a><code class="uri">/patients/{patientid}</code></h4><p>Remove a patient for whom the user has write access to. <strong>This permanently removes
-the patient, all of their associated habits, doctors, pharmacies, medications and dose events
-<em>for all users the patient is shared with</em></strong> and as such should be used with extreme caution.</p>
+</code></pre><div style="height: 1px;"></div></div></div></div><div id="patients-patient-delete" class="action delete"><h4><div class="name">Delete Patient</div><a href="#patients-patient-delete" class="method delete">DELETE</a><code class="uri">/patients/{patientid}</code></h4><p>Remove a patient for whom the user is the owner. <strong>This permanently removes the patient, all
+of their associated habits, doctors, pharmacies, medications and dose events <em>for all
+users the patient is shared with</em></strong> and as such should be used with extreme caution.</p>
 <p>To completely remove a patient from the user’s sphere of influence, note that <code>PUT</code> should be
 called with <code>access=&quot;none&quot;</code> rather than this method.</p>
 <div class="title"><strong>Parameters</strong><div class="collapse-button show"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><dl class="inner"><dt>patientid</dt><dd><code>integer</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>unique ID of the patient (<strong>not</strong> user-specific) (<em>url</em>)</p>
@@ -389,7 +474,11 @@ called with <code>access=&quot;none&quot;</code> rather than this method.</p>
     birthdate: <span class="hljs-string">"1991-01-01"</span>,
     sex: <span class="hljs-string">"female"</span>,
     avatar: <span class="hljs-string">"/v1/patients/1/avatar.jpg"</span>,
+    access_anyone: <span class="hljs-string">"read"</span>,
+    access_family: <span class="hljs-string">"read"</span>,
+    access_prime: <span class="hljs-string">"write"</span>,
     access: <span class="hljs-string">"write"</span>,
+    group: <span class="hljs-string">"owner"</span>,
     success: <span class="hljs-literal">true</span>
 }
 </code></pre><div style="height: 1px;"></div></div></div></div></div><div id="patients-patient's-avatar" class="resource"><h3>Patient's Avatar<a href="#patients-patient's-avatar" class="permalink"><i class="fa fa-link"></i></a></h3><div id="patients-patient's-avatar-get" class="action get"><h4><div class="name">View Patient Avatar</div><a href="#patients-patient's-avatar-get" class="method get">GET</a><code class="uri">/patients/{patientid}/avatar(.ext)</code></h4><p>View the image avatar of a specific patient. File extensions can be added to the URL
@@ -397,6 +486,7 @@ called with <code>access=&quot;none&quot;</code> rather than this method.</p>
 <strong>will not</strong> be converted to the format associated with the extension, but instead
 just returned in whatever format it was stored in. The URL in the avatar field in
 a patient’s details will <strong>automatically include the correct extension</strong> for the image.</p>
+<p>The user needs read access to the patient.</p>
 <p>The <code>Content-Type</code> header will be populated with the correct MIME type.</p>
 <div class="title"><strong>Parameters</strong><div class="collapse-button show"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><dl class="inner"><dt>patientid</dt><dd><code>integer</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>unique ID of the patient (<strong>not</strong> user-specific)</p>
 </dd></dl></div><div class="title"><strong>Request</strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><h5>Headers</h5><pre><code><span class="hljs-attribute">Authorization</span>: <span class="hljs-string">Bearer ACCESS_TOKEN</span><br></code></pre><div style="height: 1px;"></div></div></div><div class="title"><strong>Response&nbsp;&nbsp;<code>200</code></strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><div class="description"><p>Errors</p>
@@ -419,6 +509,7 @@ a patient’s details will <strong>automatically include the correct extension</
 </code></pre><div style="height: 1px;"></div></div></div></div><div id="patients-patient's-avatar-post" class="action post"><h4><div class="name">Upload Patient Avatar</div><a href="#patients-patient's-avatar-post" class="method post">POST</a><code class="uri">/patients/{patientid}/avatar(.ext)</code></h4><p>Upload the image avatar of a specific patient. Again, file extensions can be added to
 the URL but are ignored and will not be used to convert the image format. Note that for this
 endpoint, raw binary data should be <code>POST</code>ed rather than <code>application/json</code>-encoded data.</p>
+<p>The user needs write access to the patient.</p>
 <p>Also note that this endpoint uses <code>POST</code> not <code>PUT</code> contrary to REST resource routing
 conventions.</p>
 <div class="title"><strong>Parameters</strong><div class="collapse-button show"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><dl class="inner"><dt>patientid</dt><dd><code>integer</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>unique ID of the patient (<strong>not</strong> user-specific) (<em>url</em>)</p>
@@ -449,8 +540,8 @@ conventions.</p>
 </code></pre><div style="height: 1px;"></div></div></div></div></div><div id="patients-patient's-shared-users" class="resource"><h3>Patient's Shared Users<a href="#patients-patient's-shared-users" class="permalink"><i class="fa fa-link"></i></a></h3><p>This endpoint represents all of the users a specific patient is shared with: including
 both <code>read</code> and <code>write</code> access. The IDs in this section represent patient-user relationships,
 not users themselves, so if patient <code>1</code> is shared with user <code>7</code> then the shared ID may be <code>16</code>,
-rather than 7.</p>
-<div id="patients-patient's-shared-users-post" class="action post"><h4><div class="name">Share with a User</div><a href="#patients-patient's-shared-users-post" class="method post">POST</a><code class="uri">/patients/{patientid}/shared</code></h4><p>Share a patient’s data (a patient for whom the user has write access) with a new user specified by
+rather than <code>7</code>.</p>
+<div id="patients-patient's-shared-users-post" class="action post"><h4><div class="name">Share with a User</div><a href="#patients-patient's-shared-users-post" class="method post">POST</a><code class="uri">/patients/{patientid}/shares</code></h4><p>Share a patient’s data (a patient for whom the user has write access) with a new user specified by
 email address. This user <em>can</em> be an existing app user, but is not required to be: if they are then
 they’re automatically granted access to the patient’s data, and if they’re not they’re sent an email
 invitation to install the app, and once they do they’ll receive automatic access to the patient’s data.
@@ -460,7 +551,10 @@ of an existing user, and false in the case of a new user who’s been invited.</
 patient’s) data with the father (another user).</p>
 <div class="title"><strong>Parameters</strong><div class="collapse-button show"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><dl class="inner"><dt>patientid</dt><dd><code>integer</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>unique ID of the patient (<strong>not</strong> user-specific) (<em>url</em>)</p>
 </dd><dt>email</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>the email address of the user to share data with</p>
-</dd><dt>access</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<p><code>read</code> or <code>write</code> to signify the level of access the user should have to the patient</p>
+</dd><dt>access</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<p><code>read</code>, <code>write</code> or <code>default</code> to signify the level of access the user should have to the patient
+(<code>default</code> means the user has whatever access to the patient the patient-wide permissions
+give them, whereas <code>read</code> and <code>write</code> explicitly override those patient-wide permissions)</p>
+</dd><dt>group</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>The share group to add the user to. Must be either <code>prime</code>, <code>family</code> or <code>anyone</code>.</p>
 </dd></dl></div><div class="title"><strong>Request</strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><h5>Headers</h5><pre><code><span class="hljs-attribute">Authorization</span>: <span class="hljs-string">Bearer ACCESS_TOKEN</span><br></code></pre><div style="height: 1px;"></div><h5>Body</h5><pre><code>{
     email: <span class="hljs-string">"care@giver.com"</span>,
     access: <span class="hljs-string">"read"</span>
@@ -481,10 +575,22 @@ patient’s) data with the father (another user).</p>
 <p><code>unauthorized</code> (403) - the current user does not have write access to this patient</p>
 </li>
 <li>
+<p><code>email_required</code> (400) - an email address to share with must be specified</p>
+</li>
+<li>
 <p><code>invalid_email</code> (400) - the email address specified is not a valid one</p>
 </li>
 <li>
-<p><code>invalid_access</code> (400) - the access string specified is not a valid one (must be either <code>read</code> or <code>write</code>)</p>
+<p><code>access_required</code> (400) - the desired access level must be specified</p>
+</li>
+<li>
+<p><code>invalid_access</code> (400) - the access string specified is not a valid one (must be either <code>read</code>, <code>write</code> or <code>default</code>)</p>
+</li>
+<li>
+<p><code>group_required</code> (400) - the share group the user should be added to must be specified</p>
+</li>
+<li>
+<p><code>invalid_group</code> (400) - the share group the user is not a valid one (must be either <code>prime</code>, <code>family</code> or <code>anyone</code>)</p>
 </li>
 </ul>
 <p>Note that this <code>id</code> is for the user-patient association, <em>not</em> the user ID.</p>
@@ -497,7 +603,7 @@ user of the app, or whether they’ve been sent an email inviting them to sign u
     is_user: <span class="hljs-literal">true</span>,
     success: <span class="hljs-literal">true</span>
 }
-</code></pre><div style="height: 1px;"></div></div></div></div><div id="patients-patient's-shared-users-get" class="action get"><h4><div class="name">List all Shared Users</div><a href="#patients-patient's-shared-users-get" class="method get">GET</a><code class="uri">/patients/{patientid}/shared</code></h4><p>For a patient whom the user has <code>read</code> access, get a list of all users (including the current one)
+</code></pre><div style="height: 1px;"></div></div></div></div><div id="patients-patient's-shared-users-get" class="action get"><h4><div class="name">List all Shared Users</div><a href="#patients-patient's-shared-users-get" class="method get">GET</a><code class="uri">/patients/{patientid}/shares</code></h4><p>For a patient whom the user has <code>read</code> access, get a list of all users (including the current one)
 who have (either <code>read</code> or <code>write</code>) access to the patient.</p>
 <div class="title"><strong>Parameters</strong><div class="collapse-button show"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><dl class="inner"><dt>patientid</dt><dd><code>integer</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>unique ID of the patient (<strong>not</strong> user-specific) (<em>url</em>)</p>
 </dd><dt>limit</dt><dd><code>integer</code>&nbsp;<span>(optional)</span>&nbsp;<p>Maximum number of results to return. Defaults to 25.</p>
@@ -544,7 +650,7 @@ who’ve been invited but still haven’t signed up)</p>
 </li>
 </ul>
 </div><h5>Body</h5><pre><code>{
-    shared: [
+    shares: [
         {
             id: <span class="hljs-number">1</span>,
             email: <span class="hljs-string">"care@giver.com"</span>,
@@ -556,14 +662,14 @@ who’ve been invited but still haven’t signed up)</p>
     count: <span class="hljs-number">2</span>,
     success: <span class="hljs-literal">true</span>
 }
-</code></pre><div style="height: 1px;"></div></div></div></div></div><div id="patients-shared-user" class="resource"><h3>Shared User<a href="#patients-shared-user" class="permalink"><i class="fa fa-link"></i></a></h3><div id="patients-shared-user-put" class="action put"><h4><div class="name">Update Access Level</div><a href="#patients-shared-user-put" class="method put">PUT</a><code class="uri">/patients/{patientid}/shared/{sharedid}</code></h4><p>Update the access another user has to a patient (the current user of course is required
+</code></pre><div style="height: 1px;"></div></div></div></div></div><div id="patients-shared-user" class="resource"><h3>Shared User<a href="#patients-shared-user" class="permalink"><i class="fa fa-link"></i></a></h3><div id="patients-shared-user-put" class="action put"><h4><div class="name">Update Access Level</div><a href="#patients-shared-user-put" class="method put">PUT</a><code class="uri">/patients/{patientid}/shares/{shareid}</code></h4><p>Update the access another user has to a patient (the current user of course is required
 to have <code>write</code> access to this patient). To modify the current user’s access, see the
 convenience method <code>PUT /patients/:patientid</code>.</p>
 <p>If the user’s access is changed to <code>none</code> and the patient is not shared with any other
 users, then the patient and all its data <em>will be deleted</em> (this can of course only happen
 with this endpoint if the user who’s share is being modified is the current user).</p>
 <div class="title"><strong>Parameters</strong><div class="collapse-button show"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><dl class="inner"><dt>patientid</dt><dd><code>integer</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>unique ID of the patient (<strong>not</strong> user-specific) (<em>url</em>)</p>
-</dd><dt>sharedid</dt><dd><code>integer</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>unique ID of the patient-user association (<strong>not</strong> the user ID) (<em>url</em>)</p>
+</dd><dt>shareid</dt><dd><code>integer</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>unique ID of the patient-user association (<strong>not</strong> the user ID) (<em>url</em>)</p>
 </dd><dt>access</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<p><code>read</code> or <code>write</code> to signify the new level of access the specified user should have to the patient</p>
 </dd></dl></div><div class="title"><strong>Request</strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><h5>Headers</h5><pre><code><span class="hljs-attribute">Authorization</span>: <span class="hljs-string">Bearer ACCESS_TOKEN</span><br></code></pre><div style="height: 1px;"></div><h5>Body</h5><pre><code>{
     access: <span class="hljs-string">"write"</span>
@@ -584,7 +690,7 @@ with this endpoint if the user who’s share is being modified is the current us
 <p><code>invalid_patient_id</code> (404) - a patient with the specified ID was not found</p>
 </li>
 <li>
-<p><code>invalid_shared_id</code> (404)</p>
+<p><code>invalid_share_id</code> (404)</p>
 <p>A patient-user sharing relationship with the specified ID was not found (remember, this is <em>not</em>
 the same as the user ID)</p>
 </li>
@@ -599,13 +705,13 @@ the same as the user ID)</p>
     is_user: <span class="hljs-literal">true</span>,
     success: <span class="hljs-literal">true</span>
 }
-</code></pre><div style="height: 1px;"></div></div></div></div><div id="patients-shared-user-delete" class="action delete"><h4><div class="name">Stop Sharing with User</div><a href="#patients-shared-user-delete" class="method delete">DELETE</a><code class="uri">/patients/{patientid}/shared/{sharedid}</code></h4><p>Stop sharing the specified patient’s data with a specified user. The current user will
+</code></pre><div style="height: 1px;"></div></div></div></div><div id="patients-shared-user-delete" class="action delete"><h4><div class="name">Stop Sharing with User</div><a href="#patients-shared-user-delete" class="method delete">DELETE</a><code class="uri">/patients/{patientid}/shares/{shareid}</code></h4><p>Stop sharing the specified patient’s data with a specified user. The current user will
 of course need write access to the patient. To stop sharing a patient with the <em>current</em>
 user, see the convenience method <code>PUT /patients/:patientid</code>.</p>
 <p>If this is the last user whom the patient is shared with, then the patient and <em>all their data</em>
 will be deleted, so take care.</p>
 <div class="title"><strong>Parameters</strong><div class="collapse-button show"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><dl class="inner"><dt>patientid</dt><dd><code>integer</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>unique ID of the patient (<strong>not</strong> user-specific) (<em>url</em>)</p>
-</dd><dt>sharedid</dt><dd><code>integer</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>unique ID of the patient-user association (<strong>not</strong> the user ID) (<em>url</em>)</p>
+</dd><dt>shareid</dt><dd><code>integer</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>unique ID of the patient-user association (<strong>not</strong> the user ID) (<em>url</em>)</p>
 </dd></dl></div><div class="title"><strong>Request</strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><h5>Headers</h5><pre><code><span class="hljs-attribute">Authorization</span>: <span class="hljs-string">Bearer ACCESS_TOKEN</span><br></code></pre><div style="height: 1px;"></div></div></div><div class="title"><strong>Response&nbsp;&nbsp;<code>200</code></strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><div class="description"><p>Errors</p>
 <ul>
 <li>
@@ -622,7 +728,7 @@ will be deleted, so take care.</p>
 <p><code>invalid_patient_id</code> (404) - a patient with the specified ID was not found</p>
 </li>
 <li>
-<p><code>invalid_shared_id</code> (404)</p>
+<p><code>invalid_share_id</code> (404)</p>
 <p>A patient-user sharing relationship with the specified ID was not found (remember, this is <em>not</em>
 the same as the user ID)</p>
 </li>
@@ -637,7 +743,7 @@ the same as the user ID)</p>
 </code></pre><div style="height: 1px;"></div></div></div></div></div></section><section id="habits" class="resource-group"><h2>Habits<a href="#habits" class="permalink"><i class="fa fa-link"></i></a></h2><div id="habits-patient-habits" class="resource"><h3>Patient Habits<a href="#habits-patient-habits" class="permalink"><i class="fa fa-link"></i></a></h3><p>Habits are real-life <em>preferences</em> of the patient: what time they usually wake up
 in the morning, what time they usually eat lunch, and so on. Exactly one set of
 preferences is stored for each patient. The current user will need read access
-to the patient.</p>
+to the patient to view the habits, and write access to set them.</p>
 <p>Most  habits are of the <code>time</code> datatype. This means they must be in the specific
 <code>HH:MM</code> format of ISO 8601; for example, <code>03:59</code> and <code>23:20</code>. These times are
 in the <em>local timezone</em> of the patient, and will not change if the timezone is updated
@@ -702,6 +808,7 @@ header</p>
 </dd><dt>breakfast</dt><dd><code>time</code>&nbsp;<span>(optional)</span>&nbsp;<p>what time the patient normally eats breakfast</p>
 </dd><dt>lunch</dt><dd><code>time</code>&nbsp;<span>(optional)</span>&nbsp;<p>what time the patient normally eats lunch</p>
 </dd><dt>dinner</dt><dd><code>time</code>&nbsp;<span>(optional)</span>&nbsp;<p>what time the patient normally eats dinner</p>
+</dd><dt>tz</dt><dd><code>timezone</code>&nbsp;<span>(optional)</span>&nbsp;<p>the current user timezone</p>
 </dd></dl></div><div class="title"><strong>Request</strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><h5>Headers</h5><pre><code><span class="hljs-attribute">Authorization</span>: <span class="hljs-string">Bearer ACCESS_TOKEN</span><br></code></pre><div style="height: 1px;"></div><h5>Body</h5><pre><code>{
     wake: <span class="hljs-string">"06:00"</span>,
     sleep: <span class="hljs-string">"22:00"</span>,
@@ -740,6 +847,9 @@ header</p>
 <li>
 <p><code>invalid_dinner</code> (400) - the wake time passed is not formatted as <code>HH:MM</code></p>
 </li>
+<li>
+<p><code>invalid_tz</code> (400) - the timezone passed is not a valid TZ database timezone</p>
+</li>
 </ul>
 </div><h5>Body</h5><pre><code>{
     wake: <span class="hljs-string">"06:00"</span>,
@@ -756,8 +866,8 @@ exactly to dose events should probably just be stored in the <code>notes</code> 
 dose event.</p>
 <p><em>Hashtags</em> are parsed from each journal entry and returned in a <code>hashtags</code> array of
 <code>string</code>s.</p>
-<div id="journal-entries-journal-entries" class="resource"><h3>Journal Entries<a href="#journal-entries-journal-entries" class="permalink"><i class="fa fa-link"></i></a></h3><div id="journal-entries-journal-entries-post" class="action post"><h4><div class="name">Create an Entry</div><a href="#journal-entries-journal-entries-post" class="method post">POST</a><code class="uri">/patients/{patientid}/journal</code></h4><p>Store details of a new journal entry (the current user will need write access to
-the patient).</p>
+<div id="journal-entries-journal-entries" class="resource"><h3>Journal Entries<a href="#journal-entries-journal-entries" class="permalink"><i class="fa fa-link"></i></a></h3><div id="journal-entries-journal-entries-post" class="action post"><h4><div class="name">Create an Entry</div><a href="#journal-entries-journal-entries-post" class="method post">POST</a><code class="uri">/patients/{patientid}/journal</code></h4><p>Store details of a new journal entry (the current user will need write access to <strong>both</strong>
+the patient and every medication in <code>medication_ids</code>).</p>
 <div class="title"><strong>Parameters</strong><div class="collapse-button show"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><dl class="inner"><dt>patientid</dt><dd><code>integer</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>unique ID of the patient (<em>url</em>)</p>
 </dd><dt>date</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>2015-05-31T19:27:09+00:00</span></span><p>ISO 8601 combined date-time in UTC representing the date and time to be associated
 with the journal entry. Should probably allow user entry of this, but default to the time
@@ -812,7 +922,9 @@ the user wrote the entry.</p>
 }
 </code></pre><div style="height: 1px;"></div></div></div></div><div id="journal-entries-journal-entries-get" class="action get"><h4><div class="name">Retrieve all Entries</div><a href="#journal-entries-journal-entries-get" class="method get">GET</a><code class="uri">/patients/{patientid}/journal</code></h4><p>Get a list of all journal events for the patient. Includes full information on each,
 but each medication ID in <code>medication_ids</code> is not expanded out into a full medication
-object. The current user will need read access to the patient’s data.</p>
+object. To call this endpoint successfully, the user will need read access to the patient.
+Further, each journal entry will only be shown if the user has read access to all medications
+tagged in that journal entry.</p>
 <div class="title"><strong>Parameters</strong><div class="collapse-button show"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><dl class="inner"><dt>patientid</dt><dd><code>integer</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>unique ID of the patient (<em>url</em>)</p>
 </dd><dt>limit</dt><dd><code>integer</code>&nbsp;<span>(optional)</span>&nbsp;<p>Maximum number of results to return. Defaults to 25.</p>
 <ul>
@@ -883,8 +995,8 @@ medications.</p>
     success: <span class="hljs-literal">true</span>
 }
 </code></pre><div style="height: 1px;"></div></div></div></div></div><div id="journal-entries-journal-entry" class="resource"><h3>Journal Entry<a href="#journal-entries-journal-entry" class="permalink"><i class="fa fa-link"></i></a></h3><div id="journal-entries-journal-entry-get" class="action get"><h4><div class="name">Retrieve One Entry</div><a href="#journal-entries-journal-entry-get" class="method get">GET</a><code class="uri">/patients/{patientid}/journal/{journalid}</code></h4><p>View information on an individual journal entry. <code>medication_ids</code> is helpfully
-expanded out into <code>medications</code>. The current user will need read access to the
-patient’s data.</p>
+expanded out into <code>medications</code>. The current user will need read access to <strong>both</strong>
+the patient’s data and all medications tagged in <code>medication_ids</code>.</p>
 <div class="title"><strong>Parameters</strong><div class="collapse-button show"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><dl class="inner"><dt>patientid</dt><dd><code>integer</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>unique ID of the patient (<em>url</em>)</p>
 </dd><dt>journalid</dt><dd><code>integer</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>unique ID of the journal entry</p>
 </dd></dl></div><div class="title"><strong>Request</strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><h5>Headers</h5><pre><code><span class="hljs-attribute">Authorization</span>: <span class="hljs-string">Bearer ACCESS_TOKEN</span><br></code></pre><div style="height: 1px;"></div></div></div><div class="title"><strong>Response&nbsp;&nbsp;<code>200</code></strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><div class="description"><p>Errors</p>
@@ -929,7 +1041,9 @@ patient’s data.</p>
     success: <span class="hljs-literal">true</span>
 }
 </code></pre><div style="height: 1px;"></div></div></div></div><div id="journal-entries-journal-entry-put" class="action put"><h4><div class="name">Change an Entry</div><a href="#journal-entries-journal-entry-put" class="method put">PUT</a><code class="uri">/patients/{patientid}/journal/{journalid}</code></h4><p>Change information (medications, date and/or text) of a single journal entry. The current
-user will need write access to the patient’s data.</p>
+user will need write access to the patient, write access to every medication tagged in the
+old <code>medication_ids</code> <strong>and</strong> write access to every medication tagged in the newly-updated
+<code>medication_ids</code>.</p>
 <div class="title"><strong>Parameters</strong><div class="collapse-button show"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><dl class="inner"><dt>patientid</dt><dd><code>integer</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>unique ID of the patient (<em>url</em>)</p>
 </dd><dt>journalid</dt><dd><code>integer</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>unique ID of the entry (<em>url</em>)</p>
 </dd><dt>date</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>new ISO 8601 datetime to change the entry date to</p>
@@ -980,7 +1094,8 @@ list <em>all</em> medication IDs for the entry, not just new ones.</p>
     medication_ids: [<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">8</span>,<span class="hljs-number">9</span>,<span class="hljs-number">10</span>]
     success: <span class="hljs-literal">true</span>
 }
-</code></pre><div style="height: 1px;"></div></div></div></div><div id="journal-entries-journal-entry-delete" class="action delete"><h4><div class="name">Delete an Entry</div><a href="#journal-entries-journal-entry-delete" class="method delete">DELETE</a><code class="uri">/patients/{patientid}/journal/{journalid}</code></h4><p>Remove a single journal entry. The current user will need write access to the patient’s data.</p>
+</code></pre><div style="height: 1px;"></div></div></div></div><div id="journal-entries-journal-entry-delete" class="action delete"><h4><div class="name">Delete an Entry</div><a href="#journal-entries-journal-entry-delete" class="method delete">DELETE</a><code class="uri">/patients/{patientid}/journal/{journalid}</code></h4><p>Remove a single journal entry. The current user will need write access to both the patient
+and all medications tagged in <code>medication_ids</code>.</p>
 <div class="title"><strong>Parameters</strong><div class="collapse-button show"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><dl class="inner"><dt>patientid</dt><dd><code>integer</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>unique ID of the patient (<em>url</em>)</p>
 </dd><dt>journalid</dt><dd><code>integer</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>unique ID of the journal entry (<em>url</em>)</p>
 </dd></dl></div><div class="title"><strong>Request</strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><h5>Headers</h5><pre><code><span class="hljs-attribute">Authorization</span>: <span class="hljs-string">Bearer ACCESS_TOKEN</span><br></code></pre><div style="height: 1px;"></div></div></div><div class="title"><strong>Response&nbsp;&nbsp;<code>200</code></strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><div class="description"><p>Errors</p>
@@ -1111,7 +1226,7 @@ to <code>id</code>.</p>
     success: <span class="hljs-literal">true</span>
 }
 </code></pre><div style="height: 1px;"></div></div></div></div></div><div id="doctors-doctor" class="resource"><h3>Doctor<a href="#doctors-doctor" class="permalink"><i class="fa fa-link"></i></a></h3><div id="doctors-doctor-get" class="action get"><h4><div class="name">Retrieve a Doctor</div><a href="#doctors-doctor-get" class="method get">GET</a><code class="uri">/patients/{patientid}/doctors/{doctorid}</code></h4><p>View information on an individual doctor. The current user will need read access to the
-patient’s data.</p>
+patient.</p>
 <div class="title"><strong>Parameters</strong><div class="collapse-button show"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><dl class="inner"><dt>patientid</dt><dd><code>integer</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>unique ID of the patient</p>
 </dd><dt>doctorid</dt><dd><code>integer</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>unique ID of the doctor</p>
 </dd></dl></div><div class="title"><strong>Request</strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><h5>Headers</h5><pre><code><span class="hljs-attribute">Authorization</span>: <span class="hljs-string">Bearer ACCESS_TOKEN</span><br></code></pre><div style="height: 1px;"></div></div></div><div class="title"><strong>Response&nbsp;&nbsp;<code>200</code></strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><div class="description"><p>Errors</p>
@@ -1142,7 +1257,7 @@ patient’s data.</p>
     success: <span class="hljs-literal">true</span>
 }
 </code></pre><div style="height: 1px;"></div></div></div></div><div id="doctors-doctor-put" class="action put"><h4><div class="name">Change a Doctor's Info</div><a href="#doctors-doctor-put" class="method put">PUT</a><code class="uri">/patients/{patientid}/doctors/{doctorid}</code></h4><p>Change information (name, phone and/or address) of an individual doctor. The current user will need
-write access to the patient’s data.</p>
+write access to the patient data.</p>
 <div class="title"><strong>Parameters</strong><div class="collapse-button show"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><dl class="inner"><dt>patientid</dt><dd><code>integer</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>unique ID of the patient (<em>url</em>)</p>
 </dd><dt>doctorid</dt><dd><code>integer</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>unique ID of the doctor (<em>url</em>)</p>
 </dd><dt>name</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>Full name of the doctor. Must not be blank.</p>
@@ -1218,7 +1333,7 @@ data.</p>
 }
 </code></pre><div style="height: 1px;"></div></div></div></div></div></section><section id="pharmacies" class="resource-group"><h2>Pharmacies<a href="#pharmacies" class="permalink"><i class="fa fa-link"></i></a></h2><p>Details for all pharmacies from whom the selected patient receives medication.</p>
 <div id="pharmacies-pharmacies-collection" class="resource"><h3>Pharmacies Collection<a href="#pharmacies-pharmacies-collection" class="permalink"><i class="fa fa-link"></i></a></h3><div id="pharmacies-pharmacies-collection-post" class="action post"><h4><div class="name">Create a Pharmacy</div><a href="#pharmacies-pharmacies-collection-post" class="method post">POST</a><code class="uri">/patients/{patientid}/pharmacies</code></h4><p>Store details of a new pharmacy. The current user will need write access to the
-patient’s data.</p>
+patient.</p>
 <div class="title"><strong>Parameters</strong><div class="collapse-button show"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><dl class="inner"><dt>patientid</dt><dd><code>integer</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>unique ID of the patient (<em>url</em>)</p>
 </dd><dt>name</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>name of the pharmacy</p>
 </dd><dt>address</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>Postal address of the pharmacy. Newlines can optionally be used to split
@@ -1328,7 +1443,7 @@ form specified above</p>
     success: <span class="hljs-literal">true</span>
 }
 </code></pre><div style="height: 1px;"></div></div></div></div><div id="pharmacies-pharmacies-collection-get" class="action get"><h4><div class="name">Retrieve all Pharmacies</div><a href="#pharmacies-pharmacies-collection-get" class="method get">GET</a><code class="uri">/patients/{patientid}/pharmacies</code></h4><p>Get a list of all the patient’s pharmacies. Includes full information on each… The current
-user will need read access to the patient’s data.</p>
+user will need read access to the patient.</p>
 <div class="title"><strong>Parameters</strong><div class="collapse-button show"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><dl class="inner"><dt>patientid</dt><dd><code>integer</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>unique ID of the patient</p>
 </dd><dt>limit</dt><dd><code>integer</code>&nbsp;<span>(optional)</span>&nbsp;<p>Maximum number of results to return. Defaults to 25.</p>
 <ul>
@@ -1382,7 +1497,7 @@ to <code>id</code>.</p>
     success: <span class="hljs-literal">true</span>
 }
 </code></pre><div style="height: 1px;"></div></div></div></div></div><div id="pharmacies-pharmacy" class="resource"><h3>Pharmacy<a href="#pharmacies-pharmacy" class="permalink"><i class="fa fa-link"></i></a></h3><div id="pharmacies-pharmacy-get" class="action get"><h4><div class="name">Retrieve a Pharmacy</div><a href="#pharmacies-pharmacy-get" class="method get">GET</a><code class="uri">/patients/{patientid}/pharmacies/{pharmacyid}</code></h4><p>View information on an individual pharmacy. The current user will need read access
-to the patient’s data.</p>
+to the patient.</p>
 <div class="title"><strong>Parameters</strong><div class="collapse-button show"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><dl class="inner"><dt>patientid</dt><dd><code>integer</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>unique ID of the patient</p>
 </dd><dt>pharmacyid</dt><dd><code>integer</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>unique ID of the pharmacy</p>
 </dd></dl></div><div class="title"><strong>Request</strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><h5>Headers</h5><pre><code><span class="hljs-attribute">Authorization</span>: <span class="hljs-string">Bearer ACCESS_TOKEN</span><br></code></pre><div style="height: 1px;"></div></div></div><div class="title"><strong>Response&nbsp;&nbsp;<code>200</code></strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><div class="description"><p>Errors</p>
@@ -1443,7 +1558,7 @@ to the patient’s data.</p>
     success: <span class="hljs-literal">true</span>
 }
 </code></pre><div style="height: 1px;"></div></div></div></div><div id="pharmacies-pharmacy-put" class="action put"><h4><div class="name">Change a Pharmacy's Info</div><a href="#pharmacies-pharmacy-put" class="method put">PUT</a><code class="uri">/patients/{patientid}/pharmacies/{pharmacyid}</code></h4><p>Change information (name, phone, address and/or hours) of an individual pharmacy. The
-current user will need write access to the patient’s data.</p>
+current user will need write access to the patient.</p>
 <div class="title"><strong>Parameters</strong><div class="collapse-button show"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><dl class="inner"><dt>patientid</dt><dd><code>integer</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>unique ID of the patient  (<em>url</em>)</p>
 </dd><dt>pharmacyid</dt><dd><code>integer</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>unique ID of the pharmacy (<em>url</em>)</p>
 </dd><dt>name</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>Name of the pharmacy. Must not be blank.</p>
@@ -1530,7 +1645,7 @@ form specified above in <code>POST</code></li>
     success: <span class="hljs-literal">true</span>
 }
 </code></pre><div style="height: 1px;"></div></div></div></div><div id="pharmacies-pharmacy-delete" class="action delete"><h4><div class="name">Delete a Pharmacy</div><a href="#pharmacies-pharmacy-delete" class="method delete">DELETE</a><code class="uri">/patients/{patientid}/pharmacies/{pharmacyid}</code></h4><p>Remove information on a single pharmacy. The current user will need write access to
-the patient’s data.</p>
+the patient.</p>
 <div class="title"><strong>Parameters</strong><div class="collapse-button show"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><dl class="inner"><dt>patientid</dt><dd><code>integer</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>unique ID of the patient  (<em>url</em>)</p>
 </dd><dt>pharmacyid</dt><dd><code>integer</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>unique ID of the pharmacy (<em>url</em>)</p>
 </dd></dl></div><div class="title"><strong>Request</strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><h5>Headers</h5><pre><code><span class="hljs-attribute">Authorization</span>: <span class="hljs-string">Bearer ACCESS_TOKEN</span><br></code></pre><div style="height: 1px;"></div></div></div><div class="title"><strong>Response&nbsp;&nbsp;<code>200</code></strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><div class="description"><p>Errors</p>
@@ -1560,6 +1675,16 @@ the patient’s data.</p>
 }
 </code></pre><div style="height: 1px;"></div></div></div></div></div></section><section id="medications" class="resource-group"><h2>Medications<a href="#medications" class="permalink"><i class="fa fa-link"></i></a></h2><p>Data on regular medications a patient takes (either manually entered
 or retrieved via OAuth2 + FHIR from e.g., the DRE).</p>
+<p>Medication data responses contain the <code>number_left</code> integer key: this is an estimation
+of the number of pills left based on <code>fill_date</code> and dose events submitted to the API.
+It will only be non-null if <code>fill_date</code> is non-null.</p>
+<h3 id="header-permissions">Permissions<a class="permalink" href="#header-permissions"><i class="fa fa-link"></i></a></h3>
+<p>Whilst defaulting to the patient-wide permissions, medications can also have custom
+permissions. Each medication has <code>access_anyone</code>, <code>access_family</code> and <code>access_prime</code>
+fields, each of which can be set to <code>read</code>, <code>write</code>, <code>default</code> or <code>none</code>. <code>default</code>
+gives the medication the same access permissions as the patient that owns it, whereas
+<code>read</code>, <code>write</code> and <code>none</code> explicitly override those permissions. All three keys
+default to <code>default</code>.</p>
 <h3 id="header-schedule">Schedule<a class="permalink" href="#header-schedule"><i class="fa fa-link"></i></a></h3>
 <p>Various endpoints below take and output <code>schedule</code> data items, representing a regular
 schedule the patient should take a certain medication on.  These are used to schedule
@@ -1688,7 +1813,7 @@ medication should be taken at. For example,</p>
 }
 </code></pre>
 <div id="medications-medications-collection" class="resource"><h3>Medications Collection<a href="#medications-medications-collection" class="permalink"><i class="fa fa-link"></i></a></h3><div id="medications-medications-collection-post" class="action post"><h4><div class="name">Create a new Medication</div><a href="#medications-medications-collection-post" class="method post">POST</a><code class="uri">/patients/{patientid}/medications</code></h4><p>Store details of a new medication the patient has started taking. The current user
-must have write access to the patient’s data.</p>
+must have write access to the patient.</p>
 <div class="title"><strong>Parameters</strong><div class="collapse-button show"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><dl class="inner"><dt>patientid</dt><dd><code>integer</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>unique ID of the patient (<em>url</em>)</p>
 </dd><dt>name</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>human-formatted name of the medication</p>
 </dd><dt>rx_norm</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>rxNorm ID code for the medication</p>
@@ -1698,9 +1823,19 @@ must have write access to the patient’s data.</p>
 and <code>UNIT</code> is a string (e.g., <code>&quot;mg&quot;</code>)</p>
 </dd><dt>route</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>ROA of medication</p>
 </dd><dt>form</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>pill</span></span></dd><dt>rx_number</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>RX control number of the prescription</p>
+</dd><dt>fill_date</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>ISO 8601 YYYY-MM-DD in local time of the last date the medication was filled</p>
 </dd><dt>quantity</dt><dd><code>integer</code>&nbsp;<span>(optional)</span>&nbsp;<p>number of medication in each ‘pack’</p>
 </dd><dt>type</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>legal medication type: e.g., <code>&quot;OTC&quot;</code></p>
 </dd><dt>schedule</dt><dd><code>dictionary</code>&nbsp;<span>(optional)</span>&nbsp;<p>a schedule datum in the form described above</p>
+</dd><dt>access_prime</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>The access permissions users in the <code>prime</code> group should have to this medication,
+overriding the patient-wide permissions. Must be either <code>read</code>, <code>write</code>, <code>none</code>
+or <code>default</code>. Defaults to <code>default</code>.</p>
+</dd><dt>access_family</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>The access permissions users in the <code>family</code> group should have to this medication,
+overriding the patient-wide permissions. Must be either <code>read</code>, <code>write</code>, <code>none</code>
+or <code>default</code>. Defaults to <code>default</code>.</p>
+</dd><dt>access_anyone</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>The access permissions users in the <code>anyone</code> group should have to this medication,
+overriding the patient-wide permissions. Must be either <code>read</code>, <code>write</code>, <code>none</code>
+or <code>default</code>. Defaults to <code>default</code>.</p>
 </dd><dt>doctor_id</dt><dd><code>integer</code>&nbsp;<span>(optional)</span>&nbsp;<p>ID of the doctor prescribing the patient’s medication. This doctor
 must already exist in <code>/patients/:patientid/doctors</code></p>
 </dd><dt>pharmacy_id</dt><dd><code>integer</code>&nbsp;<span>(optional)</span>&nbsp;<p>ID of the pharmacy selling the patient’s medication. This doctor
@@ -1716,6 +1851,7 @@ must already exist in <code>/patients/:patientid/doctors</code></p>
     route: <span class="hljs-string">"oral"</span>,
     form: <span class="hljs-string">"pill"</span>,
     rx_number: <span class="hljs-string">"123456789"</span>,
+    fill_date: <span class="hljs-string">"2015-05-01"</span>,
     quantity: <span class="hljs-number">50</span>,
     type: <span class="hljs-string">"OTC"</span>,
     schedule: {
@@ -1723,6 +1859,9 @@ must already exist in <code>/patients/:patientid/doctors</code></p>
         frequency: <span class="hljs-number">1</span>,
         times_of_day: [<span class="hljs-string">"after_lunch"</span>, <span class="hljs-string">"before_sleep"</span>]
     },
+    access_anyone: <span class="hljs-string">"default"</span>,
+    access_family: <span class="hljs-string">"default"</span>,
+    access_prime: <span class="hljs-string">"default"</span>,
     doctor_id: <span class="hljs-number">1</span>,
     pharmacy_id: <span class="hljs-number">1</span>
 }
@@ -1751,7 +1890,19 @@ must already exist in <code>/patients/:patientid/doctors</code></p>
 <p><code>invalid_quantity</code> (400) - quantity not a positive integer</p>
 </li>
 <li>
+<p><code>invalid_fill_date</code> (400) - fill date is not a YYYY-MM-DD date</p>
+</li>
+<li>
 <p><code>invalid_schedule</code> (400) - schedule is not specified in the format specified above</p>
+</li>
+<li>
+<p><code>invalid_access_anyone</code> (400) - the <code>access_anyone</code> field, if passed, must be either <code>read</code>, <code>write</code>, <code>default</code> or <code>none</code></p>
+</li>
+<li>
+<p><code>invalid_access_family</code> (400) - the <code>access_family</code> field, if passed, must be either <code>read</code>, <code>write</code>, <code>default</code> or <code>none</code></p>
+</li>
+<li>
+<p><code>invalid_access_prime</code> (400) - the <code>access_prime</code> field, if passed, must be either <code>read</code>, <code>write</code>, <code>default</code> or <code>none</code></p>
 </li>
 <li>
 <p><code>invalid_doctor_id</code> (400) - a doctor with that ID was not found</p>
@@ -1772,6 +1923,8 @@ must already exist in <code>/patients/:patientid/doctors</code></p>
     route: <span class="hljs-string">"oral"</span>,
     form: <span class="hljs-string">"pill"</span>,
     rx_number: <span class="hljs-string">"123456789"</span>,
+    fill_date: <span class="hljs-string">"2015-05-01"</span>,
+    number_left: <span class="hljs-number">17</span>,
     quantity: <span class="hljs-number">50</span>,
     type: <span class="hljs-string">"OTC"</span>,
     schedule: {
@@ -1779,13 +1932,17 @@ must already exist in <code>/patients/:patientid/doctors</code></p>
         frequency: <span class="hljs-number">1</span>,
         times_of_day: [<span class="hljs-string">"after_lunch"</span>, <span class="hljs-string">"before_sleep"</span>]
     },
+    access_anyone: <span class="hljs-string">"default"</span>,
+    access_family: <span class="hljs-string">"default"</span>,
+    access_prime: <span class="hljs-string">"default"</span>,
     doctor_id: <span class="hljs-number">1</span>,
     pharmacy_id: <span class="hljs-number">1</span>,
     success: <span class="hljs-literal">true</span>
 }
 </code></pre><div style="height: 1px;"></div></div></div></div><div id="medications-medications-collection-get" class="action get"><h4><div class="name">Retrieve all Medications</div><a href="#medications-medications-collection-get" class="method get">GET</a><code class="uri">/patients/{patientid}/medications</code></h4><p>Get a list of all the patient’s medications. Includes full information on each, but
-doctor and pharmacy details are not expanded out. The current user must have read
-access to the patient’s data.</p>
+doctor and pharmacy details are not expanded out. To get a successful response from
+this endpoint, the current user must have read access to the patient. Further, only
+medications for which the current user has read access will be returned.</p>
 <div class="title"><strong>Parameters</strong><div class="collapse-button show"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><dl class="inner"><dt>patientid</dt><dd><code>integer</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>unique ID of the patient</p>
 </dd><dt>limit</dt><dd><code>integer</code>&nbsp;<span>(optional)</span>&nbsp;<p>Maximum number of results to return. Defaults to 25.</p>
 <ul>
@@ -1843,6 +2000,8 @@ and defaults to <code>id</code>.</p>
             route: <span class="hljs-string">"oral"</span>,
             form: <span class="hljs-string">"pill"</span>,
             rx_number: <span class="hljs-string">"123456789"</span>,
+            fill_date: <span class="hljs-string">"2015-05-01"</span>,
+            number_left: <span class="hljs-number">17</span>,
             quantity: <span class="hljs-number">50</span>,
             type: <span class="hljs-string">"OTC"</span>,
             schedule: {
@@ -1850,6 +2009,9 @@ and defaults to <code>id</code>.</p>
                 frequency: <span class="hljs-number">1</span>,
                 times_of_day: [<span class="hljs-string">"after_lunch"</span>, <span class="hljs-string">"before_sleep"</span>]
             },
+            access_anyone: <span class="hljs-string">"default"</span>,
+            access_family: <span class="hljs-string">"default"</span>,
+            access_prime: <span class="hljs-string">"default"</span>,
             doctor_id: <span class="hljs-number">1</span>,
             pharmacy_id: <span class="hljs-number">1</span>
         },
@@ -1859,7 +2021,7 @@ and defaults to <code>id</code>.</p>
     success: <span class="hljs-literal">true</span>
 }
 </code></pre><div style="height: 1px;"></div></div></div></div></div><div id="medications-medication" class="resource"><h3>Medication<a href="#medications-medication" class="permalink"><i class="fa fa-link"></i></a></h3><div id="medications-medication-get" class="action get"><h4><div class="name">Retrieve a Medication</div><a href="#medications-medication-get" class="method get">GET</a><code class="uri">/patients/{patientid}/medications/{medicationid}</code></h4><p>View information on an individual medication. Doctor and pharmacy details are expanded out.
-The current user must have read access to the patient’s data.</p>
+The current user must have read access to <strong>both</strong> the patient and the medication.</p>
 <div class="title"><strong>Parameters</strong><div class="collapse-button show"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><dl class="inner"><dt>patientid</dt><dd><code>integer</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>unique ID of the patient</p>
 </dd><dt>medicationid</dt><dd><code>integer</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>unique ID of the medication</p>
 </dd></dl></div><div class="title"><strong>Request</strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><h5>Headers</h5><pre><code><span class="hljs-attribute">Authorization</span>: <span class="hljs-string">Bearer ACCESS_TOKEN</span><br></code></pre><div style="height: 1px;"></div></div></div><div class="title"><strong>Response&nbsp;&nbsp;<code>200</code></strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><div class="description"><p>Errors</p>
@@ -1893,6 +2055,8 @@ The current user must have read access to the patient’s data.</p>
     route: <span class="hljs-string">"oral"</span>,
     form: <span class="hljs-string">"pill"</span>,
     rx_number: <span class="hljs-string">"123456789"</span>,
+    fill_date: <span class="hljs-string">"2015-05-01"</span>,
+    number_left: <span class="hljs-number">17</span>,
     quantity: <span class="hljs-number">50</span>,
     type: <span class="hljs-string">"OTC"</span>,
     schedule: {
@@ -1900,6 +2064,9 @@ The current user must have read access to the patient’s data.</p>
         frequency: <span class="hljs-number">1</span>,
         times_of_day: [<span class="hljs-string">"after_lunch"</span>, <span class="hljs-string">"before_sleep"</span>]
     },
+    access_anyone: <span class="hljs-string">"default"</span>,
+    access_family: <span class="hljs-string">"default"</span>,
+    access_prime: <span class="hljs-string">"default"</span>,
     doctor: {
         id: <span class="hljs-number">1</span>,
         name: <span class="hljs-string">"Dr. Y"</span>,
@@ -1947,7 +2114,7 @@ The current user must have read access to the patient’s data.</p>
     success: <span class="hljs-literal">true</span>
 }
 </code></pre><div style="height: 1px;"></div></div></div></div><div id="medications-medication-put" class="action put"><h4><div class="name">Change a Med's Info</div><a href="#medications-medication-put" class="method put">PUT</a><code class="uri">/patients/{patientid}/medications/{medicationid}</code></h4><p>Change information (all keys apart from <code>id</code>) of an individual medication. The current
-user must have write access to the patient’s data.</p>
+user must have write access to <strong>both</strong> the patient and the medication.</p>
 <div class="title"><strong>Parameters</strong><div class="collapse-button show"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><dl class="inner"><dt>patientid</dt><dd><code>integer</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>unique ID of the patient (<em>url</em>)</p>
 </dd><dt>medicationid</dt><dd><code>integer</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>unique ID of the medication (<em>url</em>)</p>
 </dd><dt>name</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>human-formatted name of the medication</p>
@@ -1956,9 +2123,19 @@ user must have write access to the patient’s data.</p>
 </dd><dt>dose</dt><dd><code>dictionary</code>&nbsp;<span>(optional)</span>&nbsp;<p>As in <code>POST</code>. A whole new dictionary must be sent.</p>
 </dd><dt>route</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>ROA of medication</p>
 </dd><dt>form</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>pill</span></span></dd><dt>rx_number</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>RX control number of the prescription</p>
+</dd><dt>fill_date</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>ISO 8601 YYYY-MM-DD in local time of the last date the medication was filled</p>
 </dd><dt>quantity</dt><dd><code>integer</code>&nbsp;<span>(optional)</span>&nbsp;<p>number of medication in each ‘pack’</p>
 </dd><dt>type</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>legal medication type: e.g., <code>&quot;OTC&quot;</code></p>
 </dd><dt>schedule</dt><dd><code>dictionary</code>&nbsp;<span>(optional)</span>&nbsp;<p>As in <code>POST</code>. A whole new schedule must be sent.</p>
+</dd><dt>access_prime</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>The access permissions users in the <code>prime</code> group should have to this medication,
+overriding the patient-wide permissions. Must be either <code>read</code>, <code>write</code>, <code>none</code>
+or <code>default</code>. Defaults to <code>default</code>.</p>
+</dd><dt>access_family</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>The access permissions users in the <code>family</code> group should have to this medication,
+overriding the patient-wide permissions. Must be either <code>read</code>, <code>write</code>, <code>none</code>
+or <code>default</code>. Defaults to <code>default</code>.</p>
+</dd><dt>access_anyone</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>The access permissions users in the <code>anyone</code> group should have to this medication,
+overriding the patient-wide permissions. Must be either <code>read</code>, <code>write</code>, <code>none</code>
+or <code>default</code>. Defaults to <code>default</code>.</p>
 </dd><dt>doctor_id</dt><dd><code>integer</code>&nbsp;<span>(optional)</span>&nbsp;<p>ID of the doctor prescribing the patient’s medication</p>
 </dd><dt>pharmacy_id</dt><dd><code>integer</code>&nbsp;<span>(optional)</span>&nbsp;<p>ID of the pharmacy selling the patient’s medication</p>
 </dd></dl></div><div class="title"><strong>Request</strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><h5>Headers</h5><pre><code><span class="hljs-attribute">Authorization</span>: <span class="hljs-string">Bearer ACCESS_TOKEN</span><br></code></pre><div style="height: 1px;"></div><h5>Body</h5><pre><code>{
@@ -1972,6 +2149,7 @@ user must have write access to the patient’s data.</p>
     route: <span class="hljs-string">"oral"</span>,
     form: <span class="hljs-string">"pill"</span>,
     rx_number: <span class="hljs-string">"123456789"</span>,
+    fill_date: <span class="hljs-string">"2015-05-01"</span>,
     quantity: <span class="hljs-number">50</span>,
     type: <span class="hljs-string">"OTC"</span>,
     schedule: {
@@ -1979,6 +2157,9 @@ user must have write access to the patient’s data.</p>
         frequency: <span class="hljs-number">1</span>,
         times_of_day: [<span class="hljs-string">"after_lunch"</span>, <span class="hljs-string">"before_sleep"</span>]
     },
+    access_anyone: <span class="hljs-string">"write"</span>,
+    access_family: <span class="hljs-string">"write"</span>,
+    access_prime: <span class="hljs-string">"write"</span>,
     doctor_id: <span class="hljs-number">1</span>,
     pharmacy_id: <span class="hljs-number">1</span>
 }
@@ -2007,7 +2188,19 @@ user must have write access to the patient’s data.</p>
 <p><code>invalid_quantity</code> (400) - quantity not a positive integer</p>
 </li>
 <li>
+<p><code>invalid_fill_date</code> (400) - fill date is not a YYYY-MM-DD date</p>
+</li>
+<li>
 <p><code>invalid_schedule</code> (400) - schedule is not specified in the format specified above</p>
+</li>
+<li>
+<p><code>invalid_access_anyone</code> (400) - the <code>access_anyone</code> field, if passed, must be either <code>read</code>, <code>write</code>, <code>default</code> or <code>none</code></p>
+</li>
+<li>
+<p><code>invalid_access_family</code> (400) - the <code>access_family</code> field, if passed, must be either <code>read</code>, <code>write</code>, <code>default</code> or <code>none</code></p>
+</li>
+<li>
+<p><code>invalid_access_prime</code> (400) - the <code>access_prime</code> field, if passed, must be either <code>read</code>, <code>write</code>, <code>default</code> or <code>none</code></p>
 </li>
 <li>
 <p><code>invalid_doctor_id</code> (400) - a doctor with that ID was not found</p>
@@ -2028,6 +2221,8 @@ user must have write access to the patient’s data.</p>
     route: <span class="hljs-string">"oral"</span>,
     form: <span class="hljs-string">"pill"</span>,
     rx_number: <span class="hljs-string">"123456789"</span>,
+    fill_date: <span class="hljs-string">"2015-05-01"</span>,
+    number_left: <span class="hljs-number">17</span>,
     quantity: <span class="hljs-number">50</span>,
     type: <span class="hljs-string">"OTC"</span>,
     schedule: {
@@ -2035,12 +2230,15 @@ user must have write access to the patient’s data.</p>
         frequency: <span class="hljs-number">1</span>,
         times_of_day: [<span class="hljs-string">"after_lunch"</span>, <span class="hljs-string">"before_sleep"</span>]
     },
+    access_anyone: <span class="hljs-string">"write"</span>,
+    access_family: <span class="hljs-string">"write"</span>,
+    access_prime: <span class="hljs-string">"write"</span>,
     doctor_id: <span class="hljs-number">1</span>,
     pharmacy_id: <span class="hljs-number">1</span>,
     success: <span class="hljs-literal">true</span>
 }
-</code></pre><div style="height: 1px;"></div></div></div></div><div id="medications-medication-delete" class="action delete"><h4><div class="name">Delete a Medication</div><a href="#medications-medication-delete" class="method delete">DELETE</a><code class="uri">/patients/{patientid}/medications/{medicationid}</code></h4><p>Remove a single medication. The current user must have write access to the patient’s
-data.</p>
+</code></pre><div style="height: 1px;"></div></div></div></div><div id="medications-medication-delete" class="action delete"><h4><div class="name">Delete a Medication</div><a href="#medications-medication-delete" class="method delete">DELETE</a><code class="uri">/patients/{patientid}/medications/{medicationid}</code></h4><p>Remove a single medication. The current user must have write access to <strong>both</strong> the patient
+and the medication.</p>
 <div class="title"><strong>Parameters</strong><div class="collapse-button show"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><dl class="inner"><dt>patientid</dt><dd><code>integer</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>unique ID of the patient (<em>url</em>)</p>
 </dd><dt>medicationid</dt><dd><code>integer</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>unique ID of the medication (<em>url</em>)</p>
 </dd></dl></div><div class="title"><strong>Request</strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><h5>Headers</h5><pre><code><span class="hljs-attribute">Authorization</span>: <span class="hljs-string">Bearer ACCESS_TOKEN</span><br></code></pre><div style="height: 1px;"></div></div></div><div class="title"><strong>Response&nbsp;&nbsp;<code>200</code></strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><div class="description"><p>Errors</p>
@@ -2074,6 +2272,8 @@ data.</p>
     route: <span class="hljs-string">"oral"</span>,
     form: <span class="hljs-string">"pill"</span>,
     rx_number: <span class="hljs-string">"123456789"</span>,
+    fill_date: <span class="hljs-string">"2015-05-01"</span>,
+    number_left: <span class="hljs-number">17</span>,
     quantity: <span class="hljs-number">50</span>,
     type: <span class="hljs-string">"OTC"</span>,
     schedule: {
@@ -2081,6 +2281,9 @@ data.</p>
         frequency: <span class="hljs-number">1</span>,
         times_of_day: [<span class="hljs-string">"after_lunch"</span>, <span class="hljs-string">"before_sleep"</span>]
     },
+    access_anyone: <span class="hljs-string">"write"</span>,
+    access_family: <span class="hljs-string">"write"</span>,
+    access_prime: <span class="hljs-string">"write"</span>,
     doctor_id: <span class="hljs-number">1</span>,
     pharmacy_id: <span class="hljs-number">1</span>,
     success: <span class="hljs-literal">true</span>
@@ -2088,7 +2291,8 @@ data.</p>
 </code></pre><div style="height: 1px;"></div></div></div></div></div></section><section id="dose-events" class="resource-group"><h2>Dose Events<a href="#dose-events" class="permalink"><i class="fa fa-link"></i></a></h2><p>A dose event is when the patient takes their medication (either when they’re
 supposed to, <em>adhering</em>, or not, <em>non-adhering</em>).</p>
 <div id="dose-events-dose-events-collection" class="resource"><h3>Dose Events Collection<a href="#dose-events-dose-events-collection" class="permalink"><i class="fa fa-link"></i></a></h3><div id="dose-events-dose-events-collection-post" class="action post"><h4><div class="name">Create an Event</div><a href="#dose-events-dose-events-collection-post" class="method post">POST</a><code class="uri">/patients/{patientid}/doses</code></h4><p>Store details of a new dose event (e.g., when a patient signifies they’ve
-taken their medication). The current user will need write access to the patient’s data.</p>
+taken their medication). The current user will need write access to <strong>both</strong> the patient
+and the medication.</p>
 <div class="title"><strong>Parameters</strong><div class="collapse-button show"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><dl class="inner"><dt>patientid</dt><dd><code>integer</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>unique ID of the patient (<em>url</em>)</p>
 </dd><dt>medication_id</dt><dd><code>integer</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>unique ID of the medication for which the patient has adhered</p>
 </dd><dt>date</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>2015-05-31T19:27:09+00:00</span></span><p>ISO 8601 combined date-time in UTC representing the date and time at which
@@ -2128,9 +2332,11 @@ taken their medication). The current user will need write access to the patient�
     notes: <span class="hljs-string">"Feeling sleepy now!"</span>,
     success: <span class="hljs-literal">true</span>
 }
-</code></pre><div style="height: 1px;"></div></div></div></div><div id="dose-events-dose-events-collection-get" class="action get"><h4><div class="name">Retrieve all Adherences</div><a href="#dose-events-dose-events-collection-get" class="method get">GET</a><code class="uri">/patients/{patientid}/doses</code></h4><p>Get a list of all dose events for the patient. Includes full information on each,
-but <code>medication_id</code> is not expanded out into <code>medication</code>. The current user will need
-read access to the patient’s data.</p>
+</code></pre><div style="height: 1px;"></div></div></div></div><div id="dose-events-dose-events-collection-get" class="action get"><h4><div class="name">Retrieve all Doses</div><a href="#dose-events-dose-events-collection-get" class="method get">GET</a><code class="uri">/patients/{patientid}/doses</code></h4><p>Get a list of all dose events for the patient. Includes full information on each,
+but <code>medication_id</code> is not expanded out into <code>medication</code>. To get a successful
+response from this endpoint, the user will need read access to the patient.
+Further, only dose events for which the user has read access to the medication
+will be shown.</p>
 <div class="title"><strong>Parameters</strong><div class="collapse-button show"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><dl class="inner"><dt>patientid</dt><dd><code>integer</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>unique ID of the patient</p>
 </dd><dt>limit</dt><dd><code>integer</code>&nbsp;<span>(optional)</span>&nbsp;<p>Maximum number of results to return. Defaults to 25.</p>
 <ul>
@@ -2198,9 +2404,9 @@ owned by the current patient. Defaults to not filtering by medication.</p>
     count: <span class="hljs-number">46</span>,
     success: <span class="hljs-literal">true</span>
 }
-</code></pre><div style="height: 1px;"></div></div></div></div></div><div id="dose-events-adherence-event" class="resource"><h3>Adherence Event<a href="#dose-events-adherence-event" class="permalink"><i class="fa fa-link"></i></a></h3><div id="dose-events-adherence-event-get" class="action get"><h4><div class="name">Retrieve One Adherence</div><a href="#dose-events-adherence-event-get" class="method get">GET</a><code class="uri">/patients/{patientid}/dose/{doseid}</code></h4><p>View information on an individual dose event. <code>medication_id</code> is helpfully
-expanded out into <code>medication</code>. The current user will need read access to the
-patient’s data.</p>
+</code></pre><div style="height: 1px;"></div></div></div></div></div><div id="dose-events-dose-event" class="resource"><h3>Dose Event<a href="#dose-events-dose-event" class="permalink"><i class="fa fa-link"></i></a></h3><div id="dose-events-dose-event-get" class="action get"><h4><div class="name">Retrieve One Event</div><a href="#dose-events-dose-event-get" class="method get">GET</a><code class="uri">/patients/{patientid}/dose/{doseid}</code></h4><p>View information on an individual dose event. <code>medication_id</code> is helpfully
+expanded out into <code>medication</code>. The current user will need read access to <strong>both</strong>
+the patient and the dose event.</p>
 <div class="title"><strong>Parameters</strong><div class="collapse-button show"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><dl class="inner"><dt>patientid</dt><dd><code>integer</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>unique ID of the patient</p>
 </dd><dt>doseid</dt><dd><code>integer</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>unique ID of the dose</p>
 </dd></dl></div><div class="title"><strong>Request</strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><h5>Headers</h5><pre><code><span class="hljs-attribute">Authorization</span>: <span class="hljs-string">Bearer ACCESS_TOKEN</span><br></code></pre><div style="height: 1px;"></div></div></div><div class="title"><strong>Response&nbsp;&nbsp;<code>200</code></strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><div class="description"><p>Errors</p>
@@ -2252,8 +2458,9 @@ patient’s data.</p>
     },
     success: <span class="hljs-literal">true</span>
 }
-</code></pre><div style="height: 1px;"></div></div></div></div><div id="dose-events-adherence-event-put" class="action put"><h4><div class="name">Change an Event</div><a href="#dose-events-adherence-event-put" class="method put">PUT</a><code class="uri">/patients/{patientid}/dose/{doseid}</code></h4><p>Change information (medication, date and/or notes) of a single dose event. The current
-user will need write access to the patient’s data.</p>
+</code></pre><div style="height: 1px;"></div></div></div></div><div id="dose-events-dose-event-put" class="action put"><h4><div class="name">Change an Event</div><a href="#dose-events-dose-event-put" class="method put">PUT</a><code class="uri">/patients/{patientid}/dose/{doseid}</code></h4><p>Change information (medication, date and/or notes) of a single dose event. The current
+user will need write access to the patient, the old medication, and the new medication
+(if different).</p>
 <div class="title"><strong>Parameters</strong><div class="collapse-button show"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><dl class="inner"><dt>patientid</dt><dd><code>integer</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>unique ID of the patient (<em>url</em>)</p>
 </dd><dt>doseid</dt><dd><code>integer</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>unique ID of the dose (<em>url</em>)</p>
 </dd><dt>medication_id</dt><dd><code>integer</code>&nbsp;<span>(optional)</span>&nbsp;<p>ID of a medication to change the dose to. Must correspond to an existing
@@ -2298,8 +2505,8 @@ field blank correspondingly.</p>
     notes: <span class="hljs-string">"Not sleepy from this - forgot I took a melatonin pill earlier!"</span>,
     success: <span class="hljs-literal">true</span>
 }
-</code></pre><div style="height: 1px;"></div></div></div></div><div id="dose-events-adherence-event-delete" class="action delete"><h4><div class="name">Delete an Event</div><a href="#dose-events-adherence-event-delete" class="method delete">DELETE</a><code class="uri">/patients/{patientid}/dose/{doseid}</code></h4><p>Remove a single dose event (this will update generated statistics correspondingly, so be careful!)
-The current user will need write access to the patient’s data.</p>
+</code></pre><div style="height: 1px;"></div></div></div></div><div id="dose-events-dose-event-delete" class="action delete"><h4><div class="name">Delete an Event</div><a href="#dose-events-dose-event-delete" class="method delete">DELETE</a><code class="uri">/patients/{patientid}/dose/{doseid}</code></h4><p>Remove a single dose event (this will update generated statistics correspondingly, so be careful!)
+The current user will need write access to both the patient and the medication.</p>
 <div class="title"><strong>Parameters</strong><div class="collapse-button show"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><dl class="inner"><dt>patientid</dt><dd><code>integer</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>unique ID of the patient (<em>url</em>)</p>
 </dd><dt>doseid</dt><dd><code>integer</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>unique ID of the dose (<em>url</em>)</p>
 </dd></dl></div><div class="title"><strong>Request</strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><h5>Headers</h5><pre><code><span class="hljs-attribute">Authorization</span>: <span class="hljs-string">Bearer ACCESS_TOKEN</span><br></code></pre><div style="height: 1px;"></div></div></div><div class="title"><strong>Response&nbsp;&nbsp;<code>200</code></strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><div class="description"><p>Errors</p>
@@ -2346,6 +2553,9 @@ any time on the specified day, and have the date formatted as <code>YYYY-MM-DD</
 value of all of the <code>delay</code>s) and <code>delay</code> (a mean average value of the <strong>absolute values</strong> of all
 the <code>delay</code>s). Each number in <code>statistics</code> will be <code>null</code> if there are no schedule events in
 the past found (for example, if start date is in the future).</p>
+<p>The user will need read access to the patient to get a successful response from this endpoint.
+Further, only schedule events corresponding to medications for which the user has read access
+will be shown.</p>
 <div class="title"><strong>Parameters</strong><div class="collapse-button show"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><dl class="inner"><dt>patientid</dt><dd><code>integer</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>unique ID of the patient</p>
 </dd><dt>start_date</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>Start schedule at this date. Must be a valid ISO 8601 YYYY-MM-DD date. Defaults
 to the current time.</p>
@@ -2424,7 +2634,7 @@ one week later than the current time.</p>
     },
     success: <span class="hljs-literal">true</span>
 }
-</code></pre><div style="height: 1px;"></div></div></div></div></div></section></div></div></div><p style="text-align: center;" class="text-muted">Generated by&nbsp;<a href="https://github.com/danielgtaylor/aglio" class="aglio">aglio</a>&nbsp;on 29 Jun 2015</p><script>function toggleCollapse(event) {
+</code></pre><div style="height: 1px;"></div></div></div></div></div></section></div></div></div><p style="text-align: center;" class="text-muted">Generated by&nbsp;<a href="https://github.com/danielgtaylor/aglio" class="aglio">aglio</a>&nbsp;on 06 Jul 2015</p><script>function toggleCollapse(event) {
     var button = event.target.parentNode;
     var content = button.parentNode.nextSibling;
     var inner = content.children[0];
