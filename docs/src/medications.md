@@ -6,6 +6,14 @@ Medication data responses contain the `number_left` integer key: this is an esti
 of the number of pills left based on `fill_date` and dose events submitted to the API.
 It will only be non-null if `fill_date` is non-null.
 
+### Permissions
+Whilst defaulting to the patient-wide permissions, medications can also have custom
+permissions. Each medication has `access_anyone`, `access_family` and `access_prime`
+fields, each of which can be set to `read`, `write`, `default` or `none`. `default`
+gives the medication the same access permissions as the patient that owns it, whereas
+`read`, `write` and `none` explicitly override those permissions. All three keys
+default to `default`.
+
 ### Schedule
 Various endpoints below take and output `schedule` data items, representing a regular
 schedule the patient should take a certain medication on.  These are used to schedule
@@ -151,7 +159,7 @@ medication should be taken at. For example,
 ## Medications Collection [/patients/{patientid}/medications]
 ### Create a new Medication [POST]
 Store details of a new medication the patient has started taking. The current user
-must have write access to the patient's data.
+must have write access to the patient.
 
 + Parameters
     + patientid (integer, required)
@@ -165,7 +173,6 @@ must have write access to the patient's data.
         Dose of medication the patient should take. Formatted as
         `{quantity: QUANTITY, unit: UNIT}` where `QUANTITY` is numeric
         and `UNIT` is a string (e.g., `"mg"`)
-
     + route (string, optional) - ROA of medication
     + form (string, optional, `pill`) - form of medication
     + rx_number (string, optional) - RX control number of the prescription
@@ -175,7 +182,21 @@ must have write access to the patient's data.
     + quantity (integer, optional) - number of medication in each 'pack'
     + type (string, optional) - legal medication type: e.g., `"OTC"`
     + schedule (dictionary, optional) - a schedule datum in the form described above
+    + access_prime (string, optional)
 
+        The access permissions users in the `prime` group should have to this medication,
+        overriding the patient-wide permissions. Must be either `read`, `write`, `none`
+        or `default`. Defaults to `default`.
+    + access_family (string, optional)
+
+        The access permissions users in the `family` group should have to this medication,
+        overriding the patient-wide permissions. Must be either `read`, `write`, `none`
+        or `default`. Defaults to `default`.
+    + access_anyone (string, optional)
+
+        The access permissions users in the `anyone` group should have to this medication,
+        overriding the patient-wide permissions. Must be either `read`, `write`, `none`
+        or `default`. Defaults to `default`.
     + doctor_id (integer, optional)
 
         ID of the doctor prescribing the patient's medication. This doctor
@@ -212,6 +233,9 @@ must have write access to the patient's data.
                     frequency: 1,
                     times_of_day: ["after_lunch", "before_sleep"]
                 },
+                access_anyone: "default",
+                access_family: "default",
+                access_prime: "default",
                 doctor_id: 1,
                 pharmacy_id: 1
             }
@@ -228,6 +252,9 @@ must have write access to the patient's data.
     + `invalid_quantity` (400) - quantity not a positive integer
     + `invalid_fill_date` (400) - fill date is not a YYYY-MM-DD date
     + `invalid_schedule` (400) - schedule is not specified in the format specified above
+    + `invalid_access_anyone` (400) - the `access_anyone` field, if passed, must be either `read`, `write`, `default` or `none`
+    + `invalid_access_family` (400) - the `access_family` field, if passed, must be either `read`, `write`, `default` or `none`
+    + `invalid_access_prime` (400) - the `access_prime` field, if passed, must be either `read`, `write`, `default` or `none`
     + `invalid_doctor_id` (400) - a doctor with that ID was not found
     + `invalid_pharmacy_id` (400) - a pharmacy with that ID was not found
 
@@ -254,6 +281,9 @@ must have write access to the patient's data.
                     frequency: 1,
                     times_of_day: ["after_lunch", "before_sleep"]
                 },
+                access_anyone: "default",
+                access_family: "default",
+                access_prime: "default",
                 doctor_id: 1,
                 pharmacy_id: 1,
                 success: true
@@ -261,8 +291,9 @@ must have write access to the patient's data.
 
 ### Retrieve all Medications [GET]
 Get a list of all the patient's medications. Includes full information on each, but
-doctor and pharmacy details are not expanded out. The current user must have read
-access to the patient's data.
+doctor and pharmacy details are not expanded out. To get a successful response from
+this endpoint, the current user must have read access to the patient. Further, only
+medications for which the current user has read access will be returned.
 
 + Parameters
     + patientid (integer, required)
@@ -342,6 +373,9 @@ access to the patient's data.
                             frequency: 1,
                             times_of_day: ["after_lunch", "before_sleep"]
                         },
+                        access_anyone: "default",
+                        access_family: "default",
+                        access_prime: "default",
                         doctor_id: 1,
                         pharmacy_id: 1
                     },
@@ -354,7 +388,7 @@ access to the patient's data.
 ## Medication [/patients/{patientid}/medications/{medicationid}]
 ### Retrieve a Medication [GET]
 View information on an individual medication. Doctor and pharmacy details are expanded out.
-The current user must have read access to the patient's data.
+The current user must have read access to **both** the patient and the medication.
 
 + Parameters
     + patientid (integer, required)
@@ -401,6 +435,9 @@ The current user must have read access to the patient's data.
                     frequency: 1,
                     times_of_day: ["after_lunch", "before_sleep"]
                 },
+                access_anyone: "default",
+                access_family: "default",
+                access_prime: "default",
                 doctor: {
                     id: 1,
                     name: "Dr. Y",
@@ -450,7 +487,7 @@ The current user must have read access to the patient's data.
 
 ### Change a Med's Info [PUT]
 Change information (all keys apart from `id`) of an individual medication. The current
-user must have write access to the patient's data.
+user must have read access to the patient and write access to the medication.
 
 + Parameters
     + patientid (integer, required)
@@ -477,7 +514,21 @@ user must have write access to the patient's data.
     + schedule (dictionary, optional)
 
         As in `POST`. A whole new schedule must be sent.
+    + access_prime (string, optional)
 
+        The access permissions users in the `prime` group should have to this medication,
+        overriding the patient-wide permissions. Must be either `read`, `write`, `none`
+        or `default`. Defaults to `default`.
+    + access_family (string, optional)
+
+        The access permissions users in the `family` group should have to this medication,
+        overriding the patient-wide permissions. Must be either `read`, `write`, `none`
+        or `default`. Defaults to `default`.
+    + access_anyone (string, optional)
+
+        The access permissions users in the `anyone` group should have to this medication,
+        overriding the patient-wide permissions. Must be either `read`, `write`, `none`
+        or `default`. Defaults to `default`.
     + doctor_id (integer, optional) - ID of the doctor prescribing the patient's medication
     + pharmacy_id (integer, optional) - ID of the pharmacy selling the patient's medication
 
@@ -507,6 +558,9 @@ user must have write access to the patient's data.
                     frequency: 1,
                     times_of_day: ["after_lunch", "before_sleep"]
                 },
+                access_anyone: "write",
+                access_family: "write",
+                access_prime: "write",
                 doctor_id: 1,
                 pharmacy_id: 1
             }
@@ -523,6 +577,9 @@ user must have write access to the patient's data.
     + `invalid_quantity` (400) - quantity not a positive integer
     + `invalid_fill_date` (400) - fill date is not a YYYY-MM-DD date
     + `invalid_schedule` (400) - schedule is not specified in the format specified above
+    + `invalid_access_anyone` (400) - the `access_anyone` field, if passed, must be either `read`, `write`, `default` or `none`
+    + `invalid_access_family` (400) - the `access_family` field, if passed, must be either `read`, `write`, `default` or `none`
+    + `invalid_access_prime` (400) - the `access_prime` field, if passed, must be either `read`, `write`, `default` or `none`
     + `invalid_doctor_id` (400) - a doctor with that ID was not found
     + `invalid_pharmacy_id` (400) - a pharmacy with that ID was not found
     
@@ -549,6 +606,9 @@ user must have write access to the patient's data.
                     frequency: 1,
                     times_of_day: ["after_lunch", "before_sleep"]
                 },
+                access_anyone: "write",
+                access_family: "write",
+                access_prime: "write",
                 doctor_id: 1,
                 pharmacy_id: 1,
                 success: true
@@ -556,8 +616,8 @@ user must have write access to the patient's data.
 
 
 ### Delete a Medication [DELETE]
-Remove a single medication. The current user must have write access to the patient's
-data.
+Remove a single medication. The current user must have read access to the patient and
+write access to the medication.
 
 + Parameters
     + patientid (integer, required)
@@ -604,6 +664,9 @@ data.
                     frequency: 1,
                     times_of_day: ["after_lunch", "before_sleep"]
                 },
+                access_anyone: "write",
+                access_family: "write",
+                access_prime: "write",
                 doctor_id: 1,
                 pharmacy_id: 1,
                 success: true

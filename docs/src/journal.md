@@ -9,8 +9,8 @@ dose event.
 
 ## Journal Entries [/patients/{patientid}/journal]
 ### Create an Entry [POST]
-Store details of a new journal entry (the current user will need write access to
-the patient).
+Store details of a new journal entry (the current user will need write access to **both**
+the patient and every medication in `medication_ids`).
 
 + Parameters
     + patientid (integer, required)
@@ -77,7 +77,9 @@ the patient).
 ### Retrieve all Entries [GET]
 Get a list of all journal events for the patient. Includes full information on each,
 but each medication ID in `medication_ids` is not expanded out into a full medication
-object. The current user will need read access to the patient's data.
+object. To call this endpoint successfully, the user will need read access to the patient.
+Further, each journal entry will only be shown if the user has read access to all medications
+tagged in that journal entry.
 
 + Parameters
     + patientid (integer, required)
@@ -159,8 +161,8 @@ object. The current user will need read access to the patient's data.
 ## Journal Entry [/patients/{patientid}/journal/{journalid}]
 ### Retrieve One Entry [GET]
 View information on an individual journal entry. `medication_ids` is helpfully
-expanded out into `medications`. The current user will need read access to the
-patient's data.
+expanded out into `medications`. The current user will need read access to **both**
+the patient's data and all medications tagged in `medication_ids`.
 
 + Parameters
     + patientid (integer, required)
@@ -212,7 +214,9 @@ patient's data.
 
 ### Change an Entry [PUT]
 Change information (medications, date and/or text) of a single journal entry. The current
-user will need write access to the patient's data.
+user will need write access to the patient, write access to every medication tagged in the
+old `medication_ids` **and** write access to every medication tagged in the newly-updated
+`medication_ids`.
 
 + Parameters
     + patientid (integer, required)
@@ -276,7 +280,8 @@ user will need write access to the patient's data.
             }
 
 ### Delete an Entry [DELETE]
-Remove a single journal entry. The current user will need write access to the patient's data.
+Remove a single journal entry. The current user will need write access to both the patient
+and all medications tagged in `medication_ids`.
 
 + Parameters
     + patientid (integer, required)

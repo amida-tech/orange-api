@@ -13,13 +13,17 @@ var expect = chakram.expect;
 // verify successful responses
 /*eslint-disable key-spacing */
 var patientSchema = {
-    required: ["id", "name", "access", "sex", "birthdate", "avatar"],
+    required: ["id", "name", "sex", "birthdate", "avatar", "access", "group", "access_anyone", "access_family", "access_prime"],
     properties: {
-        id:         { type: "number" },
-        name:       { type: "string" },
-        access:     { type: "string" },
-        sex:        { type: "string" },
-        avatar:     { type: "string" },
+        id:             { type: "number" },
+        name:           { type: "string" },
+        sex:            { type: "string" },
+        avatar:         { type: "string" },
+        access:         { type: "string" },
+        group:          { type: ["string", "null"] },
+        access_anyone:  { type: "string" },
+        access_family:  { type: "string" },
+        access_prime:   { type: "string" },
         birthdate:  { type: ["string", "null"] }
     }
 };

@@ -6,6 +6,7 @@ var chakram         = require("chakram"),
     auth            = require("../common/auth.js"),
     patients        = require("../patients/common.js"),
     fixtures        = require("./fixtures.js"),
+    medications     = require("../medications/common.js"),
     common          = require("./common.js");
 
 var expect = chakram.expect;
@@ -44,6 +45,28 @@ describe("Doses", function () {
         patients.itRequiresAuthentication(curry(update)({}, 1));
         patients.itRequiresValidPatientId(curry(update)({}, 1));
         common.itRequiresValidDoseId(curry(update)({}));
+        patients.itRequiresWriteAuthorization(curry(updateDose)({}, {}));
+        // require write authorization for both the original and new medication ID
+        medications.itRequiresWriteAuthorization(function (patient, newMed) {
+            // create original medication owned by patient, and then test updating to passed med ID
+            return Q.nbind(patient.createMedication, patient)({name: "foo"}).then(function (oldMed) {
+                return updateDose({
+                    medication_id: newMed._id
+                }, {
+                    medication_id: oldMed._id
+                }, patient);
+            });
+        });
+        medications.itRequiresWriteAuthorization(function (patient, oldMed) {
+            // create new medication owned by patient, and then test updating passed med ID to this
+            return Q.nbind(patient.createMedication, patient)({name: "foo"}).then(function (newMed) {
+                return updateDose({
+                    medication_id: newMed._id
+                }, {
+                    medication_id: oldMed._id
+                }, patient);
+            });
+        });
 
         it("should let me update doses for my patients", function () {
             return expect(updatePatientDose({}, {})).to.be.a.dose.success;

@@ -38,6 +38,9 @@ describe("Journal", function () {
         patients.itRequiresAuthentication(curry(remove)(1));
         patients.itRequiresValidPatientId(curry(remove)(1));
         common.itRequiresValidEntryId(remove);
+        // check it requires write access to patient
+        patients.itRequiresWriteAuthorization(curry(removeEntry)({}));
+        it("requires write access to all medications specified in medication_ids");
 
         it("should let me remove entries for my patients", function () {
             return expect(removePatientEntry({})).to.be.a.journal.success;

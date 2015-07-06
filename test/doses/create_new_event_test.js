@@ -5,6 +5,7 @@ var chakram         = require("chakram"),
     Q               = require("q"),
     auth            = require("../common/auth.js"),
     patients        = require("../patients/common.js"),
+    medications     = require("../medications/common.js"),
     fixtures        = require("./fixtures.js");
 
 var expect = chakram.expect;
@@ -41,9 +42,15 @@ describe("Doses", function () {
             return patients.testMyPatient({}).then(curry(createDose)(data));
         };
 
-        // check it requires a valid user and patient
+        // check it requires a valid user, patient and write authorization to both the patient and medication
         patients.itRequiresAuthentication(curry(create)({}));
         patients.itRequiresValidPatientId(curry(create)({}));
+        patients.itRequiresWriteAuthorization(curry(createDose)({}));
+        medications.itRequiresWriteAuthorization(function (patient, medication) {
+            return createDose({
+                medication_id: medication._id
+            }, patient);
+        });
 
         it("should let me create valid doses for my patients", function () {
             return expect(createPatientDose({})).to.be.a.dose.createSuccess;

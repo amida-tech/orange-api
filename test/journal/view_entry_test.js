@@ -38,6 +38,9 @@ describe("Journal", function () {
         patients.itRequiresAuthentication(curry(show)(1));
         patients.itRequiresValidPatientId(curry(show)(1));
         common.itRequiresValidEntryId(show);
+        // check it requires read access to patient
+        patients.itRequiresReadAuthorization(curry(showEntry)({}));
+        it("requires read access to all medications specified in the old medication_ids");
 
         it("should let me view entries for my patients", function () {
             return expect(showPatientEntry({})).to.be.a.journal.viewSuccess;

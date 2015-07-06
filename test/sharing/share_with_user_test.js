@@ -78,17 +78,17 @@ describe("Patients", function () {
         it("requires a group", function () {
             return expect(shareAPatientWithExisting({
                 group: undefined
-            })).to.be.an.api.error(400, "group_required");
+            })).to.be.an.api.error(400, "invalid_group");
         });
         it("rejects a null group", function () {
             return expect(shareAPatientWithExisting({
                 group: null
-            })).to.be.an.api.error(400, "group_required");
+            })).to.be.an.api.error(400, "invalid_group");
         });
         it("rejects a blank group", function () {
             return expect(shareAPatientWithExisting({
                 group: ""
-            })).to.be.an.api.error(400, "group_required");
+            })).to.be.an.api.error(400, "invalid_group");
         });
         it("rejects an invalid group", function () {
             return expect(shareAPatientWithExisting({
@@ -110,17 +110,17 @@ describe("Patients", function () {
         it("requires an access level", function () {
             return expect(shareAPatientWithExisting({
                 access: undefined
-            })).to.be.an.api.error(400, "access_required");
+            })).to.be.an.api.error(400, "invalid_access");
         });
         it("rejects a null access level", function () {
             return expect(shareAPatientWithExisting({
                 access: null
-            })).to.be.an.api.error(400, "access_required");
+            })).to.be.an.api.error(400, "invalid_access");
         });
         it("rejects a blank access level", function () {
             return expect(shareAPatientWithExisting({
                 access: ""
-            })).to.be.an.api.error(400, "access_required");
+            })).to.be.an.api.error(400, "invalid_access");
         });
         it("rejects an invalid access level", function () {
             return expect(shareAPatientWithExisting({
@@ -132,6 +132,11 @@ describe("Patients", function () {
                 access: "read"
             })).to.be.a.share.createSuccess;
         });
+        it("accepts a valid default access level", function () {
+            return expect(shareAPatientWithExisting({
+                access: "default"
+            })).to.be.a.share.createSuccess;
+        });
 
         it("lets me share with an existing user", function () {
             return shareAPatientWithExisting().then(function (response) {
@@ -141,12 +146,18 @@ describe("Patients", function () {
         });
 
         describe("sharing with a user who doesn't exist yet", function () {
+            var patient, shareId;
+
             it("lets me share with them initially", function () {
-                return shareAPatient({
-                    email: "not.a@currentuser.com"
+                return patients.testMyPatient({}).then(function (p) {
+                    patient = p;
+                    return sharePatient({
+                        email: "not.a@currentuser.com"
+                    }, patient);
                 }).then(function (response) {
                     expect(response).to.be.a.share.createSuccess;
                     expect(response.body.is_user).to.be.false;
+                    shareId = response.body.id;
                 });
             });
 
@@ -158,8 +169,14 @@ describe("Patients", function () {
                     });
                 });
 
-                // TODO: implement once view endpoint is implemented
-                it("show that the user now exists");
+                it("shows that the user now exists", function () {
+                    // no view endpoint, so we hackishly use the edit one
+                    var url = util.format("http://localhost:3000/v1/patients/%d/shares/%d", patient._id, shareId);
+                    return chakram.put(url, {}, auth.genAuthHeaders(patient.user.accessToken)).then(function (response) {
+                        expect(response).to.be.a.share.success;
+                        expect(response.body.is_user).to.be.true;
+                    });
+                });
             });
         });
     });

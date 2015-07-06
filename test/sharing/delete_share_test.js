@@ -14,7 +14,7 @@ describe("Patients", function () {
     describe("Deleting a Share (DELETE /patients/:patientid/shares/:shareid)", function () {
         // setup test user and patient
         var patient;
-        before(function () {
+        beforeEach(function () {
             return patients.testMyPatient({}).then(function (p) {
                 patient = p;
             });
@@ -63,14 +63,18 @@ describe("Patients", function () {
             it("successfully removes a share with them", function () {
                 return expect(removeAPatientShare({ email: user.email })).to.be.a.share.success;
             });
-
-            it("doesn't let the user view patient details after a share has been removed");
         });
 
         describe("with a nonexistent user", function () {
             it("successfully removes a share with them", function () {
                 return expect(removeAPatientShare({ email: "doesntexist@email.com" })).to.be.a.share.success;
             });
+        });
+
+        it("does't let the owner remove their share", function () {
+            // patient recreated for each test with just the owner share
+            var endpoint = remove(patient.shares[0]._id, patient._id, patient.user.accessToken);
+            return expect(endpoint).to.be.an.api.error(400, "is_owner");
         });
     });
 });

@@ -94,5 +94,7 @@ describe("Patients", function () {
                 });
             });
         });
+
+        it("allows filtering");
     });
 });

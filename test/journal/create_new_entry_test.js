@@ -40,6 +40,9 @@ describe("Journal", function () {
         // check it requires a valid user and patient
         patients.itRequiresAuthentication(curry(create)({}));
         patients.itRequiresValidPatientId(curry(create)({}));
+        // check it requires write access to patient
+        patients.itRequiresWriteAuthorization(curry(createEntry)({}));
+        it("requires write access to all medications specified in medication_ids");
 
         it("should let me create valid entries for my patients", function () {
             return expect(createPatientEntry({})).to.be.a.journal.createSuccess;

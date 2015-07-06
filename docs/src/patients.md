@@ -6,30 +6,38 @@ and users).
 When a user is created, a corresponding patient for them is also created. The user can then
 optionally create more patients for e.g., children dependents.
 
-Patients can then be shared with other users. There are three levels of sharing: *family prime*,
-*family* and *anyone*. *Family prime* is intended to represent family extremely close to the patient
-(e.g., parents) who should have access to almost everything, *family* is intended for wider
-family of the patient, and *anyone* is intended for everyone else (e.g., doctors).
+Patients can then be shared with other users. There are three levels of sharing: *family prime*
+(`prime`), *family* (`family`) and *anyone* (`anyone`). *Family prime* is intended to represent
+family extremely close to the patient (e.g., parents) who should have access to almost everything,
+*family* is intended for wider family of the patient, and *anyone* is intended for everyone else
+(e.g., doctors).
 
 At the patient level, a user's access to data is determined by which one of the above three groups
-they're a member of. A patient can set global *read* or *write* permissions for each of the three
-share categories, as well as an additional overriding *read*/*write* permission for each user
-the patient is shared with.
+they're a member of. A patient can set global *read* (`read`) or *read-write* (`write`) permissions
+for each of the three share categories, as well as an additional overriding *read*/*write* permission
+for each user the patient is shared with (so each share has either `read`, `write` or `default`
+permissions).
 
-These generic permissions control access to most of a patient's resources, but medications and
-journal entries are slightly more complicated. As described in the medications section, each
+In a patient response object, `access_anyone`, `access_family` and `access_prime` represent the permissions
+of the *anyone*/*family*/*family prime* share user groups respectively. The `access` field denotes
+the current user's access to the patient, and will always be either `read` or `write` (if it is set
+to `default`, it will be changed to the relevant value; this is **not** true of the
+`/patients/:id/share/` endpoints).
+
+These generic permissions control access to most of a patient's resources, but medications, journal
+entries, doses and schedules are slightly more complicated. As described in the medications section, each
 medication has its own additional set of access controls. For each of their medications, the patient
-can explicitly set the access level of *family prime*, *family* and *anyone*.
+can explicitly set the access level of *family prime*, *family* and *anyone*. This then controls access
+to that medication, any journal entries tagged with that medication, any schedule events for that
+medication, and any dose events for that medication.
 
-There are four levels here: `read`, `write`, `implicit` and `none`. `read`, `write` and `none` do as
-expected, and `implicit` allows users access to information _related to_ the medication, but not
-specifically about the medication. This means they can view journal entries with the medication
-tagged in, but not the medication data itself. At the moment, it doesn't grant any other permissions
-over `none`, but there is the capability for expansion in the future.
+There are three access levels that can be set for each group on this per-medication basis: `read`,
+`write` and `none`. `read` and `write` behave as they do in a patient-wide context, and `none` means
+that that user group has no access at all to the medication or it's resources.
 
-Each patient returned by the API has an `avatar` field containing the URL of that patient's
-avatar (image) endpoint. As documented below, `GET`ting this URL returns the user's avatar
-(initially a default image) and `POST`ing to this URL with raw image data sets the avatar
+Each patient returned by the API has an `avatar` field containing the path of that patient's
+avatar (image) endpoint. As documented below, `GET`ting this path returns the user's avatar
+(initially a default image) and `POST`ing to this path with raw image data sets the avatar
 to the POSTed data.
 
 ## User's Patients [/patients]
@@ -47,6 +55,18 @@ the child of the patient.
     + sex (string, optional)
 
         String representing sex of the user. Must be "male", "female", "other" or "unspecified".
+    + access_anyone (*string*)
+
+        The default access permissions that users this patient is shared with under the `anyone`
+        group should have. Must be either `read` or `write`.  Defaults to `read`.
+    + access_family (*string*)
+
+        The default access permissions that users this patient is shared with under the `family`
+        group should have. Must be either `read` or `write`.  Defaults to `read`.
+    + access_prime (*string*)
+
+        The default access permissions that users this patient is shared with under the `prime` group
+        should have. Must be either `read` or `write`.  Defaults to `write`.
     
 + Request
     + Headers
@@ -59,7 +79,10 @@ the child of the patient.
                 name: "Dependent Patient",
                 birthdate: "1990-01-01",
                 sex: "male",
-                avatar: "/v1/patients/1/avatar.jpg"
+                avatar: "/v1/patients/1/avatar.jpg",
+                access_anyone: "read",
+                access_family: "read",
+                access_prime: "write"
             }
 
 + Response 201
@@ -73,6 +96,9 @@ the child of the patient.
         the sex field, if passed, must be either `male`, `female`, `other` or `unspecified`
 
     + `invalid_birthdate` (400) - the birthdate field, if passed, must be a valid `YYYY-MM-DD` date
+    + `invalid_access_anyone` (400) - the `access_anyone` field, if passed, must be either `read` or `write`
+    + `invalid_access_family` (400) - the `access_family` field, if passed, must be either `read` or `write`
+    + `invalid_access_prime` (400) - the `access_prime` field, if passed, must be either `read` or `write`
 
     + Body
 
@@ -82,13 +108,16 @@ the child of the patient.
                 birthdate: "1990-01-01",
                 sex: "male",
                 avatar: "/v1/patients/1/avatar.jpg",
+                access_anyone: "read",
+                access_family: "read",
+                access_prime: "write",
                 access: "write",
+                group: "owner",
                 success: true
             }
 
 ### List Patients [GET]
-View a list of all patients the current user has access to: both read
-(`access="read"`) and write (`access="write"`).
+View a list of all patients the current user has access to (either read or write).
 
 + Parameters
     + limit (integer, optional)
@@ -139,7 +168,11 @@ View a list of all patients the current user has access to: both read
                         birthdate: "1990-01-01",
                         sex: "male",
                         avatar: "/v1/patients/1/avatar.jpg",
-                        access: "write"
+                        access_anyone: "read",
+                        access_family: "read",
+                        access_prime: "write",
+                        access: "write",
+                        group: "owner"
                     },
                     ...
                 ],
@@ -151,7 +184,8 @@ View a list of all patients the current user has access to: both read
 ## Patient [/patients/{patientid}]
 ### View Patient Info [GET]
 View the name of a specific patient as well as the current user's access (`read` or
-`write`) to them. To view and modify other user's access to this patient, see the
+`write`) to them, and the group the patient is shared with them through (either `owner`,
+`prime`, `family` or `anyone`). To view and modify other user's access to this patient, see the
 `/patients/{id}/shares` endpoint.
 
 + Parameters
@@ -180,19 +214,24 @@ View the name of a specific patient as well as the current user's access (`read`
                 birthdate: "1990-01-01",
                 sex: "male",
                 avatar: "/v1/patients/1/avatar.jpg",
+                access_anyone: "read",
+                access_family: "read",
+                access_prime: "write",
                 access: "write",
+                group: "prime",
                 success: true
             }
 
 ### Update Patient Info [PUT]
-Update the name of a specific patient whom the user has `write` access to, as well
-as toggle the current user's access from `write` to `read` or `none`. **This switch is
-permanent** so should not be undertaken lightly: it means the user will never be able to
-modify (for `read`) or even read (for `none`) any details (or medications or etc) of this
-patient again, unless another user with `write` access reshares the patient with them.
+Update a patients' details. This requires the user to have `write` access to the patient.
+Name, group and access level can be modified here. The access level can be modified in
+two ways: setting `access` (to `read`, `write`, `none` or `default`) will set the access level the
+current user has to the patient, and setting `access_prime`, `access_family` or `access_anyone`
+(to `read` or `write`) will set the group-wide access levels for the patient.
 
-If the user's access is changed to `none` and the patient is not shared with any other
-users, then the patient and all its data _will be deleted_.
+The owner of a patient cannot change their access level from `write` or their group from `owner`.
+
+Setting `access` to `none` will stop sharing the patient with the current user.
 
 + Parameters
     + patientid (integer, required)
@@ -206,14 +245,24 @@ users, then the patient and all its data _will be deleted_.
     + sex (string, optional)
 
         String representing sex of the user. Must be "male", "female", "other" or "unspecified".
-
     + access (string, optional)
-    
-        If and only if the user's current access to the patient is `write` (which
-        is needed to get something other than a 403 `unauthorized` response from this
-        endpoint anyway), then `read` can be passed here to lower their access down to
-        read only, or `none` to remove their access to the patient's data at all.
-        **This is permanent, and should be used with extreme caution**.
+
+        Explicitly set the patient's access level to `read`, `write`, `default` or `none`.
+        `none` stops sharing the patient with the user. **This is permanent and potentially
+        irreversible, and hence should be used with caution**.
+    + group (string, optional)
+
+        Change the group of the current user. If the user is the `owner`, their group cannot be changed.
+        Otherwise, the group can be changed between `prime`, `family` and `anyone`.
+    + access_anyone (string, optional)
+
+        Change the access level of the `anyone` user share group. Must be either `read` or `write.
+    + access_family (string, optional)
+
+        Change the access level of the `family` user share group. Must be either `read` or `write.
+    + access_prime (string, optional)
+
+        Change the access level of the `prime` user share group. Must be either `read` or `write.
 
 + Request
     + Headers
@@ -225,7 +274,12 @@ users, then the patient and all its data _will be deleted_.
             {
                 name: "Gin Smith",
                 birthdate: "1991-01-01",
-                sex: "female"
+                sex: "female",
+                access: "write",
+                group: "family",
+                access_anyone: "read",
+                access_family: "read",
+                access_prime: "read"
             }
 
 
@@ -236,11 +290,16 @@ users, then the patient and all its data _will be deleted_.
     + `invalid_access_token` (401) - the access token specified is invalid
     + `invalid_patient_id` (404) - a patient with the specified ID was not found
     + `unauthorized` (403) - the current user does not have write access to this patient
-    + `invalid_access` (400) - the access string is not `none` or `read`
     + `invalid_sex` (400)
 
         the sex field, if passed, must be either `male`, `female`, `other` or `unspecified`
     + `invalid_birthdate` (400) - the birthdate field, if passed, must be a valid `YYYY-MM-DD` date
+    + `invalid_access` (400) - the access field, if passed, must be either `read`, `write`, `default` or `none`
+    + `invalid_group` (400) - the group field, if passed, must be either `prime`, `family` or `anyone`
+    + `is_owner` (400) - the share belongs to the user owning the patient so cannot be changed
+    + `invalid_access_anyone` (400) - the `access_anyone` field, if passed, must be either `read` or `write`
+    + `invalid_access_family` (400) - the `access_family` field, if passed, must be either `read` or `write`
+    + `invalid_access_prime` (400) - the `access_prime` field, if passed, must be either `read` or `write`
 
     + Body
 
@@ -250,14 +309,18 @@ users, then the patient and all its data _will be deleted_.
                 birthdate: "1991-01-01",
                 sex: "female",
                 avatar: "/v1/patients/1/avatar.jpg",
+                access_anyone: "read",
+                access_family: "read",
+                access_prime: "read",
                 access: "write",
+                group: "family",
                 success: true
             }
 
 ### Delete Patient [DELETE]
-Remove a patient for whom the user has write access to. **This permanently removes
-the patient, all of their associated habits, doctors, pharmacies, medications and dose events
-_for all users the patient is shared with_** and as such should be used with extreme caution.
+Remove a patient for whom the user is the owner. **This permanently removes the patient, all
+of their associated habits, doctors, pharmacies, medications and dose events _for all
+users the patient is shared with_** and as such should be used with extreme caution.
 
 To completely remove a patient from the user's sphere of influence, note that `PUT` should be
 called with `access="none"` rather than this method.
@@ -288,7 +351,11 @@ called with `access="none"` rather than this method.
                 birthdate: "1991-01-01",
                 sex: "female",
                 avatar: "/v1/patients/1/avatar.jpg",
+                access_anyone: "read",
+                access_family: "read",
+                access_prime: "write",
                 access: "write",
+                group: "owner",
                 success: true
             }
 
@@ -299,6 +366,8 @@ View the image avatar of a specific patient. File extensions can be added to the
 **will not** be converted to the format associated with the extension, but instead
 just returned in whatever format it was stored in. The URL in the avatar field in
 a patient's details will **automatically include the correct extension** for the image.
+
+The user needs read access to the patient.
 
 The `Content-Type` header will be populated with the correct MIME type.
 
@@ -328,6 +397,8 @@ The `Content-Type` header will be populated with the correct MIME type.
 Upload the image avatar of a specific patient. Again, file extensions can be added to
 the URL but are ignored and will not be used to convert the image format. Note that for this
 endpoint, raw binary data should be `POST`ed rather than `application/json`-encoded data.
+
+The user needs write access to the patient.
 
 Also note that this endpoint uses `POST` not `PUT` contrary to REST resource routing
 conventions.
@@ -366,7 +437,7 @@ conventions.
 This endpoint represents all of the users a specific patient is shared with: including
 both `read` and `write` access. The IDs in this section represent patient-user relationships,
 not users themselves, so if patient `1` is shared with user `7` then the shared ID may be `16`,
-rather than 7.
+rather than `7`.
 
 ### Share with a User [POST]
 Share a patient's data (a patient for whom the user has write access) with a new user specified by
@@ -402,7 +473,8 @@ patient's) data with the father (another user).
     
             {
                 email: "care@giver.com",
-                access: "read"
+                access: "read",
+                group: "family"
             }
 
 + Response 201
@@ -430,6 +502,7 @@ patient's) data with the father (another user).
                 id: 1,
                 email: "care@giver.com",
                 access: "read",
+                group: "family",
                 is_user: true,
                 success: true
             }
@@ -475,6 +548,11 @@ who have (either `read` or `write`) access to the patient.
         filter results by selecting only users with the specified level of access (either
         `read` or `write`)
 
+    + group (string, optional)
+
+        filter results by selecting only users who are part of the specified share group (either
+        `owner`, `prime`, `family` or `anyone`)
+
 + Request
     + Headers
 
@@ -492,6 +570,7 @@ who have (either `read` or `write`) access to the patient.
     + `invalid_sort_order` (400) - the specified sort order is invalid
     + `invalid_is_user` (400) - the specified is_user value to filter by is invalid
     + `invalid_access` (400) - the specified access value to filter by is invalid
+    + `invalid_group` (400) - the specified group value to filter by is invalid
 
     + Body
 
@@ -501,6 +580,7 @@ who have (either `read` or `write`) access to the patient.
                         id: 1,
                         email: "care@giver.com",
                         access: "write",
+                        group: "family",
                         is_user: true
                     },
                     ...
@@ -515,9 +595,7 @@ Update the access another user has to a patient (the current user of course is r
 to have `write` access to this patient). To modify the current user's access, see the
 convenience method `PUT /patients/:patientid`.
 
-If the user's access is changed to `none` and the patient is not shared with any other
-users, then the patient and all its data _will be deleted_ (this can of course only happen
-with this endpoint if the user who's share is being modified is the current user).
+Neither access nor group can be modified for the share for a user who owns a patient.
 
 + Parameters
     + patientid (integer, required)
@@ -529,7 +607,10 @@ with this endpoint if the user who's share is being modified is the current user
 
     + access (string, required)
 
-        `read` or `write` to signify the new level of access the specified user should have to the patient
+        `read`, `write` or `default` to signify the new level of access the specified user should have to the patient
+    + access (string, required)
+
+        `read`, `write` or `default` to signify the new level of access the specified user should have to the patient
     
 + Request
     + Headers
@@ -539,7 +620,8 @@ with this endpoint if the user who's share is being modified is the current user
     + Body
     
             {
-                access: "write"
+                access: "write",
+                group: "family"
             }
 
 + Response 200
@@ -555,6 +637,8 @@ with this endpoint if the user who's share is being modified is the current user
         the same as the user ID)
 
     + `invalid_access` (400) - the specified access value to change to is invalid
+    + `invalid_group` (400) - the specified group value to change to is invalid
+    + `is_owner` (400) - the share belongs to the user owning the patient so cannot be modified
 
     + Body
 
@@ -562,6 +646,7 @@ with this endpoint if the user who's share is being modified is the current user
                 id: 1,
                 email: "care@giver.com",
                 access: "write",
+                group: "family",
                 is_user: true,
                 success: true
             }
@@ -571,8 +656,7 @@ Stop sharing the specified patient's data with a specified user. The current use
 of course need write access to the patient. To stop sharing a patient with the _current_
 user, see the convenience method `PUT /patients/:patientid`.
 
-If this is the last user whom the patient is shared with, then the patient and _all their data_
-will be deleted, so take care.
+The owner's share cannot be deleted.
 
 + Parameters
     + patientid (integer, required)
@@ -598,6 +682,7 @@ will be deleted, so take care.
 
         A patient-user sharing relationship with the specified ID was not found (remember, this is _not_
         the same as the user ID)
+    + `is_owner` (400) - the share belongs to the user owning the patient so cannot be removed
 
     + Body
 
@@ -605,6 +690,7 @@ will be deleted, so take care.
                 id: 1,
                 email: "care@giver.com",
                 access: "write",
+                group: "family",
                 is_user: true,
                 success: true
             }

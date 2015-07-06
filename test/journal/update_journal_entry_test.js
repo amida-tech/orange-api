@@ -39,6 +39,10 @@ describe("Journal", function () {
         patients.itRequiresAuthentication(curry(update)({}, 1));
         patients.itRequiresValidPatientId(curry(update)({}, 1));
         common.itRequiresValidEntryId(curry(update)({}));
+        // check it requires write access to patient
+        patients.itRequiresWriteAuthorization(curry(updateEntry)({}, {}));
+        it("requires write access to all medications specified in the old medication_ids");
+        it("requires write access to all medications specified in the new medication_ids");
 
         it("should let me edit entries for my patients", function () {
             return expect(updatePatientEntry({}, {})).to.be.a.journal.success;

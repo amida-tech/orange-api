@@ -1,11 +1,12 @@
 "use strict";
-var chakram     = require("chakram"),
-    curry       = require("curry"),
-    Q           = require("q"),
-    util        = require("util"),
-    auth        = require("../common/auth.js"),
-    fixtures    = require("./fixtures.js"),
-    patients    = require("../patients/common.js"),
+var chakram         = require("chakram"),
+    curry           = require("curry"),
+    Q               = require("q"),
+    util            = require("util"),
+    auth            = require("../common/auth.js"),
+    fixtures        = require("./fixtures.js"),
+    patients        = require("../patients/common.js"),
+    common          = require("./common.js"),
     doctorFixtures  = require("../doctors/fixtures.js"),
     pharmFixtures   = require("../pharmacies/fixtures.js");
 
@@ -29,6 +30,9 @@ describe("Medications", function () {
 
         patients.itRequiresAuthentication(curry(update)({}, 1));
         patients.itRequiresValidPatientId(curry(update)({}, 1));
+        common.itRequiresWriteAuthorization(function (patient, medication) {
+            return update({}, medication._id, patient._id, patient.user.accessToken);
+        });
 
         // helpers to update patient and medication
         var updatePatientMedication = function (data, modifications) {
@@ -215,6 +219,43 @@ describe("Medications", function () {
             return expect(updatePatientMedication({}, {
                 pharmacy_id: 9999
             })).to.be.an.api.error(400, "invalid_pharmacy_id");
+        });
+
+        // checking access_X validation
+        it("rejects a null value for access_X", function () {
+            return expect(updatePatientMedication({}, {
+                access_anyone: null
+            })).to.be.an.api.error(400, "invalid_access_anyone");
+        });
+        it("rejects a blank value for access_X", function () {
+            return expect(updatePatientMedication({}, {
+                access_anyone: ""
+            })).to.be.an.api.error(400, "invalid_access_anyone");
+        });
+        it("rejects an invalid value for access_X", function () {
+            return expect(updatePatientMedication({}, {
+                access_anyone: "foo"
+            })).to.be.an.api.error(400, "invalid_access_anyone");
+        });
+        it("accepts 'read' for access_X", function () {
+            return expect(updatePatientMedication({}, {
+                access_anyone: "read"
+            })).to.be.a.medication.success;
+        });
+        it("accepts 'write' for access_X", function () {
+            return expect(updatePatientMedication({}, {
+                access_anyone: "write"
+            })).to.be.a.medication.success;
+        });
+        it("accepts 'default' for access_X", function () {
+            return expect(updatePatientMedication({}, {
+                access_anyone: "default"
+            })).to.be.a.medication.success;
+        });
+        it("accepts 'none' for access_X", function () {
+            return expect(updatePatientMedication({}, {
+                access_anyone: "none"
+            })).to.be.a.medication.success;
         });
 
         describe("testing valid doctor and pharmacy IDs", function () {

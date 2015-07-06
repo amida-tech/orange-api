@@ -6,6 +6,7 @@ var chakram         = require("chakram"),
     auth            = require("../common/auth.js"),
     patients        = require("../patients/common.js"),
     fixtures        = require("./fixtures.js"),
+    medications     = require("../medications/common.js"),
     common          = require("./common.js");
 
 var expect = chakram.expect;
@@ -44,6 +45,12 @@ describe("Doses", function () {
         patients.itRequiresAuthentication(curry(remove)(1));
         patients.itRequiresValidPatientId(curry(remove)(1));
         common.itRequiresValidDoseId(remove);
+        patients.itRequiresWriteAuthorization(curry(removeDose)({}));
+        medications.itRequiresWriteAuthorization(function (patient, medication) {
+            return removeDose({
+                medication_id: medication._id
+            }, patient);
+        });
 
         it("should let me remove doses for my patients", function () {
             return expect(removePatientDose({})).to.be.a.dose.success;

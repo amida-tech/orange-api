@@ -122,7 +122,7 @@ current user will need read access to the patient.
 ## Doctor [/patients/{patientid}/doctors/{doctorid}]
 ### Retrieve a Doctor [GET]
 View information on an individual doctor. The current user will need read access to the
-patient's data.
+patient.
 
 + Parameters
     + patientid (integer, required)
@@ -159,7 +159,7 @@ patient's data.
 
 ### Change a Doctor's Info [PUT]
 Change information (name, phone and/or address) of an individual doctor. The current user will need
-write access to the patient's data.
+write access to the patient data.
 
 + Parameters
     + patientid (integer, required)

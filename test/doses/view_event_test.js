@@ -6,6 +6,7 @@ var chakram         = require("chakram"),
     auth            = require("../common/auth.js"),
     patients        = require("../patients/common.js"),
     fixtures        = require("./fixtures.js"),
+    medications     = require("../medications/common.js"),
     common          = require("./common.js");
 
 var expect = chakram.expect;
@@ -44,6 +45,12 @@ describe("Doses", function () {
         patients.itRequiresAuthentication(curry(show)(1));
         patients.itRequiresValidPatientId(curry(show)(1));
         common.itRequiresValidDoseId(show);
+        patients.itRequiresReadAuthorization(curry(showDose)({}));
+        medications.itRequiresReadAuthorization(function (patient, medication) {
+            return showDose({
+                medication_id: medication._id
+            }, patient);
+        });
 
         it("should let me view doses for my patients", function () {
             return expect(showPatientDose({})).to.be.a.dose.viewSuccess;

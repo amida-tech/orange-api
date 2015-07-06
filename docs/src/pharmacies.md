@@ -4,7 +4,7 @@ Details for all pharmacies from whom the selected patient receives medication.
 ## Pharmacies Collection [/patients/{patientid}/pharmacies]
 ### Create a Pharmacy [POST]
 Store details of a new pharmacy. The current user will need write access to the
-patient's data.
+patient.
 
 + Parameters
     + patientid (integer, required)
@@ -123,7 +123,7 @@ patient's data.
 
 ### Retrieve all Pharmacies [GET]
 Get a list of all the patient's pharmacies. Includes full information on each.. The current
-user will need read access to the patient's data.
+user will need read access to the patient.
 
 + Parameters
     + patientid (integer, required)
@@ -188,7 +188,7 @@ user will need read access to the patient's data.
 ## Pharmacy [/patients/{patientid}/pharmacies/{pharmacyid}]
 ### Retrieve a Pharmacy [GET]
 View information on an individual pharmacy. The current user will need read access
-to the patient's data.
+to the patient.
 
 + Parameters
     + patientid (integer, required)
@@ -255,7 +255,7 @@ to the patient's data.
 
 ### Change a Pharmacy's Info [PUT]
 Change information (name, phone, address and/or hours) of an individual pharmacy. The
-current user will need write access to the patient's data.
+current user will need write access to the patient.
 
 + Parameters
     + patientid (integer, required)
@@ -350,7 +350,7 @@ current user will need write access to the patient's data.
 
 ### Delete a Pharmacy [DELETE]
 Remove information on a single pharmacy. The current user will need write access to
-the patient's data.
+the patient.
 
 + Parameters
     + patientid (integer, required)

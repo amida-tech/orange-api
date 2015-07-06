@@ -56,14 +56,9 @@ describe("Schedule", function () {
                 });
             };
 
-            // helpers to create patients and feed them into showSchedule automatically
-            var showPatientSchedule = function () {
-                return patients.testMyPatient({}).then(showSchedule);
-            };
-
-            it("should let me view my patient's schedule", function () {
-                return expect(showPatientSchedule()).to.be.a.schedule.success;
-            });
+            // check it requires read acces to patient
+            patients.itRequiresReadAuthorization(showSchedule);
+            it("only shows schedule events the user has read access to the medications of");
         });
 
         describe("with test patients", function () {
