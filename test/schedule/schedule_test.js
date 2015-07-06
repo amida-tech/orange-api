@@ -58,7 +58,67 @@ describe("Schedule", function () {
 
             // check it requires read acces to patient
             patients.itRequiresReadAuthorization(showSchedule);
-            it("only shows schedule events the user has read access to the medications of");
+
+            describe("with test data", function () {
+                // setup two patients the user has read access to
+                var user, patient, noneMedication, defaultMedication;
+                before(function () {
+                    // create two test users
+                    return Q.all([auth.createTestUser(), auth.createTestUser()]).spread(function (me, other) {
+                        user = me;
+
+                        // create patient and share read-only with main user
+                        return patients.createOtherPatient({}, me, other).then(function (p) {
+                            patient = p;
+                            return Q.nbind(p.share, patient)(me.email, "read", "anyone");
+                        });
+                    }).then(function () {
+                        // create two medications for the patient
+                        return Q.nbind(patient.createMedication, patient)({
+                            name: "foobar none",
+                            access_anyone: "none",
+                            schedule: {
+                                type: "regularly",
+                                frequency: 1,
+                                times_of_day: ["09:00"]
+                            }
+                        }).then(function (m) {
+                            noneMedication = m;
+                            return m;
+                        }).then(function () {
+                            return Q.nbind(patient.createMedication, patient)({
+                                name: "foobar def",
+                                access_anyone: "default",
+                                schedule: {
+                                    type: "regularly",
+                                    frequency: 1,
+                                    times_of_day: ["09:00"]
+                                }
+                            });
+                        }).then(function (m) {
+                            defaultMedication = m;
+                        });
+                    });
+                });
+
+                it("respects medication permissions by only showing results from defaultMedication", function () {
+                    return show(null, null, null, patient._id, patient.user.accessToken).then(function (response) {
+                        // extract med IDs
+                        var ids = response.body.schedule.map(function (item) {
+                            return item.medication_id;
+                        });
+
+                        // check we have events for medication we have med-level access to
+                        expect(ids.filter(function (id) {
+                            return id === defaultMedication._id;
+                        }).length).to.not.equal(0);
+                        // and none for medication we have patient-level access to but no med-level access
+                        expect(ids.filter(function (id) {
+                            return id === noneMedication._id;
+                        }).length).to.equal(0);
+                    });
+                });
+            });
         });
 
         describe("with test patients", function () {
