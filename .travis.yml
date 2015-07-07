@@ -6,7 +6,7 @@ services:
 install:
   - sudo apt-get update
   - sudo apt-get install libzmq3-dev
-  - sudo pip install zerorpc python-dateutil pytz termcolor
+  - sudo pip install zerorpc python-dateutil pytz termcolor pyevolve
   - npm install -g grunt-cli
   - npm install
 script: grunt test
