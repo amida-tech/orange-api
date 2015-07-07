@@ -5,8 +5,8 @@ from schedule_matcher import ScheduleMatcher
 
 # simple ZeroMQ server to pass things into ScheduleMatcher
 class MatcherRPC(object):
-    def match(self, scheduled, doses, params):
-        sm = ScheduleMatcher(scheduled, doses, params)
+    def match(self, scheduled, doses, habits, params):
+        sm = ScheduleMatcher(scheduled, doses, habits, params)
         return sm.match()
 
 # daemonize MatcherRPC

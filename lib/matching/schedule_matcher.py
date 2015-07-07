@@ -1,4 +1,4 @@
-import bisect, random, math, dateutil.parser, pickle, pytz, datetime, time
+import bisect, random, math, dateutil.parser, pytz, datetime, time
 from termcolor import colored
 from pyevolve import G1DList
 from pyevolve import G1DBinaryString
@@ -20,23 +20,16 @@ class ScheduleMatcher(object):
     # scheduled = API-style schedule data object
     # doses = array of times that doses were actually taken at
 
-    def __init__(self, schedule, doses, params):
-        #data = pickle.dump({
-            #"schedule": schedule,
-            #"doses": doses
-        #},open("/tmp/data.p", "rb"))
-
-        print("pass habits in")
-        self.habits = {
-            "tz": pytz.timezone("America/New_York"),
-            "wake": "08:00",
-            "sleep": "00:00"
-        }
-        self.tz = pytz.timezone('America/New_York')
+    def __init__(self, schedule, doses, habits, params):
+        # sensible defaults for the habits we need
+        if ((not "wake" in habits) or (habits["wake"] == None)): habits["wake"] = "09:00"
+        if ((not "tz" in habits) or (habits["tz"] == None)): habits["tz"] = "America/New_York"
+        self.habits = habits
+        self.tz = pytz.timezone(habits["tz"])
 
         # parse ISO 8601-formatted dates into Date objects, and sort them
         self.doses = sorted(map(dateutil.parser.parse, doses))
-        self.doses = map(lambda t: t.astimezone(self.habits["tz"]), self.doses)
+        self.doses = map(lambda t: t.astimezone(self.tz), self.doses)
 
         # store schedule
         self.schedule = schedule
@@ -284,8 +277,3 @@ class ScheduleMatcher(object):
                 print datum
 
         return datums
-
-# data = pickle.load(open("/tmp/data.p", "rb"))
-# sm = ScheduleMatcher(data["schedule"], data["doses"], {})
-# sm.match(debug=True)
-# print sm.match()
