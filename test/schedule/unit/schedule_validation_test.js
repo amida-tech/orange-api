@@ -5,21 +5,35 @@ var expect = chai.expect;
 
 describe("Schedule", function () {
     describe("validates schedules correctly", function () {
-        var accepts = function (data) {
+        // verify schedule is valid and Schedule object has the expected output
+        var acceptsManual = function (data, output) {
             var schedule = new Schedule(data);
             expect(schedule.isValid()).to.be.true;
+            expect(schedule.toObject()).to.deep.equal(output);
         };
+        // verify schedule is valid and Schedule object has the same output
+        // as input
+        var accepts = function (data) {
+            return acceptsManual(data, data);
+        };
+        // verify schedule is invalid
         var rejects = function (data) {
             var schedule = new Schedule(data);
             expect(schedule.isValid()).to.be.false;
         };
 
         it("allows a null schedule", function () {
-            return accepts(null);
+            return acceptsManual(null, {
+                as_needed: true,
+                regularly: false
+            });
         });
 
         it("allows an empty schedule", function () {
-            return accepts({});
+            return acceptsManual({}, {
+                as_needed: true,
+                regularly: false
+            });
         });
 
         it("rejects non-object schedules", function () {
