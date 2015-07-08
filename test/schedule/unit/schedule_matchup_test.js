@@ -2,7 +2,7 @@
 var chai            = require("chai"),
     zerorpc         = require("zerorpc"),
     moment          = require("moment-timezone"),
-    Schedule        = require("../../../lib/models/schedule.js");
+    Schedule        = require("../../../lib/models/schedule/schedule.js");
 var expect = chai.expect;
 
 describe("Schedule", function () {
@@ -97,6 +97,7 @@ describe("Schedule", function () {
                 lunch: "13:00",
                 dinner: "18:00"
             }, function (err, result) {
+                console.log(result);
                 if (err) return done(err);
                 // TODO: some better tests..
                 expect(result.length).to.not.equal(0);

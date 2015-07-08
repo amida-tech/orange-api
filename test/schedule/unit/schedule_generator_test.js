@@ -12,12 +12,14 @@ var expect = chai.expect;
 describe("Schedule", function () {
     describe("generates schedules correctly in a single timezone", function () {
         // generic method to promise to generate a schedule
-        var gen = function (input, start, end, habits) {
+        var gen = function (input, start, end, habits, numberTaken) {
             // format dates as YYYY-MM-DDD
             if (typeof start === "object") start = start.format("YYYY-MM-DD");
             if (typeof end === "object") end = end.format("YYYY-MM-DD");
             if (input && typeof input.frequency === "object" && typeof input.frequency.start === "object")
                 input.frequency.start = input.frequency.start.format("YYYY-MM-DD");
+            if (input && typeof input.until === "object" && typeof input.until.stop === "object")
+                input.until.stop = input.until.stop.format("YYYY-MM-DD");
 
             // habits only needed when checking slugs
             if (typeof habits === "undefined") habits = {
@@ -27,17 +29,17 @@ describe("Schedule", function () {
             // create Schedule object and generate using it
             var schedule = new Schedule(input, habits);
             expect(schedule.isValid()).to.be.true;
-            return schedule.generate(start, end, habits);
+            return schedule.generate(start, end, habits, numberTaken);
         };
         // check the desired schedule is generated
-        var check = function (inSchedule, start, end, desiredSchedule, habits) {
-            expect(gen(inSchedule, start, end, habits)).to.deep.equal(desiredSchedule);
+        var check = function (inSchedule, start, end, desiredSchedule, habits, numberTaken) {
+            expect(gen(inSchedule, start, end, habits, numberTaken)).to.deep.equal(desiredSchedule);
         };
         // check generateSchedule errors it with the relevant error
-        var checkFails = function (inSchedule, start, end, error, habits) {
+        var checkFails = function (inSchedule, start, end, error, habits, numberTaken) {
             expect(errors).to.include.keys(error);
             // chai throw assertions not working, so this hackish override
-            expect(gen.bind(this, inSchedule, start, end, habits)).to.throw(Error);
+            expect(gen.bind(this, inSchedule, start, end, habits, numberTaken)).to.throw(Error);
             try {
                 gen(inSchedule, start, end, habits);
             } catch (err) {
@@ -189,8 +191,110 @@ describe("Schedule", function () {
                     ]);
                 });
 
-                xit("handles a number of times");
-                xit("handles a stop date");
+                it("handles a maximum number of times when there's none taken", function () {
+                    return check({
+                        regularly: true,
+                        as_needed: false,
+                        until: { type: "number", stop: 4 },
+                        frequency: { n: 1, unit: "day" },
+                        times: [{ type: "exact", time: "09:00" }],
+                        take_with_food: null,
+                        take_with_medications: [],
+                        take_without_medications: []
+                    }, yesterday, tomorrow, [
+                        takeAt(yesterday, "09:00"),
+                        takeAt(today, "09:00"),
+                        takeAt(tomorrow, "09:00")
+                    ], undefined, 0);
+                });
+
+                it("handles a maximum number of times when there's some taken", function () {
+                    return check({
+                        regularly: true,
+                        as_needed: false,
+                        until: { type: "number", stop: 4 },
+                        frequency: { n: 1, unit: "day" },
+                        times: [{ type: "exact", time: "09:00" }],
+                        take_with_food: null,
+                        take_with_medications: [],
+                        take_without_medications: []
+                    }, yesterday, tomorrow, [
+                        takeAt(yesterday, "09:00"),
+                        takeAt(today, "09:00")
+                    ], undefined, 2);
+                });
+
+                it("handles a maximum number of times when there's many taken", function () {
+                    return check({
+                        regularly: true,
+                        as_needed: false,
+                        until: { type: "number", stop: 4 },
+                        frequency: { n: 1, unit: "day" },
+                        times: [{ type: "exact", time: "09:00" }],
+                        take_with_food: null,
+                        take_with_medications: [],
+                        take_without_medications: []
+                    }, yesterday, tomorrow, [], undefined, 4);
+                });
+
+                it("handles a maximum number of times when there's more than the maximum taken", function () {
+                    return check({
+                        regularly: true,
+                        as_needed: false,
+                        until: { type: "number", stop: 4 },
+                        frequency: { n: 1, unit: "day" },
+                        times: [{ type: "exact", time: "09:00" }],
+                        take_with_food: null,
+                        take_with_medications: [],
+                        take_without_medications: []
+                    }, yesterday, tomorrow, [], undefined, 5);
+                });
+
+                it("handles a stop date before the start date", function () {
+                    return check({
+                        regularly: true,
+                        as_needed: false,
+                        until: { type: "date", stop: weekAgo },
+                        frequency: { n: 1, unit: "day" },
+                        times: [{ type: "exact", time: "09:00" }],
+                        take_with_food: null,
+                        take_with_medications: [],
+                        take_without_medications: []
+                    }, yesterday, tomorrow, []);
+                });
+                it("handles a stop date between the start and end dates", function () {
+                    return check({
+                        regularly: true,
+                        as_needed: false,
+                        until: { type: "date", stop: today },
+                        frequency: { n: 1, unit: "day" },
+                        times: [{ type: "exact", time: "09:00" }, { type: "unspecified" }],
+                        take_with_food: null,
+                        take_with_medications: [],
+                        take_without_medications: []
+                    }, yesterday, tomorrow, [
+                        takeAt(yesterday, "09:00"),
+                        takeOn(yesterday),
+                        takeAt(today, "09:00"),
+                        takeOn(today)
+                    ]);
+                });
+                it("handles a stop date after the end date", function () {
+                    return check({
+                        regularly: true,
+                        as_needed: false,
+                        until: { type: "date", stop: weekFromNow },
+                        frequency: { n: 1, unit: "day" },
+                        times: [{ type: "exact", time: "09:00" }],
+                        take_with_food: null,
+                        take_with_medications: [],
+                        take_without_medications: []
+                    }, yesterday, tomorrow, [
+                        takeAt(yesterday, "09:00"),
+                        takeAt(today, "09:00"),
+                        takeAt(tomorrow, "09:00")
+                    ]);
+                });
             });
 
             describe("'frequency' key", function () {
