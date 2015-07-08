@@ -1,6 +1,6 @@
 "use strict";
 var chai            = require("chai"),
-    Schedule        = require("../../../lib/models/schedule.js");
+    Schedule        = require("../../../lib/models/schedule/schedule.js");
 var expect = chai.expect;
 
 describe("Schedule", function () {
