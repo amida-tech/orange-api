@@ -57,7 +57,7 @@ describe("Doctors", function () {
                 expect(response.body.notes).to.equal("");
             });
         });
-        it("allows nulls for all other fields to reset them");
+        it("allows nulls for all other fields to reset them", function () {
             return updatePatientDoctor({}, {
                 phone: null,
                 address: null,
@@ -68,5 +68,6 @@ describe("Doctors", function () {
                 expect(response.body.address).to.equal("");
                 expect(response.body.notes).to.equal("");
             });
+        });
     });
 });
