@@ -28,8 +28,13 @@ class ScheduleMatcher(object):
         self.tz = pytz.timezone(habits["tz"])
 
         # parse ISO 8601-formatted dates into Date objects, and sort them
-        self.doses = sorted(map(dateutil.parser.parse, doses))
-        self.doses = map(lambda t: t.astimezone(self.tz), self.doses)
+        def parseDose(dose):
+            dose["date"] = dateutil.parser.parse(dose["date"]).astimezone(self.tz)
+            return dose
+        self.doses = map(parseDose, doses)
+        self.doses = sorted(self.doses, key = lambda dose: dose["date"])
+        # store time's seperately for quick access in cost function
+        self.doseTimes = map(lambda dose: dose["date"], self.doses)
 
         # store schedule
         self.schedule = schedule
@@ -39,13 +44,16 @@ class ScheduleMatcher(object):
         # m = number of dose events that *should* happen per day
         self.m = len(schedule["times"])
 
+        # if we don't have any doses, we can't match
+        if (self.n == 0): return
+
         # calculate start of first day
         wake = map(int, self.habits["wake"].split(":"))
-        self.firstWake = self.doses[0].replace(hour=wake[0], minute=wake[1], second=0, microsecond=0)
-        if (self.firstWake > self.doses[0]): self.firstWake -= datetime.timedelta(days=1)
+        self.firstWake = self.doseTimes[0].replace(hour=wake[0], minute=wake[1], second=0, microsecond=0)
+        if (self.firstWake > self.doseTimes[0]): self.firstWake -= datetime.timedelta(days=1)
 
         # calculate total number of days
-        self.days = self.dayIndex(self.doses[-1]) + 1
+        self.days = self.dayIndex(self.doseTimes[-1]) + 1
 
         # a chromosone is an n-element array of integers, where each integer i is:
         #  M representing it doesn't match a scheduled event
@@ -54,17 +62,12 @@ class ScheduleMatcher(object):
         #    (where M = days * m)
         self.M = self.days * self.m
 
-        # represent as a Gray-encoded bitstring
-        self.chunk_length = int(math.ceil(math.log(self.M + 1, 2)))
-        self.length = self.n * self.chunk_length
-
-        # genome = G1DBinaryString.G1DBinaryString(self.length)
         genome = G1DList.G1DList(self.n)
         genome.setParams(rangemin=0, rangemax=self.M)
         genome.evaluator.set(self.score)
 
         # genetic algorithm engine
-        self.ga = GSimpleGA.GSimpleGA(genome)
+        self.ga = GSimpleGA.GSimpleGA(genome, interactiveMode=False)
         self.ga.setGenerations(100)
         self.ga.terminationCriteria.set(GSimpleGA.ConvergenceCriteria)
 
@@ -84,8 +87,8 @@ class ScheduleMatcher(object):
     def score(self, chromosone, debug=False):
         # binString = chromosone.getBinary()
 
-        UNMATCHED_DOSE_COST             = 25
-        UNMATCHED_SCHEDULE_COST         = 15
+        UNMATCHED_DOSE_COST             = 35
+        UNMATCHED_SCHEDULE_COST         = 35
         DUPLICATE_COST                  = 50
 
         TIME_MATCH_COST                 = 0
@@ -167,7 +170,7 @@ class ScheduleMatcher(object):
                 prevEventDay = day
 
                 # find actual event
-                dose = self.doses[i]
+                dose = self.doseTimes[i]
                 # check if the same day
                 dayDelta = abs(self.dayIndex(dose) - day)
                 addCost(dayKernel(dayDelta), "day delta", dayDelta)
@@ -182,12 +185,13 @@ class ScheduleMatcher(object):
 
                 # time match
                 else:
-                    # predicted time as datetime
                     time = map(int, event["time"].split(":"))
                     date = dose.replace(hour=time[0], minute=time[1], second=0, microsecond=0)
+                    # print date
                     # number of days that need to be added
                     day_delta = day - self.dayIndex(date)
                     date += datetime.timedelta(day_delta)
+
 
                     if (prevEventTime != None and date < prevEventTime):
                         addCost(TIME_MONOTONICITY_COST, "time monotonicity breakage", None)
@@ -213,13 +217,13 @@ class ScheduleMatcher(object):
 
 
     def match(self, debug=False):
-        self.ga.evolve(freq_stats=10)
+        # if we don't have any doses, we can't match
+        if (self.n == 0): return { "matches": [], "start": None }
 
+        chromosone = self.ga.evolve()
         datums = []
 
-        chromosone = self.ga.bestIndividual()
-        # binString = chromosone.getBinary()
-        costs = self.score(chromosone, debug=True)
+        costs = self.score(chromosone, debug=debug)
         costIndex = 0
         for i in range(self.n):
             # get the chunk from i*chunk_length to (i+1)*chunk_length-1
@@ -227,13 +231,9 @@ class ScheduleMatcher(object):
             # match = ungray(grayMatch)
             match = chromosone[i]
 
-            # find actual event
-            dose = self.doses[i]
-
             # data to return over zeromq
             datum = {
-                "dose_index": i,
-                "dose": dose.isoformat()
+                "dose": self.doses[i]["_id"]
             }
             if (match == self.M): datum["match"] = None
             else:
@@ -241,13 +241,15 @@ class ScheduleMatcher(object):
                 event = self.schedule["times"][index]
                 datum["match"] = {
                     "day": day,
-                    "day_index": index,
-                    "event": event
+                    "index": index
                 }
             datums.append(datum)
 
             # find actual event
             if debug:
+                # find actual event
+                dose = self.doseTimes[i]
+
                 print colored("Actual   : day %d time %s" % (self.dayIndex(dose), dose.astimezone(self.tz).strftime("%H:%M")), "blue")
 
                 if (match == self.M):
@@ -276,4 +278,4 @@ class ScheduleMatcher(object):
 
                 print datum
 
-        return datums
+        return { "matches": datums, "start": self.firstWake.isoformat() }

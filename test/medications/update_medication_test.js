@@ -149,7 +149,6 @@ describe("Medications", function () {
                 rx_number: null,
                 quantity: null,
                 type: null,
-                schedule: null,
                 doctor_id: null,
                 pharmacy_id: null
             }).then(function (response) {
@@ -163,7 +162,6 @@ describe("Medications", function () {
                 expect(response.body.rx_number).to.equal("");
                 expect(response.body.quantity).to.equal(1);
                 expect(response.body.type).to.equal("");
-                expect(response.body.schedule).to.deep.equal({});
                 expect(response.body.doctor_id).to.equal(null);
                 expect(response.body.pharmacy_id).to.equal(null);
             });

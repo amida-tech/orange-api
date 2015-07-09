@@ -78,9 +78,14 @@ describe("Schedule", function () {
                             name: "foobar none",
                             access_anyone: "none",
                             schedule: {
-                                type: "regularly",
-                                frequency: 1,
-                                times_of_day: ["09:00"]
+                                as_needed: false,
+                                regularly: true,
+                                until: { type: "forever" },
+                                frequency: { n: 1, unit: "day" },
+                                times: [{ type: "exact", time: "09:00" }],
+                                take_with_food: null,
+                                take_with_medications: [],
+                                take_without_medications: []
                             }
                         }).then(function (m) {
                             noneMedication = m;
@@ -90,9 +95,14 @@ describe("Schedule", function () {
                                 name: "foobar def",
                                 access_anyone: "default",
                                 schedule: {
-                                    type: "regularly",
-                                    frequency: 1,
-                                    times_of_day: ["09:00"]
+                                    as_needed: false,
+                                    regularly: true,
+                                    until: { type: "forever" },
+                                    frequency: { n: 1, unit: "day" },
+                                    times: [{ type: "exact", time: "09:00" }],
+                                    take_with_food: null,
+                                    take_with_medications: [],
+                                    take_without_medications: []
                                 }
                             });
                         }).then(function (m) {
@@ -147,9 +157,14 @@ describe("Schedule", function () {
                     return Q.nbind(p.createMedication, p)({
                         name: "Test Medication",
                         schedule: {
-                            type: "regularly",
-                            frequency: 1,
-                            times_of_day: ["09:00"]
+                            as_needed: false,
+                            regularly: true,
+                            until: { type: "forever" },
+                            frequency: { n: 1, unit: "day" },
+                            times: [{ type: "exact", time: "09:00" }],
+                            take_with_food: null,
+                            take_with_medications: [],
+                            take_without_medications: []
                         }
                     });
                 };
@@ -349,6 +364,6 @@ describe("Schedule", function () {
             });
         });
 
-        it("handles dose events");
+        // everything more granular is tested in unit/medication_schedule_generator_test.js
     });
 });

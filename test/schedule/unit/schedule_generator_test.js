@@ -29,7 +29,12 @@ describe("Schedule", function () {
             // create Schedule object and generate using it
             var schedule = new Schedule(input, habits);
             expect(schedule.isValid()).to.be.true;
-            return schedule.generate(start, end, habits, numberTaken);
+            // filter out index keys that are only used internally in the app (and tested
+            // in medication_schedule_generator_test.js)
+            return schedule.generate(start, end, habits, numberTaken).map(function (item) {
+                delete item.index;
+                return item;
+            });
         };
         // check the desired schedule is generated
         var check = function (inSchedule, start, end, desiredSchedule, habits, numberTaken) {
@@ -392,7 +397,7 @@ describe("Schedule", function () {
                         take_without_medications: []
                     }, startOfYear, moment(endOfYear).add(1, "month"), [
                         takeAt(startOfYear, "09:00"),
-                        takeAt(moment(startOfYear).add(1, "year"), "09:00"),
+                        takeAt(moment(startOfYear).add(1, "year"), "09:00")
                     ]);
                 });
 
@@ -434,7 +439,7 @@ describe("Schedule", function () {
                         until: { type: "forever" },
                         frequency: { n: 1, unit: "day" },
                         times: [
-                            // before after should give the same dose time but a different 
+                            // before after should give the same dose time but a different
                             // notification time
                             { type: "event", event: "sleep", when: "after" },
                             { type: "event", event: "breakfast", when: "before" },
@@ -477,7 +482,7 @@ describe("Schedule", function () {
                         until: { type: "forever" },
                         frequency: { n: 1, unit: "day" },
                         times: [
-                            // before after should give the same dose time but a different 
+                            // before after should give the same dose time but a different
                             // notification time
                             { type: "exact", time: "10:00" },
                             { type: "unspecified" },
@@ -578,7 +583,12 @@ describe("Schedule", function () {
                 it("should return an EST schedule", function () {
                     expect(schedule.isValid()).to.be.true;
                     // takeAt takes UTC times
-                    return expect(schedule.generate(today.format("YYYY-MM-DD"), tomorrow.format("YYYY-MM-DD"), habits)).to.deep.equal([
+                    var results = schedule.generate(today.format("YYYY-MM-DD"), tomorrow.format("YYYY-MM-DD"), habits).map(function (item) {
+                        delete item.index;
+                        return item;
+                    });
+
+                    return expect(results).to.deep.equal([
                         takeAt(today, "17:00"),
                         takeAt(today, "19:00"),
                         takeAt(tomorrow, "00:00"),
@@ -598,7 +608,12 @@ describe("Schedule", function () {
                             // PST all year round (no PDT)
                             tz: "America/Metlakatla"
                         });
-                        return expect(schedule.generate(today.format("YYYY-MM-DD"), tomorrow.format("YYYY-MM-DD"), newHabits)).to.deep.equal([
+                        var results = schedule.generate(today.format("YYYY-MM-DD"), tomorrow.format("YYYY-MM-DD"), newHabits).map(function (item) {
+                            delete item.index;
+                            return item;
+                        });
+
+                        return expect(results).to.deep.equal([
                             takeAt(today, "19:00"), // 2PM *EST* in UTC
                             takeAt(today, "20:00"), // after sleep: 12PM PST in UTC
                             takeAt(tomorrow, "03:00"), // before dinner: 7PM PST in UTC

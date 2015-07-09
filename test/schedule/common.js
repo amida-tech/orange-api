@@ -9,11 +9,13 @@ var expect = chakram.expect;
 /*eslint-disable key-spacing */
 // one 'event' item within the schedule
 var scheduleItemSchema = {
-    required: ["type", "date", "medication_id", "took_medication"],
+    required: ["type", "date", "medication_id", "happened"],
     properties: {
         type:               { type: "string" },
         date:               { type: "string" },
+        happened:           { type: "boolean" },
         medication_id:      { type: "number" },
+
         took_medication:    { type: "boolean" },
         delay:              { type: "number" },
         dose_id:            { type: "number" }

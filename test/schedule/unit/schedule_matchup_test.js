@@ -44,7 +44,7 @@ describe("Schedule", function () {
             date.minutes(minutes);
             date.seconds(0);
             date.milliseconds(0);
-            return date;
+            return { _id: "anid", date: date };
         };
         var windowGenerator = function (day1, day2, day3) {
             // habits:
@@ -97,7 +97,6 @@ describe("Schedule", function () {
                 lunch: "13:00",
                 dinner: "18:00"
             }, function (err, result) {
-                console.log(result);
                 if (err) return done(err);
                 // TODO: some better tests..
                 expect(result.length).to.not.equal(0);
