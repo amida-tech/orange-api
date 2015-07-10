@@ -287,7 +287,7 @@ module.exports.itRequiresReadListAuthorization = function (slug) {
 
 // test authorization for endpoints that take multiple medication IDs and require
 // successful authorization for _all_ of them
-var requiresAllAuthentication = module.exports.itRequiresAuthentication = function (levels, successChecker, failChecker) {
+var reqAllAuth = module.exports.itRequiresAuthentication = function (levels, successChecker, failChecker) {
     return function (endpoint) {
         var gen = genAuthorizationTest(endpoint, levels, successChecker, failChecker);
 
@@ -302,9 +302,14 @@ var requiresAllAuthentication = module.exports.itRequiresAuthentication = functi
 
                 var meds = p.then(function (patient) {
                     // med we have med-level read access to
-                    return createMed()(patient).then(setPermission("anyone", "read")).then(function (mRead) {
-                        // med we have med-level write access to
-                        return createMed()(patient).then(setPermission("anyone", "write")).then(save(p)).then(function (mWrite) {
+                    var readMed = createMed()(patient).then(setPermission("anyone", "read"));
+                    // med we have med-level write access to
+                    var writeMed = function () {
+                        return createMed()(patient).then(setPermission("anyone", "write"));
+                    };
+
+                    return readMed.then(function (mRead) {
+                        return writeMed().then(save(p)).then(function (mWrite) {
                             return [mRead, mWrite];
                         });
                     });
@@ -315,10 +320,9 @@ var requiresAllAuthentication = module.exports.itRequiresAuthentication = functi
 
             gen("writable", "medications we have writable access to", function () {
                 var p = patientForOther().then(share("write", "anyone"));
-                var meds = p.then(createMed()).then(setPermission("anyone", "write")).then(save(p)).then(function (med) {
-                    return [med];
-                });
-                return [p, meds];
+                var m = p.then(createMed()).then(setPermission("anyone", "write")).then(save(p));
+
+                return [p, m.then(function (med) { return [med]; })];
             });
 
             gen("none", "medications we have no access to", function () {
@@ -326,10 +330,15 @@ var requiresAllAuthentication = module.exports.itRequiresAuthentication = functi
 
                 var meds = p.then(function (patient) {
                     // med we have med-level write access to
-                    return createMed()(patient).then(setPermission("anyone", "write")).then(function (mWrite) {
-                        // med we have no med-level access to
-                        return createMed()(patient).then(setPermission("anyone", "none")).then(save(p)).then(function (mNone) {
-                            return [mNone, mWrite];
+                    var writeMed = createMed()(patient).then(setPermission("anyone", "write"));
+                    // med we have no med-level access to
+                    var noMed = function () {
+                        return createMed()(patient).then(setPermission("anyone", "none"));
+                    };
+
+                    return writeMed.then(function (mWrite) {
+                        return noMed().then(save(p)).then(function (mNone) {
+                            return [mWrite, mNone];
                         });
                     });
                 });
@@ -340,13 +349,13 @@ var requiresAllAuthentication = module.exports.itRequiresAuthentication = functi
     };
 };
 
-module.exports.itRequiresReadAllAuthorization = requiresAllAuthentication({
+module.exports.itRequiresReadAllAuthorization = reqAllAuth({
     empty: true,
     readable: true,
     writable: true,
     none: false
 }, testAuthorizationSuccessful, testAuthorizationFailed);
-module.exports.itRequiresWriteAllAuthorization = requiresAllAuthentication({
+module.exports.itRequiresWriteAllAuthorization = reqAllAuth({
     empty: true,
     readable: false,
     writable: true,
