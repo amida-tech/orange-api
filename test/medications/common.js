@@ -5,16 +5,31 @@ var chakram     = require("chakram"),
     curry       = require("curry"),
     auth        = require("../common/auth.js"),
     patients    = require("../patients/common.js"),
+    doctors     = require("../doctors/common.js"),
+    pharmacies  = require("../pharmacies/common.js"),
     common      = require("../common/chakram.js");
 var expect = chakram.expect;
 
+// we validate child schemata, but success shouldn't be present on a doctor
+// object here
+var doctorSchema = JSON.parse(JSON.stringify(doctors.schema));
+doctorSchema.required.splice(doctorSchema.required.indexOf("success"));
+delete doctorSchema.properties.success;
+
+// we validate child schemata, but success shouldn't be present on a pharmacy
+// object here
+var pharmacySchema = JSON.parse(JSON.stringify(pharmacies.schema));
+pharmacySchema.required.splice(pharmacySchema.required.indexOf("success"));
+delete pharmacySchema.properties.success;
+
 // verify successful responses
 /*eslint-disable key-spacing */
-var medicationSchema = {
+var medicationSchema = module.exports.schema = {
     required: ["id", "name", "rx_norm", "ndc", "dose", "route", "form", "rx_number",
                 "quantity", "type", "schedule", "fill_date", "number_left", "access_anyone",
-                "access_family", "access_prime"],
+                "access_family", "access_prime", "success"],
     properties: {
+        success:        { type: "boolean" },
         id:             { type: "number" },
         name:           { type: "string" },
         rx_norm:        { type: "string" },
@@ -37,19 +52,38 @@ var medicationSchema = {
         schedule:       { type: "object" }, // TODO: full schedule schema here
         access_anyone:  { type: "string" },
         access_family:  { type: "string" },
-        access_prime:   { type: "string" },
-        doctor_id:      { type: ["number", "null"] },
-        pharmacy_id:    { type: ["number", "null"] },
-        doctor:         { type: ["object", "null"] }, // TODO: full doctor schema here
-        pharmacy:       { type: ["object", "null"] } // TODO: full pharmacy schema here
-    }
+        access_prime:   { type: "string" }
+    },
+    definitions: {
+        doctor: doctorSchema,
+        pharmacy: pharmacySchema
+    },
+    additionalProperties: false
 };
 /*eslint-enable key-spacing */
 var medicationViewSchema = JSON.parse(JSON.stringify(medicationSchema)); // easy deep copy
+
+
+// viewing a medication in detail should show full doctor and pharmacy details
 medicationViewSchema.required.push("doctor");
 medicationViewSchema.required.push("pharmacy");
+medicationViewSchema.properties.doctor = {
+    "$ref": "#/definitions/doctor"
+};
+medicationViewSchema.properties.pharmacy = {
+    "$ref": "#/definitions/pharmacy"
+};
+
+// other endpoints should just have  doctor and pharmacy IDs
 medicationSchema.required.push("doctor_id");
 medicationSchema.required.push("pharmacy_id");
+medicationSchema.properties.doctor_id = {
+    type: ["number", "null"]
+};
+medicationSchema.properties.pharmacy_id = {
+    type: ["number", "null"]
+};
+
 common.addApiChain("medication", {
     "createSuccess": function (respObj) {
         expect(respObj).to.be.an.api.postSuccess;

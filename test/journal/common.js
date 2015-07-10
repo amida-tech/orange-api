@@ -4,23 +4,25 @@ var chakram     = require("chakram"),
     Q           = require("q"),
     common      = require("../common/chakram.js"),
     patients    = require("../patients/common.js"),
-    auth        = require("../common/auth.js");
+    auth        = require("../common/auth.js"),
+    medications = require("../medications/common.js");
 var expect = chakram.expect;
+
+// we validate child medication schemata, but success shouldn't be present on a
+// medication object here
+var medicationSchema = JSON.parse(JSON.stringify(medications.schema));
+medicationSchema.required.splice(medicationSchema.required.indexOf("success"));
+delete medicationSchema.properties.success;
 
 // verify successful responses
 /*eslint-disable key-spacing */
 var entrySchema = {
-    required: ["id", "date", "text", "mood", "hashtags"],
+    required: ["success", "id", "date", "text", "mood", "hashtags"],
     properties: {
+        success:        { type: "boolean" },
         id:             { type: "number" },
         date:           { type: "string" },
         text:           { type: "string" },
-        medication_ids: {
-            type:       "array",
-            items:  {
-                type:   "number"
-            }
-        },
         mood:           { type: "string" },
         hashtags:       {
             type:       "array",
@@ -28,11 +30,32 @@ var entrySchema = {
                 type:   "string"
             }
         }
-    }
+    },
+    definitions: {
+        medication: medicationSchema
+    },
+    additionalProperties: false
 };
 var entryViewSchema = JSON.parse(JSON.stringify(entrySchema)); // easy deep copy
+
+// viewing an entry in detail should show full medication details
 entryViewSchema.required.push("medications");
+entryViewSchema.properties.medications = {
+    type:   "array",
+    items:  {
+        "$ref": "#/definitions/medication"
+    }
+};
+
+// other endpoints should just have a list of medication IDs
 entrySchema.required.push("medication_ids");
+entrySchema.properties.medication_ids = {
+    type:   "array",
+    items:  {
+        type:   "number"
+    }
+};
+
 common.addApiChain("journal", {
     "createSuccess": function (respObj) {
         expect(respObj).to.be.an.api.postSuccess;

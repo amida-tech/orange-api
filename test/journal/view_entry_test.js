@@ -51,5 +51,26 @@ describe("Journal", function () {
         it("should let me view entries for my patients", function () {
             return expect(showPatientEntry({})).to.be.a.journal.viewSuccess;
         });
+
+        it("lets me view entries referencing medications", function () {
+            // we validate the child medication schema
+            return patients.testMyPatient({}).then(function (patient) {
+                var createMedication = Q.nbind(patient.createMedication, patient);
+                var createEntry = Q.nbind(patient.createJournalEntry, patient);
+
+                var ep = createMedication({
+                    name: "test med"
+                }).then(function (medication) {
+                    return fixtures.build("JournalEntry", {}).then(function (entry) {
+                        entry.medicationIds = [medication._id];
+                        return entry.getData();
+                    }).then(createEntry).then(function (entry) {
+                        return show(entry._id, patient._id, patient.user.accessToken);
+                    });
+                });
+
+                return expect(ep).to.be.a.journal.viewSuccess;
+            });
+        });
     });
 });

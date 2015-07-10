@@ -9,9 +9,10 @@ var expect = chakram.expect;
 
 // verify successful responses
 /*eslint-disable key-spacing */
-var pharmacySchema = {
-    required: ["id", "name", "phone", "address", "hours", "notes"],
+var pharmacySchema = module.exports.schema = {
+    required: ["id", "name", "phone", "address", "hours", "notes", "success"],
     properties: {
+        success:    { type: "boolean" },
         id:         { type: "number" },
         name:       { type: "string" },
         phone:      { type: "string" },
@@ -40,7 +41,8 @@ var pharmacySchema = {
             },
             required: []
         }
-    }
+    },
+    additionalProperties: false
 };
 /*eslint-enable key-spacing */
 common.addApiChain("pharmacy", {

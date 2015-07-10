@@ -10,14 +10,16 @@ var expect = chakram.expect;
 // verify successful responses
 /*eslint-disable key-spacing */
 var doseSchema = {
-    required: ["id", "date", "notes"],
+    required: ["success", "id", "date", "notes"],
     properties: {
+        success:        { type: "boolean" },
         id:             { type: "number" },
         medication_id:  { type: "number" },
         medication:     { type: "object" },
         date:           { type: "string" },
         notes:          { type: "string" }
-    }
+    },
+    additionalProperties: false
 };
 var doseViewSchema = JSON.parse(JSON.stringify(doseSchema)); // easy deep copy
 doseViewSchema.required.push("medication");

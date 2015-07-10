@@ -9,17 +9,21 @@ var expect = chakram.expect;
 // verify successful responses
 /*eslint-disable key-spacing */
 var userSchema = {
-    required: ["email", "name"],
+    required: ["email", "name", "success"],
     properties: {
-        email: { type: "string" },
-        name:  { type: "string" }
-    }
+        success:    { type: "boolean" },
+        email:      { type: "string" },
+        name:       { type: "string" }
+    },
+    additionalProperties: false
 };
 var tokenSchema = {
-    required: ["access_token"],
+    required: ["access_token", "success"],
     properties: {
-        access_token: { type: "string" }
-    }
+        success:        { type: "boolean" },
+        access_token:   { type: "string" }
+    },
+    additionalProperties: false
 };
 /*eslint-enable key-spacing */
 common.addApiChain("user", {

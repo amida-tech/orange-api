@@ -9,15 +9,17 @@ var expect = chakram.expect;
 
 // verify successful responses
 /*eslint-disable key-spacing */
-var doctorSchema = {
-    required: ["id", "name", "phone", "address", "notes"],
+var doctorSchema = module.exports.schema = {
+    required: ["success", "id", "name", "phone", "address", "notes"],
     properties: {
+        success:    { type: "boolean" },
         id:         { type: "number" },
         name:       { type: "string" },
         phone:      { type: "string" },
         address:    { type: "string" },
         notes:      { type: "string" }
-    }
+    },
+    additionalProperties: false
 };
 /*eslint-enable key-spacing */
 common.addApiChain("doctor", {

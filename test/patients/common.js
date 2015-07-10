@@ -14,8 +14,9 @@ var expect = chakram.expect;
 /*eslint-disable key-spacing */
 var patientSchema = {
     required: ["id", "name", "sex", "birthdate", "avatar", "access", "group", "access_anyone", "access_family",
-                "access_prime"],
+                "access_prime", "success"],
     properties: {
+        success:        { type: "boolean" },
         id:             { type: "number" },
         name:           { type: "string" },
         sex:            { type: "string" },
@@ -26,13 +27,16 @@ var patientSchema = {
         access_family:  { type: "string" },
         access_prime:   { type: "string" },
         birthdate:  { type: ["string", "null"] }
-    }
+    },
+    additionalProperties: false
 };
 var avatarSchema = {
-    required: ["avatar"],
+    required: ["avatar", "success"],
     properties: {
+        success:    { type: "boolean" },
         avatar:     { type: "string" }
-    }
+    },
+    additionalProperties: false
 };
 /*eslint-enable key-spacing */
 common.addApiChain("patient", {
@@ -89,30 +93,12 @@ var createPatient = function (data, user) {
     });
 };
 
-// promise-ify Patient#share
-/*
-var sharePatient = function (user, access, patient) {
-    return Q.nbind(patient.share, patient)(user, access);
-};
-*/
-
 // create a test patient for the current user
 var createMyPatient = module.exports.createMyPatient = curry(function (data, user) {
     return fixtures.build("Patient", data).then(function (patientData) {
         return createPatient(patientData, user);
     });
 });
-
-/*
-// create a test patient for another user and share with the current
-var createOtherPatient = module.exports.createOtherPatient = curry(function (data, access, me, other) {
-    return createMyPatient(data, other).then(curry(sharePatient)(me)(access)).then(function (patient) {
-        // store me in patient
-        patient.user = me;
-        return patient;
-    });
-});
-*/
 
 // create a test patient for another user
 var createOtherPatient = module.exports.createOtherPatient = curry(function (data, me, other) {
@@ -128,15 +114,6 @@ var createOtherPatient = module.exports.createOtherPatient = curry(function (dat
 module.exports.testMyPatient = function (data) {
     return auth.createTestUser().then(createMyPatient(data));
 };
-
-/*
-// setup two test users ('me' + 'other') and patient (with specified data modifications to
-// the factory default) for the other user, and share it with the current user with
-// the specified access level and then do something to it (e.g., view it)
-module.exports.testOtherPatient = function (data, access) {
-    return Q.all([auth.createTestUser(), auth.createTestUser()]).spread(createOtherPatient(data, access));
-};
-*/
 
 // wrapper around auth.itRequiresAuthentication to generate patient IDs to test with
 // check access token authentication

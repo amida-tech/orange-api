@@ -21,7 +21,8 @@ before(function () {
                 type: "boolean",
                 pattern: "false"
             }
-        }
+        },
+        additionalProperties: false
     };
     chakram.addMethod("error", function (respObj, status, errors) {
         // allow single error strings to be passed in (but not returned by API)
@@ -60,13 +61,21 @@ before(function () {
     chakram.addMethod("genericListSuccess", function (respObj, slug, itemSchema) {
         expect(respObj).to.be.an.api.genericSuccess(200);
 
+        // remove success from schema (in case it's present)
+        itemSchema = JSON.parse(JSON.stringify(itemSchema));
+        var successIndex = itemSchema.required.indexOf("success");
+        if (successIndex >= 0) itemSchema.required.splice(successIndex);
+        delete itemSchema.properties.success;
+
         // build up schema for overall response
         /*eslint-disable key-spacing */
         var schema = {
-            required:   [slug, "count"],
+            required:   ["success", slug, "count"],
             properties: {
-                count:  { type: "number" }
-            }
+                success:    { type: "boolean" },
+                count:      { type: "number" }
+            },
+            additionalProperties: false
         };
         schema.properties[slug] = {
             type:  "array",

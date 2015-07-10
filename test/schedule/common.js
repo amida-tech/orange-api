@@ -19,7 +19,8 @@ var scheduleItemSchema = {
         took_medication:    { type: "boolean" },
         delay:              { type: "number" },
         dose_id:            { type: "number" }
-    }
+    },
+    additionalProperties: false
 };
 // overall schedule stats
 var statsSchema = {
@@ -28,17 +29,20 @@ var statsSchema = {
         took_medication:    { type: ["number", "null"] },
         delay:              { type: ["number", "null"] },
         delta:              { type: ["number", "null"] }
-    }
+    },
+    additionalProperties: false
 };
 var scheduleSchema = {
-    required: ["schedule", "statistics"],
+    required: ["schedule", "statistics", "success"],
     properties: {
+        success:  { type: "boolean" },
         schedule: {
             type:   "array",
             items:  scheduleItemSchema
         },
         statistics: extend(statsSchema, { type: "object" })
-    }
+    },
+    additionalProperties: false
 };
 /*eslint-enable key-spacing */
 

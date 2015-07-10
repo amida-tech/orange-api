@@ -10,14 +10,16 @@ var expect = chakram.expect;
 // verify successful responses
 /*eslint-disable key-spacing */
 var shareSchema = {
-    required: ["id", "email", "access", "group", "is_user"],
+    required: ["id", "email", "access", "group", "is_user", "success"],
     properties: {
+        success:    { type: "boolean" },
         id:         { type: "number" },
         email:      { type: "string" },
         access:     { type: "string" },
         group:      { type: "string" },
         is_user:    { type: "boolean" }
-    }
+    },
+    additionalProperties: false
 };
 common.addApiChain("share", {
     "createSuccess": function (respObj) {

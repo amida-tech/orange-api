@@ -8,15 +8,17 @@ var expect = chakram.expect;
 // verify successful responses
 /*eslint-disable key-spacing */
 var habitsSchema = {
-    required: ["wake", "sleep", "breakfast", "lunch", "dinner", "tz"],
+    required: ["success", "wake", "sleep", "breakfast", "lunch", "dinner", "tz"],
     properties: {
+        success:        { type: "boolean" },
         wake:           { type: ["string", "null"] },
         sleep:          { type: ["string", "null"] },
         breakfast:      { type: ["string", "null"] },
         lunch:          { type: ["string", "null"] },
         dinner:         { type: ["string", "null"] },
         tz:             { type: "string" }
-    }
+    },
+    additionalProperties: false
 };
 /*eslint-enable key-spacing */
 common.addApiChain("habits", {
