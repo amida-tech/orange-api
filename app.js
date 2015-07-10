@@ -31,6 +31,19 @@ app.use(function (req, res, next) {
     return jsonParser(req, res, next);
 });
 
+// every API request needs to have a client secret posted. this is a fixed hexstring
+// that's just read from .secret and directly compared (already stored in app.settings.secret
+// by run.js). there are obvious security issues with this approach, but in the context of
+// this app (particularly considering the frontend has no encrypted local storage to
+// store the client secret in regardless) it makes sense
+var errors = require("./lib/errors.js").ERRORS;
+app.use(function (req, res, next) {
+    // unauthorized
+    if (req.headers["x-client-secret"] !== app.settings.secret) return next(errors.INVALID_CLIENT_SECRET);
+
+    next();
+});
+
 // All models: in all other files, just used mongoose.model(NAME)
 // rather than requiring these directly to avoid circular dependencies
 // Models that are purely nested resources under patient are required

@@ -51,5 +51,7 @@ module.exports.view = function (accessToken) {
 
 // generate access token
 module.exports.token = function (credentials) {
-    return chakram.post("http://localhost:3000/v1/auth/token", credentials);
+    // auth.genAuthHeaders(undefined) sets X-Client-Secret for us, and doesn't set any
+    // access token header
+    return chakram.post("http://localhost:3000/v1/auth/token", credentials, auth.genAuthHeaders(undefined));
 };

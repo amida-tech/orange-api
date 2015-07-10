@@ -9,5 +9,6 @@ install:
   - sudo pip install zerorpc python-dateutil pytz termcolor pyevolve
   - npm install -g grunt-cli
   - npm install
+  - echo "0123456789abcdef" > .secret
 script: grunt test
 after_success: grunt coverage:push

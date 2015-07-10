@@ -31,6 +31,15 @@ for example
 X-Client-Secret: CLIENT_SECRET
 ```
 
+Not sending a client secret, or sending an invalid one, will result in a `401` HTTP error with
+the body
+```javascript
+{
+    success: false,
+    errors: ['invalid_client_secret']
+}
+```
+
 ### Response Status Codes
 #### Success
 All successful requests return responses with the following error codes:

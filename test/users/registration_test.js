@@ -9,7 +9,9 @@ describe("Users", function () {
         // the endpoint
         var register = function (data) {
             return fixtures.build("User", data).then(function (user) {
-                return chakram.post("http://localhost:3000/v1/user", user);
+                // auth.genAuthHeaders(undefined) sets X-Client-Secret for us, and doesn't set any
+                // access token header
+                return chakram.post("http://localhost:3000/v1/user", user, auth.genAuthHeaders(undefined));
             });
         };
 
@@ -58,25 +60,29 @@ describe("Users", function () {
         });
 
         it("should create a patient for me", function () {
+            // auth.genAuthHeaders sends client secret
+            var headers = auth.genAuthHeaders(undefined);
+
             // build but don't save user with full data
             var newUser = fixtures.build("User");
             // register user at endpoint
             var registerUser = function (user) {
-                return chakram.post("http://localhost:3000/v1/user", user).then(function () {
+                return chakram.post("http://localhost:3000/v1/user", user, headers).then(function () {
                     return user;
                 });
             };
             // use user credentials to authenticate and get access token
             // need to do this via HTTP rather than using user to avoid duplication errors
             var token = function (user) {
-                return chakram.post("http://localhost:3000/v1/auth/token", user).then(function (resp) {
+                // auth.genAuthHeaders sends client secret
+                return chakram.post("http://localhost:3000/v1/auth/token", user, headers).then(function (resp) {
                     return resp.body.access_token;
                 });
             };
             // get list of all patients
             var list = function (accessToken) {
-                var headers = auth.genAuthHeaders(accessToken);
-                return chakram.get("http://localhost:3000/v1/patients", headers);
+                var authHeaders = auth.genAuthHeaders(accessToken);
+                return chakram.get("http://localhost:3000/v1/patients", authHeaders);
             };
             return newUser.then(registerUser).then(token).then(list).then(function (response) {
                 // check we have exactly one patient

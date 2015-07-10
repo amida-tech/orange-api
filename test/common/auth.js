@@ -2,6 +2,7 @@
 
 var chakram         = require("chakram"),
     Q               = require("q"),
+    fs              = require("fs"),
     userFixtures    = require("../users/fixtures.js");
 
 var expect = chakram.expect;
@@ -24,14 +25,25 @@ auth.itRequiresAuthentication = function (endpoint) {
     });
 };
 
-// generate authentication headers to send from an access token
+// read in and store client secret from .secret file
+var secret;
+before(function () {
+    return Q.nbind(fs.readFile)(".secret", { encoding: "utf8" }).then(function (s) {
+        secret = s.trim();
+    });
+});
+
+// generate authentication headers to send from an access token,
+// sending the client secret as well
 auth.genAuthHeaders = function (accessToken) {
-    if (typeof accessToken === "undefined") return {};
-    return {
-        headers: {
-            Authorization: "Bearer " + accessToken
-        }
+    var headers = {
+        "X-Client-Secret": secret
     };
+
+    if (typeof accessToken !== "undefined")
+        headers.Authorization = "Bearer " + accessToken;
+
+    return { headers: headers };
 };
 
 // generate access token from user, promise-style

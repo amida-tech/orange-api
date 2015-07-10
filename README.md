@@ -36,6 +36,9 @@ API for Orange medication adherence apps. quasi-REST and implemented in Node & M
 # you need Node.js and Grunt.js installed
 # and MongoDB runnning
 
+# you also need a client secret (any hexstring) which should be
+# placed into .secret in the root app directory (often `orange-api`)
+
 #install dependencies and build
 npm install
 grunt dev
