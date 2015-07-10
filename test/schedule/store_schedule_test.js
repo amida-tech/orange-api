@@ -40,6 +40,8 @@ describe("Schedule", function () {
             });
         };
 
+        // authorization etc tested elsewhere in medications e2e tests
+
         it("rejects invalid schedules", function () {
             return showSchedule({
                 foo: "bar"

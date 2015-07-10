@@ -2,6 +2,7 @@
 
 var chakram     = require("chakram"),
     Q           = require("q"),
+    curry       = require("curry"),
     auth        = require("../common/auth.js"),
     patients    = require("../patients/common.js"),
     common      = require("../common/chakram.js");
@@ -65,8 +66,16 @@ common.addApiChain("medication", {
 });
 
 // helper methods for authentication
+var testAuthorizationSuccessful = function (endpoint, patient, medication) {
+    // if we should have access check success: true was in response
+    return expect(endpoint(patient, medication)).to.be.an.api.genericSuccess();
+};
+var testAuthorizationFailed = function (endpoint, patient, medication) {
+    // otherwise check a 403 was returned with the appropriate error slug
+    return expect(endpoint(patient, medication)).to.be.an.api.error(403, "unauthorized");
+};
 // endpoint should be a function taking (patient, medication)
-var genAuthorizationTest = function (endpoint, levels) {
+var genAuthorizationTest = function (endpoint, levels, successChecker, failChecker) {
     // generate testcase names
     var accessName = function (level, scenario) {
         if (level) return "it gives me access to " + scenario;
@@ -77,20 +86,15 @@ var genAuthorizationTest = function (endpoint, levels) {
     return function (slug, scenario, promisesGetter) {
         it(accessName(levels[slug], scenario), function () {
             return Q.spread(promisesGetter(), function (patient, medication) {
-                if (levels[slug]) {
-                    // if we should have access check success: true was in response
-                    return expect(endpoint(patient, medication)).to.be.an.api.genericSuccess();
-                } else {
-                    // otherwise check a 403 was returned with the appropriate error slug
-                    return expect(endpoint(patient, medication)).to.be.an.api.error(403, "unauthorized");
-                }
+                if (levels[slug] === true) return successChecker(endpoint, patient, medication);
+                else if (levels[slug] === false) return failChecker(endpoint, patient, medication);
             });
         });
     };
 };
-var requiresAuthentication = module.exports.itRequiresAuthentication = function (levels) {
+var requiresAuthentication = module.exports.itRequiresAuthentication = function (levels, successChecker, failChecker) {
     return function (endpoint) {
-        var gen = genAuthorizationTest(endpoint, levels);
+        var gen = genAuthorizationTest(endpoint, levels, successChecker, failChecker);
 
         describe("testing authorization", function () {
             // TODO: dry this up with test/patients/common.js
@@ -120,7 +124,17 @@ var requiresAuthentication = module.exports.itRequiresAuthentication = function 
             var createMed = function () {
                 return function (patient) {
                     return Q.nbind(patient.createMedication, patient)({
-                        name: "testmed"
+                        name: "testmed",
+                        schedule: {
+                            as_needed: false,
+                            regularly: true,
+                            until: { type: "forever" },
+                            frequency: { n: 1, unit: "day" },
+                            times: [{ type: "exact", time: "09:00" }],
+                            take_with_food: null,
+                            take_with_medications: [],
+                            take_without_medications: []
+                        }
                     });
                 };
             };
@@ -210,7 +224,7 @@ module.exports.itRequiresReadAuthorization = requiresAuthentication({
     none: false,
     read: true,
     write: true
-});
+}, testAuthorizationSuccessful, testAuthorizationFailed);
 module.exports.itRequiresWriteAuthorization = requiresAuthentication({
     unassociated: false,
     me: true,
@@ -221,4 +235,45 @@ module.exports.itRequiresWriteAuthorization = requiresAuthentication({
     none: false,
     read: false,
     write: true
+}, testAuthorizationSuccessful, testAuthorizationFailed);
+
+// test authorization for endpoints that return lists of results: results should
+// be returned if authorization was successful, but not otherwise (this assumes that
+// endpoint either filters by medication ID, or that the generated test data only has
+// one medication viewable per user: both are true)
+var testAuthorizationListSuccessful = curry(function (slug, endpoint, patient, medication) {
+    return endpoint(patient, medication).then(function (response) {
+        // check success: true was in response
+        expect(response).to.be.an.api.genericSuccess();
+
+        // there should be one response key that's not success, this will contain
+        // a list of all the data (e.g., "medications")
+        expect(response.body[slug].length).to.be.greaterThan(0);
+    });
 });
+var testAuthorizationListFailed = curry(function (slug, endpoint, patient, medication) {
+    return endpoint(patient, medication).then(function (response) {
+        // check success: true was in response
+        expect(response).to.be.an.api.genericSuccess();
+
+        // there should be one response key that's not success, this will contain
+        // a list of all the data (e.g., "medications"). we should have no
+        // data here.
+        expect(response.body[slug].length).to.equal(0);
+    });
+});
+
+// we only consider testcases where the user has access to the patient (otherwise
+// a 403 is returned)
+module.exports.itRequiresReadListAuthorization = function (slug) {
+    return requiresAuthentication({
+        me: true,
+        defWrite: true,
+        defRead: true,
+        defDefRead: true,
+        defDefWrite: true,
+        none: false,
+        read: true,
+        write: true
+    }, testAuthorizationListSuccessful(slug), testAuthorizationListFailed(slug));
+};

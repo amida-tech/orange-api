@@ -6,7 +6,8 @@ var chakram     = require("chakram"),
     Q           = require("q"),
     util        = require("util"),
     auth        = require("../common/auth.js"),
-    patients    = require("../patients/common.js");
+    patients    = require("../patients/common.js"),
+    medications = require("../medications/common.js");
 
 var expect = chakram.expect;
 
@@ -43,6 +44,12 @@ describe("Schedule", function () {
             patients.itRequiresAuthentication(curry(show)(null, null, null));
             patients.itRequiresValidPatientId(curry(show)(null, null, null));
 
+            // helper to take a patient and medication, and try and show the schedule for _just_
+            // that medication. used to test medication-specific authorization.
+            var showScheduleMedication = function (patient, medication) {
+                return show(null, null, medication._id, patient._id, patient.user.accessToken);
+            };
+
             // helper to show schedule for an example medication
             // takes a patient, creates a medication for them and then attempts to show their
             // schedule
@@ -58,6 +65,8 @@ describe("Schedule", function () {
 
             // check it requires read acces to patient
             patients.itRequiresReadAuthorization(showSchedule);
+            // check it only returns schedule results for medications we have access to
+            medications.itRequiresReadListAuthorization("schedule")(showScheduleMedication);
 
             describe("with test data", function () {
                 // setup two patients the user has read access to
