@@ -367,9 +367,8 @@ Name, group and access level can be modified here. The access level can be modif
 two ways: setting <code>access</code> (to <code>read</code>, <code>write</code>, <code>none</code> or <code>default</code>) will set the access level the
 current user has to the patient, and setting <code>access_prime</code>, <code>access_family</code> or <code>access_anyone</code>
 (to <code>read</code> or <code>write</code>) will set the group-wide access levels for the patient.</p>
-<p>Setting <code>access</code> to <code>none</code> will stop sharing the patient with the current user. If the
-patient is not shared with any other users, then the patient and all its data <strong>will be
-deleted</strong>.</p>
+<p>The owner of a patient cannot change their access level from <code>write</code> or their group from <code>owner</code>.</p>
+<p>Setting <code>access</code> to <code>none</code> will stop sharing the patient with the current user.</p>
 <div class="title"><strong>Parameters</strong><div class="collapse-button show"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><dl class="inner"><dt>patientid</dt><dd><code>integer</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>unique ID of the patient (<strong>not</strong> user-specific) (<em>url</em>)</p>
 </dd><dt>name</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>new full human name of the patient</p>
 </dd><dt>birthdate</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>Optional date of birth of the patient, formatted as an ISO 8601 YYYY-MM-DD</p>
@@ -421,7 +420,7 @@ Otherwise, the group can be changed between <code>prime</code>, <code>family</co
 <p><code>invalid_group</code> (400) - the group field, if passed, must be either <code>prime</code>, <code>family</code> or <code>anyone</code></p>
 </li>
 <li>
-<p><code>is_owner</code> (400) - the current user owns the patient so cannot change their group from <code>owner</code></p>
+<p><code>is_owner</code> (400) - the share belongs to the user owning the patient so cannot be changed</p>
 </li>
 <li>
 <p><code>invalid_access_anyone</code> (400) - the <code>access_anyone</code> field, if passed, must be either <code>read</code> or <code>write</code></p>
@@ -557,7 +556,8 @@ give them, whereas <code>read</code> and <code>write</code> explicitly override 
 </dd><dt>group</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>The share group to add the user to. Must be either <code>prime</code>, <code>family</code> or <code>anyone</code>.</p>
 </dd></dl></div><div class="title"><strong>Request</strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><h5>Headers</h5><pre><code><span class="hljs-attribute">Authorization</span>: <span class="hljs-string">Bearer ACCESS_TOKEN</span><br></code></pre><div style="height: 1px;"></div><h5>Body</h5><pre><code>{
     email: <span class="hljs-string">"care@giver.com"</span>,
-    access: <span class="hljs-string">"read"</span>
+    access: <span class="hljs-string">"read"</span>,
+    group: <span class="hljs-string">"family"</span>
 }
 </code></pre><div style="height: 1px;"></div></div></div><div class="title"><strong>Response&nbsp;&nbsp;<code>201</code></strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><div class="description"><p>Errors</p>
 <ul>
@@ -600,6 +600,7 @@ user of the app, or whether they’ve been sent an email inviting them to sign u
     id: <span class="hljs-number">1</span>,
     email: <span class="hljs-string">"care@giver.com"</span>,
     access: <span class="hljs-string">"read"</span>,
+    group: <span class="hljs-string">"family"</span>,
     is_user: <span class="hljs-literal">true</span>,
     success: <span class="hljs-literal">true</span>
 }
@@ -618,6 +619,8 @@ to <code>id</code>.</p>
 who’ve been invited but still haven’t signed up)</p>
 </dd><dt>access</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>filter results by selecting only users with the specified level of access (either
 <code>read</code> or <code>write</code>)</p>
+</dd><dt>group</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>filter results by selecting only users who are part of the specified share group (either
+<code>owner</code>, <code>prime</code>, <code>family</code> or <code>anyone</code>)</p>
 </dd></dl></div><div class="title"><strong>Request</strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><h5>Headers</h5><pre><code><span class="hljs-attribute">Authorization</span>: <span class="hljs-string">Bearer ACCESS_TOKEN</span><br></code></pre><div style="height: 1px;"></div></div></div><div class="title"><strong>Response&nbsp;&nbsp;<code>200</code></strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><div class="description"><p>Errors</p>
 <ul>
 <li>
@@ -648,6 +651,9 @@ who’ve been invited but still haven’t signed up)</p>
 <li>
 <p><code>invalid_access</code> (400) - the specified access value to filter by is invalid</p>
 </li>
+<li>
+<p><code>invalid_group</code> (400) - the specified group value to filter by is invalid</p>
+</li>
 </ul>
 </div><h5>Body</h5><pre><code>{
     shares: [
@@ -655,6 +661,7 @@ who’ve been invited but still haven’t signed up)</p>
             id: <span class="hljs-number">1</span>,
             email: <span class="hljs-string">"care@giver.com"</span>,
             access: <span class="hljs-string">"write"</span>,
+            group: <span class="hljs-string">"family"</span>,
             is_user: <span class="hljs-literal">true</span>
         },
         ...
@@ -665,14 +672,14 @@ who’ve been invited but still haven’t signed up)</p>
 </code></pre><div style="height: 1px;"></div></div></div></div></div><div id="patients-shared-user" class="resource"><h3>Shared User<a href="#patients-shared-user" class="permalink"><i class="fa fa-link"></i></a></h3><div id="patients-shared-user-put" class="action put"><h4><div class="name">Update Access Level</div><a href="#patients-shared-user-put" class="method put">PUT</a><code class="uri">/patients/{patientid}/shares/{shareid}</code></h4><p>Update the access another user has to a patient (the current user of course is required
 to have <code>write</code> access to this patient). To modify the current user’s access, see the
 convenience method <code>PUT /patients/:patientid</code>.</p>
-<p>If the user’s access is changed to <code>none</code> and the patient is not shared with any other
-users, then the patient and all its data <em>will be deleted</em> (this can of course only happen
-with this endpoint if the user who’s share is being modified is the current user).</p>
+<p>Neither access nor group can be modified for the share for a user who owns a patient.</p>
 <div class="title"><strong>Parameters</strong><div class="collapse-button show"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><dl class="inner"><dt>patientid</dt><dd><code>integer</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>unique ID of the patient (<strong>not</strong> user-specific) (<em>url</em>)</p>
 </dd><dt>shareid</dt><dd><code>integer</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>unique ID of the patient-user association (<strong>not</strong> the user ID) (<em>url</em>)</p>
-</dd><dt>access</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<p><code>read</code> or <code>write</code> to signify the new level of access the specified user should have to the patient</p>
+</dd><dt>access</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<p><code>read</code>, <code>write</code> or <code>default</code> to signify the new level of access the specified user should have to the patient</p>
+</dd><dt>group</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<p><code>anyone</code>, <code>family</code> or `prime to signify the new sharing group the specified user should be a member of</p>
 </dd></dl></div><div class="title"><strong>Request</strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><h5>Headers</h5><pre><code><span class="hljs-attribute">Authorization</span>: <span class="hljs-string">Bearer ACCESS_TOKEN</span><br></code></pre><div style="height: 1px;"></div><h5>Body</h5><pre><code>{
-    access: <span class="hljs-string">"write"</span>
+    access: <span class="hljs-string">"write"</span>,
+    group: <span class="hljs-string">"family"</span>
 }
 </code></pre><div style="height: 1px;"></div></div></div><div class="title"><strong>Response&nbsp;&nbsp;<code>200</code></strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><div class="description"><p>Errors</p>
 <ul>
@@ -697,19 +704,25 @@ the same as the user ID)</p>
 <li>
 <p><code>invalid_access</code> (400) - the specified access value to change to is invalid</p>
 </li>
+<li>
+<p><code>invalid_group</code> (400) - the specified group value to change to is invalid</p>
+</li>
+<li>
+<p><code>is_owner</code> (400) - the share belongs to the user owning the patient so cannot be modified</p>
+</li>
 </ul>
 </div><h5>Body</h5><pre><code>{
     id: <span class="hljs-number">1</span>,
     email: <span class="hljs-string">"care@giver.com"</span>,
     access: <span class="hljs-string">"write"</span>,
+    group: <span class="hljs-string">"family"</span>,
     is_user: <span class="hljs-literal">true</span>,
     success: <span class="hljs-literal">true</span>
 }
 </code></pre><div style="height: 1px;"></div></div></div></div><div id="patients-shared-user-delete" class="action delete"><h4><div class="name">Stop Sharing with User</div><a href="#patients-shared-user-delete" class="method delete">DELETE</a><code class="uri">/patients/{patientid}/shares/{shareid}</code></h4><p>Stop sharing the specified patient’s data with a specified user. The current user will
 of course need write access to the patient. To stop sharing a patient with the <em>current</em>
 user, see the convenience method <code>PUT /patients/:patientid</code>.</p>
-<p>If this is the last user whom the patient is shared with, then the patient and <em>all their data</em>
-will be deleted, so take care.</p>
+<p>The owner’s share cannot be deleted.</p>
 <div class="title"><strong>Parameters</strong><div class="collapse-button show"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><dl class="inner"><dt>patientid</dt><dd><code>integer</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>unique ID of the patient (<strong>not</strong> user-specific) (<em>url</em>)</p>
 </dd><dt>shareid</dt><dd><code>integer</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>unique ID of the patient-user association (<strong>not</strong> the user ID) (<em>url</em>)</p>
 </dd></dl></div><div class="title"><strong>Request</strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><h5>Headers</h5><pre><code><span class="hljs-attribute">Authorization</span>: <span class="hljs-string">Bearer ACCESS_TOKEN</span><br></code></pre><div style="height: 1px;"></div></div></div><div class="title"><strong>Response&nbsp;&nbsp;<code>200</code></strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><div class="description"><p>Errors</p>
@@ -732,11 +745,15 @@ will be deleted, so take care.</p>
 <p>A patient-user sharing relationship with the specified ID was not found (remember, this is <em>not</em>
 the same as the user ID)</p>
 </li>
+<li>
+<p><code>is_owner</code> (400) - the share belongs to the user owning the patient so cannot be removed</p>
+</li>
 </ul>
 </div><h5>Body</h5><pre><code>{
     id: <span class="hljs-number">1</span>,
     email: <span class="hljs-string">"care@giver.com"</span>,
     access: <span class="hljs-string">"write"</span>,
+    group: <span class="hljs-string">"family"</span>,
     is_user: <span class="hljs-literal">true</span>,
     success: <span class="hljs-literal">true</span>
 }
@@ -1690,128 +1707,152 @@ default to <code>default</code>.</p>
 schedule the patient should take a certain medication on.  These are used to schedule
 reminders, and so are vitally important for the core of the app. The data format
 <code>schedule</code>s must be in is precisely defined below, and must be followed exactly.</p>
-<p>There are a couple different discrete schedule types, each of which should be formatted
-differently. The schedule type should be passed in a <code>type</code> key.</p>
-<p>All schedule types can include a <code>stop_date</code> field, containing an ISO8601-formatted date
-value (specifically ISO-2014, i.e., <code>YYYY-MM-DD</code>) on which the patient should stop taking
-the medication (i.e., the last event at which they should take the medication should be the
-last event generated on <code>stop_date</code>). This is useful with, for example, antibiotics, when they
-must be rigorously taken until a certain date, and not at all after that date. <code>stop_date</code> corresponds
-to a date in the patient’s local timezone.</p>
-<h3 id="header-as-needed">As Needed<a class="permalink" href="#header-as-needed"><i class="fa fa-link"></i></a></h3>
-<pre><code class="language-javascript">type: <span class="hljs-string">"as_needed"</span>
-</code></pre>
-<p>Used when the medication can be taken at the whim of the patient (useful for e.g., if
-the patient regularly takes ibroprufen, but does not have to take it <em>every</em> 4 hours).</p>
-<p>This can also include an optional <code>not_to_exceed</code> integer field containing the maximum
-number of times a patient should take the medication in a given day.</p>
-<p>We know illustrate the format with a couple of examples:</p>
+<p>At it’s core, each schedule is an object.</p>
+<p>It must contain the <code>as_needed</code> boolean key signifying whether the medication can be
+taken whenever needed (irregularly), and the <code>regularly</code> key signifying it should be
+taken on a regular schedule. At least one must be true. If <code>regularly</code> is <code>false</code>, no
+extra information is needed. If <code>regularly</code> is true, all of the following scheduling
+data is also required.</p>
+<p>The schedule must have an <code>until</code> key signifying when the patient should stop taking
+the medication:</p>
 <ul>
-<li>Joe can take his ibroprufen whenever desired</li>
+<li>In Perpetuity (forever)</li>
 </ul>
-<pre><code class="language-javascript">{
-    type: <span class="hljs-string">"as_needed"</span>
+<pre><code class="language-javascript">until: {
+    type: <span class="hljs-string">"forever"</span>
 }
 </code></pre>
 <ul>
-<li>Joe can take his ibroprufen whenever desired, but not more than 3 times a day</li>
+<li>A certain number of times before stopping</li>
 </ul>
-<pre><code class="language-javascript">{
-    type: <span class="hljs-string">"as_needed"</span>,
-    not_to_exceed: <span class="hljs-number">3</span>
+<pre><code class="language-javascript">until: {
+    type: <span class="hljs-string">"number"</span>,
+    stop: <span class="hljs-number">5</span>
 }
 </code></pre>
 <ul>
-<li>Joe can take his codeine whenever desired, but not more than 3 times a day and he
-must stop by the 1st January 2015.</li>
+<li>Until a certain date</li>
 </ul>
-<pre><code class="language-javascript">{
-    type: <span class="hljs-string">"as_needed"</span>,
-    not_to_exceed: <span class="hljs-number">1</span>,
-    stop_date: <span class="hljs-string">"2015-01-01"</span>
+<pre><code class="language-javascript">until: {
+    type: <span class="hljs-string">"date"</span>,
+    stop: <span class="hljs-string">"2015-05-07"</span>
 }
 </code></pre>
-<h3 id="header-regularly">Regularly<a class="permalink" href="#header-regularly"><i class="fa fa-link"></i></a></h3>
-<pre><code class="language-javascript">type: <span class="hljs-string">"regularly"</span>
-</code></pre>
-<p>This is a pretty general type that can be used to encode all regular schemas. In all cases,
-the <code>frequency</code> key <strong>must</strong> be set to an integer, corresponding to the patient needing to take the
-medication every <code>frequency</code> days. For example, a weekly medication should have <code>frequency=7</code>, and a daily
-medication should have <code>frequency=1</code>.</p>
-<p>Other keys can be used to specify the times within the day at which the medication should
-occur: combining these with <code>frequency=1</code> allows a schedule that requires a patient to, e.g., take
-a particular medication 4 times every day (<code>frequency=1</code> and <code>number_of_times=4</code>).</p>
-<p>There are 3 different ways the times within the day should be specified. <em>Exactly</em> one must
-be present (<code>number_of_times=1</code> can be used for a standard daily/weekly/etc medication).</p>
-<h4 id="header-specific-number-of-times-per-day">Specific Number of Times per Day<a class="permalink" href="#header-specific-number-of-times-per-day"><i class="fa fa-link"></i></a></h4>
-<p>Set the <code>number_of_times</code> key to an integer representing the number of times the patient should
-take it on each day they take it (so number of times every day for <code>frequency=1</code>, number of times every
-week for <code>frequency=7</code>, etc). For example,</p>
+<p>The schedule must have a <code>frequency</code> key signifying on which days the patient should take
+the medication. Specific times of each day can be set using the <code>times</code> key, which is described
+below. <code>frequency</code> is an object consisting of an <code>n</code> key and a <code>unit</code> key: <code>n</code> is a number
+representing that the medication should be taken every <code>n</code> units, and <code>unit</code> specifies that
+unit (it can be <code>&quot;day&quot;</code>, <code>&quot;month&quot;</code> or <code>&quot;year&quot;</code> only).</p>
+<p><code>frequency</code> can also have an optional <code>exclude</code> key, denoting that the medication should
+sometimes be skipped. If present, <code>exclude</code> must be an object consisting of <code>exclude</code> and <code>repeat</code>
+keys. <code>exclude</code> is an array of numbers representing the indices of days that must be swapped
+(where the first day it should be taken on has index 0, the second day it <em>should be taken on</em>
+has index 1, etc). <code>repeat</code> is a number representing the length of the exclude cycle: in other
+words, indices are taken modulo this. See the examples below for illustration.</p>
 <ul>
-<li>Joe should take his codeine once every day, at any time</li>
+<li>Daily</li>
 </ul>
-<pre><code class="language-javascript">{
-    type: <span class="hljs-string">"regularly"</span>,
-    frequency: <span class="hljs-number">1</span>,
-    number_of_times: <span class="hljs-number">1</span>
+<pre><code class="language-javascript">frequency: {
+    n: <span class="hljs-number">1</span>,
+    unit: <span class="hljs-string">"day"</span>
 }
 </code></pre>
 <ul>
-<li>Joe should take his anti-Parkinsons meds three times a week, all on the same day</li>
+<li>Weekdays only</li>
 </ul>
-<pre><code class="language-javascript">{
-    type: <span class="hljs-string">"regularly"</span>,
-    frequency: <span class="hljs-number">7</span>,
-    number_of_times: <span class="hljs-number">3</span>
-}
-</code></pre>
-<h4 id="header-times-of-day">Times of Day<a class="permalink" href="#header-times-of-day"><i class="fa fa-link"></i></a></h4>
-<p><code>times_of_day</code> should be an array of strings specifying the specific times of the day on which the
-patient should take the medication. Times should be formatted in the <code>HH:MM</code> format of ISO 8601, for
-example <code>03:59</code> and <code>23:20</code>. These times are in the local timezone of the patient, and if that timezone
-is updated then the times will shift accordingly. For example, if the patient’s timezone is initially
-<code>London/Europe</code> and they have a medication scheduled for <code>15:00</code> every day, if the timezone is updated
-to <code>America/New_York</code> then the schedule will shift to <code>10:00</code> every day.</p>
-<p>Times based on the patient’s habits can also be specified with the strings
-<code>&quot;before_sleep&quot;</code>, <code>&quot;after_sleep&quot;</code>, <code>&quot;before_breakfast&quot;</code>, <code>&quot;after_breakfast&quot;</code>,
-<code>&quot;before_lunch&quot;</code>, <code>&quot;after_lunch&quot;</code>, <code>&quot;before_dinner&quot;</code> and <code>&quot;after_dinner&quot;</code>, allowing the schedule
-to specify, for example, that the patient should take the medication once after waking up
-and once before sleeping. These are not affected by timezone changes: for example, if <code>breakfast</code>
-is set to <code>10:00</code> while the timezone is <code>London/Europe</code>, <code>breakfast</code> will remain as <code>10:00</code> if
-the timezone is updated to <code>America/New_York</code>.  This signifies that if medication is to be taken
-with food at breakfast every morning, the patient should continue doing that even if the timezone
-shifts.</p>
-<ul>
-<li>Joe should take his anti-Parkinsons meds at 3PM every week, until March 15</li>
-</ul>
-<pre><code class="language-javascript">{
-    type: <span class="hljs-string">"regularly"</span>,
-    frequency: <span class="hljs-number">7</span>,
-    times_of_day: [<span class="hljs-string">"15:00"</span>],
-    stop_date: <span class="hljs-string">"2015-03-15"</span>
+<pre><code class="language-javascript">frequency: {
+    n: <span class="hljs-number">1</span>,
+    unit: <span class="hljs-string">"day"</span>,
+    exclude: {
+        exclude: [<span class="hljs-number">5</span>, <span class="hljs-number">6</span>],
+        repeat: <span class="hljs-number">7</span>
+    }
 }
 </code></pre>
 <ul>
-<li>Joe should take his Fexofenadine every day, once after waking and once after lunch</li>
+<li>Weekly</li>
 </ul>
-<pre><code class="language-javascript">{
-    type: <span class="hljs-string">"regularly"</span>,
-    frequency: <span class="hljs-number">1</span>,
-    times_of_day: [<span class="hljs-string">"after_sleep"</span>, <span class="hljs-string">"after_lunch"</span>]
+<pre><code class="language-javascript">frequency: {
+    n: <span class="hljs-number">7</span>,
+    unit: <span class="hljs-string">"day"</span>
 }
 </code></pre>
-<h4 id="header-interval">Interval<a class="permalink" href="#header-interval"><i class="fa fa-link"></i></a></h4>
-<p><code>interval</code> should be an integer specifying, in <strong>minutes</strong>, a regular interval that the
-medication should be taken at. For example,</p>
 <ul>
-<li>Joe should take his Fexofenadine every 6 hours</li>
+<li>Every 28 days</li>
 </ul>
-<pre><code class="language-javascript">{
-    type: <span class="hljs-string">"regularly"</span>,
-    frequency: <span class="hljs-number">1</span>,
-    interval: <span class="hljs-number">360</span>
+<pre><code class="language-javascript">frequency: {
+    n: <span class="hljs-number">28</span>,
+    unit: <span class="hljs-string">"day"</span>
 }
 </code></pre>
+<ul>
+<li>Monthly</li>
+</ul>
+<pre><code class="language-javascript">frequency: {
+    n: <span class="hljs-number">1</span>,
+    unit: <span class="hljs-string">"month"</span>
+}
+</code></pre>
+<ul>
+<li>Quarterly</li>
+</ul>
+<pre><code class="language-javascript">frequency: {
+    n: <span class="hljs-number">3</span>,
+    unit: <span class="hljs-string">"month"</span>
+}
+</code></pre>
+<ul>
+<li>Quarterly apart from last quarter</li>
+</ul>
+<pre><code class="language-javascript">frequency: {
+    n: <span class="hljs-number">3</span>,
+    unit: <span class="hljs-string">"month"</span>,
+    exclude: {
+        exclude: [<span class="hljs-number">3</span>],
+        repeat: <span class="hljs-number">4</span>
+    }
+}
+</code></pre>
+<p><code>frequency</code> can also include a <code>start</code> key: a <code>YYYY-MM-DD</code> formatted (local) date representing
+any date that the medication was taken on (for example, the date the medication was started on).
+This means that, for example, Orange knows which day of the week a weekly medication is taken on.</p>
+<p>The schedule must also include a <code>times</code> key representing the times of the day the medication
+is taken on (i.e., <code>frequency</code> dictates which days and <code>times</code> dictates which times on those days).
+The number of times the medication is taken each day should not be explicitly specified, this is instead
+calculated from the length of <code>times</code>. <code>times</code> should be an array consisting of objects, each representing
+a time of the day at which the medication should be taken. There are 3 different types:</p>
+<ul>
+<li>Any time of the day</li>
+</ul>
+<pre><code class="language-javascript">{
+    type: <span class="hljs-string">"unspecified"</span>
+}
+</code></pre>
+<ul>
+<li>An exact time (<code>time</code> should be formatted <code>HH:MM</code> in local time)</li>
+</ul>
+<pre><code class="language-javascript">{
+    type: <span class="hljs-string">"exact"</span>,
+    time: <span class="hljs-string">"09:00"</span>
+}
+</code></pre>
+<ul>
+<li>A time based on the user’s habits. <code>event</code> can be either <code>&quot;breakfast&quot;</code>, <code>&quot;lunch&quot;</code>, <code>&quot;dinner&quot;</code> or <code>&quot;sleep&quot;</code>. <code>when</code> can be either <code>&quot;before&quot;</code> or <code>&quot;after&quot;</code>.</li>
+</ul>
+<pre><code class="language-javascript">{
+    type: <span class="hljs-string">"event"</span>,
+    event: <span class="hljs-string">"lunch"</span>,
+    when: <span class="hljs-string">"before"</span>
+}
+</code></pre>
+<p>The schedule must also include a <code>take_with_food</code> key. This is a boolean specifying whether
+or not the medication must be taken with food. <code>true</code> means it must be taken with food, <code>false</code> means
+it must not be taken with food, and <code>null</code> means it does not matter. Note that <code>false</code> means
+the medication <strong>must not</strong> be taken with food, not that it just doesn’t matter. So if unknown,
+<code>take_with_food</code> should be <code>null</code>.</p>
+<p>Finally the schedule must include <code>take_with_medications</code> and <code>take_without_medications</code> keys. These
+should be arrays of integers that are the IDs of medications with which this medication must (or must not)
+be taken simultaneously with. If there are no medications like this, they should both be <code>[]</code>.</p>
 <div id="medications-medications-collection" class="resource"><h3>Medications Collection<a href="#medications-medications-collection" class="permalink"><i class="fa fa-link"></i></a></h3><div id="medications-medications-collection-post" class="action post"><h4><div class="name">Create a new Medication</div><a href="#medications-medications-collection-post" class="method post">POST</a><code class="uri">/patients/{patientid}/medications</code></h4><p>Store details of a new medication the patient has started taking. The current user
 must have write access to the patient.</p>
 <div class="title"><strong>Parameters</strong><div class="collapse-button show"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><dl class="inner"><dt>patientid</dt><dd><code>integer</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>unique ID of the patient (<em>url</em>)</p>
@@ -2114,7 +2155,7 @@ The current user must have read access to <strong>both</strong> the patient and 
     success: <span class="hljs-literal">true</span>
 }
 </code></pre><div style="height: 1px;"></div></div></div></div><div id="medications-medication-put" class="action put"><h4><div class="name">Change a Med's Info</div><a href="#medications-medication-put" class="method put">PUT</a><code class="uri">/patients/{patientid}/medications/{medicationid}</code></h4><p>Change information (all keys apart from <code>id</code>) of an individual medication. The current
-user must have write access to <strong>both</strong> the patient and the medication.</p>
+user must have read access to the patient and write access to the medication.</p>
 <div class="title"><strong>Parameters</strong><div class="collapse-button show"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><dl class="inner"><dt>patientid</dt><dd><code>integer</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>unique ID of the patient (<em>url</em>)</p>
 </dd><dt>medicationid</dt><dd><code>integer</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>unique ID of the medication (<em>url</em>)</p>
 </dd><dt>name</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>human-formatted name of the medication</p>
@@ -2237,8 +2278,8 @@ or <code>default</code>. Defaults to <code>default</code>.</p>
     pharmacy_id: <span class="hljs-number">1</span>,
     success: <span class="hljs-literal">true</span>
 }
-</code></pre><div style="height: 1px;"></div></div></div></div><div id="medications-medication-delete" class="action delete"><h4><div class="name">Delete a Medication</div><a href="#medications-medication-delete" class="method delete">DELETE</a><code class="uri">/patients/{patientid}/medications/{medicationid}</code></h4><p>Remove a single medication. The current user must have write access to <strong>both</strong> the patient
-and the medication.</p>
+</code></pre><div style="height: 1px;"></div></div></div></div><div id="medications-medication-delete" class="action delete"><h4><div class="name">Delete a Medication</div><a href="#medications-medication-delete" class="method delete">DELETE</a><code class="uri">/patients/{patientid}/medications/{medicationid}</code></h4><p>Remove a single medication. The current user must have read access to the patient and
+write access to the medication.</p>
 <div class="title"><strong>Parameters</strong><div class="collapse-button show"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><dl class="inner"><dt>patientid</dt><dd><code>integer</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>unique ID of the patient (<em>url</em>)</p>
 </dd><dt>medicationid</dt><dd><code>integer</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>unique ID of the medication (<em>url</em>)</p>
 </dd></dl></div><div class="title"><strong>Request</strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><h5>Headers</h5><pre><code><span class="hljs-attribute">Authorization</span>: <span class="hljs-string">Bearer ACCESS_TOKEN</span><br></code></pre><div style="height: 1px;"></div></div></div><div class="title"><strong>Response&nbsp;&nbsp;<code>200</code></strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><div class="description"><p>Errors</p>
@@ -2634,7 +2675,7 @@ one week later than the current time.</p>
     },
     success: <span class="hljs-literal">true</span>
 }
-</code></pre><div style="height: 1px;"></div></div></div></div></div></section></div></div></div><p style="text-align: center;" class="text-muted">Generated by&nbsp;<a href="https://github.com/danielgtaylor/aglio" class="aglio">aglio</a>&nbsp;on 06 Jul 2015</p><script>function toggleCollapse(event) {
+</code></pre><div style="height: 1px;"></div></div></div></div></div></section></div></div></div><p style="text-align: center;" class="text-muted">Generated by&nbsp;<a href="https://github.com/danielgtaylor/aglio" class="aglio">aglio</a>&nbsp;on 10 Jul 2015</p><script>function toggleCollapse(event) {
     var button = event.target.parentNode;
     var content = button.parentNode.nextSibling;
     var inner = content.children[0];
