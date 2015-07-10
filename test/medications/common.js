@@ -74,18 +74,16 @@ var genAuthorizationTest = function (endpoint, levels) {
     };
 
     // generate entire testcase
-    return function (slug, scenario, patientPromise, medicationPromise) {
+    return function (slug, scenario, promisesGetter) {
         it(accessName(levels[slug], scenario), function () {
-            return medicationPromise.then(function (medication) {
-                return patientPromise.then(function (patient) {
-                    if (levels[slug]) {
-                        // if we should have access check success: true was in response
-                        return expect(endpoint(patient, medication)).to.be.an.api.genericSuccess();
-                    } else {
-                        // otherwise check a 403 was returned with the appropriate error slug
-                        return expect(endpoint(patient, medication)).to.be.an.api.error(403, "unauthorized");
-                    }
-                });
+            return Q.spread(promisesGetter(), function (patient, medication) {
+                if (levels[slug]) {
+                    // if we should have access check success: true was in response
+                    return expect(endpoint(patient, medication)).to.be.an.api.genericSuccess();
+                } else {
+                    // otherwise check a 403 was returned with the appropriate error slug
+                    return expect(endpoint(patient, medication)).to.be.an.api.error(403, "unauthorized");
+                }
             });
         });
     };
@@ -146,51 +144,69 @@ var requiresAuthentication = module.exports.itRequiresAuthentication = function 
                 };
             };
 
-            var p = patientForMe();
-            var m = p.then(createMed());
-            gen("me", "my patients", p, m);
+            gen("me", "my patients", function () {
+                var p = patientForMe();
+                var m = p.then(createMed());
+                return [p, m];
+            });
 
-            p = patientForOther();
-            m = p.then(createMed()).then(save(p));
-            gen("unassociated", "patients not shared with me", p, m);
+            gen("unassociated", "patients not shared with me", function () {
+                var p = patientForOther();
+                var m = p.then(createMed()).then(save(p));
+                return [p, m];
+            });
 
-            p = patientForOther().then(share("write", "anyone"));
-            m = p.then(createMed()).then(setPermission("anyone", "default")).then(save(p));
-            gen("defaultWrite", "medications with 'default' when the share has 'write' permissions", p, m);
+            gen("defWrite", "medications with 'default' when the share has 'write' permissions", function () {
+                var p = patientForOther().then(share("write", "anyone"));
+                var m = p.then(createMed()).then(setPermission("anyone", "default")).then(save(p));
+                return [p, m];
+            });
 
-            p = patientForOther().then(share("read", "anyone"));
-            m = p.then(createMed()).then(setPermission("anyone", "default")).then(save(p));
-            gen("defaultRead", "medications with 'default' when the share has 'read' permissions", p, m);
+            gen("defRead", "medications with 'default' when the share has 'read' permissions", function () {
+                var p = patientForOther().then(share("read", "anyone"));
+                var m = p.then(createMed()).then(setPermission("anyone", "default")).then(save(p));
+                return [p, m];
+            });
 
-            p = patientForOther().then(setPermission("anyone", "read")).then(share("default", "anyone"));
-            m = p.then(createMed()).then(setPermission("anyone", "default")).then(save(p));
-            gen("defaultDefaultRead", "medications with 'default' when the patient has 'read' permissions", p, m);
+            gen("defDefRead", "medications with 'default' when the patient has 'read' permissions", function () {
+                var p = patientForOther().then(setPermission("anyone", "read")).then(share("default", "anyone"));
+                var m = p.then(createMed()).then(setPermission("anyone", "default")).then(save(p));
+                return [p, m];
+            });
 
-            p = patientForOther().then(setPermission("anyone", "write")).then(share("default", "anyone"));
-            m = p.then(createMed()).then(setPermission("anyone", "default")).then(save(p));
-            gen("defaultDefaultWrite", "medications with 'default' when the patient has 'write' permissions", p, m);
+            gen("defDefWrite", "medications with 'default' when the patient has 'write' permissions", function () {
+                var p = patientForOther().then(setPermission("anyone", "write")).then(share("default", "anyone"));
+                var m = p.then(createMed()).then(setPermission("anyone", "default")).then(save(p));
+                return [p, m];
+            });
 
-            p = patientForOther().then(share("write", "anyone"));
-            m = p.then(createMed()).then(setPermission("anyone", "none")).then(save(p));
-            gen("none", "medications with 'none'", p, m);
+            gen("none", "medications with 'none'", function () {
+                var p = patientForOther().then(share("write", "anyone"));
+                var m = p.then(createMed()).then(setPermission("anyone", "none")).then(save(p));
+                return [p, m];
+            });
 
-            p = patientForOther().then(share("write", "anyone"));
-            m = p.then(createMed()).then(setPermission("anyone", "read")).then(save(p));
-            gen("read", "medications with 'read'", p, m);
+            gen("read", "medications with 'read'", function () {
+                var p = patientForOther().then(share("write", "anyone"));
+                var m = p.then(createMed()).then(setPermission("anyone", "read")).then(save(p));
+                return [p, m];
+            });
 
-            p = patientForOther().then(share("write", "anyone"));
-            m = p.then(createMed()).then(setPermission("anyone", "write")).then(save(p));
-            gen("write", "medications with 'write'", p, m);
+            gen("write", "medications with 'write'", function () {
+                var p = patientForOther().then(share("write", "anyone"));
+                var m = p.then(createMed()).then(setPermission("anyone", "write")).then(save(p));
+                return [p, m];
+            });
         });
     };
 };
 module.exports.itRequiresReadAuthorization = requiresAuthentication({
     unassociated: false,
     me: true,
-    defaultWrite: true,
-    defaultRead: true,
-    defaultDefaultRead: true,
-    defaultDefaultWrite: true,
+    defWrite: true,
+    defRead: true,
+    defDefRead: true,
+    defDefWrite: true,
     none: false,
     read: true,
     write: true
@@ -198,10 +214,10 @@ module.exports.itRequiresReadAuthorization = requiresAuthentication({
 module.exports.itRequiresWriteAuthorization = requiresAuthentication({
     unassociated: false,
     me: true,
-    defaultWrite: true,
-    defaultRead: false,
-    defaultDefaultRead: false,
-    defaultDefaultWrite: true,
+    defWrite: true,
+    defRead: false,
+    defDefRead: false,
+    defDefWrite: true,
     none: false,
     read: false,
     write: true

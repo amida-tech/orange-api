@@ -608,9 +608,9 @@ Neither access nor group can be modified for the share for a user who owns a pat
     + access (string, required)
 
         `read`, `write` or `default` to signify the new level of access the specified user should have to the patient
-    + access (string, required)
+    + group (string, required)
 
-        `read`, `write` or `default` to signify the new level of access the specified user should have to the patient
+        `anyone`, `family` or `prime to signify the new sharing group the specified user should be a member of
     
 + Request
     + Headers

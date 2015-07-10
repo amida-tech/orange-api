@@ -39,8 +39,11 @@ require("./lib/models/counter.js"); // Require first
 require("./lib/models/user/user.js");
 // Patient requires a getter function for a gridfs client (set as an express
 // setting in run.js but may not be immediately accessible hence the getter function)
+// and likewise for a zerorpc client
 require("./lib/models/patient/patient.js")(function () {
     return app.settings.gridfs;
+}, function () {
+    return app.settings.zerorpc;
 });
 
 // App-level router containing all routes
@@ -67,12 +70,7 @@ patientRouter.use("/pharmacies", require("./lib/controllers/pharmacies.js"));
 patientRouter.use("/medications", require("./lib/controllers/medications.js"));
 patientRouter.use("/journal", require("./lib/controllers/journal.js"));
 patientRouter.use("/doses", require("./lib/controllers/doses.js"));
-// scheduleController requires a getter function for the zerorpc client, set
-// as an express 'setting' in run.js
-var scheduleController = require("./lib/controllers/schedule.js")(function () {
-    return app.settings.zerorpc;
-});
-patientRouter.use("/schedule", scheduleController);
+patientRouter.use("/schedule", require("./lib/controllers/schedule.js"));
 
 // nest patient-specific resources under /patients/:id
 router.use("/patients/:patientid", patientRouter);

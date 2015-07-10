@@ -4,7 +4,6 @@ var chakram     = require("chakram"),
     extend      = require("xtend"),
     util        = require("util"),
     auth        = require("../common/auth.js"),
-    common      = require("./common.js"),
     patients    = require("../patients/common.js"),
     fixtures    = require("../users/fixtures.js");
 
@@ -36,10 +35,6 @@ describe("Patients", function () {
         // create a test user and patient and then do sharePatientWithExisting
         var shareAPatientWithExisting = function (data) {
             return patients.testMyPatient({}).then(curry(sharePatientWithExisting)(data));
-        };
-        // likewise for sharePatient
-        var shareAPatient = function (data) {
-            return patients.testMyPatient({}).then(curry(sharePatient)(data));
         };
 
         // check it rqeuires a valid and authenticated/authorized patient and user
@@ -172,7 +167,8 @@ describe("Patients", function () {
                 it("shows that the user now exists", function () {
                     // no view endpoint, so we hackishly use the edit one
                     var url = util.format("http://localhost:3000/v1/patients/%d/shares/%d", patient._id, shareId);
-                    return chakram.put(url, {}, auth.genAuthHeaders(patient.user.accessToken)).then(function (response) {
+                    var headers = auth.genAuthHeaders(patient.user.accessToken);
+                    return chakram.put(url, {}, headers).then(function (response) {
                         expect(response).to.be.a.share.success;
                         expect(response.body.is_user).to.be.true;
                     });

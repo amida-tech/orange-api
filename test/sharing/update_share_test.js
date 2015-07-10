@@ -4,9 +4,7 @@ var chakram     = require("chakram"),
     Q           = require("q"),
     util        = require("util"),
     auth        = require("../common/auth.js"),
-    common      = require("./common.js"),
-    patients    = require("../patients/common.js"),
-    fixtures    = require("../users/fixtures.js");
+    patients    = require("../patients/common.js");
 
 var expect = chakram.expect;
 

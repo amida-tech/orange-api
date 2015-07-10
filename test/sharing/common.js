@@ -34,7 +34,7 @@ common.addApiChain("share", {
 });
 
 // endpoint takes (shareId, patientId, accessToken)
-module.exports.itRequiresValidShareId = function (endpoint) {
+module.exports.itRequiresValidShareId = function (ep) {
     describe("testing invalid share IDs", function () {
         var user, patient, otherPatient, share;
         before(function () {
@@ -58,13 +58,13 @@ module.exports.itRequiresValidShareId = function (endpoint) {
         });
 
         it("should not accept invalid share IDs", function () {
-            return expect(endpoint("f", patient._id, user.accessToken)).to.be.an.api.error(404, "invalid_share_id");
+            return expect(ep("f", patient._id, user.accessToken)).to.be.an.api.error(404, "invalid_share_id");
         });
         it("should not accept share IDs not corresponding to real shares", function () {
-            return expect(endpoint(9999, patient._id, user.accessToken)).to.be.an.api.error(404, "invalid_share_id");
+            return expect(ep(9999, patient._id, user.accessToken)).to.be.an.api.error(404, "invalid_share_id");
         });
         it("should not accept share IDs corresponding to shares belonging to other patients", function () {
-            return expect(endpoint(share._id, patient._id, user.accessToken)).to.be.an.api.error(404, "invalid_share_id");
+            return expect(ep(share._id, patient._id, user.accessToken)).to.be.an.api.error(404, "invalid_share_id");
         });
     });
 };

@@ -13,7 +13,8 @@ var expect = chakram.expect;
 // verify successful responses
 /*eslint-disable key-spacing */
 var patientSchema = {
-    required: ["id", "name", "sex", "birthdate", "avatar", "access", "group", "access_anyone", "access_family", "access_prime"],
+    required: ["id", "name", "sex", "birthdate", "avatar", "access", "group", "access_anyone", "access_family",
+                "access_prime"],
     properties: {
         id:             { type: "number" },
         name:           { type: "string" },
@@ -169,9 +170,9 @@ var genAuthorizationTest = function (endpoint, levels) {
     };
 
     // generate entire testcase
-    return function (slug, scenario, patientPromise) {
+    return function (slug, scenario, patientPromiseGetter) {
         it(accessName(levels[slug], scenario), function () {
-            return patientPromise.then(function (patient) {
+            return patientPromiseGetter().then(function (patient) {
                 if (levels[slug]) {
                     // if we should have access check success: true was in response
                     return expect(endpoint(patient)).to.be.an.api.genericSuccess();
@@ -192,7 +193,11 @@ var requiresAuthentication = module.exports.itRequiresAuthentication = function 
                 return auth.createTestUser().then(createMyPatient({}));
             };
             var patientForOther = function () {
-                return Q.all([auth.createTestUser(), auth.createTestUser()]).spread(createOtherPatient({}));
+                return Q.all([auth.createTestUser(), auth.createTestUser()])
+                        .spread(createOtherPatient({}))
+                        .then(function (p) {
+                            return p;
+                        });
             };
             var share = function (access, group) {
                 return function (patient) {
@@ -212,31 +217,43 @@ var requiresAuthentication = module.exports.itRequiresAuthentication = function 
                 };
             };
 
-            gen("me", "my patients", patientForMe());
-            gen("unassociated", "patients not shared with me", patientForOther());
+            gen("me", "my patients", patientForMe);
+            gen("unassociated", "patients not shared with me", patientForOther);
 
-            var p = patientForOther().then(share("read", "anyone"));
+            var p = function () { return patientForOther().then(share("read", "anyone")); };
             gen("explicitRead", "patients explicitly shared read-only with me", p);
 
-            p = patientForOther().then(share("write", "anyone"));
+            p = function () { return patientForOther().then(share("write", "anyone")); };
             gen("explicitWrite", "patients explicitly shared read-write with me", p);
 
-            p = patientForOther().then(setPermission("anyone", "read")).then(share("default", "anyone"));
+            p = function () {
+                return patientForOther().then(setPermission("anyone", "read")).then(share("default", "anyone"));
+            };
             gen("anyoneRead", "patients shared as 'anybody' when 'anybody' has read permissions", p);
 
-            p = patientForOther().then(setPermission("anyone", "write")).then(share("default", "anyone"));
+            p = function () {
+                return patientForOther().then(setPermission("anyone", "write")).then(share("default", "anyone"));
+            };
             gen("anyoneWrite", "patients shared as 'anybody' when 'anybody' has write permissions", p);
 
-            p = patientForOther().then(setPermission("family", "read")).then(share("default", "family"));
+            p = function () {
+                return patientForOther().then(setPermission("family", "read")).then(share("default", "family"));
+            };
             gen("familyRead", "patients shared as 'family' when 'family' has read permissions", p);
 
-            p = patientForOther().then(setPermission("family", "write")).then(share("default", "family"));
+            p = function () {
+                return patientForOther().then(setPermission("family", "write")).then(share("default", "family"));
+            };
             gen("familyWrite", "patients shared as 'family' when 'family' has write permissions", p);
 
-            p = patientForOther().then(setPermission("prime", "read")).then(share("default", "prime"));
+            p = function () {
+                return patientForOther().then(setPermission("prime", "read")).then(share("default", "prime"));
+            };
             gen("primeRead", "patients shared as 'prime' when 'prime' has read permissions", p);
 
-            p = patientForOther().then(setPermission("prime", "write")).then(share("default", "prime"));
+            p = function () {
+                return patientForOther().then(setPermission("prime", "write")).then(share("default", "prime"));
+            };
             gen("primeWrite", "patients shared as 'prime' when 'prime' has write permissions", p);
         });
     };

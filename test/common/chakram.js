@@ -1,6 +1,5 @@
 "use strict";
-var chakram = require("chakram"),
-    extend  = require("xtend");
+var chakram = require("chakram");
 
 var expect = chakram.expect;
 
@@ -62,6 +61,7 @@ before(function () {
         expect(respObj).to.be.an.api.genericSuccess(200);
 
         // build up schema for overall response
+        /*eslint-disable key-spacing */
         var schema = {
             required:   [slug, "count"],
             properties: {
@@ -69,9 +69,10 @@ before(function () {
             }
         };
         schema.properties[slug] = {
-            type: "array",
+            type:  "array",
             items: [itemSchema]
         };
+        /*eslint-enable key-spacing */
         expect(respObj).to.have.schema(schema);
     });
 });

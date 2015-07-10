@@ -61,12 +61,10 @@ describe("Schedule", function () {
 
             describe("with test data", function () {
                 // setup two patients the user has read access to
-                var user, patient, noneMedication, defaultMedication;
+                var patient, noneMedication, defaultMedication;
                 before(function () {
                     // create two test users
                     return Q.all([auth.createTestUser(), auth.createTestUser()]).spread(function (me, other) {
-                        user = me;
-
                         // create patient and share read-only with main user
                         return patients.createOtherPatient({}, me, other).then(function (p) {
                             patient = p;
@@ -78,9 +76,14 @@ describe("Schedule", function () {
                             name: "foobar none",
                             access_anyone: "none",
                             schedule: {
-                                type: "regularly",
-                                frequency: 1,
-                                times_of_day: ["09:00"]
+                                as_needed: false,
+                                regularly: true,
+                                until: { type: "forever" },
+                                frequency: { n: 1, unit: "day" },
+                                times: [{ type: "exact", time: "09:00" }],
+                                take_with_food: null,
+                                take_with_medications: [],
+                                take_without_medications: []
                             }
                         }).then(function (m) {
                             noneMedication = m;
@@ -90,9 +93,14 @@ describe("Schedule", function () {
                                 name: "foobar def",
                                 access_anyone: "default",
                                 schedule: {
-                                    type: "regularly",
-                                    frequency: 1,
-                                    times_of_day: ["09:00"]
+                                    as_needed: false,
+                                    regularly: true,
+                                    until: { type: "forever" },
+                                    frequency: { n: 1, unit: "day" },
+                                    times: [{ type: "exact", time: "09:00" }],
+                                    take_with_food: null,
+                                    take_with_medications: [],
+                                    take_without_medications: []
                                 }
                             });
                         }).then(function (m) {
@@ -147,9 +155,14 @@ describe("Schedule", function () {
                     return Q.nbind(p.createMedication, p)({
                         name: "Test Medication",
                         schedule: {
-                            type: "regularly",
-                            frequency: 1,
-                            times_of_day: ["09:00"]
+                            as_needed: false,
+                            regularly: true,
+                            until: { type: "forever" },
+                            frequency: { n: 1, unit: "day" },
+                            times: [{ type: "exact", time: "09:00" }],
+                            take_with_food: null,
+                            take_with_medications: [],
+                            take_without_medications: []
                         }
                     });
                 };
@@ -349,6 +362,6 @@ describe("Schedule", function () {
             });
         });
 
-        it("handles dose events");
+        // everything more granular is tested in unit/medication_schedule_generator_test.js
     });
 });
