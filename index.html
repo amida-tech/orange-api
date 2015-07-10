@@ -32,6 +32,13 @@ secret</em> in the form of a hexstring. This should be sent in the <code>X-Clien
 for example</p>
 <pre><code class="language-http"><span class="hljs-attribute">X-Client-Secret</span>: <span class="hljs-string">CLIENT_SECRET</span>
 </code></pre>
+<p>Not sending a client secret, or sending an invalid one, will result in a <code>401</code> HTTP error with
+the body</p>
+<pre><code class="language-javascript">{
+    success: <span class="hljs-literal">false</span>,
+    errors: [<span class="hljs-string">'invalid_client_secret'</span>]
+}
+</code></pre>
 <h3 id="header-response-status-codes">Response Status Codes<a class="permalink" href="#header-response-status-codes"><i class="fa fa-link"></i></a></h3>
 <h4 id="header-success">Success<a class="permalink" href="#header-success"><i class="fa fa-link"></i></a></h4>
 <p>All successful requests return responses with the following error codes:</p>
