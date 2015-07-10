@@ -1,13 +1,10 @@
 "use strict";
 var chakram     = require("chakram"),
     curry       = require("curry"),
-    Q           = require("q"),
     util        = require("util"),
     auth        = require("../common/auth.js"),
     common      = require("./common.js"),
     patients    = require("../patients/common.js");
-
-var expect = chakram.expect;
 
 describe("Medications", function () {
     describe("Show Single Medication (GET /patients/:patientid/medications/:medicationid)", function () {

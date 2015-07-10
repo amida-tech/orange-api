@@ -156,25 +156,25 @@ var requiresAuthentication = module.exports.itRequiresAuthentication = function 
                 return [p, m];
             });
 
-            gen("defaultWrite", "medications with 'default' when the share has 'write' permissions", function () {
+            gen("defWrite", "medications with 'default' when the share has 'write' permissions", function () {
                 var p = patientForOther().then(share("write", "anyone"));
                 var m = p.then(createMed()).then(setPermission("anyone", "default")).then(save(p));
                 return [p, m];
             });
 
-            gen("defaultRead", "medications with 'default' when the share has 'read' permissions", function () {
+            gen("defRead", "medications with 'default' when the share has 'read' permissions", function () {
                 var p = patientForOther().then(share("read", "anyone"));
                 var m = p.then(createMed()).then(setPermission("anyone", "default")).then(save(p));
                 return [p, m];
             });
 
-            gen("defaultDefaultRead", "medications with 'default' when the patient has 'read' permissions", function () {
+            gen("defDefRead", "medications with 'default' when the patient has 'read' permissions", function () {
                 var p = patientForOther().then(setPermission("anyone", "read")).then(share("default", "anyone"));
                 var m = p.then(createMed()).then(setPermission("anyone", "default")).then(save(p));
                 return [p, m];
             });
 
-            gen("defaultDefaultWrite", "medications with 'default' when the patient has 'write' permissions", function () {
+            gen("defDefWrite", "medications with 'default' when the patient has 'write' permissions", function () {
                 var p = patientForOther().then(setPermission("anyone", "write")).then(share("default", "anyone"));
                 var m = p.then(createMed()).then(setPermission("anyone", "default")).then(save(p));
                 return [p, m];
@@ -203,10 +203,10 @@ var requiresAuthentication = module.exports.itRequiresAuthentication = function 
 module.exports.itRequiresReadAuthorization = requiresAuthentication({
     unassociated: false,
     me: true,
-    defaultWrite: true,
-    defaultRead: true,
-    defaultDefaultRead: true,
-    defaultDefaultWrite: true,
+    defWrite: true,
+    defRead: true,
+    defDefRead: true,
+    defDefWrite: true,
     none: false,
     read: true,
     write: true
@@ -214,10 +214,10 @@ module.exports.itRequiresReadAuthorization = requiresAuthentication({
 module.exports.itRequiresWriteAuthorization = requiresAuthentication({
     unassociated: false,
     me: true,
-    defaultWrite: true,
-    defaultRead: false,
-    defaultDefaultRead: false,
-    defaultDefaultWrite: true,
+    defWrite: true,
+    defRead: false,
+    defDefRead: false,
+    defDefWrite: true,
     none: false,
     read: false,
     write: true

@@ -1,13 +1,8 @@
 "use strict";
 var chai        = require("chai"),
     moment      = require("moment-timezone"),
-    sinon       = require("sinon"),
-    extend      = require("xtend"),
-    mongoose    = require("mongoose"),
     Q           = require("q"),
-    patients    = require("../../patients/common.js"),
-    Schedule    = require("../../../lib/models/schedule/schedule.js"),
-    errors      = require("../../../lib/errors.js").ERRORS;
+    patients    = require("../../patients/common.js");
 var expect = chai.expect;
 
 // we're testing everything other than the controller logic and API functionality here
@@ -27,12 +22,12 @@ describe("Schedule", function () {
         // setup test medication for them with daily schedule
         var medication, doseTime, doseDelta;
         before(function () {
-            // rather than fixing the time the medication is taken at 
+            // rather than fixing the time the medication is taken at
             // and stubbing the clock so we know what to expect, we have to
             // generate the schedule time based on the current time
             // (zerorpc silently fails when used with a stubbed clock)
             var now = moment.tz(tz);
-            doseDelta = Math.floor(now.diff(moment(now).startOf("day"))/2);
+            doseDelta = Math.floor(now.diff(moment(now).startOf("day")) / 2);
             doseTime = moment.tz(now - doseDelta, tz).format("HH:mm");
 
             return Q.nbind(patient.createMedication, patient)({
@@ -56,7 +51,7 @@ describe("Schedule", function () {
         // start of their respective days
         // to be used in the rest of this test
         // day3 is today, where the scheduled dose event has already happened
-        var day1, day2, day3, day4, clock;
+        var day1, day2, day3, day4;
         before(function () {
             day3 = moment.tz(tz).startOf("day");
             day2 = moment(day3).subtract(1, "day");
@@ -67,21 +62,16 @@ describe("Schedule", function () {
         // create 3 dose events: one slightly before the scheduled time on day,
         // one slightly after on day3, and one outside the given range
         // create them on day1 and day3
-        var day1Dose, day3Dose;
         before(function () {
             var createDose = Q.nbind(patient.createDose, patient);
             return createDose({
                 medication_id: medication._id,
                 date: moment(moment.tz(day1, tz).startOf("day") + doseDelta).subtract(30, "minutes")
-            }).then(function (d) {
-                day1Dose = d;
             }).then(function () {
                 return createDose({
                     medication_id: medication._id,
                     date: moment(moment.tz(day3, tz).startOf("day") + doseDelta).add(1, "hour")
                 });
-            }).then(function (d) {
-                day3Dose = d;
             }).then(function () {
                 return createDose({
                     medication_id: medication._id,

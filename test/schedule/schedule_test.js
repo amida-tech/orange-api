@@ -61,12 +61,10 @@ describe("Schedule", function () {
 
             describe("with test data", function () {
                 // setup two patients the user has read access to
-                var user, patient, noneMedication, defaultMedication;
+                var patient, noneMedication, defaultMedication;
                 before(function () {
                     // create two test users
                     return Q.all([auth.createTestUser(), auth.createTestUser()]).spread(function (me, other) {
-                        user = me;
-
                         // create patient and share read-only with main user
                         return patients.createOtherPatient({}, me, other).then(function (p) {
                             patient = p;

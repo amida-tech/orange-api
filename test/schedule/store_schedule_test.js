@@ -1,9 +1,5 @@
 "use strict";
 var chakram     = require("chakram"),
-    moment      = require("moment-timezone"),
-    querystring = require("querystring"),
-    curry       = require("curry"),
-    Q           = require("q"),
     util        = require("util"),
     auth        = require("../common/auth.js"),
     patients    = require("../patients/common.js");
@@ -47,7 +43,7 @@ describe("Schedule", function () {
         it("rejects invalid schedules", function () {
             return showSchedule({
                 foo: "bar"
-            }).spread(function (createResponse, showResponse) {
+            }).spread(function (createResponse) {
                 expect(createResponse).to.be.an.api.error(400, "invalid_schedule");
             });
         });

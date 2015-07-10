@@ -8,14 +8,6 @@ from pyevolve import Initializators, Mutators
 from pyevolve import Scaling
 from pyevolve import Consts
 
-# takes a gray-encoded bitstring and returns a decimal
-def ungray(bitstr):
-    bits = map(int, bitstr)
-    # copied from http://rosettacode.org/wiki/Gray_code#Python
-    b = [bits[0]]
-    for nextb in bits[1:]: b.append(b[-1] ^ nextb)
-    return int("".join(map(str, b)), 2)
-
 class ScheduleMatcher(object):
     # scheduled = API-style schedule data object
     # doses = array of times that doses were actually taken at
@@ -85,8 +77,6 @@ class ScheduleMatcher(object):
 
     # score a chromosone
     def score(self, chromosone, debug=False):
-        # binString = chromosone.getBinary()
-
         UNMATCHED_DOSE_COST             = 35
         UNMATCHED_SCHEDULE_COST         = 35
         DUPLICATE_COST                  = 50
@@ -144,17 +134,9 @@ class ScheduleMatcher(object):
         # iterate over each number in array (still gray encoded)
         for i in range(self.n):
             addCost(0, "new event", None)
-
-            # get the chunk from i*chunk_length to (i+1)*chunk_length-1
-            # grayMatch = binString[i*self.chunk_length:(i+1)*self.chunk_length]
-            # match = ungray(grayMatch)
             match = chromosone[i]
 
-            # if a match is out of range, score the whole chromosone 0
-            # if (match > self.M): return 0
-
             # no match to a scheduled event
-            # elif (match == self.M): addCost(UNMATCHED_DOSE_COST, "unmatched dose")
             if (match == self.M): addCost(UNMATCHED_DOSE_COST, "unmatched dose", None)
 
             else:
@@ -187,7 +169,6 @@ class ScheduleMatcher(object):
                 else:
                     time = map(int, event["time"].split(":"))
                     date = dose.replace(hour=time[0], minute=time[1], second=0, microsecond=0)
-                    # print date
                     # number of days that need to be added
                     day_delta = day - self.dayIndex(date)
                     date += datetime.timedelta(day_delta)
@@ -226,9 +207,6 @@ class ScheduleMatcher(object):
         costs = self.score(chromosone, debug=debug)
         costIndex = 0
         for i in range(self.n):
-            # get the chunk from i*chunk_length to (i+1)*chunk_length-1
-            # grayMatch = binString[i*self.chunk_length:(i+1)*self.chunk_length]
-            # match = ungray(grayMatch)
             match = chromosone[i]
 
             # data to return over zeromq

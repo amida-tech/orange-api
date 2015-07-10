@@ -2,9 +2,6 @@
 var chai        = require("chai"),
     moment      = require("moment-timezone"),
     extend      = require("xtend"),
-    mongoose    = require("mongoose"),
-    Q           = require("q"),
-    patients    = require("../../patients/common.js"),
     Schedule    = require("../../../lib/models/schedule/schedule.js"),
     errors      = require("../../../lib/errors.js").ERRORS;
 var expect = chai.expect;
@@ -53,7 +50,7 @@ describe("Schedule", function () {
         };
 
         // helpers to get a datetime object given an HH:MM on a specific day
-        var yesterday, today, tomorrow, future, past, weekAgo, weekFromNow, startOfWeek, endOfWeek, startOfYear, endOfYear;
+        var yesterday, today, tomorrow, weekAgo, weekFromNow, startOfWeek, endOfWeek, startOfYear, endOfYear;
         before(function () {
             // for testing we assume we're in a UTC timezone rather than having
             // to explicitly pass the system timezone
@@ -66,8 +63,6 @@ describe("Schedule", function () {
             endOfWeek = moment(today).endOf("week");
             startOfYear = moment(today).startOf("year");
             endOfYear = moment(today).endOf("year");
-            future = moment(today).add(10, "years");
-            past = moment(today).subtract(10, "years");
         });
 
         // helper to take a datetime and return the sort of event object
@@ -583,7 +578,11 @@ describe("Schedule", function () {
                 it("should return an EST schedule", function () {
                     expect(schedule.isValid()).to.be.true;
                     // takeAt takes UTC times
-                    var results = schedule.generate(today.format("YYYY-MM-DD"), tomorrow.format("YYYY-MM-DD"), habits).map(function (item) {
+                    var results = schedule.generate(
+                            today.format("YYYY-MM-DD"),
+                            tomorrow.format("YYYY-MM-DD"),
+                            habits
+                    ).map(function (item) {
                         delete item.index;
                         return item;
                     });
@@ -608,7 +607,11 @@ describe("Schedule", function () {
                             // PST all year round (no PDT)
                             tz: "America/Metlakatla"
                         });
-                        var results = schedule.generate(today.format("YYYY-MM-DD"), tomorrow.format("YYYY-MM-DD"), newHabits).map(function (item) {
+                        var results = schedule.generate(
+                                today.format("YYYY-MM-DD"),
+                                tomorrow.format("YYYY-MM-DD"),
+                                newHabits
+                        ).map(function (item) {
                             delete item.index;
                             return item;
                         });
