@@ -5,7 +5,8 @@ supposed to, _adhering_, or not, _non-adhering_).
 ## Dose Events Collection [/patients/{patientid}/doses]
 ### Create an Event [POST]
 Store details of a new dose event (e.g., when a patient signifies they've
-taken their medication). The current user will need write access to the patient's data.
+taken their medication). The current user will need write access to **both** the patient
+and the medication.
 
 + Parameters
     + patientid (integer, required)
@@ -56,10 +57,12 @@ taken their medication). The current user will need write access to the patient'
                 success: true
             }
 
-### Retrieve all Adherences [GET]
+### Retrieve all Doses [GET]
 Get a list of all dose events for the patient. Includes full information on each,
-but `medication_id` is not expanded out into `medication`. The current user will need
-read access to the patient's data.
+but `medication_id` is not expanded out into `medication`. To get a successful
+response from this endpoint, the user will need read access to the patient.
+Further, only dose events for which the user has read access to the medication
+will be shown.
 
 + Parameters
     + patientid (integer, required)
@@ -136,11 +139,11 @@ read access to the patient's data.
             }
 
 
-## Adherence Event [/patients/{patientid}/dose/{doseid}]
-### Retrieve One Adherence [GET]
+## Dose Event [/patients/{patientid}/dose/{doseid}]
+### Retrieve One Event [GET]
 View information on an individual dose event. `medication_id` is helpfully
-expanded out into `medication`. The current user will need read access to the
-patient's data.
+expanded out into `medication`. The current user will need read access to **both**
+the patient and the dose event.
 
 + Parameters
     + patientid (integer, required)
@@ -200,7 +203,8 @@ patient's data.
 
 ### Change an Event [PUT]
 Change information (medication, date and/or notes) of a single dose event. The current
-user will need write access to the patient's data.
+user will need write access to the patient, the old medication, and the new medication
+(if different).
 
 + Parameters
     + patientid (integer, required)
@@ -258,7 +262,7 @@ user will need write access to the patient's data.
 
 ### Delete an Event [DELETE]
 Remove a single dose event (this will update generated statistics correspondingly, so be careful!)
-The current user will need write access to the patient's data.
+The current user will need write access to both the patient and the medication.
 
 + Parameters
     + patientid (integer, required)

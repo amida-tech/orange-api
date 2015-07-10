@@ -34,8 +34,12 @@ before(function () {
 
     // generic method for successful responses (doesn't validate schema)
     chakram.addMethod("genericSuccess", function (respObj, status) {
+        // for debugging
+        if (typeof respObj.body.errors !== "undefined") console.log(respObj.body.errors);
+
         expect(respObj).to.have.json("success", true);
-        expect(respObj).to.have.status(status); // usually 200, but 201 for POST
+        if (typeof status !== "undefined" && status !== null)
+            expect(respObj).to.have.status(status); // usually 200, but 201 for POST
     });
     // generic methods for different HTTP types (POST = 201 status code, others = 200)
     chakram.addProperty("postSuccess", function (respObj) {
@@ -49,6 +53,27 @@ before(function () {
     });
     chakram.addProperty("deleteSuccess", function (respObj) {
         expect(respObj).to.be.an.api.genericSuccess(200);
+    });
+
+    // take an object schema and the slug for the list of objects, and validate a list
+    // response (e.g., GET /patients)
+    chakram.addMethod("genericListSuccess", function (respObj, slug, itemSchema) {
+        expect(respObj).to.be.an.api.genericSuccess(200);
+
+        // build up schema for overall response
+        /*eslint-disable key-spacing */
+        var schema = {
+            required:   [slug, "count"],
+            properties: {
+                count:  { type: "number" }
+            }
+        };
+        schema.properties[slug] = {
+            type:  "array",
+            items: [itemSchema]
+        };
+        /*eslint-enable key-spacing */
+        expect(respObj).to.have.schema(schema);
     });
 });
 

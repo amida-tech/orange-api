@@ -1,6 +1,7 @@
 "use strict";
 var chakram     = require("chakram"),
-    fixtures    = require("./fixtures.js");
+    fixtures    = require("./fixtures.js"),
+    auth        = require("../common/auth.js");
 var expect = chakram.expect;
 
 describe("Users", function () {
@@ -53,6 +54,33 @@ describe("Users", function () {
             // create existing user then check we can't reregister with same email address
             return fixtures.create("User").then(function (user) {
                 return expect(register({email: user.email})).to.be.an.api.error(400, "user_already_exists");
+            });
+        });
+
+        it("should create a patient for me", function () {
+            // build but don't save user with full data
+            var newUser = fixtures.build("User");
+            // register user at endpoint
+            var registerUser = function (user) {
+                return chakram.post("http://localhost:3000/v1/user", user).then(function () {
+                    return user;
+                });
+            };
+            // use user credentials to authenticate and get access token
+            // need to do this via HTTP rather than using user to avoid duplication errors
+            var token = function (user) {
+                return chakram.post("http://localhost:3000/v1/auth/token", user).then(function (resp) {
+                    return resp.body.access_token;
+                });
+            };
+            // get list of all patients
+            var list = function (accessToken) {
+                var headers = auth.genAuthHeaders(accessToken);
+                return chakram.get("http://localhost:3000/v1/patients", headers);
+            };
+            return newUser.then(registerUser).then(token).then(list).then(function (response) {
+                // check we have exactly one patient
+                expect(response.body.patients.length).to.equal(1);
             });
         });
     });

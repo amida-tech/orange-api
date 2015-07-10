@@ -27,10 +27,7 @@ describe("Pharmacies", function () {
             });
         };
         // create patient and user and update them automatically
-        var updateOtherPatientPharmacy = function (access, data, modifications) {
-            return patients.testOtherPatient({}, access).then(curry(updatePharmacy)(data, modifications));
-        };
-        var updateMyPatientPharmacy = function (data, modifications) {
+        var updatePatientPharmacy = function (data, modifications) {
             return patients.testMyPatient({}).then(curry(updatePharmacy)(data, modifications));
         };
 
@@ -38,31 +35,23 @@ describe("Pharmacies", function () {
         patients.itRequiresAuthentication(curry(update)({}, 1));
         patients.itRequiresValidPatientId(curry(update)({}, 1));
         common.itRequiresValidPharmacyId(curry(update)({}));
+        patients.itRequiresWriteAuthorization(curry(updatePharmacy)({}, {}));
 
         // access permissions
         it("should let me update pharmacies for my patients", function () {
-            return expect(updateMyPatientPharmacy({}, {})).to.be.a.pharmacy.success;
-        });
-        it("should not let me update pharmacies for patients shared read-only", function () {
-            return expect(updateOtherPatientPharmacy("read", {}, {})).to.be.an.api.error(403, "unauthorized");
-        });
-        it("should let me update pharmacies for patients shared read-write", function () {
-            return expect(updateOtherPatientPharmacy("write", {}, {})).to.be.a.pharmacy.success;
-        });
-        it("should not let me update pharmacies for patients not shared with me", function () {
-            return expect(updateOtherPatientPharmacy("none", {}, {})).to.be.an.api.error(403, "unauthorized");
+            return expect(updatePatientPharmacy({}, {})).to.be.a.pharmacy.success;
         });
 
         // validations
         it("doesn't allow a blank name", function () {
-            return expect(updateMyPatientPharmacy({}, {name: ""})).to.be.an.api.error(400, "name_required");
+            return expect(updatePatientPharmacy({}, {name: ""})).to.be.an.api.error(400, "name_required");
         });
         it("doesn't allow a null name", function () {
-            return expect(updateMyPatientPharmacy({}, {name: null})).to.be.an.api.error(400, "name_required");
+            return expect(updatePatientPharmacy({}, {name: null})).to.be.an.api.error(400, "name_required");
         });
 
         it("allows nulls to reset fields", function () {
-            return updateMyPatientPharmacy({}, {
+            return updatePatientPharmacy({}, {
                 address: null,
                 phone: null,
                 notes: null,
@@ -84,7 +73,7 @@ describe("Pharmacies", function () {
             });
         });
         it("allows empty values to reset fields", function () {
-            return updateMyPatientPharmacy({}, {
+            return updatePatientPharmacy({}, {
                 address: "",
                 phone: "",
                 notes: "",

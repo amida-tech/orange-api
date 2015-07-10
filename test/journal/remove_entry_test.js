@@ -5,6 +5,7 @@ var chakram         = require("chakram"),
     Q               = require("q"),
     auth            = require("../common/auth.js"),
     patients        = require("../patients/common.js"),
+    medications     = require("../medications/common.js"),
     common          = require("./common.js"),
     fixtures        = require("./fixtures.js");
 
@@ -30,10 +31,7 @@ describe("Journal", function () {
             });
         };
         // create patient and user and remove them automatically
-        var removeOtherPatientEntry = function (access, data) {
-            return patients.testOtherPatient({}, access).then(curry(removeEntry)(data));
-        };
-        var removeMyPatientEntry = function (data) {
+        var removePatientEntry = function (data) {
             return patients.testMyPatient({}).then(curry(removeEntry)(data));
         };
 
@@ -41,18 +39,17 @@ describe("Journal", function () {
         patients.itRequiresAuthentication(curry(remove)(1));
         patients.itRequiresValidPatientId(curry(remove)(1));
         common.itRequiresValidEntryId(remove);
+        // check it requires write access to patient
+        patients.itRequiresWriteAuthorization(curry(removeEntry)({}));
+        // and all of their medications
+        medications.itRequiresWriteAllAuthorization(function (patient, meds) {
+            return removeEntry({
+                medication_ids: meds.map(function (m) { return m._id; })
+            }, patient);
+        });
 
         it("should let me remove entries for my patients", function () {
-            return expect(removeMyPatientEntry({})).to.be.a.journal.success;
-        });
-        it("should not let me remove entries for patients shared read-only", function () {
-            return expect(removeOtherPatientEntry("read", {})).to.be.an.api.error(403, "unauthorized");
-        });
-        it("should let me remove entries for patients shared read-write", function () {
-            return expect(removeOtherPatientEntry("write", {})).to.be.a.journal.success;
-        });
-        it("should not let me remove entries for patients not shared with me", function () {
-            return expect(removeOtherPatientEntry("none", {})).to.be.an.api.error(403, "unauthorized");
+            return expect(removePatientEntry({})).to.be.a.journal.success;
         });
     });
 });

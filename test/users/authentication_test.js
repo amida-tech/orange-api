@@ -57,6 +57,8 @@ describe("Users", function () {
                 var request = token({ email: user.email, password: user.rawPassword + "a" });
                 return expect(request).to.be.an.api.error(401, "wrong_email_password");
             });
+
+            // this functionality is fully tested in unit/account_locking_test.js
             it("should eventually lock us out", function () {
                 // generate promises to try and fail authentication
                 var promises = [];
@@ -77,9 +79,6 @@ describe("Users", function () {
                     expect(response).to.be.an.api.error(403, "login_attempts_exceeded");
                 });
             });
-
-            // unit test this instead as we need to mock time
-            // it("should eventually let us back in");
         });
     });
 });

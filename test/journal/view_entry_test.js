@@ -5,6 +5,7 @@ var chakram         = require("chakram"),
     Q               = require("q"),
     auth            = require("../common/auth.js"),
     patients        = require("../patients/common.js"),
+    medications     = require("../medications/common.js"),
     fixtures        = require("./fixtures.js"),
     common          = require("./common.js");
 
@@ -30,10 +31,7 @@ describe("Journal", function () {
             });
         };
         // create patient and user and show them automatically
-        var showOtherPatientEntry = function (access, data) {
-            return patients.testOtherPatient({}, access).then(curry(showEntry)(data));
-        };
-        var showMyPatientEntry = function (data) {
+        var showPatientEntry = function (data) {
             return patients.testMyPatient({}).then(curry(showEntry)(data));
         };
 
@@ -41,18 +39,17 @@ describe("Journal", function () {
         patients.itRequiresAuthentication(curry(show)(1));
         patients.itRequiresValidPatientId(curry(show)(1));
         common.itRequiresValidEntryId(show);
+        // check it requires read access to patient
+        patients.itRequiresReadAuthorization(curry(showEntry)({}));
+        // and all of their medications
+        medications.itRequiresReadAllAuthorization(function (patient, meds) {
+            return showEntry({
+                medication_ids: meds.map(function (m) { return m._id; })
+            }, patient);
+        });
 
         it("should let me view entries for my patients", function () {
-            return expect(showMyPatientEntry({})).to.be.a.journal.viewSuccess;
-        });
-        it("should let me view entries for patients shared read-only", function () {
-            return expect(showOtherPatientEntry("read", {})).to.be.a.journal.viewSuccess;
-        });
-        it("should let me view entries for patients shared read-write", function () {
-            return expect(showOtherPatientEntry("write", {})).to.be.a.journal.viewSuccess;
-        });
-        it("should not let me view entries for patients not shared with me", function () {
-            return expect(showOtherPatientEntry("none", {})).to.be.an.api.error(403, "unauthorized");
+            return expect(showPatientEntry({})).to.be.a.journal.viewSuccess;
         });
     });
 });

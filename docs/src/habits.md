@@ -3,7 +3,7 @@
 Habits are real-life *preferences* of the patient: what time they usually wake up
 in the morning, what time they usually eat lunch, and so on. Exactly one set of
 preferences is stored for each patient. The current user will need read access
-to the patient.
+to the patient to view the habits, and write access to set them.
 
 Most  habits are of the `time` datatype. This means they must be in the specific
 `HH:MM` format of ISO 8601; for example, `03:59` and `23:20`. These times are
@@ -68,6 +68,7 @@ Set the patient's habits. The current user will need write access to the patient
     + breakfast (time, optional) - what time the patient normally eats breakfast
     + lunch (time, optional) - what time the patient normally eats lunch
     + dinner (time, optional) - what time the patient normally eats dinner
+    + tz (timezone, optional) - the current user timezone
 
 + Request
     + Headers
@@ -96,6 +97,7 @@ Set the patient's habits. The current user will need write access to the patient
     + `invalid_breakfast` (400) - the wake time passed is not formatted as `HH:MM`
     + `invalid_lunch` (400) - the wake time passed is not formatted as `HH:MM`
     + `invalid_dinner` (400) - the wake time passed is not formatted as `HH:MM`
+    + `invalid_tz` (400) - the timezone passed is not a valid TZ database timezone
 
     + Body
 

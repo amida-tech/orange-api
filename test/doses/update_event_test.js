@@ -6,6 +6,7 @@ var chakram         = require("chakram"),
     auth            = require("../common/auth.js"),
     patients        = require("../patients/common.js"),
     fixtures        = require("./fixtures.js"),
+    medications     = require("../medications/common.js"),
     common          = require("./common.js");
 
 var expect = chakram.expect;
@@ -36,10 +37,7 @@ describe("Doses", function () {
             });
         };
         // create patient, user and dose event, and update them automatically
-        var updateOtherPatientDose = function (access, data, modifications) {
-            return patients.testOtherPatient({}, access).then(curry(updateDose)(modifications, data));
-        };
-        var updateMyPatientDose = function (data, modifications) {
+        var updatePatientDose = function (data, modifications) {
             return patients.testMyPatient({}).then(curry(updateDose)(modifications, data));
         };
 
@@ -47,59 +45,72 @@ describe("Doses", function () {
         patients.itRequiresAuthentication(curry(update)({}, 1));
         patients.itRequiresValidPatientId(curry(update)({}, 1));
         common.itRequiresValidDoseId(curry(update)({}));
+        patients.itRequiresWriteAuthorization(curry(updateDose)({}, {}));
+        // require write authorization for both the original and new medication ID
+        medications.itRequiresWriteAuthorization(function (patient, newMed) {
+            // create original medication owned by patient, and then test updating to passed med ID
+            return Q.nbind(patient.createMedication, patient)({name: "foo"}).then(function (oldMed) {
+                return updateDose({
+                    medication_id: newMed._id
+                }, {
+                    medication_id: oldMed._id
+                }, patient);
+            });
+        });
+        medications.itRequiresWriteAuthorization(function (patient, oldMed) {
+            // create new medication owned by patient, and then test updating passed med ID to this
+            return Q.nbind(patient.createMedication, patient)({name: "foo"}).then(function (newMed) {
+                return updateDose({
+                    medication_id: newMed._id
+                }, {
+                    medication_id: oldMed._id
+                }, patient);
+            });
+        });
 
         it("should let me update doses for my patients", function () {
-            return expect(updateMyPatientDose({}, {})).to.be.a.dose.success;
-        });
-        it("should let me update doses for patients shared read-write", function () {
-            return expect(updateOtherPatientDose("write", {}, {})).to.be.a.dose.success;
-        });
-        it("should not let me update doses for patients shared read-only", function () {
-            return expect(updateOtherPatientDose("read", {}, {})).to.be.an.api.error(403, "unauthorized");
-        });
-        it("should not let me update doses for patients not shared with me", function () {
-            return expect(updateOtherPatientDose("none", {}, {})).to.be.an.api.error(403, "unauthorized");
+            return expect(updatePatientDose({}, {})).to.be.a.dose.success;
         });
 
         // validation testing
         it("allows updating the date", function () {
-            return expect(updateMyPatientDose({}, { date: (new Date()).toISOString() })).to.be.a.dose.success;
+            return expect(updatePatientDose({}, { date: (new Date()).toISOString() })).to.be.a.dose.success;
         });
         it("rejects a blank date", function () {
-            return expect(updateMyPatientDose({}, { date: "" })).to.be.an.api.error(400, "date_required");
+            return expect(updatePatientDose({}, { date: "" })).to.be.an.api.error(400, "date_required");
         });
         it("rejects invalid dates", function () {
-            return expect(updateMyPatientDose({}, { date: "foobar" })).to.be.an.api.error(400, "invalid_date");
+            return expect(updatePatientDose({}, { date: "foobar" })).to.be.an.api.error(400, "invalid_date");
         });
 
         it("allows updating notes", function () {
-            return expect(updateMyPatientDose({}, { notes: "foobarbaz" })).to.be.a.dose.success;
+            return expect(updatePatientDose({}, { notes: "foobarbaz" })).to.be.a.dose.success;
         });
         it("resets the notes with an empty value", function () {
-            return updateMyPatientDose({}, { notes: "" }).then(function (response) {
+            return updatePatientDose({}, { notes: "" }).then(function (response) {
                 expect(response).to.be.a.dose.success;
                 expect(response.body.notes).to.equal("");
             });
         });
         it("resets the notes with null", function () {
-            return updateMyPatientDose({}, { notes: null }).then(function (response) {
+            return updatePatientDose({}, { notes: null }).then(function (response) {
                 expect(response).to.be.a.dose.success;
                 expect(response.body.notes).to.equal("");
             });
         });
 
         it("rejects a blank medication ID", function () {
-            return expect(updateMyPatientDose({}, {
+            return expect(updatePatientDose({}, {
                 medication_id: ""
             })).to.be.an.api.error(400, "invalid_medication_id");
         });
         it("rejects an invalid medication ID", function () {
-            return expect(updateMyPatientDose({}, {
+            return expect(updatePatientDose({}, {
                 medication_id: "foo"
             })).to.be.an.api.error(400, "invalid_medication_id");
         });
         it("rejects a medication ID not corresponding to a real medication", function () {
-            return expect(updateMyPatientDose({}, {
+            return expect(updatePatientDose({}, {
                 medication_id: 9999
             })).to.be.an.api.error(400, "invalid_medication_id");
         });

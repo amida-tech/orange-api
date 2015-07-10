@@ -6,152 +6,179 @@ Medication data responses contain the `number_left` integer key: this is an esti
 of the number of pills left based on `fill_date` and dose events submitted to the API.
 It will only be non-null if `fill_date` is non-null.
 
+### Permissions
+Whilst defaulting to the patient-wide permissions, medications can also have custom
+permissions. Each medication has `access_anyone`, `access_family` and `access_prime`
+fields, each of which can be set to `read`, `write`, `default` or `none`. `default`
+gives the medication the same access permissions as the patient that owns it, whereas
+`read`, `write` and `none` explicitly override those permissions. All three keys
+default to `default`.
+
 ### Schedule
 Various endpoints below take and output `schedule` data items, representing a regular
 schedule the patient should take a certain medication on.  These are used to schedule
 reminders, and so are vitally important for the core of the app. The data format
 `schedule`s must be in is precisely defined below, and must be followed exactly.
 
-There are a couple different discrete schedule types, each of which should be formatted
-differently. The schedule type should be passed in a `type` key.
+At it's core, each schedule is an object.
 
-All schedule types can include a `stop_date` field, containing an ISO8601-formatted date
-value (specifically ISO-2014, i.e., `YYYY-MM-DD`) on which the patient should stop taking
-the medication (i.e., the last event at which they should take the medication should be the
-last event generated on `stop_date`). This is useful with, for example, antibiotics, when they
-must be rigorously taken until a certain date, and not at all after that date. `stop_date` corresponds
-to a date in the patient's local timezone.
+It must contain the `as_needed` boolean key signifying whether the medication can be
+taken whenever needed (irregularly), and the `regularly` key signifying it should be
+taken on a regular schedule. At least one must be true. If `regularly` is `false`, no
+extra information is needed. If `regularly` is true, all of the following scheduling
+data is also required.
 
-### As Needed
+The schedule must have an `until` key signifying when the patient should stop taking
+the medication:
+
+- In Perpetuity (forever)
 ```javascript
-type: "as_needed"
-```
-
-Used when the medication can be taken at the whim of the patient (useful for e.g., if
-the patient regularly takes ibroprufen, but does not have to take it *every* 4 hours).
-
-This can also include an optional `not_to_exceed` integer field containing the maximum
-number of times a patient should take the medication in a given day.
-
-We know illustrate the format with a couple of examples:
-
-- Joe can take his ibroprufen whenever desired
-```javascript
-{
-    type: "as_needed"
-}
-```
-- Joe can take his ibroprufen whenever desired, but not more than 3 times a day
-```javascript
-{
-    type: "as_needed",
-    not_to_exceed: 3
-}
-```
-- Joe can take his codeine whenever desired, but not more than 3 times a day and he 
-    must stop by the 1st January 2015.
-```javascript
-{
-    type: "as_needed",
-    not_to_exceed: 1,
-    stop_date: "2015-01-01"
+until: {
+    type: "forever"
 }
 ```
 
-### Regularly
+- A certain number of times before stopping
 ```javascript
-type: "regularly"
-```
-
-This is a pretty general type that can be used to encode all regular schemas. In all cases,
-the `frequency` key **must** be set to an integer, corresponding to the patient needing to take the
-medication every `frequency` days. For example, a weekly medication should have `frequency=7`, and a daily
-medication should have `frequency=1`.
-
-Other keys can be used to specify the times within the day at which the medication should
-occur: combining these with `frequency=1` allows a schedule that requires a patient to, e.g., take
-a particular medication 4 times every day (`frequency=1` and `number_of_times=4`).
-
-There are 3 different ways the times within the day should be specified. *Exactly* one must
-be present (`number_of_times=1` can be used for a standard daily/weekly/etc medication).
-
-#### Specific Number of Times per Day
-Set the `number_of_times` key to an integer representing the number of times the patient should
-take it on each day they take it (so number of times every day for `frequency=1`, number of times every
-week for `frequency=7`, etc). For example,
-
-- Joe should take his codeine once every day, at any time
-```javascript
-{
-    type: "regularly",
-    frequency: 1,
-    number_of_times: 1
+until: {
+    type: "number",
+    stop: 5
 }
 ```
 
-- Joe should take his anti-Parkinsons meds three times a week, all on the same day
+- Until a certain date
 ```javascript
-{
-    type: "regularly",
-    frequency: 7,
-    number_of_times: 3
+until: {
+    type: "date",
+    stop: "2015-05-07"
 }
 ```
 
+The schedule must have a `frequency` key signifying on which days the patient should take
+the medication. Specific times of each day can be set using the `times` key, which is described
+below. `frequency` is an object consisting of an `n` key and a `unit` key: `n` is a number
+representing that the medication should be taken every `n` units, and `unit` specifies that
+unit (it can be `"day"`, `"month"` or `"year"` only).
 
-#### Times of Day
-`times_of_day` should be an array of strings specifying the specific times of the day on which the
-patient should take the medication. Times should be formatted in the `HH:MM` format of ISO 8601, for
-example `03:59` and `23:20`. These times are in the local timezone of the patient, and if that timezone
-is updated then the times will shift accordingly. For example, if the patient's timezone is initially
-`London/Europe` and they have a medication scheduled for `15:00` every day, if the timezone is updated
-to `America/New_York` then the schedule will shift to `10:00` every day.
+`frequency` can also have an optional `exclude` key, denoting that the medication should
+sometimes be skipped. If present, `exclude` must be an object consisting of `exclude` and `repeat`
+keys. `exclude` is an array of numbers representing the indices of days that must be swapped
+(where the first day it should be taken on has index 0, the second day it _should be taken on_
+has index 1, etc). `repeat` is a number representing the length of the exclude cycle: in other
+words, indices are taken modulo this. See the examples below for illustration.
 
-Times based on the patient's habits can also be specified with the strings 
-`"before_sleep"`, `"after_sleep"`, `"before_breakfast"`, `"after_breakfast"`,
-`"before_lunch"`, `"after_lunch"`, `"before_dinner"` and `"after_dinner"`, allowing the schedule
-to specify, for example, that the patient should take the medication once after waking up
-and once before sleeping. These are not affected by timezone changes: for example, if `breakfast`
-is set to `10:00` while the timezone is `London/Europe`, `breakfast` will remain as `10:00` if
-the timezone is updated to `America/New_York`.  This signifies that if medication is to be taken
-with food at breakfast every morning, the patient should continue doing that even if the timezone
-shifts.
-
-- Joe should take his anti-Parkinsons meds at 3PM every week, until March 15
+- Daily
 ```javascript
-{
-    type: "regularly",
-    frequency: 7,
-    times_of_day: ["15:00"],
-    stop_date: "2015-03-15"
+frequency: {
+    n: 1,
+    unit: "day"
 }
 ```
 
-- Joe should take his Fexofenadine every day, once after waking and once after lunch
+- Weekdays only
 ```javascript
-{
-    type: "regularly",
-    frequency: 1,
-    times_of_day: ["after_sleep", "after_lunch"]
+frequency: {
+    n: 1,
+    unit: "day",
+    exclude: {
+        exclude: [5, 6],
+        repeat: 7
+    }
 }
 ```
 
-#### Interval
-`interval` should be an integer specifying, in **minutes**, a regular interval that the
-medication should be taken at. For example,
-- Joe should take his Fexofenadine every 6 hours
+- Weekly
 ```javascript
-{
-    type: "regularly",
-    frequency: 1,
-    interval: 360
+frequency: {
+    n: 7,
+    unit: "day"
 }
 ```
+
+- Every 28 days
+```javascript
+frequency: {
+    n: 28,
+    unit: "day"
+}
+```
+
+- Monthly
+```javascript
+frequency: {
+    n: 1,
+    unit: "month"
+}
+```
+
+- Quarterly
+```javascript
+frequency: {
+    n: 3,
+    unit: "month"
+}
+```
+
+- Quarterly apart from last quarter
+```javascript
+frequency: {
+    n: 3,
+    unit: "month",
+    exclude: {
+        exclude: [3],
+        repeat: 4
+    }
+}
+```
+
+`frequency` can also include a `start` key: a `YYYY-MM-DD` formatted (local) date representing
+any date that the medication was taken on (for example, the date the medication was started on).
+This means that, for example, Orange knows which day of the week a weekly medication is taken on.
+
+The schedule must also include a `times` key representing the times of the day the medication
+is taken on (i.e., `frequency` dictates which days and `times` dictates which times on those days).
+The number of times the medication is taken each day should not be explicitly specified, this is instead
+calculated from the length of `times`. `times` should be an array consisting of objects, each representing
+a time of the day at which the medication should be taken. There are 3 different types:
+
+- Any time of the day
+```javascript
+{
+    type: "unspecified"
+}
+```
+
+- An exact time (`time` should be formatted `HH:MM` in local time)
+```javascript
+{
+    type: "exact",
+    time: "09:00"
+}
+```
+
+- A time based on the user's habits. `event` can be either `"breakfast"`, `"lunch"`, `"dinner"` or `"sleep"`. `when` can be either `"before"` or `"after"`.
+```javascript
+{
+    type: "event",
+    event: "lunch",
+    when: "before"
+}
+```
+
+The schedule must also include a `take_with_food` key. This is a boolean specifying whether
+or not the medication must be taken with food. `true` means it must be taken with food, `false` means
+it must not be taken with food, and `null` means it does not matter. Note that `false` means
+the medication **must not** be taken with food, not that it just doesn't matter. So if unknown,
+`take_with_food` should be `null`.
+
+Finally the schedule must include `take_with_medications` and `take_without_medications` keys. These
+should be arrays of integers that are the IDs of medications with which this medication must (or must not)
+be taken simultaneously with. If there are no medications like this, they should both be `[]`.
 
 ## Medications Collection [/patients/{patientid}/medications]
 ### Create a new Medication [POST]
 Store details of a new medication the patient has started taking. The current user
-must have write access to the patient's data.
+must have write access to the patient.
 
 + Parameters
     + patientid (integer, required)
@@ -165,7 +192,6 @@ must have write access to the patient's data.
         Dose of medication the patient should take. Formatted as
         `{quantity: QUANTITY, unit: UNIT}` where `QUANTITY` is numeric
         and `UNIT` is a string (e.g., `"mg"`)
-
     + route (string, optional) - ROA of medication
     + form (string, optional, `pill`) - form of medication
     + rx_number (string, optional) - RX control number of the prescription
@@ -175,7 +201,21 @@ must have write access to the patient's data.
     + quantity (integer, optional) - number of medication in each 'pack'
     + type (string, optional) - legal medication type: e.g., `"OTC"`
     + schedule (dictionary, optional) - a schedule datum in the form described above
+    + access_prime (string, optional)
 
+        The access permissions users in the `prime` group should have to this medication,
+        overriding the patient-wide permissions. Must be either `read`, `write`, `none`
+        or `default`. Defaults to `default`.
+    + access_family (string, optional)
+
+        The access permissions users in the `family` group should have to this medication,
+        overriding the patient-wide permissions. Must be either `read`, `write`, `none`
+        or `default`. Defaults to `default`.
+    + access_anyone (string, optional)
+
+        The access permissions users in the `anyone` group should have to this medication,
+        overriding the patient-wide permissions. Must be either `read`, `write`, `none`
+        or `default`. Defaults to `default`.
     + doctor_id (integer, optional)
 
         ID of the doctor prescribing the patient's medication. This doctor
@@ -212,6 +252,9 @@ must have write access to the patient's data.
                     frequency: 1,
                     times_of_day: ["after_lunch", "before_sleep"]
                 },
+                access_anyone: "default",
+                access_family: "default",
+                access_prime: "default",
                 doctor_id: 1,
                 pharmacy_id: 1
             }
@@ -228,6 +271,9 @@ must have write access to the patient's data.
     + `invalid_quantity` (400) - quantity not a positive integer
     + `invalid_fill_date` (400) - fill date is not a YYYY-MM-DD date
     + `invalid_schedule` (400) - schedule is not specified in the format specified above
+    + `invalid_access_anyone` (400) - the `access_anyone` field, if passed, must be either `read`, `write`, `default` or `none`
+    + `invalid_access_family` (400) - the `access_family` field, if passed, must be either `read`, `write`, `default` or `none`
+    + `invalid_access_prime` (400) - the `access_prime` field, if passed, must be either `read`, `write`, `default` or `none`
     + `invalid_doctor_id` (400) - a doctor with that ID was not found
     + `invalid_pharmacy_id` (400) - a pharmacy with that ID was not found
 
@@ -254,6 +300,9 @@ must have write access to the patient's data.
                     frequency: 1,
                     times_of_day: ["after_lunch", "before_sleep"]
                 },
+                access_anyone: "default",
+                access_family: "default",
+                access_prime: "default",
                 doctor_id: 1,
                 pharmacy_id: 1,
                 success: true
@@ -261,8 +310,9 @@ must have write access to the patient's data.
 
 ### Retrieve all Medications [GET]
 Get a list of all the patient's medications. Includes full information on each, but
-doctor and pharmacy details are not expanded out. The current user must have read
-access to the patient's data.
+doctor and pharmacy details are not expanded out. To get a successful response from
+this endpoint, the current user must have read access to the patient. Further, only
+medications for which the current user has read access will be returned.
 
 + Parameters
     + patientid (integer, required)
@@ -342,6 +392,9 @@ access to the patient's data.
                             frequency: 1,
                             times_of_day: ["after_lunch", "before_sleep"]
                         },
+                        access_anyone: "default",
+                        access_family: "default",
+                        access_prime: "default",
                         doctor_id: 1,
                         pharmacy_id: 1
                     },
@@ -354,7 +407,7 @@ access to the patient's data.
 ## Medication [/patients/{patientid}/medications/{medicationid}]
 ### Retrieve a Medication [GET]
 View information on an individual medication. Doctor and pharmacy details are expanded out.
-The current user must have read access to the patient's data.
+The current user must have read access to **both** the patient and the medication.
 
 + Parameters
     + patientid (integer, required)
@@ -401,6 +454,9 @@ The current user must have read access to the patient's data.
                     frequency: 1,
                     times_of_day: ["after_lunch", "before_sleep"]
                 },
+                access_anyone: "default",
+                access_family: "default",
+                access_prime: "default",
                 doctor: {
                     id: 1,
                     name: "Dr. Y",
@@ -450,7 +506,7 @@ The current user must have read access to the patient's data.
 
 ### Change a Med's Info [PUT]
 Change information (all keys apart from `id`) of an individual medication. The current
-user must have write access to the patient's data.
+user must have read access to the patient and write access to the medication.
 
 + Parameters
     + patientid (integer, required)
@@ -477,7 +533,21 @@ user must have write access to the patient's data.
     + schedule (dictionary, optional)
 
         As in `POST`. A whole new schedule must be sent.
+    + access_prime (string, optional)
 
+        The access permissions users in the `prime` group should have to this medication,
+        overriding the patient-wide permissions. Must be either `read`, `write`, `none`
+        or `default`. Defaults to `default`.
+    + access_family (string, optional)
+
+        The access permissions users in the `family` group should have to this medication,
+        overriding the patient-wide permissions. Must be either `read`, `write`, `none`
+        or `default`. Defaults to `default`.
+    + access_anyone (string, optional)
+
+        The access permissions users in the `anyone` group should have to this medication,
+        overriding the patient-wide permissions. Must be either `read`, `write`, `none`
+        or `default`. Defaults to `default`.
     + doctor_id (integer, optional) - ID of the doctor prescribing the patient's medication
     + pharmacy_id (integer, optional) - ID of the pharmacy selling the patient's medication
 
@@ -507,6 +577,9 @@ user must have write access to the patient's data.
                     frequency: 1,
                     times_of_day: ["after_lunch", "before_sleep"]
                 },
+                access_anyone: "write",
+                access_family: "write",
+                access_prime: "write",
                 doctor_id: 1,
                 pharmacy_id: 1
             }
@@ -523,6 +596,9 @@ user must have write access to the patient's data.
     + `invalid_quantity` (400) - quantity not a positive integer
     + `invalid_fill_date` (400) - fill date is not a YYYY-MM-DD date
     + `invalid_schedule` (400) - schedule is not specified in the format specified above
+    + `invalid_access_anyone` (400) - the `access_anyone` field, if passed, must be either `read`, `write`, `default` or `none`
+    + `invalid_access_family` (400) - the `access_family` field, if passed, must be either `read`, `write`, `default` or `none`
+    + `invalid_access_prime` (400) - the `access_prime` field, if passed, must be either `read`, `write`, `default` or `none`
     + `invalid_doctor_id` (400) - a doctor with that ID was not found
     + `invalid_pharmacy_id` (400) - a pharmacy with that ID was not found
     
@@ -549,6 +625,9 @@ user must have write access to the patient's data.
                     frequency: 1,
                     times_of_day: ["after_lunch", "before_sleep"]
                 },
+                access_anyone: "write",
+                access_family: "write",
+                access_prime: "write",
                 doctor_id: 1,
                 pharmacy_id: 1,
                 success: true
@@ -556,8 +635,8 @@ user must have write access to the patient's data.
 
 
 ### Delete a Medication [DELETE]
-Remove a single medication. The current user must have write access to the patient's
-data.
+Remove a single medication. The current user must have read access to the patient and
+write access to the medication.
 
 + Parameters
     + patientid (integer, required)
@@ -604,6 +683,9 @@ data.
                     frequency: 1,
                     times_of_day: ["after_lunch", "before_sleep"]
                 },
+                access_anyone: "write",
+                access_family: "write",
+                access_prime: "write",
                 doctor_id: 1,
                 pharmacy_id: 1,
                 success: true

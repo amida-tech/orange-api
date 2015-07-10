@@ -5,6 +5,7 @@ var chakram         = require("chakram"),
     Q               = require("q"),
     auth            = require("../common/auth.js"),
     patients        = require("../patients/common.js"),
+    medications     = require("../medications/common.js"),
     fixtures        = require("./fixtures.js"),
     common          = require("./common.js");
 
@@ -31,10 +32,7 @@ describe("Journal", function () {
             });
         };
         // create patient and user and modify them automatically
-        var updateOtherPatientEntry = function (access, data, modifications) {
-            return patients.testOtherPatient({}, access).then(curry(updateEntry)(modifications, data));
-        };
-        var updateMyPatientEntry = function (data, modifications) {
+        var updatePatientEntry = function (data, modifications) {
             return patients.testMyPatient({}).then(curry(updateEntry)(modifications, data));
         };
 
@@ -42,26 +40,31 @@ describe("Journal", function () {
         patients.itRequiresAuthentication(curry(update)({}, 1));
         patients.itRequiresValidPatientId(curry(update)({}, 1));
         common.itRequiresValidEntryId(curry(update)({}));
+        // check it requires write access to patient
+        patients.itRequiresWriteAuthorization(curry(updateEntry)({}, {}));
+        // and all of their medications in the old medication_ids
+        medications.itRequiresWriteAllAuthorization(function (patient, meds) {
+            return updateEntry({}, {
+                medication_ids: meds.map(function (m) { return m._id; })
+            }, patient);
+        });
+        // and all of their medications in the new medication_ids
+        medications.itRequiresWriteAllAuthorization(function (patient, meds) {
+            return updateEntry({
+                medication_ids: meds.map(function (m) { return m._id; })
+            }, {}, patient);
+        });
 
         it("should let me edit entries for my patients", function () {
-            return expect(updateMyPatientEntry({}, {})).to.be.a.journal.success;
-        });
-        it("should let me edit entries for patients shared read-write", function () {
-            return expect(updateOtherPatientEntry("write", {}, {})).to.be.a.journal.success;
-        });
-        it("should not let me edit entries for patients shared read-only", function () {
-            return expect(updateOtherPatientEntry("read", {}, {})).to.be.an.api.error(403, "unauthorized");
-        });
-        it("should not let me edit entries for patients not shared with me", function () {
-            return expect(updateOtherPatientEntry("none", {}, {})).to.be.an.api.error(403, "unauthorized");
+            return expect(updatePatientEntry({}, {})).to.be.a.journal.success;
         });
 
         // validations
         it("doesn't require any fields", function () {
-            return expect(updateMyPatientEntry({}, {})).to.be.a.journal.success;
+            return expect(updatePatientEntry({}, {})).to.be.a.journal.success;
         });
         it("allows all fields", function () {
-            return expect(updateMyPatientEntry({}, {
+            return expect(updatePatientEntry({}, {
                 date: (new Date()).toISOString(),
                 text: "test date",
                 medication_ids: [],
@@ -69,22 +72,22 @@ describe("Journal", function () {
             })).to.be.a.journal.success;
         });
         it("rejects blank text", function () {
-            return expect(updateMyPatientEntry({}, {
+            return expect(updatePatientEntry({}, {
                 text: ""
             })).to.be.an.api.error(400, "text_required");
         });
         it("rejects blank dates", function () {
-            return expect(updateMyPatientEntry({}, {
+            return expect(updatePatientEntry({}, {
                 date: ""
             })).to.be.an.api.error(400, "date_required");
         });
         it("rejects invalid dates", function () {
-            return expect(updateMyPatientEntry({}, {
+            return expect(updatePatientEntry({}, {
                 date: "foobar"
             })).to.be.an.api.error(400, "invalid_date");
         });
         it("allows a blank mood to reset", function () {
-            return updateMyPatientEntry({}, {
+            return updatePatientEntry({}, {
                 mood: ""
             }).then(function (response) {
                 expect(response).to.be.a.journal.success;
@@ -92,7 +95,7 @@ describe("Journal", function () {
             });
         });
         it("allows a null mood to reset", function () {
-            return updateMyPatientEntry({}, {
+            return updatePatientEntry({}, {
                 mood: null
             }).then(function (response) {
                 expect(response).to.be.a.journal.success;
@@ -100,7 +103,7 @@ describe("Journal", function () {
             });
         });
         it("ignores a passed hashtags field", function () {
-            return updateMyPatientEntry({
+            return updatePatientEntry({
                 text: "#test"
             }, {
                 hashtags: ["example"]
@@ -110,7 +113,7 @@ describe("Journal", function () {
             });
         });
         it("updates hashtags", function () {
-            return updateMyPatientEntry({
+            return updatePatientEntry({
                 text: "#test"
             }, {
                 text: "#example"
@@ -120,21 +123,21 @@ describe("Journal", function () {
             });
         });
         it("allows no medication IDs to reset to none", function () {
-            return updateMyPatientEntry({}, {
+            return updatePatientEntry({}, {
                 medication_ids: []
             }).then(function (response) {
                 expect(response.body.medication_ids).to.deep.equal([]);
             });
         });
         it("allows null medication IDs to reset to none", function () {
-            return updateMyPatientEntry({}, {
+            return updatePatientEntry({}, {
                 medication_ids: null
             }).then(function (response) {
                 expect(response.body.medication_ids).to.deep.equal([]);
             });
         });
         it("rejects invalid medication IDs", function () {
-            return expect(updateMyPatientEntry({}, {
+            return expect(updatePatientEntry({}, {
                 medication_ids: ["foo"]
             })).to.be.an.api.error(400, "invalid_medication_id");
         });

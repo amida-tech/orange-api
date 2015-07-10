@@ -19,6 +19,13 @@ describe("Patients", function () {
             // create full patient data from factory
             return auth.createTestUser().then(function (user) {
                 return fixtures.build("Patient", data).then(function (patient) {
+                    // explicitly set access_X fields because they're permisisons.X in patient
+                    // model so the fixture doesn't handle them
+                    patient = patient.toObject();
+                    patient.access_prime = data.access_prime;
+                    patient.access_family = data.access_family;
+                    patient.access_anyone = data.access_anyone;
+
                     return create(patient, user.accessToken);
                 });
             });
@@ -79,6 +86,75 @@ describe("Patients", function () {
         });
         it("accepts a valid birthdate", function () {
             return expect(createPatient({ birthdate: "1995-01-01" })).to.be.a.patient.createSuccess;
+        });
+
+        it("sets me as the owner", function () {
+            return createPatient({}).then(function (response) {
+                expect(response).to.be.a.patient.createSuccess;
+                expect(response.body.group).to.equal("owner");
+            });
+        });
+
+        // access levels
+        it("lets me set the 'anyone' access level to a valid value", function () {
+            return expect(createPatient({
+                access_anyone: "read"
+            })).to.be.a.patient.createSuccess;
+        });
+        it("doesn't let me set the 'anyone' access level to null", function () {
+            return expect(createPatient({
+                access_anyone: null
+            })).to.be.an.api.error(400, "invalid_access_anyone");
+        });
+        it("doesn't let me set the 'anyone' access level to blank", function () {
+            return expect(createPatient({
+                access_anyone: ""
+            })).to.be.an.api.error(400, "invalid_access_anyone");
+        });
+        it("doesn't let me set the 'anyone' access level to an invalid value", function () {
+            return expect(createPatient({
+                access_anyone: "foo"
+            })).to.be.an.api.error(400, "invalid_access_anyone");
+        });
+        it("lets me set the 'family' access level to a valid value", function () {
+            return expect(createPatient({
+                access_family: "read"
+            })).to.be.a.patient.createSuccess;
+        });
+        it("doesn't let me set the 'family' access level to null", function () {
+            return expect(createPatient({
+                access_family: null
+            })).to.be.an.api.error(400, "invalid_access_family");
+        });
+        it("doesn't let me set the 'family' access level to blank", function () {
+            return expect(createPatient({
+                access_family: ""
+            })).to.be.an.api.error(400, "invalid_access_family");
+        });
+        it("doesn't let me set the 'family' access level to an invalid value", function () {
+            return expect(createPatient({
+                access_family: "foo"
+            })).to.be.an.api.error(400, "invalid_access_family");
+        });
+        it("lets me set the 'prime' access level to a valid value", function () {
+            return expect(createPatient({
+                access_prime: "read"
+            })).to.be.a.patient.createSuccess;
+        });
+        it("doesn't let me set the 'prime' access level to null", function () {
+            return expect(createPatient({
+                access_prime: null
+            })).to.be.an.api.error(400, "invalid_access_prime");
+        });
+        it("doesn't let me set the 'prime' access level to blank", function () {
+            return expect(createPatient({
+                access_prime: ""
+            })).to.be.an.api.error(400, "invalid_access_prime");
+        });
+        it("doesn't let me set the 'prime' access level to an invalid value", function () {
+            return expect(createPatient({
+                access_prime: "foo"
+            })).to.be.an.api.error(400, "invalid_access_prime");
         });
     });
 });

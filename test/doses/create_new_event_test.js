@@ -5,6 +5,7 @@ var chakram         = require("chakram"),
     Q               = require("q"),
     auth            = require("../common/auth.js"),
     patients        = require("../patients/common.js"),
+    medications     = require("../medications/common.js"),
     fixtures        = require("./fixtures.js");
 
 var expect = chakram.expect;
@@ -37,71 +38,65 @@ describe("Doses", function () {
             });
         };
         // create patient, user and dose event automatically
-        var createOtherPatientDose = function (access, data) {
-            return patients.testOtherPatient({}, access).then(curry(createDose)(data));
-        };
-        var createMyPatientDose = function (data) {
+        var createPatientDose = function (data) {
             return patients.testMyPatient({}).then(curry(createDose)(data));
         };
 
-        // check it requires a valid user and patient
+        // check it requires a valid user, patient and write authorization to both the patient and medication
         patients.itRequiresAuthentication(curry(create)({}));
         patients.itRequiresValidPatientId(curry(create)({}));
+        patients.itRequiresWriteAuthorization(curry(createDose)({}));
+        medications.itRequiresWriteAuthorization(function (patient, medication) {
+            return createDose({
+                medication_id: medication._id
+            }, patient);
+        });
 
         it("should let me create valid doses for my patients", function () {
-            return expect(createMyPatientDose({})).to.be.a.dose.createSuccess;
-        });
-        it("should let me create valid doses for a patient shared read-write with me", function () {
-            return expect(createOtherPatientDose("write", {})).to.be.a.dose.createSuccess;
-        });
-        it("should not let me create doses for patients shared read-only", function () {
-            return expect(createOtherPatientDose("read", {})).to.be.an.api.error(403, "unauthorized");
-        });
-        it("should not let me create doses for patients not shared with me", function () {
-            return expect(createOtherPatientDose("none", {})).to.be.an.api.error(403, "unauthorized");
+            return expect(createPatientDose({})).to.be.a.dose.createSuccess;
         });
 
         // validation testing
         it("requires a date", function () {
-            return expect(createMyPatientDose({ date: undefined })).to.be.an.api.error(400, "date_required");
+            return expect(createPatientDose({ date: undefined })).to.be.an.api.error(400, "date_required");
         });
         it("requires a nonblank date", function () {
-            return expect(createMyPatientDose({ date: "" })).to.be.an.api.error(400, "date_required");
+            return expect(createPatientDose({ date: "" })).to.be.an.api.error(400, "date_required");
         });
         it("rejects invalid dates", function () {
-            return expect(createMyPatientDose({ date: "foobar" })).to.be.an.api.error(400, "invalid_date");
+            return expect(createPatientDose({ date: "foobar" })).to.be.an.api.error(400, "invalid_date");
         });
 
         it("allows freeform notes", function () {
-            return expect(createMyPatientDose({ notes: "foobar" })).to.be.a.dose.createSuccess;
+            return expect(createPatientDose({ notes: "foobar" })).to.be.a.dose.createSuccess;
         });
         it("doesn't require notes", function () {
-            return expect(createMyPatientDose({ notes: undefined })).to.be.a.dose.createSuccess;
+            return expect(createPatientDose({ notes: undefined })).to.be.a.dose.createSuccess;
         });
         it("allows blank notes", function () {
-            return expect(createMyPatientDose({ notes: "" })).to.be.a.dose.createSuccess;
+            return expect(createPatientDose({ notes: "" })).to.be.a.dose.createSuccess;
         });
         it("allows null notes", function () {
-            return expect(createMyPatientDose({ notes: null })).to.be.a.dose.createSuccess;
+            return expect(createPatientDose({ notes: null })).to.be.a.dose.createSuccess;
         });
 
         it("requires a medication id", function () {
-            return expect(createMyPatientDose({
+            return expect(createPatientDose({
                 medication_id: undefined
             })).to.be.an.api.error(400, "invalid_medication_id");
         });
         it("rejects a blank medication ID", function () {
-            return expect(createMyPatientDose({
+            return expect(createPatientDose({
                 medication_id: ""
             })).to.be.an.api.error(400, "invalid_medication_id");
         });
         it("rejects an invalid medication ID", function () {
-            return expect(createMyPatientDose({
+            return expect(createPatientDose({
                 medication_id: "foo"
             })).to.be.an.api.error(400, "invalid_medication_id");
         });
         it("rejects an medication ID not corresponding to a real medication", function () {
-            return expect(createMyPatientDose({
+            return expect(createPatientDose({
                 medication_id: 9999
             })).to.be.an.api.error(400, "invalid_medication_id");
         });

@@ -23,6 +23,10 @@ value of all of the `delay`s) and `delay` (a mean average value of the **absolut
 the `delay`s). Each number in `statistics` will be `null` if there are no schedule events in
 the past found (for example, if start date is in the future).
 
+The user will need read access to the patient to get a successful response from this endpoint.
+Further, only schedule events corresponding to medications for which the user has read access
+will be shown.
+
 + Parameters
     + patientid (integer, required)
 

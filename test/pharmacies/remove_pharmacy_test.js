@@ -27,10 +27,7 @@ describe("Pharmacies", function () {
             });
         };
         // create patient and user and remove them automatically
-        var removeOtherPatientPharmacy = function (access, data) {
-            return patients.testOtherPatient({}, access).then(curry(removePharmacy)(data));
-        };
-        var removeMyPatientPharmacy = function (data) {
+        var removePatientPharmacy = function (data) {
             return patients.testMyPatient({}).then(curry(removePharmacy)(data));
         };
 
@@ -38,18 +35,10 @@ describe("Pharmacies", function () {
         patients.itRequiresAuthentication(curry(remove)(1));
         patients.itRequiresValidPatientId(curry(remove)(1));
         common.itRequiresValidPharmacyId(remove);
+        patients.itRequiresWriteAuthorization(curry(removePharmacy)({}));
 
         it("should let me remove pharmacies for my patients", function () {
-            return expect(removeMyPatientPharmacy({})).to.be.a.pharmacy.success;
-        });
-        it("should not let me remove pharmacies for patients shared read-only", function () {
-            return expect(removeOtherPatientPharmacy("read", {})).to.be.an.api.error(403, "unauthorized");
-        });
-        it("should let me remove pharmacies for patients shared read-write", function () {
-            return expect(removeOtherPatientPharmacy("write", {})).to.be.a.pharmacy.success;
-        });
-        it("should not let me remove pharmacies for patients not shared with me", function () {
-            return expect(removeOtherPatientPharmacy("none", {})).to.be.an.api.error(403, "unauthorized");
+            return expect(removePatientPharmacy({})).to.be.a.pharmacy.success;
         });
     });
 });

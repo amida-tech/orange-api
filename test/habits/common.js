@@ -10,12 +10,12 @@ var expect = chakram.expect;
 var habitsSchema = {
     required: ["wake", "sleep", "breakfast", "lunch", "dinner", "tz"],
     properties: {
-        wake:       { type: ["string", "null"] },
-        sleep:      { type: ["string", "null"] },
-        breakfast:  { type: ["string", "null"] },
-        lunch:      { type: ["string", "null"] },
-        dinner:     { type: ["string", "null"] },
-        tz:         { type: ["string"] }
+        wake:           { type: ["string", "null"] },
+        sleep:          { type: ["string", "null"] },
+        breakfast:      { type: ["string", "null"] },
+        lunch:          { type: ["string", "null"] },
+        dinner:         { type: ["string", "null"] },
+        tz:             { type: "string" }
     }
 };
 /*eslint-enable key-spacing */

@@ -1,7 +1,7 @@
 # Group Users
 ## User [/user]
 ### Register a New User [POST]
-Register a new user.
+Register a new user, and create a new patient for them as well.
 
 + Parameters
     + email (string, required)
@@ -94,8 +94,8 @@ Change basic metadata about the current user, including their password.
 
 ### Delete User [DELETE]
 Permanently remove the user, including all metadata stored on them (e.g., their password).
-If the user has write access to patients that no other users have access to, then that
-patient and all their data (doctors/pharmacies/medications/etc) will also be deleted.
+Patients accessible only to this user will be deleted, but patients viewable by other users
+will not be deleted.
 
 + Request
     + Headers

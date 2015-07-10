@@ -6,7 +6,8 @@ var chakram     = require("chakram"),
     Q           = require("q"),
     util        = require("util"),
     auth        = require("../common/auth.js"),
-    patients    = require("../patients/common.js");
+    patients    = require("../patients/common.js"),
+    medications = require("../medications/common.js");
 
 var expect = chakram.expect;
 
@@ -43,6 +44,12 @@ describe("Schedule", function () {
             patients.itRequiresAuthentication(curry(show)(null, null, null));
             patients.itRequiresValidPatientId(curry(show)(null, null, null));
 
+            // helper to take a patient and medication, and try and show the schedule for _just_
+            // that medication. used to test medication-specific authorization.
+            var showScheduleMedication = function (patient, medication) {
+                return show(null, null, medication._id, patient._id, patient.user.accessToken);
+            };
+
             // helper to show schedule for an example medication
             // takes a patient, creates a medication for them and then attempts to show their
             // schedule
@@ -56,25 +63,78 @@ describe("Schedule", function () {
                 });
             };
 
-            // helpers to create patients and feed them into showSchedule automatically
-            var showMyPatientSchedule = function () {
-                return patients.testMyPatient({}).then(showSchedule);
-            };
-            var showOtherPatientSchedule = function (access) {
-                return patients.testOtherPatient({}, access).then(showSchedule);
-            };
+            // check it requires read acces to patient
+            patients.itRequiresReadAuthorization(showSchedule);
+            // check it only returns schedule results for medications we have access to
+            medications.itRequiresReadListAuthorization("schedule")(showScheduleMedication);
 
-            it("should let me view my patient's schedule", function () {
-                return expect(showMyPatientSchedule()).to.be.a.schedule.success;
-            });
-            it("should let me view the schedule of a patient shared read-only", function () {
-                return expect(showOtherPatientSchedule("read")).to.be.a.schedule.success;
-            });
-            it("should let me view the schedule of a patient shared read-write", function () {
-                return expect(showOtherPatientSchedule("write")).to.be.a.schedule.success;
-            });
-            it("should not let me view the schedule of a patient not shared with me", function () {
-                return expect(showOtherPatientSchedule("none")).to.be.an.api.error(403, "unauthorized");
+            describe("with test data", function () {
+                // setup two patients the user has read access to
+                var patient, noneMedication, defaultMedication;
+                before(function () {
+                    // create two test users
+                    return Q.all([auth.createTestUser(), auth.createTestUser()]).spread(function (me, other) {
+                        // create patient and share read-only with main user
+                        return patients.createOtherPatient({}, me, other).then(function (p) {
+                            patient = p;
+                            return Q.nbind(p.share, patient)(me.email, "read", "anyone");
+                        });
+                    }).then(function () {
+                        // create two medications for the patient
+                        return Q.nbind(patient.createMedication, patient)({
+                            name: "foobar none",
+                            access_anyone: "none",
+                            schedule: {
+                                as_needed: false,
+                                regularly: true,
+                                until: { type: "forever" },
+                                frequency: { n: 1, unit: "day" },
+                                times: [{ type: "exact", time: "09:00" }],
+                                take_with_food: null,
+                                take_with_medications: [],
+                                take_without_medications: []
+                            }
+                        }).then(function (m) {
+                            noneMedication = m;
+                            return m;
+                        }).then(function () {
+                            return Q.nbind(patient.createMedication, patient)({
+                                name: "foobar def",
+                                access_anyone: "default",
+                                schedule: {
+                                    as_needed: false,
+                                    regularly: true,
+                                    until: { type: "forever" },
+                                    frequency: { n: 1, unit: "day" },
+                                    times: [{ type: "exact", time: "09:00" }],
+                                    take_with_food: null,
+                                    take_with_medications: [],
+                                    take_without_medications: []
+                                }
+                            });
+                        }).then(function (m) {
+                            defaultMedication = m;
+                        });
+                    });
+                });
+
+                it("respects medication permissions by only showing results from defaultMedication", function () {
+                    return show(null, null, null, patient._id, patient.user.accessToken).then(function (response) {
+                        // extract med IDs
+                        var ids = response.body.schedule.map(function (item) {
+                            return item.medication_id;
+                        });
+
+                        // check we have events for medication we have med-level access to
+                        expect(ids.filter(function (id) {
+                            return id === defaultMedication._id;
+                        }).length).to.not.equal(0);
+                        // and none for medication we have patient-level access to but no med-level access
+                        expect(ids.filter(function (id) {
+                            return id === noneMedication._id;
+                        }).length).to.equal(0);
+                    });
+                });
             });
         });
 
@@ -104,9 +164,14 @@ describe("Schedule", function () {
                     return Q.nbind(p.createMedication, p)({
                         name: "Test Medication",
                         schedule: {
-                            type: "regularly",
-                            frequency: 1,
-                            times_of_day: ["09:00"]
+                            as_needed: false,
+                            regularly: true,
+                            until: { type: "forever" },
+                            frequency: { n: 1, unit: "day" },
+                            times: [{ type: "exact", time: "09:00" }],
+                            take_with_food: null,
+                            take_with_medications: [],
+                            take_without_medications: []
                         }
                     });
                 };
@@ -306,6 +371,6 @@ describe("Schedule", function () {
             });
         });
 
-        it("handles dose events");
+        // everything more granular is tested in unit/medication_schedule_generator_test.js
     });
 });

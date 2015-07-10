@@ -1,246 +1,259 @@
-import bisect, random, math
+import bisect, random, math, dateutil.parser, pytz, datetime, time
+from termcolor import colored
+from pyevolve import G1DList
+from pyevolve import G1DBinaryString
+from pyevolve import GSimpleGA
+from pyevolve import Selectors
+from pyevolve import Initializators, Mutators
+from pyevolve import Scaling
+from pyevolve import Consts
 
 class ScheduleMatcher(object):
-    # scheduled = array of numbers representing the times of scheduled doses
-    # doses = array of numbers representing the times doses were actually taken
-    # params:
-        # population_size: number of states to initialise
-        # alpha: weighting of # of unmatched schedule events in cost function
-        # beta: weighting of # of unmatched dose events in cost function
-        # gamma: weighting of time delta between schedule and dose events in cost function
-        # iota: weighting to give duplicates (one dose matched to two schedule events) in
-        #       cost function
-        # eta: weighting to give monotonicity breakers (schedule events who are matched up
-        #       with a dose event that tooks place before the dose event the previous
-        #       schedule matches) in the cost function
-        # chi: proportion of population who should breed offspring for the next generation
-        #      rather than being copied across
-        # mu: proportion of population who should be randomly mutated in each evolve step
-        # max_iterations: maximum number of iterations to run before returning the best match
-        #                 so far
-        # kappa: scaling constant used in kernel function on time delta between scheduled and
-        #        dose events. when delta = kappa, kernel(radius) = 1/2 (kernel is a standard
-        #        fast sigmoid)
-        # fitness_threshold: if the fitness of a state is greater than this, stop evolving and
-        #                    just use that state
-        # 
+    # scheduled = API-style schedule data object
+    # doses = array of times that doses were actually taken at
 
-    def __init__(self, scheduled, doses, params):
-        # we assume these are sorted in e.g., cost generation
-        self.scheduled = sorted(scheduled)
-        self.doses = sorted(doses)
+    def __init__(self, schedule, doses, habits, params):
+        # sensible defaults for the habits we need
+        if ((not "wake" in habits) or (habits["wake"] == None)): habits["wake"] = "09:00"
+        if ((not "tz" in habits) or (habits["tz"] == None)): habits["tz"] = "America/New_York"
+        self.habits = habits
+        self.tz = pytz.timezone(habits["tz"])
 
-        # store parameters with sensible defaults
-        # TODO: these are probably pretty terrible defaults, CV some better ones!
-        self.population_size = 1000
-        if "population_size" in params: self.population_size = params["population_size"]
-        self.alpha = 3
-        if "alpha" in params: self.alpha = params["alpha"]
-        self.beta = 2
-        if "beta" in params: self.beta = params["beta"]
-        self.gamma = 1
-        if "gamma" in params: self.gamma = params["gamma"]
-        self.chi = 0.8
-        if "chi" in params: self.chi = params["chi"]
-        self.mu = 0.1
-        if "mu" in params: self.mu = params["mu"]
-        self.max_iterations = 1000
-        if "max_iterations" in params: self.max_iterations = params["max_iterations"]
-        self.iota = 5
-        if "iota" in params: self.iota = params["iota"]
-        self.kappa = 2
-        if "kappa" in params: self.kappa = params["kappa"]
-        self.eta = 5
-        if "eta" in params: self.eta = params["eta"]
-        self.fitness_threshold = 0.10
-        if "fitness_threshold" in params: self.fitness_threshold = params["fitness_threshold"]
+        # parse ISO 8601-formatted dates into Date objects, and sort them
+        def parseDose(dose):
+            dose["date"] = dateutil.parser.parse(dose["date"]).astimezone(self.tz)
+            return dose
+        self.doses = map(parseDose, doses)
+        self.doses = sorted(self.doses, key = lambda dose: dose["date"])
+        # store time's seperately for quick access in cost function
+        self.doseTimes = map(lambda dose: dose["date"], self.doses)
 
-        # m = number of schedule events
-        self.m = len(self.scheduled)
-        # n = number of dose events
-        self.n = len(self.doses)
+        # store schedule
+        self.schedule = schedule
 
-        # each state is then array of m numbers, with each number representing
-        # the match of a dose event for a schedule event
-        #   n indicates no dose was matched to that schedule event
-        #   j indicates the jth dose was matched to that schedule event
-        #      (0 indexed)
-        # we want to perform low-level manipulation of these states for the genetic
-        # algorithm, so we represent them as bitstrings of length m*ceil(log2(n))
-        self.chunk_length = int(math.ceil(math.log(self.n, 2)))
-        # mask to get the chunk_length LSBs from a bitstring
-        self.chunk_mask = (2**self.chunk_length - 1)
-        self.M = self.m * self.chunk_length
-        # of course some bitstrings will not correspond to valid states, so we assign
-        # those a fitness of 0 (if they have a 'chunk' value > n)
-        # in turn, we represent these bitstrings as ints within python
+        # n = number of actual dose events
+        self.n = len(doses)
+        # m = number of dose events that *should* happen per day
+        self.m = len(schedule["times"])
 
-        # initialise population with random bitstrings
-        self.population = [random.randint(0, 2**self.M-1) for i in range(self.population_size)]
-        # evaluate fitness of that population
-        self.evaluate()
+        # if we don't have any doses, we can't match
+        if (self.n == 0): return
 
-    # calculate fitness for the whole population
-    def evaluate(self):
-        self.costs = map(self.cost, self.population)
-        self.fitnesses = map(self.fitness, self.costs)
+        # calculate start of first day
+        wake = map(int, self.habits["wake"].split(":"))
+        self.firstWake = self.doseTimes[0].replace(hour=wake[0], minute=wake[1], second=0, microsecond=0)
+        if (self.firstWake > self.doseTimes[0]): self.firstWake -= datetime.timedelta(days=1)
 
-        # turn the fitnesses into a cumulative probability distribution so we can select
-        # members weighted by fitness (roulette wheel selection)
-        sum_fitnesses = sum(self.fitnesses)
-        probabilities = map(lambda f: f/sum_fitnesses, self.fitnesses)
+        # calculate total number of days
+        self.days = self.dayIndex(self.doseTimes[-1]) + 1
 
-        self.cumulative = []
-        self.total = 0
-        for probability in probabilities:
-            self.total += probability
-            self.cumulative.append(self.total)
+        # a chromosone is an n-element array of integers, where each integer i is:
+        #  M representing it doesn't match a scheduled event
+        #  i = d*m + k (in 0,1,...,M-1) where d (0,...,days-1) is the day and k
+        #    (0,...,m-1 is the index of the scheduled event on that day)
+        #    (where M = days * m)
+        self.M = self.days * self.m
 
-    # randomly select, weighted by fitness (roulette wheel), k members of the current
-    # population
-    def select(self, k):
-        # bisect with a random variable to pick a state weighted by the original
-        # probabilities
-        return [self.population[bisect.bisect(self.cumulative, random.random() * self.total)] for i in range(k)]
+        genome = G1DList.G1DList(self.n)
+        genome.setParams(rangemin=0, rangemax=self.M)
+        genome.evaluator.set(self.score)
 
-    # fitness = 1/cost or 0 if cost == -1
-    def fitness(self, cost):
-        if cost == -1: return 0
-        else: return 1.0/cost
+        # genetic algorithm engine
+        self.ga = GSimpleGA.GSimpleGA(genome, interactiveMode=False)
+        self.ga.setGenerations(100)
+        self.ga.terminationCriteria.set(GSimpleGA.ConvergenceCriteria)
 
-    # returns highest fitness (from a precalculated self.fitnesses)
-    # and its corresponding state
-    def best(self):
-        return max(enumerate(self.fitnesses), key = lambda d: d[1])
+        pop = self.ga.getPopulation()
+        pop.scaleMethod.set(Scaling.SigmaTruncScaling)
 
-    # matches are scored with a cost function
-    def cost(self, state):
-        unmatched_schedules = 0
-        matched_doses = []
-        radii = []
-        duplicates = 0
-        monotonicity_breakers = 0
+    def dayIndex(self, dose):
+        wake = map(int, self.habits["wake"].split(":"))
 
-        # we chunk state into m chunk_length-bit chunks
-        for i in range(self.m):
-            # want to get bits from i*chunk_length to (i+1)*chunk_length-1
-            match = (state >> (i*self.chunk_length)) & self.chunk_mask;
+        # calculate start of that day
+        startDay = dose.replace(hour=wake[0], minute=wake[1], second=0, microsecond=0)
+        if (startDay > dose): startDay -= datetime.timedelta(days=1)
 
-            # invalid match bitstring (randomly initialised to an invalid bitstring,
-            # but we assign it a fitness of 0)
-            if match > self.n: return -1
+        return (startDay - self.firstWake).days
 
-            # no match for this schedule event
-            elif match == self.n: unmatched_schedules += 1
+    # score a chromosone
+    def score(self, chromosone, debug=False):
+        UNMATCHED_DOSE_COST             = 35
+        UNMATCHED_SCHEDULE_COST         = 35
+        DUPLICATE_COST                  = 50
 
-            # a match that we can calculate distance for
+        TIME_MATCH_COST                 = 0
+        if self.schedule["as_needed"]:
+            UNSPECIFIED_MATCH_COST      = 5
+        else:
+            UNSPECIFIED_MATCH_COST      = UNMATCHED_DOSE_COST
+
+        UNSPECIFIED_DAY_DELTA_COST      = 100
+
+        # multiplied by delta ** 5
+        DAY_DELTA_COST                  = 50
+        # 1 days = 1x
+        # 2 days = 32x
+        # 3 days = 243x
+
+        MINUTE_DELTA_COST = 0.05
+        # 20 minutes = 1.1
+        # 1 hour = 3.3
+        # 3 hours = 11.2
+        # 6 hours = 24
+        # 12 hours = 51
+
+        DAY_MONOTONICITY_COST = 7
+        TIME_MONOTONICITY_COST = 4
+
+        # store the results of matches to see which are missing
+        matchIndices = {};
+        for j in range(self.m): matchIndices[j] = []
+
+        # calculate cost then return 1/cost
+        costs = []
+        costDs = []
+
+        # kernels for deltas of various kinds
+        def dayKernel(delta):
+            return DAY_DELTA_COST * (delta ** 5)
+
+        def timeKernel(minutes):
+            # 'fast' approximate sigmoid function
+            # return MINUTE_DELTA_COST * minutes * 1.0/(1 + abs(minutes* 1.0/90))
+            return (MINUTE_DELTA_COST * minutes ) ** 1.1
+
+        # add cost and output debugging message
+        def addCost(delta, slug, extra):
+            costs.append(delta)
+            costDs.append((delta, slug, extra))
+
+        # to check monotonicity breakage
+        prevEventDay = None
+        prevEventTime = None
+
+        # iterate over each number in array (still gray encoded)
+        for i in range(self.n):
+            addCost(0, "new event", None)
+            match = chromosone[i]
+
+            # no match to a scheduled event
+            if (match == self.M): addCost(UNMATCHED_DOSE_COST, "unmatched dose", None)
+
             else:
-                # HEAVY duplicate penalty
-                if (match in matched_doses): duplicates += 1
+                # find matched scheduled event
+                day, index = divmod(match, self.m)
+                event = self.schedule["times"][index]
+                # store in matchIndices for aggregate cost
+                matchIndices[index].append(day)
 
-                # penalty for breaking monotonicity
-                if (len(matched_doses) != 0 and match < matched_doses[0]): monotonicity_breakers += 1
+                # doses increase monotonically with time, so event days and times should as well
+                if (prevEventDay != None and day < prevEventDay):
+                    addCost(DAY_MONOTONICITY_COST, "day monotonicity breakage", None)
+                prevEventDay = day
 
-                matched_doses.append(match)
-                radii.append(abs(self.scheduled[i] - self.doses[match]))
+                # find actual event
+                dose = self.doseTimes[i]
+                # check if the same day
+                dayDelta = abs(self.dayIndex(dose) - day)
+                addCost(dayKernel(dayDelta), "day delta", dayDelta)
 
-        # count unmatched doses
-        unmatched_doses = self.n - len(set(matched_doses))
+                if event["type"] == "unspecified":
+                    # heavily penalise cost here
+                    if dayDelta > 0:
+                        addCost(dayDelta * UNSPECIFIED_DAY_DELTA_COST, "unspecified match day delta cost", dayDelta)
 
-        # weighted total
-        return self.alpha * unmatched_schedules + \
-            self.beta * unmatched_doses + \
-            self.gamma * sum(map(self.kernel, radii)) + \
-            self.iota * duplicates + \
-            self.eta * monotonicity_breakers
+                    # decent match
+                    addCost(UNSPECIFIED_MATCH_COST, "unspecified match", None)
 
-    # 'fast' approximate sigmoid function
-    def kernel(self, val):
-        return val*1.0/(1+abs(val*1.0/self.kappa))
+                # time match
+                else:
+                    time = map(int, event["time"].split(":"))
+                    date = dose.replace(hour=time[0], minute=time[1], second=0, microsecond=0)
+                    # number of days that need to be added
+                    day_delta = day - self.dayIndex(date)
+                    date += datetime.timedelta(day_delta)
 
-    # crossover two parents to produce two offspring (one-point crossover)
-    def crossover(self, parent1, parent2):
-        # simple one-point crossover with random index
-        index = random.randint(1, self.M-1)
-        # following algorithm from Tai
-        mask1 = 2**self.M - 2**index
-        mask2 = 2**index - 1
-        offspring1 = (parent1 & mask1) | (parent2 & mask2)
-        offspring2 = (parent1 & mask2) | (parent2 & mask1)
-        return (offspring1, offspring2)
 
-    # randomly flip a bit in a state
-    def mutate(self, state):
-        point = random.randint(0, self.M-1)
-        mask = 2**point
-        return state ^ mask
+                    if (prevEventTime != None and date < prevEventTime):
+                        addCost(TIME_MONOTONICITY_COST, "time monotonicity breakage", None)
+                    prevEventTime = date
 
-    # evolve into a new population (standard genetic algorithm)
-    def evolve(self):
-        # initial step to populate new generation
-        # select and copy (1-chi)*N members straight into the new generation
-        # select chi*N members, cross them over, and insert their (2) offspring into the new generation
-        number_parents = 2*int(math.floor(0.5*self.chi*self.population_size)) # must be even
-        number_copies = self.population_size - number_parents
+                    # in minutes
+                    delta = abs((date - dose).total_seconds()/60.0)
+                    addCost(TIME_MATCH_COST, "time match", None)
+                    addCost(timeKernel(delta), "time kernel", delta)
 
-        # initialise new population with copies
-        population = self.select(number_copies)
+        for j in range(self.m):
+            indices = matchIndices[j]
+            num_duplicates = len(indices) - len(set(indices))
+            addCost(num_duplicates * DUPLICATE_COST, "duplicates", num_duplicates)
 
-        # select parents and pair them up
-        males = self.select(number_parents/2)
-        females = self.select(number_parents/2)
-        for i in range(number_parents/2):
-            # crossover the two parents
-            offspring1, offspring2 = self.crossover(males[i], females[i])
-            population.append(offspring1)
-            population.append(offspring2)
+            # ideally would have self.days worth in each one
+            num_missed = abs(len(set(indices)) - self.days)
+            addCost(num_missed * UNMATCHED_SCHEDULE_COST, "unmatched schedules", num_missed)
 
-        # randomly mutate mu*N members of the new population
-        for i in range(int(math.floor(self.mu*self.population_size))):
-            index = random.randint(0, self.population_size - 1)
-            population[index] = self.mutate(population[index])
+        if debug: return costDs
 
-        # store population and evaluate fitness
-        self.population = population
-        self.evaluate()
+        return 100.0/sum(costs)
 
-    # evolve the population til a good enough match is found and return it
-    # note that this is blocking and synchronous
-    def match(self):
-        for iteration in range(self.max_iterations):
-            self.evolve()
-            # check if new generation meets the threshold
-            index, fitness = self.best()
-            if fitness > self.fitness_threshold:
-                # stop evolving
-                break
 
-        # whether we've reached the max number of iterations or the population
-        # is 'good enough' (fitness > threshold), we return the best state here anyway
-        result = {
-            "fitness": fitness,
-            "match": []
-        }
+    def match(self, debug=False):
+        # if we don't have any doses, we can't match
+        if (self.n == 0): return { "matches": [], "start": None }
 
-        # format state for output
-        state = self.population[index]
-        # we chunk state into m chunk_length-bit chunks
-        for i in range(self.m):
-            # want to get bits from i*chunk_length to (i+1)*chunk_length-1
-            match = (state >> (i*self.chunk_length)) & self.chunk_mask;
-            # no match
-            if (match == self.n):
-                result["match"].append({
-                    "scheduled": i,
-                    "match": False
-                })
+        chromosone = self.ga.evolve()
+        datums = []
+
+        costs = self.score(chromosone, debug=debug)
+        costIndex = 0
+        for i in range(self.n):
+            match = chromosone[i]
+
+            # data to return over zeromq
+            datum = {
+                "dose": self.doses[i]["_id"]
+            }
+            if (match == self.M): datum["match"] = None
             else:
-                result["match"].append({
-                    "scheduled": i,
-                    "match": True,
-                    "dose": match
-                })
-        return result
+                day, index = divmod(match, self.m)
+                event = self.schedule["times"][index]
+                datum["match"] = {
+                    "day": day,
+                    "index": index
+                }
+            datums.append(datum)
 
-# sm = ScheduleMatcher([5, 7, 15, 17, 25, 27, 35, 37], [8, 9, 12, 16, 28, 34, 36], {})
-# print sm.match()
+            # find actual event
+            if debug:
+                # find actual event
+                dose = self.doseTimes[i]
+
+                print colored("Actual   : day %d time %s" % (self.dayIndex(dose), dose.astimezone(self.tz).strftime("%H:%M")), "blue")
+
+                if (match == self.M):
+                    print colored("Scheduled: -- unmatched --", "blue")
+                else:
+                    # find matched scheduled event
+                    day, index = divmod(match, self.m)
+                    event = self.schedule["times"][index]
+
+                    if (event["type"] == "unspecified"):
+                        print colored("Scheduled: day %d time --" % day, "blue")
+                    else:
+                        print colored("Scheduled: day %d time %s" % (day, event["time"]), "blue")
+
+                while True:
+                    cost = costs[costIndex]
+                    color = "green"
+                    if (cost[0] > 20): color = "red"
+                    extra = ""
+                    if (cost[2] != None): extra = " %8.3f" % cost[2]
+                    print colored("%-35s" % cost[1], "yellow") + colored("%8.3f" % cost[0], color) + extra
+
+                    costIndex += 1
+                    if costIndex == len(costs) or costs[costIndex][1] == "new event": break
+                print
+
+                print datum
+
+        return { "matches": datums, "start": self.firstWake.isoformat() }
