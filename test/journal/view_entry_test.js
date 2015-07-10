@@ -5,6 +5,7 @@ var chakram         = require("chakram"),
     Q               = require("q"),
     auth            = require("../common/auth.js"),
     patients        = require("../patients/common.js"),
+    medications     = require("../medications/common.js"),
     fixtures        = require("./fixtures.js"),
     common          = require("./common.js");
 
@@ -40,7 +41,12 @@ describe("Journal", function () {
         common.itRequiresValidEntryId(show);
         // check it requires read access to patient
         patients.itRequiresReadAuthorization(curry(showEntry)({}));
-        it("requires read access to all medications specified in the old medication_ids");
+        // and all of their medications
+        medications.itRequiresReadAllAuthorization(function (patient, meds) {
+            return showEntry({
+                medication_ids: meds.map(function (m) { return m._id; })
+            }, patient);
+        });
 
         it("should let me view entries for my patients", function () {
             return expect(showPatientEntry({})).to.be.a.journal.viewSuccess;

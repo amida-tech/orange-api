@@ -5,6 +5,7 @@ var chakram         = require("chakram"),
     Q               = require("q"),
     auth            = require("../common/auth.js"),
     patients        = require("../patients/common.js"),
+    medications     = require("../medications/common.js"),
     fixtures        = require("./fixtures.js"),
     common          = require("./common.js");
 
@@ -41,8 +42,18 @@ describe("Journal", function () {
         common.itRequiresValidEntryId(curry(update)({}));
         // check it requires write access to patient
         patients.itRequiresWriteAuthorization(curry(updateEntry)({}, {}));
-        it("requires write access to all medications specified in the old medication_ids");
-        it("requires write access to all medications specified in the new medication_ids");
+        // and all of their medications in the old medication_ids
+        medications.itRequiresWriteAllAuthorization(function (patient, meds) {
+            return updateEntry({}, {
+                medication_ids: meds.map(function (m) { return m._id; })
+            }, patient);
+        });
+        // and all of their medications in the new medication_ids
+        medications.itRequiresWriteAllAuthorization(function (patient, meds) {
+            return updateEntry({
+                medication_ids: meds.map(function (m) { return m._id; })
+            }, {}, patient);
+        });
 
         it("should let me edit entries for my patients", function () {
             return expect(updatePatientEntry({}, {})).to.be.a.journal.success;

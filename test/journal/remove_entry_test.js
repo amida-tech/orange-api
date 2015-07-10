@@ -5,6 +5,7 @@ var chakram         = require("chakram"),
     Q               = require("q"),
     auth            = require("../common/auth.js"),
     patients        = require("../patients/common.js"),
+    medications     = require("../medications/common.js"),
     common          = require("./common.js"),
     fixtures        = require("./fixtures.js");
 
@@ -40,7 +41,12 @@ describe("Journal", function () {
         common.itRequiresValidEntryId(remove);
         // check it requires write access to patient
         patients.itRequiresWriteAuthorization(curry(removeEntry)({}));
-        it("requires write access to all medications specified in medication_ids");
+        // and all of their medications
+        medications.itRequiresWriteAllAuthorization(function (patient, meds) {
+            return removeEntry({
+                medication_ids: meds.map(function (m) { return m._id; })
+            }, patient);
+        });
 
         it("should let me remove entries for my patients", function () {
             return expect(removePatientEntry({})).to.be.a.journal.success;

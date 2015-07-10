@@ -5,6 +5,7 @@ var chakram         = require("chakram"),
     Q               = require("q"),
     auth            = require("../common/auth.js"),
     patients        = require("../patients/common.js"),
+    medications     = require("../medications/common.js"),
     fixtures        = require("./fixtures.js");
 
 var expect = chakram.expect;
@@ -42,7 +43,12 @@ describe("Journal", function () {
         patients.itRequiresValidPatientId(curry(create)({}));
         // check it requires write access to patient
         patients.itRequiresWriteAuthorization(curry(createEntry)({}));
-        it("requires write access to all medications specified in medication_ids");
+        // and all of their medications
+        medications.itRequiresWriteAllAuthorization(function (patient, meds) {
+            return createEntry({
+                medication_ids: meds.map(function (m) { return m._id; })
+            }, patient);
+        });
 
         it("should let me create valid entries for my patients", function () {
             return expect(createPatientEntry({})).to.be.a.journal.createSuccess;
