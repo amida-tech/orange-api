@@ -53,6 +53,9 @@ common.addApiChain("pharmacy", {
     "success": function (respObj) {
         expect(respObj).to.be.an.api.getSuccess;
         expect(respObj).to.have.schema(pharmacySchema);
+    },
+    "listSuccess": function (respObj) {
+        expect(respObj).to.be.an.api.genericListSuccess("pharmacies", pharmacySchema);
     }
 });
 
