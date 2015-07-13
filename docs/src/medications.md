@@ -328,8 +328,7 @@ medications for which the current user has read access will be returned.
 
     + sort_by (string, optional)
     
-        Field to sort results by. Must by either `id`, `name`, `dose` or `quantity`,
-        and defaults to `id`.
+        Field to sort results by. Must by either `id` or `name`, and defaults to `id`.
 
     + sort_order (string, optional)
     
@@ -338,17 +337,6 @@ medications for which the current user has read access will be returned.
     + name (string, optional)
 
         Filter results by name of medication. Performs fuzzy matching.
-
-    + route (string, optional)
-
-        filter results (exactly) by ROA of medication
-    + form (string, optional)
-
-        filter results (exactly) by form of medication
-    + type (string, optional)
-    
-        filter results (exactly) by type of medication
-
 
 + Request
     + Headers
