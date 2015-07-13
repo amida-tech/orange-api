@@ -20,6 +20,7 @@
     "async": "^1.1.0",
     "bcrypt": "^0.8.3",
     "body-parser": "^1.12.4",
+    "double-metaphone": "^0.1.4",
     "express": "4.12.x",
     "fuzzy": "^0.1.0",
     "gridfs-stream": "^1.1.1",
