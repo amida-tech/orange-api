@@ -496,7 +496,6 @@ describe("Schedule", function () {
                     ]);
                 });
 
-                // TODO: don't assume a default 7am wake time here?
                 it("defaults to sensible defaults when no habits are specified", function () {
                     return check({
                         regularly: true,

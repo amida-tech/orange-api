@@ -354,10 +354,12 @@ describe("Schedule", function () {
                     it("doesn't allow a start date after the end date", function () {
                         var start = moment().add(1, "day");
                         var end = moment().subtract(1, "day");
-                        var endpoint = show(start, end, null, patient._id, user.accessToken);
-                        // TODO check for either of invalid_start/invalid_end: it's arbitrary that we
-                        // return invalid_end
-                        return expect(endpoint).to.be.an.api.error(400, "invalid_end");
+                        return show(start, end, null, patient._id, user.accessToken).then(function (response) {
+                            // we want either invalid_start of invalid_end
+                            var error = response.body.errors[0];
+                            expect(["invalid_start", "invalid_end"]).to.contain(error);
+                            expect(response).to.be.an.api.error(400, error);
+                        });
                     });
 
                     it("allows a start date equal to the end date", function () {

@@ -486,10 +486,15 @@ describe("Journal", function () {
                 });
 
                 it("rejects a start date after the end date", function () {
-                    return expect(listPatient(patient, {
+                    return listPatient(patient, {
                         start_date: moment().subtract(3, "months").toISOString(),
                         end_date: moment().subtract(12, "months").toISOString()
-                    })).to.be.an.api.error(400, "invalid_start");
+                    }).then(function (response) {
+                        // we want either invalid_start of invalid_end
+                        var error = response.body.errors[0];
+                        expect(["invalid_start", "invalid_end"]).to.contain(error);
+                        expect(response).to.be.an.api.error(400, error);
+                    });
                 });
 
                 it("rejects an invalid start date", function () {

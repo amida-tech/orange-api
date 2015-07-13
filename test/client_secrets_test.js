@@ -16,7 +16,6 @@ describe("API", function () {
     });
 
     // sample endpoint to hit
-    // TODO: test all endpoints require the client secret not just this one
     var endpoint = function (secret) {
         // want an endpoint that doesn't require any other authenticate, so we
         // try and register a user
