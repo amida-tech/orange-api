@@ -4,8 +4,14 @@ var chakram     = require("chakram"),
     Q           = require("q"),
     common      = require("../common/chakram.js"),
     patients    = require("../patients/common.js"),
+    medications = require("../medications/common.js"),
     auth        = require("../common/auth.js");
 var expect = chakram.expect;
+
+// we validate child schemata, but success shouldn't be present on a medication object here
+var medicationSchema = JSON.parse(JSON.stringify(medications.schema));
+medicationSchema.required.splice(medicationSchema.required.indexOf("success"));
+delete medicationSchema.properties.success;
 
 // verify successful responses
 /*eslint-disable key-spacing */
@@ -14,16 +20,29 @@ var doseSchema = {
     properties: {
         success:        { type: "boolean" },
         id:             { type: "number" },
-        medication_id:  { type: "number" },
-        medication:     { type: "object" },
         date:           { type: "string" },
         notes:          { type: "string" }
+    },
+    definitions: {
+        medication: medicationSchema
     },
     additionalProperties: false
 };
 var doseViewSchema = JSON.parse(JSON.stringify(doseSchema)); // easy deep copy
+
+// viewing a dose in detail should show full medication details
 doseViewSchema.required.push("medication");
+doseViewSchema.properties.medication = {
+    type: "object",
+    "$ref": "#/definitions/medication"
+};
+
+// other endpoints should just have a medication ID
 doseSchema.required.push("medication_id");
+doseSchema.properties.medication_id = {
+    type:   "number"
+};
+
 common.addApiChain("dose", {
     "createSuccess": function (respObj) {
         expect(respObj).to.be.an.api.postSuccess;
