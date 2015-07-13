@@ -105,11 +105,13 @@ access token does not expire until the user changes password.</strong></p>
 <div class="title"><strong>Parameters</strong><div class="collapse-button show"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><dl class="inner"><dt>email</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>The email address of the new user. Validated to make sure it’s a valid
 email address.</p>
 </dd><dt>password</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>the password of the new user</p>
-</dd><dt>name</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>the full name of the new user</p>
+</dd><dt>first_name</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>the first name of the new user</p>
+</dd><dt>last_name</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>the last name of the new user</p>
 </dd></dl></div><div class="title"><strong>Request</strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><h5>Body</h5><pre><code>{
     email: <span class="hljs-string">"foo@bar.com"</span>,
     password: <span class="hljs-string">"foobar"</span>,
-    name: <span class="hljs-string">"Foo Bar"</span>
+    first_name: <span class="hljs-string">"Foo"</span>,
+    last_name: <span class="hljs-string">"Bar"</span>
 }
 </code></pre><div style="height: 1px;"></div></div></div><div class="title"><strong>Response&nbsp;&nbsp;<code>201</code></strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><div class="description"><p>Errors</p>
 <ul>
@@ -129,7 +131,8 @@ address</p>
 </ul>
 </div><h5>Body</h5><pre><code>{
     email: <span class="hljs-string">"foo@bar.com"</span>,
-    name: <span class="hljs-string">"Foo Bar"</span>,
+    first_name: <span class="hljs-string">"Foo"</span>,
+    last_name: <span class="hljs-string">"Bar"</span>,
     success: <span class="hljs-literal">true</span>
 }
 </code></pre><div style="height: 1px;"></div></div></div></div><div id="users-user-get" class="action get"><h4><div class="name">View User Info</div><a href="#users-user-get" class="method get">GET</a><code class="uri">/user</code></h4><p>Get basic metadata about the current user.</p>
@@ -145,14 +148,17 @@ header</p>
 </ul>
 </div><h5>Body</h5><pre><code>{
     email: <span class="hljs-string">"foo@bar.com"</span>,
-    name: <span class="hljs-string">"Foo Bar"</span>,
+    first_name: <span class="hljs-string">"Foo"</span>,
+    last_name: <span class="hljs-string">"Bar"</span>,
     success: <span class="hljs-literal">true</span>
 }
 </code></pre><div style="height: 1px;"></div></div></div></div><div id="users-user-put" class="action put"><h4><div class="name">Change User Info</div><a href="#users-user-put" class="method put">PUT</a><code class="uri">/user</code></h4><p>Change basic metadata about the current user, including their password.</p>
-<div class="title"><strong>Parameters</strong><div class="collapse-button show"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><dl class="inner"><dt>name</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>new full name</p>
+<div class="title"><strong>Parameters</strong><div class="collapse-button show"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><dl class="inner"><dt>first_name</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>new first name</p>
+</dd><dt>last_name</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>new last name</p>
 </dd><dt>password</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>New password. <strong>Note that if the password is changed, all access tokens are revoked</strong>.</p>
 </dd></dl></div><div class="title"><strong>Request</strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><h5>Headers</h5><pre><code><span class="hljs-attribute">Authorization</span>: <span class="hljs-string">Bearer ACCESS_TOKEN</span><br></code></pre><div style="height: 1px;"></div><h5>Body</h5><pre><code>{
-    name: <span class="hljs-string">"Foo Baz"</span>,
+    first_name: <span class="hljs-string">"Foo"</span>,
+    last_name: <span class="hljs-string">"Baz"</span>,
     password: <span class="hljs-string">"foobaz"</span>
 }
 </code></pre><div style="height: 1px;"></div></div></div><div class="title"><strong>Response&nbsp;&nbsp;<code>200</code></strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><div class="description"><p>Errors</p>
@@ -167,7 +173,8 @@ header</p>
 </ul>
 </div><h5>Body</h5><pre><code>{
     email: <span class="hljs-string">"foo@bar.com"</span>,
-    name: <span class="hljs-string">"Foo Baz"</span>,
+    first_name: <span class="hljs-string">"Foo"</span>,
+    last_name: <span class="hljs-string">"Baz"</span>,
     success: <span class="hljs-literal">true</span>
 }
 </code></pre><div style="height: 1px;"></div></div></div></div><div id="users-user-delete" class="action delete"><h4><div class="name">Delete User</div><a href="#users-user-delete" class="method delete">DELETE</a><code class="uri">/user</code></h4><p>Permanently remove the user, including all metadata stored on them (e.g., their password).
@@ -185,7 +192,8 @@ header</p>
 </ul>
 </div><h5>Body</h5><pre><code>{
     email: <span class="hljs-string">"foo@bar.com"</span>,
-    name: <span class="hljs-string">"Foo Bar"</span>,
+    first_name: <span class="hljs-string">"Foo"</span>,
+    last_name: <span class="hljs-string">"Bar"</span>,
     success: <span class="hljs-literal">true</span>
 }
 </code></pre><div style="height: 1px;"></div></div></div></div></div></section><section id="patients" class="resource-group"><h2>Patients<a href="#patients" class="permalink"><i class="fa fa-link"></i></a></h2><p>Remember, patients are the resources for which we actually store medication/etc
@@ -225,7 +233,8 @@ to the POSTed data.</p>
 and no-one else. For example, this should be called upon initial setup of the app to
 create a patient for the end user, and can later be called to create a new patient representing
 the child of the patient.</p>
-<div class="title"><strong>Parameters</strong><div class="collapse-button show"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><dl class="inner"><dt>name</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>the full human name of the patient</p>
+<div class="title"><strong>Parameters</strong><div class="collapse-button show"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><dl class="inner"><dt>first_name</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>the first name of the patient</p>
+</dd><dt>last_name</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>the last name of the patient</p>
 </dd><dt>birthdate</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>Optional date of birth of the patient, formatted as an ISO 8601 YYYY-MM-DD</p>
 </dd><dt>sex</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>String representing sex of the user. Must be “male”, “female”, “other” or “unspecified”.</p>
 </dd><dt>access_anyone</dt><dd><code>*string*</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>The default access permissions that users this patient is shared with under the <code>anyone</code>
@@ -235,7 +244,8 @@ group should have. Must be either <code>read</code> or <code>write</code>.  Defa
 </dd><dt>access_prime</dt><dd><code>*string*</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>The default access permissions that users this patient is shared with under the <code>prime</code> group
 should have. Must be either <code>read</code> or <code>write</code>.  Defaults to <code>write</code>.</p>
 </dd></dl></div><div class="title"><strong>Request</strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><h5>Headers</h5><pre><code><span class="hljs-attribute">Authorization</span>: <span class="hljs-string">Bearer ACCESS_TOKEN</span><br></code></pre><div style="height: 1px;"></div><h5>Body</h5><pre><code>{
-    name: <span class="hljs-string">"Dependent Patient"</span>,
+    first_name: <span class="hljs-string">"Dependent"</span>,
+    last_name: <span class="hljs-string">"Patient"</span>,
     birthdate: <span class="hljs-string">"1990-01-01"</span>,
     sex: <span class="hljs-string">"male"</span>,
     avatar: <span class="hljs-string">"/v1/patients/1/avatar.jpg"</span>,
@@ -253,7 +263,7 @@ should have. Must be either <code>read</code> or <code>write</code>.  Defaults t
 <p><code>invalid_access_token</code> (401) - the access token specified is invalid</p>
 </li>
 <li>
-<p><code>name_required</code> (400) - no name specified</p>
+<p><code>first_name_required</code> (400) - no first name specified</p>
 </li>
 <li>
 <p><code>invalid_sex</code> (400)</p>
@@ -274,7 +284,8 @@ should have. Must be either <code>read</code> or <code>write</code>.  Defaults t
 </ul>
 </div><h5>Body</h5><pre><code>{
     id: <span class="hljs-number">1</span>,
-    name: <span class="hljs-string">"Dependent Patient"</span>,
+    first_name: <span class="hljs-string">"Dependent"</span>,
+    last_name: <span class="hljs-string">"Patient"</span>,
     birthdate: <span class="hljs-string">"1990-01-01"</span>,
     sex: <span class="hljs-string">"male"</span>,
     avatar: <span class="hljs-string">"/v1/patients/1/avatar.jpg"</span>,
@@ -289,11 +300,12 @@ should have. Must be either <code>read</code> or <code>write</code>.  Defaults t
 <div class="title"><strong>Parameters</strong><div class="collapse-button show"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><dl class="inner"><dt>limit</dt><dd><code>integer</code>&nbsp;<span>(optional)</span>&nbsp;<p>Maximum number of results to return. Defaults to 25.</p>
 </dd><dt>offset</dt><dd><code>integer</code>&nbsp;<span>(optional)</span>&nbsp;<p>Number of initial results to ignore (used in combination with <code>limit</code>)
 for pagination. Defaults to 0.</p>
-</dd><dt>sort_by</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>Field to sort results by. Must by either <code>id</code> or <code>name</code>, and defaults
-to <code>id</code>.</p>
+</dd><dt>sort_by</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>Field to sort results by. Must by either <code>id</code>, <code>first_name</code> or <code>last_name</code>,
+and defaults to <code>id</code>.</p>
 </dd><dt>sort_order</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>The order to sort results by: either <code>asc</code> or <code>desc</code>. Defaults to
 <code>asc</code>.</p>
-</dd><dt>name</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>Filter results by name of patient. Performs fuzzy matching.</p>
+</dd><dt>first_name</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>Filter results by first name of patient. Performs fuzzy matching.</p>
+</dd><dt>last_name</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>Filter results by last name of patient. Performs fuzzy matching.</p>
 </dd></dl></div><div class="title"><strong>Request</strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><h5>Headers</h5><pre><code><span class="hljs-attribute">Authorization</span>: <span class="hljs-string">Bearer ACCESS_TOKEN</span><br></code></pre><div style="height: 1px;"></div></div></div><div class="title"><strong>Response&nbsp;&nbsp;<code>200</code></strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><div class="description"><p>Errors</p>
 <ul>
 <li>
@@ -320,7 +332,8 @@ to <code>id</code>.</p>
     patients: [
         {
             id: <span class="hljs-number">1</span>,
-            name: <span class="hljs-string">"Dependent Patient"</span>,
+            first_name: <span class="hljs-string">"Dependent"</span>,
+            last_name: <span class="hljs-string">"Patient"</span>,
             birthdate: <span class="hljs-string">"1990-01-01"</span>,
             sex: <span class="hljs-string">"male"</span>,
             avatar: <span class="hljs-string">"/v1/patients/1/avatar.jpg"</span>,
@@ -358,7 +371,8 @@ to <code>id</code>.</p>
 </ul>
 </div><h5>Body</h5><pre><code>{
     id: <span class="hljs-number">1</span>,
-    name: <span class="hljs-string">"Dependent Patient"</span>,
+    first_name: <span class="hljs-string">"Dependent"</span>,
+    last_name: <span class="hljs-string">"Patient"</span>,
     birthdate: <span class="hljs-string">"1990-01-01"</span>,
     sex: <span class="hljs-string">"male"</span>,
     avatar: <span class="hljs-string">"/v1/patients/1/avatar.jpg"</span>,
@@ -377,7 +391,8 @@ current user has to the patient, and setting <code>access_prime</code>, <code>ac
 <p>The owner of a patient cannot change their access level from <code>write</code> or their group from <code>owner</code>.</p>
 <p>Setting <code>access</code> to <code>none</code> will stop sharing the patient with the current user.</p>
 <div class="title"><strong>Parameters</strong><div class="collapse-button show"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><dl class="inner"><dt>patientid</dt><dd><code>integer</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>unique ID of the patient (<strong>not</strong> user-specific) (<em>url</em>)</p>
-</dd><dt>name</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>new full human name of the patient</p>
+</dd><dt>first_name</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>new first name of the patient</p>
+</dd><dt>last_name</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>new last name of the patient</p>
 </dd><dt>birthdate</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>Optional date of birth of the patient, formatted as an ISO 8601 YYYY-MM-DD</p>
 </dd><dt>sex</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>String representing sex of the user. Must be “male”, “female”, “other” or “unspecified”.</p>
 </dd><dt>access</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>Explicitly set the patient’s access level to <code>read</code>, <code>write</code>, <code>default</code> or <code>none</code>.
@@ -389,7 +404,8 @@ Otherwise, the group can be changed between <code>prime</code>, <code>family</co
 </dd><dt>access_family</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>Change the access level of the <code>family</code> user share group. Must be either <code>read</code> or `write.</p>
 </dd><dt>access_prime</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>Change the access level of the <code>prime</code> user share group. Must be either <code>read</code> or `write.</p>
 </dd></dl></div><div class="title"><strong>Request</strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><h5>Headers</h5><pre><code><span class="hljs-attribute">Authorization</span>: <span class="hljs-string">Bearer ACCESS_TOKEN</span><br></code></pre><div style="height: 1px;"></div><h5>Body</h5><pre><code>{
-    name: <span class="hljs-string">"Gin Smith"</span>,
+    first_name: <span class="hljs-string">"Gin"</span>,
+    last_name: <span class="hljs-string">"Smith"</span>,
     birthdate: <span class="hljs-string">"1991-01-01"</span>,
     sex: <span class="hljs-string">"female"</span>,
     access: <span class="hljs-string">"write"</span>,
@@ -441,7 +457,8 @@ Otherwise, the group can be changed between <code>prime</code>, <code>family</co
 </ul>
 </div><h5>Body</h5><pre><code>{
     id: <span class="hljs-number">1</span>,
-    name: <span class="hljs-string">"Gin Smith"</span>,
+    first_name: <span class="hljs-string">"Gin"</span>,
+    last_name: <span class="hljs-string">"Smith"</span>,
     birthdate: <span class="hljs-string">"1991-01-01"</span>,
     sex: <span class="hljs-string">"female"</span>,
     avatar: <span class="hljs-string">"/v1/patients/1/avatar.jpg"</span>,
@@ -476,7 +493,8 @@ called with <code>access=&quot;none&quot;</code> rather than this method.</p>
 </ul>
 </div><h5>Body</h5><pre><code>{
     id: <span class="hljs-number">1</span>,
-    name: <span class="hljs-string">"Gin Smith"</span>,
+    first_name: <span class="hljs-string">"Gin"</span>,
+    last_name: <span class="hljs-string">"Smith"</span>,
     birthdate: <span class="hljs-string">"1991-01-01"</span>,
     sex: <span class="hljs-string">"female"</span>,
     avatar: <span class="hljs-string">"/v1/patients/1/avatar.jpg"</span>,
@@ -621,7 +639,7 @@ for pagination. Defaults to 0.</p>
 to <code>id</code>.</p>
 </dd><dt>sort_order</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>The order to sort results by: either <code>asc</code> or <code>desc</code>. Defaults to
 <code>asc</code>.</p>
-</dd><dt>email</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>Filter results by email address of user. Performs fuzzy matching.</p>
+</dd><dt>email</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>Filter results by email address of user. Matches exactly.</p>
 </dd><dt>is_user</dt><dd><code>boolean</code>&nbsp;<span>(optional)</span>&nbsp;<p>filter results by selecting only user that are existing users (as opposed to those
 who’ve been invited but still haven’t signed up)</p>
 </dd><dt>access</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>filter results by selecting only users with the specified level of access (either
@@ -951,10 +969,7 @@ Further, each journal entry will only be shown if the user has read access to al
 tagged in that journal entry.</p>
 <div class="title"><strong>Parameters</strong><div class="collapse-button show"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><dl class="inner"><dt>patientid</dt><dd><code>integer</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>unique ID of the patient (<em>url</em>)</p>
 </dd><dt>limit</dt><dd><code>integer</code>&nbsp;<span>(optional)</span>&nbsp;<p>Maximum number of results to return. Defaults to 25.</p>
-<ul>
-<li>offset (integer, optional)</li>
-</ul>
-<p>Number of initial results to ignore (used in combination with <code>limit</code>)
+</dd><dt>offset</dt><dd><code>integer</code>&nbsp;<span>(optional)</span>&nbsp;<p>Number of initial results to ignore (used in combination with <code>limit</code>)
 for pagination. Defaults to 0.</p>
 </dd><dt>sort_by</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>Field to sort results by. Must by either <code>id</code> or <code>date</code>, and defaults
 to <code>id</code>.</p>
@@ -966,6 +981,7 @@ a valid ISO 8601 datetime. Defaults to 0.</p>
 a valid ISO 8601 datetime. Defaults to infinity.</p>
 </dd><dt>medication_ids</dt><dd><code>array of integers</code>&nbsp;<span>(optional)</span>&nbsp;<p>Restrict results to journal entries that include (at least all of) these
 medications.</p>
+</dd><dt>text</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>Restrict results to journal entries containing this text (fuzzy-matching)</p>
 </dd></dl></div><div class="title"><strong>Request</strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><h5>Headers</h5><pre><code><span class="hljs-attribute">Authorization</span>: <span class="hljs-string">Bearer ACCESS_TOKEN</span><br></code></pre><div style="height: 1px;"></div></div></div><div class="title"><strong>Response&nbsp;&nbsp;<code>200</code></strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><div class="description"><p>Errors</p>
 <ul>
 <li>
@@ -994,10 +1010,10 @@ medications.</p>
 <p><code>invalid_sort_order</code> (400) - the specified sort order is invalid</p>
 </li>
 <li>
-<p><code>invalid_start_date</code> (400) - the specified start date is an invalid ISO 8601 datetime</p>
+<p><code>invalid_start</code> (400) - the specified start date is an invalid ISO 8601 datetime</p>
 </li>
 <li>
-<p><code>invalid_end_date</code> (400) - the specified end date is an invalid ISO 8601 datetime</p>
+<p><code>invalid_end</code> (400) - the specified end date is an invalid ISO 8601 datetime</p>
 </li>
 <li>
 <p><code>invalid_medication_id</code> (400) - the medications list contains an invalid entry for which a corresponding medication cannot be found</p>
@@ -1197,10 +1213,7 @@ lines.</p>
 current user will need read access to the patient.</p>
 <div class="title"><strong>Parameters</strong><div class="collapse-button show"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><dl class="inner"><dt>patientid</dt><dd><code>integer</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>unique ID of the patient (<em>url</em>)</p>
 </dd><dt>limit</dt><dd><code>integer</code>&nbsp;<span>(optional)</span>&nbsp;<p>Maximum number of results to return. Defaults to 25.</p>
-<ul>
-<li>offset (integer, optional)</li>
-</ul>
-<p>Number of initial results to ignore (used in combination with <code>limit</code>)
+</dd><dt>offset</dt><dd><code>integer</code>&nbsp;<span>(optional)</span>&nbsp;<p>Number of initial results to ignore (used in combination with <code>limit</code>)
 for pagination. Defaults to 0.</p>
 </dd><dt>sort_by</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>Field to sort results by. Must by either <code>id</code> or <code>name</code>, and defaults
 to <code>id</code>.</p>
@@ -1470,10 +1483,7 @@ form specified above</p>
 user will need read access to the patient.</p>
 <div class="title"><strong>Parameters</strong><div class="collapse-button show"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><dl class="inner"><dt>patientid</dt><dd><code>integer</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>unique ID of the patient</p>
 </dd><dt>limit</dt><dd><code>integer</code>&nbsp;<span>(optional)</span>&nbsp;<p>Maximum number of results to return. Defaults to 25.</p>
-<ul>
-<li>offset (integer, optional)</li>
-</ul>
-<p>Number of initial results to ignore (used in combination with <code>limit</code>)
+</dd><dt>offset</dt><dd><code>integer</code>&nbsp;<span>(optional)</span>&nbsp;<p>Number of initial results to ignore (used in combination with <code>limit</code>)
 for pagination. Defaults to 0.</p>
 </dd><dt>sort_by</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>Field to sort results by. Must by either <code>id</code> or <code>name</code>, and defaults
 to <code>id</code>.</p>
@@ -1993,19 +2003,12 @@ this endpoint, the current user must have read access to the patient. Further, o
 medications for which the current user has read access will be returned.</p>
 <div class="title"><strong>Parameters</strong><div class="collapse-button show"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><dl class="inner"><dt>patientid</dt><dd><code>integer</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>unique ID of the patient</p>
 </dd><dt>limit</dt><dd><code>integer</code>&nbsp;<span>(optional)</span>&nbsp;<p>Maximum number of results to return. Defaults to 25.</p>
-<ul>
-<li>offset (integer, optional)</li>
-</ul>
-<p>Number of initial results to ignore (used in combination with <code>limit</code>)
+</dd><dt>offset</dt><dd><code>integer</code>&nbsp;<span>(optional)</span>&nbsp;<p>Number of initial results to ignore (used in combination with <code>limit</code>)
 for pagination. Defaults to 0.</p>
-</dd><dt>sort_by</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>Field to sort results by. Must by either <code>id</code>, <code>name</code>, <code>dose</code> or <code>quantity</code>,
-and defaults to <code>id</code>.</p>
+</dd><dt>sort_by</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>Field to sort results by. Must by either <code>id</code> or <code>name</code>, and defaults to <code>id</code>.</p>
 </dd><dt>sort_order</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>The order to sort results by: either <code>asc</code> or <code>desc</code>. Defaults to
 <code>asc</code>.</p>
 </dd><dt>name</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>Filter results by name of medication. Performs fuzzy matching.</p>
-</dd><dt>route</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>filter results (exactly) by ROA of medication</p>
-</dd><dt>form</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>filter results (exactly) by form of medication</p>
-</dd><dt>type</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>filter results (exactly) by type of medication</p>
 </dd></dl></div><div class="title"><strong>Request</strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><h5>Headers</h5><pre><code><span class="hljs-attribute">Authorization</span>: <span class="hljs-string">Bearer ACCESS_TOKEN</span><br></code></pre><div style="height: 1px;"></div></div></div><div class="title"><strong>Response&nbsp;&nbsp;<code>200</code></strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><div class="description"><p>Errors</p>
 <ul>
 <li>
@@ -2387,10 +2390,7 @@ Further, only dose events for which the user has read access to the medication
 will be shown.</p>
 <div class="title"><strong>Parameters</strong><div class="collapse-button show"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><dl class="inner"><dt>patientid</dt><dd><code>integer</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>unique ID of the patient</p>
 </dd><dt>limit</dt><dd><code>integer</code>&nbsp;<span>(optional)</span>&nbsp;<p>Maximum number of results to return. Defaults to 25.</p>
-<ul>
-<li>offset (integer, optional)</li>
-</ul>
-<p>Number of initial results to ignore (used in combination with <code>limit</code>)
+</dd><dt>offset</dt><dd><code>integer</code>&nbsp;<span>(optional)</span>&nbsp;<p>Number of initial results to ignore (used in combination with <code>limit</code>)
 for pagination. Defaults to 0.</p>
 </dd><dt>sort_by</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>Field to sort results by. Must by either <code>id</code> or <code>date</code>, and defaults
 to <code>id</code>.</p>
@@ -2682,7 +2682,7 @@ one week later than the current time.</p>
     },
     success: <span class="hljs-literal">true</span>
 }
-</code></pre><div style="height: 1px;"></div></div></div></div></div></section></div></div></div><p style="text-align: center;" class="text-muted">Generated by&nbsp;<a href="https://github.com/danielgtaylor/aglio" class="aglio">aglio</a>&nbsp;on 10 Jul 2015</p><script>function toggleCollapse(event) {
+</code></pre><div style="height: 1px;"></div></div></div></div></div></section></div></div></div><p style="text-align: center;" class="text-muted">Generated by&nbsp;<a href="https://github.com/danielgtaylor/aglio" class="aglio">aglio</a>&nbsp;on 13 Jul 2015</p><script>function toggleCollapse(event) {
     var button = event.target.parentNode;
     var content = button.parentNode.nextSibling;
     var inner = content.children[0];
