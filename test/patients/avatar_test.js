@@ -102,9 +102,8 @@ describe("Patients", function () {
             // test that it requires a valid authentication header and a valid patient ID in the URL
             common.itRequiresAuthentication(get);
             common.itRequiresValidPatientId(get);
-            // TODO: check read authorization
-            // (common.itRequiresReadAuthorization checks for success: true in a JSON response whereas
-            // we should just check error codes here)
+            // check it requires read access to the patient
+            common.itRequiresAvatarReadAuthorization(getPatient);
 
             // check authorization
             it("lets me set images for my patients", function () {
@@ -153,7 +152,6 @@ describe("Patients", function () {
 
         // most tests here rely on the fact that the default image is a PNG whereas the new image we're
         // uploading is a JPG
-        // TODO: fix that fragility
         describe("setting a new image", function () {
             // setup test user and patient
             var patient;

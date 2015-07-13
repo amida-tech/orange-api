@@ -268,6 +268,25 @@ module.exports.itRequiresWriteAuthorization = requiresAuthentication({
     primeWrite: true
 }, testAuthorizationSuccessful, testAuthorizationFailed);
 
+// test read authorization for avatar endpoint (don't check success: true in a JSON
+// response, but just check HTTP response codes)
+var testAuthorizationResponseCodeSuccessful = function (endpoint, patient) {
+    // if we should have access check response code was 200
+    return expect(endpoint(patient)).to.have.status(200);
+};
+module.exports.itRequiresAvatarReadAuthorization = requiresAuthentication({
+    unassociated: false,
+    me: true,
+    explicitRead: true,
+    explicitWrite: true,
+    anyoneRead: true,
+    anyoneWrite: true,
+    familyRead: true,
+    familyWrite: true,
+    primeRead: true,
+    primeWrite: true
+}, testAuthorizationResponseCodeSuccessful, testAuthorizationFailed);
+
 // test authorization for endpoints that return lists of results: results should
 // be returned if authorization was successful, but not otherwise (the generated
 // test data has exactly two patients viewable per user)
