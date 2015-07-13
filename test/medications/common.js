@@ -49,7 +49,65 @@ var medicationSchema = module.exports.schema = {
         number_left:    { type: ["number", "null"] },
         quantity:       { type: "number" },
         type:           { type: "string" },
-        schedule:       { type: "object" }, // TODO: full schedule schema here
+        schedule:       {
+            type:           "object",
+            required:       ["as_needed", "regularly"],
+            properties:     {
+                as_needed:  { type: "boolean" },
+                regularly:  { type: "boolean" },
+                until:      {
+                    type:       "object",
+                    required:   ["type"],
+                    properties: {
+                        type:   { type: "string" },
+                        stop:   { type: ["number", "string"] }
+                    }
+                },
+                frequency: {
+                    type:       "object",
+                    required:   ["n", "unit"],
+                    properties: {
+                        n:          { type: "number" },
+                        unit:       { type: "string" },
+                        exclude:    {
+                            type:       "object",
+                            required:   ["exclude", "repeat"],
+                            properties: {
+                                exclude: {
+                                    type:   "array",
+                                    items: { type: "number" }
+                                },
+                                repeat: { type: "number" }
+                            }
+                        },
+                        start:      { type: "string" }
+                    }
+                },
+                times: {
+                    type:   "array",
+                    items:  {
+                        type:       "object",
+                        required:   ["type"],
+                        properties: {
+                            type:   { type: "string" },
+                            time:   { type: "string" },
+                            event:  { type: "string" },
+                            when:   { type: "string" }
+                        }
+                    }
+                },
+                take_with_food: { type: ["boolean", "null"] },
+                take_with_medications: {
+                    type: "array",
+                    items: { type: "number" }
+                },
+                take_without_medications: {
+                    type: "array",
+                    items: { type: "number" }
+                }
+            },
+            additionalProperties: false
+        },
         access_anyone:  { type: "string" },
         access_family:  { type: "string" },
         access_prime:   { type: "string" }
