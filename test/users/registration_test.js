@@ -39,11 +39,17 @@ describe("Users", function () {
         it("should not accept a null password", function () {
             return expect(register({ password: null })).to.be.an.api.error(400, "password_required");
         });
-        it("should not require a name", function () {
-            return expect(register({ name: undefined })).to.be.a.user.registerSuccess;
+        it("should not require a first name", function () {
+            return expect(register({ first_name: undefined })).to.be.a.user.registerSuccess;
         });
-        it("should accept a blank name", function () {
-            return expect(register({ name: "" })).to.be.a.user.registerSuccess;
+        it("should accept a blank first name", function () {
+            return expect(register({ first_name: "" })).to.be.a.user.registerSuccess;
+        });
+        it("should not require a last name", function () {
+            return expect(register({ last_name: undefined })).to.be.a.user.registerSuccess;
+        });
+        it("should accept a blank last name", function () {
+            return expect(register({ last_name: "" })).to.be.a.user.registerSuccess;
         });
 
         // require valid email

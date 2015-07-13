@@ -37,10 +37,10 @@ describe("Users", function () {
         // check access token authentication
         auth.itRequiresAuthentication(curry(update)({}));
 
-        describe("changing name", function () {
+        describe("changing first_name", function () {
             var request;
             beforeEach(function () {
-                request = updateUser({}, { name: "newname" });
+                request = updateUser({}, { first_name: "newname" });
             });
 
             it("should return a successful response", function () {
@@ -55,19 +55,52 @@ describe("Users", function () {
                 });
             });
 
-            it("should allow a null name", function () {
-                return updateUser({}, { name: null }).then(function (response) {
+            it("should allow a null first_name", function () {
+                return updateUser({}, { first_name: null }).then(function (response) {
                     expect(response).to.be.a.user.success;
-                    expect(response.body.name).to.equal("");
+                    expect(response.body.first_name).to.equal("");
                 });
             });
-            it("should allow a blank name", function () {
-                return updateUser({}, { name: "" }).then(function (response) {
+            it("should allow a blank first_name", function () {
+                return updateUser({}, { first_name: "" }).then(function (response) {
                     expect(response).to.be.a.user.success;
-                    expect(response.body.name).to.equal("");
+                    expect(response.body.first_name).to.equal("");
                 });
             });
         });
+
+        describe("changing last_name", function () {
+            var request;
+            beforeEach(function () {
+                request = updateUser({}, { last_name: "newname" });
+            });
+
+            it("should return a successful response", function () {
+                return expect(request).to.be.a.user.success;
+            });
+            it("should not revoke our access tokens", function () {
+                return request.then(auth.checkTokenWorks(token));
+            });
+            it("should still let us authenticate", function () {
+                return request.then(function () {
+                    return expect(tokenEndpoint(credentials)).to.be.an.api.postSuccess;
+                });
+            });
+
+            it("should allow a null last_name", function () {
+                return updateUser({}, { last_name: null }).then(function (response) {
+                    expect(response).to.be.a.user.success;
+                    expect(response.body.last_name).to.equal("");
+                });
+            });
+            it("should allow a blank last_name", function () {
+                return updateUser({}, { last_name: "" }).then(function (response) {
+                    expect(response).to.be.a.user.success;
+                    expect(response.body.last_name).to.equal("");
+                });
+            });
+        });
+
 
         describe("changing password", function () {
             var request, oldCredentials, newCredentials;

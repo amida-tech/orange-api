@@ -25,7 +25,10 @@ describe("Users", function () {
 
         describe("when user name is not present", function () {
             it("should return a successful response", function () {
-                return expect(viewUser({name: undefined})).to.be.a.user.success;
+                return expect(viewUser({
+                    first_name: undefined,
+                    last_name: undefined
+                })).to.be.a.user.success;
             });
         });
     });

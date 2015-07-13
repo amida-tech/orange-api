@@ -10,6 +10,7 @@ monky.factory("User", {
     email:          "foo#n@bar.com",
     password:       "password",
     rawPassword:    "password",
-    name:           "Foo #n Bar"
+    first_name:     "Foo #n",
+    last_name:      "Bar"
 });
 /*eslint-enable key-spacing */

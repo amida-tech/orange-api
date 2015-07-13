@@ -9,7 +9,8 @@ Register a new user, and create a new patient for them as well.
         email address.
     
     + password (string, required) - the password of the new user
-    + name (string, optional) - the full name of the new user
+    + first_name (string, optional) - the first name of the new user
+    + last_name (string, optional) - the last name of the new user
 
 + Request
     + Body
@@ -17,7 +18,8 @@ Register a new user, and create a new patient for them as well.
             {
                 email: "foo@bar.com",
                 password: "foobar",
-                name: "Foo Bar"
+                first_name: "Foo",
+                last_name: "Bar"
             }
 
 + Response 201
@@ -32,7 +34,8 @@ Register a new user, and create a new patient for them as well.
 
             {
                 email: "foo@bar.com",
-                name: "Foo Bar",
+                first_name: "Foo",
+                last_name: "Bar",
                 success: true
             }
 
@@ -54,7 +57,8 @@ Get basic metadata about the current user.
 
             {
                 email: "foo@bar.com",
-                name: "Foo Bar",
+                first_name: "Foo",
+                last_name: "Bar",
                 success: true
             }
 
@@ -62,7 +66,8 @@ Get basic metadata about the current user.
 Change basic metadata about the current user, including their password.
 
 + Parameters
-    + name (string, optional) - new full name
+    + first_name (string, optional) - new first name
+    + last_name (string, optional) - new last name
     + password (string, optional)
 
         New password. **Note that if the password is changed, all access tokens are revoked**.
@@ -74,7 +79,8 @@ Change basic metadata about the current user, including their password.
     + Body
 
             {
-                name: "Foo Baz",
+                first_name: "Foo",
+                last_name: "Baz",
                 password: "foobaz"
             }
 + Response 200
@@ -87,7 +93,8 @@ Change basic metadata about the current user, including their password.
 
             {
                 email: "foo@bar.com",
-                name: "Foo Baz",
+                first_name: "Foo",
+                last_name: "Baz",
                 success: true
             }
 
@@ -112,7 +119,8 @@ will not be deleted.
 
             {
                 email: "foo@bar.com",
-                name: "Foo Bar",
+                first_name: "Foo",
+                last_name: "Bar",
                 success: true
             }
 
