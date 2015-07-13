@@ -73,30 +73,76 @@ describe("Pharmacies", function () {
             });
         });
         it("allows empty values to reset fields", function () {
+            // an empty hours value doesn't reset hours, but empty
+            // day values inside hours do: see the hours-specific test below
             return updatePatientPharmacy({}, {
                 address: "",
                 phone: "",
-                notes: "",
-                hours: {}
+                notes: ""
             }).then(function (response) {
                 expect(response.body.address).to.equal("");
                 expect(response.body.phone).to.equal("");
                 expect(response.body.notes).to.equal("");
-                expect(response.body.hours).to.deep.equal({
-                    monday: {},
-                    tuesday: {},
-                    wednesday: {},
-                    thursday: {},
-                    friday: {},
-                    saturday: {},
-                    sunday: {}
-                });
                 expect(response).to.be.a.pharmacy.success;
             });
         });
 
-        describe("schedule mergins", function () {
-            it("merges schedules");
+        it("merges hours rather than replacing them", function () {
+            return updatePatientPharmacy({
+                hours: {
+                    monday: {
+                        open: "09:00"
+                    },
+                    wednesday: {
+                        open: "08:00",
+                        close: "17:00"
+                    },
+                    thursday: {
+                        open: "08:00",
+                        close: "17:00"
+                    },
+                    friday: {
+                        open: "08:00",
+                        close: "17:00"
+                    }
+                }
+            }, {
+                hours: {
+                    monday: {
+                        close: "16:00"
+                    },
+                    tuesday: {
+                        close: "16:00"
+                    },
+                    wednesday: {
+                        close: "16:00"
+                    },
+                    thursday: {},
+                    friday: null
+                }
+            }).then(function (response) {
+                expect(response).to.be.a.pharmacy.success;
+                expect(response.body.hours).to.deep.equal({
+                    monday: {
+                        open: "09:00",
+                        close: "16:00"
+                    },
+                    tuesday: {
+                        close: "16:00"
+                    },
+                    wednesday: {
+                        open: "08:00",
+                        close: "16:00"
+                    },
+                    thursday: {
+                        open: "08:00",
+                        close: "17:00"
+                    },
+                    friday: {},
+                    saturday: {},
+                    sunday: {}
+                });
+            });
         });
     });
 });
