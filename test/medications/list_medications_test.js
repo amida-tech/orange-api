@@ -162,7 +162,10 @@ describe("Medications", function () {
                             expect(response).to.be.a.medication.listSuccess;
                             expect(response.body.count).to.equal(40);
                             expect(response.body.medications.length).to.equal(25);
-                            expect(response.body.medications.slice(0, 20)).to.deep.equal(defResponse.body.medications.slice(5));
+
+                            var offsetResults = response.body.medications.slice(0, 20);
+                            var defaultResults = defResponse.body.medications.slice(5);
+                            expect(offsetResults).to.deep.equal(defaultResults);
                         });
                     });
                 });
@@ -173,7 +176,10 @@ describe("Medications", function () {
                             expect(response).to.be.a.medication.listSuccess;
                             expect(response.body.count).to.equal(40);
                             expect(response.body.medications.length).to.equal(20);
-                            expect(response.body.medications.slice(0, 5)).to.deep.equal(defResponse.body.medications.slice(20));
+
+                            var offsetResults = response.body.medications.slice(0, 5);
+                            var defaultResults = defResponse.body.medications.slice(20);
+                            expect(offsetResults).to.deep.equal(defaultResults);
                         });
                     });
                 });
@@ -187,11 +193,14 @@ describe("Medications", function () {
                 });
                 it("lets us specify both an offset and limit parameter", function () {
                     return listPatient(patient).then(function (defResponse) {
-                        return listPatient(patient, { offset: 5, limit: 5 }).then(function (resp) {
-                            expect(resp).to.be.a.medication.listSuccess;
-                            expect(resp.body.count).to.equal(40);
-                            expect(resp.body.medications.length).to.equal(5);
-                            expect(resp.body.medications.slice(0, 5)).to.deep.equal(defResponse.body.medications.slice(5, 10));
+                        return listPatient(patient, { offset: 5, limit: 5 }).then(function (response) {
+                            expect(response).to.be.a.medication.listSuccess;
+                            expect(response.body.count).to.equal(40);
+                            expect(response.body.medications.length).to.equal(5);
+
+                            var offsetResults = response.body.medications.slice(0, 5);
+                            var defaultResults = defResponse.body.medications.slice(5, 10);
+                            expect(offsetResults).to.deep.equal(defaultResults);
                         });
                     });
                 });

@@ -36,6 +36,9 @@ common.addApiChain("dose", {
     "success": function (respObj) {
         expect(respObj).to.be.an.api.getSuccess;
         expect(respObj).to.have.schema(doseSchema);
+    },
+    "listSuccess": function (respObj) {
+        expect(respObj).to.be.an.api.genericListSuccess("doses", doseSchema);
     }
 });
 

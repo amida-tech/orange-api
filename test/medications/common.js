@@ -96,6 +96,9 @@ common.addApiChain("medication", {
     "success": function (respObj) {
         expect(respObj).to.be.an.api.getSuccess;
         expect(respObj).to.have.schema(medicationSchema);
+    },
+    "listSuccess": function (respObj) {
+        expect(respObj).to.be.an.api.genericListSuccess("medications", medicationSchema);
     }
 });
 // generate testcase names
