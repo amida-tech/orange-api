@@ -30,6 +30,9 @@ common.addApiChain("doctor", {
     "success": function (respObj) {
         expect(respObj).to.be.an.api.getSuccess;
         expect(respObj).to.have.schema(doctorSchema);
+    },
+    "listSuccess": function (respObj) {
+        expect(respObj).to.be.an.api.genericListSuccess("doctors", doctorSchema);
     }
 });
 
