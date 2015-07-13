@@ -536,7 +536,7 @@ who have (either `read` or `write`) access to the patient.
 
     + email (string, optional)
 
-        Filter results by email address of user. Performs fuzzy matching.
+        Filter results by email address of user. Matches exactly.
 
     + is_user (boolean, optional)
 
