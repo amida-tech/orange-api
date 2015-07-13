@@ -321,7 +321,7 @@ medications for which the current user has read access will be returned.
     + limit (integer, optional)
 
         Maximum number of results to return. Defaults to 25.
-     + offset (integer, optional)
+    + offset (integer, optional)
 
          Number of initial results to ignore (used in combination with `limit`)
          for pagination. Defaults to 0.
