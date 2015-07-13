@@ -68,7 +68,7 @@ describe("Doses", function () {
             });
         });
 
-        it("should let me update doses for my patients", function () {
+        it("lets me update doses for my patients", function () {
             return expect(updatePatientDose({}, {})).to.be.a.dose.success;
         });
 

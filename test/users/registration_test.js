@@ -16,56 +16,56 @@ describe("Users", function () {
         };
 
         // all valid data
-        it("should return a successful response", function () {
+        it("returns a successful response", function () {
             return expect(register()).to.be.a.user.registerSuccess;
         });
 
         // require email and password
-        it("should require an email", function () {
+        it("requires an email", function () {
             return expect(register({ email: undefined })).to.be.an.api.error(400, "email_required");
         });
-        it("should not accept a blank email", function () {
+        it("rejects a blank email", function () {
             return expect(register({ email: "" })).to.be.an.api.error(400, "email_required");
         });
-        it("should not accept a null email", function () {
+        it("rejects a null email", function () {
             return expect(register({ email: null })).to.be.an.api.error(400, "email_required");
         });
-        it("should require a password", function () {
+        it("requires a password", function () {
             return expect(register({ password: undefined })).to.be.an.api.error(400, "password_required");
         });
-        it("should not accept a blank password", function () {
+        it("rejects a blank password", function () {
             return expect(register({ password: "" })).to.be.an.api.error(400, "password_required");
         });
-        it("should not accept a null password", function () {
+        it("rejects a null password", function () {
             return expect(register({ password: null })).to.be.an.api.error(400, "password_required");
         });
-        it("should not require a first name", function () {
+        it("does not require a first name", function () {
             return expect(register({ first_name: undefined })).to.be.a.user.registerSuccess;
         });
-        it("should accept a blank first name", function () {
+        it("accepts a blank first name", function () {
             return expect(register({ first_name: "" })).to.be.a.user.registerSuccess;
         });
-        it("should not require a last name", function () {
+        it("does not require a last name", function () {
             return expect(register({ last_name: undefined })).to.be.a.user.registerSuccess;
         });
-        it("should accept a blank last name", function () {
+        it("accepts a blank last name", function () {
             return expect(register({ last_name: "" })).to.be.a.user.registerSuccess;
         });
 
         // require valid email
-        it("should not accept an invalid email", function () {
+        it("rejects an invalid email", function () {
             return expect(register({ email: "foobar" })).to.be.an.api.error(400, "invalid_email");
         });
 
         // duplication
-        it("should not allow duplicate email addresses", function () {
+        it("does not allow duplicate email addresses", function () {
             // create existing user then check we can't reregister with same email address
             return fixtures.create("User").then(function (user) {
                 return expect(register({email: user.email})).to.be.an.api.error(400, "user_already_exists");
             });
         });
 
-        it("should create a patient for me", function () {
+        it("creates a patient for me", function () {
             // auth.genAuthHeaders sends client secret
             var headers = auth.genAuthHeaders(undefined);
 

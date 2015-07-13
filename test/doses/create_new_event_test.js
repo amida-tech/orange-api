@@ -52,7 +52,7 @@ describe("Doses", function () {
             }, patient);
         });
 
-        it("should let me create valid doses for my patients", function () {
+        it("lets me create valid doses for my patients", function () {
             return expect(createPatientDose({})).to.be.a.dose.createSuccess;
         });
 

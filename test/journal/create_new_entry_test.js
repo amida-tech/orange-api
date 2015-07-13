@@ -50,7 +50,7 @@ describe("Journal", function () {
             }, patient);
         });
 
-        it("should let me create valid entries for my patients", function () {
+        it("lets me create valid entries for my patients", function () {
             return expect(createPatientEntry({})).to.be.a.journal.createSuccess;
         });
 

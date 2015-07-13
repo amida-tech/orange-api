@@ -52,7 +52,7 @@ describe("Doses", function () {
             }, patient);
         });
 
-        it("should let me remove doses for my patients", function () {
+        it("lets me remove doses for my patients", function () {
             return expect(removePatientDose({})).to.be.a.dose.success;
         });
     });

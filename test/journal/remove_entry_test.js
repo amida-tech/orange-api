@@ -48,7 +48,7 @@ describe("Journal", function () {
             }, patient);
         });
 
-        it("should let me remove entries for my patients", function () {
+        it("lets me remove entries for my patients", function () {
             return expect(removePatientEntry({})).to.be.a.journal.success;
         });
     });

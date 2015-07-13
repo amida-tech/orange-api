@@ -18,13 +18,13 @@ describe("Users", function () {
         auth.itRequiresAuthentication(view);
 
         describe("when user name is present", function () {
-            it("should return a successful response", function () {
+            it("returns a successful response", function () {
                 return expect(viewUser({})).to.be.a.user.success;
             });
         });
 
         describe("when user name is not present", function () {
-            it("should return a successful response", function () {
+            it("returns a successful response", function () {
                 return expect(viewUser({
                     first_name: undefined,
                     last_name: undefined

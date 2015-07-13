@@ -48,7 +48,7 @@ describe("Doses", function () {
         describe("with one dose", function () {
             beforeEach(createDose);
 
-            it("should calculate number_left correctly", function () {
+            it("calculates number_left correctly", function () {
                 return show().then(function (response) {
                     expect(response.body.number_left).to.equal(2);
                 });
@@ -60,7 +60,7 @@ describe("Doses", function () {
                 return createDose().then(createDose);
             });
 
-            it("should cap at 0", function () {
+            it("caps at 0", function () {
                 return show().then(function (response) {
                     expect(response.body.number_left).to.equal(0);
                 });

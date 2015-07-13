@@ -59,13 +59,13 @@ module.exports.itRequiresValidShareId = function (ep) {
             });
         });
 
-        it("should not accept invalid share IDs", function () {
+        it("rejects invalid share IDs", function () {
             return expect(ep("f", patient._id, user.accessToken)).to.be.an.api.error(404, "invalid_share_id");
         });
-        it("should not accept share IDs not corresponding to real shares", function () {
+        it("rejects share IDs not corresponding to real shares", function () {
             return expect(ep(9999, patient._id, user.accessToken)).to.be.an.api.error(404, "invalid_share_id");
         });
-        it("should not accept share IDs corresponding to shares belonging to other patients", function () {
+        it("rejects share IDs corresponding to shares belonging to other patients", function () {
             return expect(ep(share._id, patient._id, user.accessToken)).to.be.an.api.error(404, "invalid_share_id");
         });
     });

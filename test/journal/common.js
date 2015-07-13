@@ -99,13 +99,13 @@ module.exports.itRequiresValidEntryId = function (endpoint) {
             });
         });
 
-        it("should not accept invalid journal IDs", function () {
+        it("rejects invalid journal IDs", function () {
             return expect(endpoint("foo", patient._id, user.accessToken)).to.be.an.api.error(404, "invalid_journal_id");
         });
-        it("should not accept journal IDs not corresponding to real entries", function () {
+        it("rejects journal IDs not corresponding to real entries", function () {
             return expect(endpoint(9999, patient._id, user.accessToken)).to.be.an.api.error(404, "invalid_journal_id");
         });
-        it("should not accept journal IDs corresponding to entries belonging to other patients", function () {
+        it("rejects journal IDs corresponding to entries belonging to other patients", function () {
             var request = endpoint(otherPatient.entries[0]._id, patient._id, user.accessToken);
             return expect(request).to.be.an.api.error(404, "invalid_journal_id");
         });

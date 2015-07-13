@@ -37,7 +37,7 @@ describe("Doctors", function () {
         common.itRequiresValidDoctorId(show);
         patients.itRequiresReadAuthorization(curry(showDoctor)({}));
 
-        it("should let me view doctors for my patients", function () {
+        it("lets me view doctors for my patients", function () {
             return expect(showPatientDoctor({})).to.be.a.doctor.success;
         });
     });

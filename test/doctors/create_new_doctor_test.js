@@ -33,36 +33,36 @@ describe("Doctors", function () {
         patients.itRequiresValidPatientId(curry(create)({}));
         patients.itRequiresWriteAuthorization(curry(createDoctor)({}));
 
-        it("should create patients", function () {
+        it("creates patients", function () {
             return expect(createPatientDoctor({})).to.be.a.doctor.createSuccess;
         });
 
         // validation testing
-        it("should require a name", function () {
+        it("requires a name", function () {
             return expect(createPatientDoctor({ name: undefined })).to.be.an.api.error(400, "name_required");
         });
-        it("should not allow a blank name", function () {
+        it("does not allow a blank name", function () {
             return expect(createPatientDoctor({ name: "" })).to.be.an.api.error(400, "name_required");
         });
-        it("should not allow a null name", function () {
+        it("does not allow a null name", function () {
             return expect(createPatientDoctor({ name: null })).to.be.an.api.error(400, "name_required");
         });
 
-        it("should not require anything other than a name", function () {
+        it("does not require anything other than a name", function () {
             return expect(createPatientDoctor({
                 phone: undefined,
                 address: undefined,
                 notes: undefined
             })).to.be.a.doctor.createSuccess;
         });
-        it("should allow nulls for everything other than name", function () {
+        it("allows nulls for everything other than name", function () {
             return expect(createPatientDoctor({
                 phone: null,
                 address: null,
                 notes: null
             })).to.be.a.doctor.createSuccess;
         });
-        it("should allow blank strings for all fields other than name", function () {
+        it("allows blank strings for all fields other than name", function () {
             return expect(createPatientDoctor({
                 phone: "",
                 address: "",

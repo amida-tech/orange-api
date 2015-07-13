@@ -33,21 +33,21 @@ describe("Pharmacies", function () {
         patients.itRequiresValidPatientId(curry(create)({}));
         patients.itRequiresWriteAuthorization(curry(createPharmacy)({}));
 
-        it("should let me create valid pharmacies for my patients", function () {
+        it("lets me create valid pharmacies for my patients", function () {
             return expect(createPatientPharmacy({})).to.be.a.pharmacy.createSuccess;
         });
 
         // validation testing
-        it("should require a name", function () {
+        it("requires a name", function () {
             return expect(createPatientPharmacy({ name: undefined })).to.be.an.api.error(400, "name_required");
         });
-        it("should not allow a blank name", function () {
+        it("does not allow a blank name", function () {
             return expect(createPatientPharmacy({ name: "" })).to.be.an.api.error(400, "name_required");
         });
-        it("should not allow a null name", function () {
+        it("does not allow a null name", function () {
             return expect(createPatientPharmacy({ name: null })).to.be.an.api.error(400, "name_required");
         });
-        it("should not require anything other than a name", function () {
+        it("does not require anything other than a name", function () {
             return expect(createPatientPharmacy({
                 phone: undefined,
                 address: undefined,
@@ -55,7 +55,7 @@ describe("Pharmacies", function () {
                 notes: undefined
             })).to.be.a.pharmacy.createSuccess;
         });
-        it("should not require non-null fields for anything other than a name", function () {
+        it("does not require non-null fields for anything other than a name", function () {
             return expect(createPatientPharmacy({
                 phone: null,
                 address: null,
@@ -63,7 +63,7 @@ describe("Pharmacies", function () {
                 notes: null
             })).to.be.a.pharmacy.createSuccess;
         });
-        it("should allow partially filled hours", function () {
+        it("allows partially filled hours", function () {
             return expect(createPatientPharmacy({
                 hours: {
                     monday: {

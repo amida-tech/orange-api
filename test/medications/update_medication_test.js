@@ -39,10 +39,10 @@ describe("Medications", function () {
             return patients.testMyPatient({}).then(curry(updatePatient)(modifications, data));
         };
 
-        it("should let me update medications for my patients", function () {
+        it("lets me update medications for my patients", function () {
             return expect(updatePatientMedication({}, {})).to.be.a.medication.success;
         });
-        it("should not let me update medications for the wrong patient", function () {
+        it("does not let me update medications for the wrong patient", function () {
             // setup current user and two patients for them, one with a medication
             var user, patient, otherPatient;
             var setup = auth.createTestUser().then(function (u) {
@@ -69,27 +69,27 @@ describe("Medications", function () {
             return setup.then(check);
         });
 
-        it("should not allow a blank name", function () {
+        it("does not allow a blank name", function () {
             return expect(updatePatientMedication({}, { name: "" })).to.be.an.api.error(400, "name_required");
         });
 
-        it("should accept a null fill_date", function () {
+        it("accepts a null fill_date", function () {
             return updatePatientMedication({}, { fill_date: null }).then(function (response) {
                 expect(response).to.be.a.medication.success;
                 expect(response.body.number_left).to.be.null;
             });
         });
-        it("should not accept a blank fill_date", function () {
+        it("rejects a blank fill_date", function () {
             return expect(updatePatientMedication({}, {
                 fill_date: ""
             })).to.be.an.api.error(400, "invalid_fill_date");
         });
-        it("should not accept an invalid fill_date", function () {
+        it("rejects an invalid fill_date", function () {
             return expect(updatePatientMedication({}, {
                 fill_date: "foo"
             })).to.be.an.api.error(400, "invalid_fill_date");
         });
-        it("should accept a valid fill_date", function () {
+        it("accepts a valid fill_date", function () {
             return updatePatientMedication({}, { fill_date: "2015-05-01" }).then(function (response) {
                 expect(response).to.be.a.medication.success;
                 expect(response.body.number_left).to.not.be.null;
@@ -97,48 +97,48 @@ describe("Medications", function () {
         });
 
         // dose testing
-        it("should not allow a dose without the required keys present", function () {
+        it("does not allow a dose without the required keys present", function () {
             return expect(updatePatientMedication({}, {
                 dose: { not: "valid" }
             })).to.be.an.api.error(400, "invalid_dose");
         });
-        it("should not allow a dose without the quantity key present", function () {
+        it("does not allow a dose without the quantity key present", function () {
             return expect(updatePatientMedication({}, {
                 dose: { unit: "mg" }
             })).to.be.an.api.error(400, "invalid_dose");
         });
-        it("should not allow a dose without the unit key present", function () {
+        it("does not allow a dose without the unit key present", function () {
             return expect(updatePatientMedication({}, {
                 dose: { quantity: 50 }
             })).to.be.an.api.error(400, "invalid_dose");
         });
-        it("should not allow a dose with a zero quantity", function () {
+        it("does not allow a dose with a zero quantity", function () {
             return expect(updatePatientMedication({}, {
                 dose: { quantity: 0, unit: "mg" }
             })).to.be.an.api.error(400, "invalid_dose");
         });
-        it("should not allow a dose with a negative quantity", function () {
+        it("does not allow a dose with a negative quantity", function () {
             return expect(updatePatientMedication({}, {
                 dose: { quantity: -50, unit: "mg" }
             })).to.be.an.api.error(400, "invalid_dose");
         });
-        it("should not allow a dose with a nonintegral quantity", function () {
+        it("does not allow a dose with a nonintegral quantity", function () {
             return expect(updatePatientMedication({}, {
                 dose: { quantity: 5.2, unit: "mg" }
             })).to.be.an.api.error(400, "invalid_dose");
         });
-        it("should not allow a dose with a nonnumeric quantity", function () {
+        it("does not allow a dose with a nonnumeric quantity", function () {
             return expect(updatePatientMedication({}, {
                 dose: { quantity: "foo", unit: "mg" }
             })).to.be.an.api.error(400, "invalid_dose");
         });
-        it("should not allow a dose with a blank unit", function () {
+        it("does not allow a dose with a blank unit", function () {
             return expect(updatePatientMedication({}, {
                 dose: { quantity: 50, unit: "" }
             })).to.be.an.api.error(400, "invalid_dose");
         });
 
-        it("should allow null values to reset optional fields", function () {
+        it("allows null values to reset optional fields", function () {
             return updatePatientMedication({}, {
                 rx_norm: null,
                 fill_date: null,
@@ -168,52 +168,52 @@ describe("Medications", function () {
         });
 
 
-        it("should not allow an invalid dose", function () {
+        it("does not allow an invalid dose", function () {
             return expect(updatePatientMedication({}, {
                 dose: { not: "valid" }
             })).to.be.an.api.error(400, "invalid_dose");
         });
-        it("should not allow a non-object dose", function () {
+        it("does not allow a non-object dose", function () {
             return expect(updatePatientMedication({}, {
                 dose: "foo"
             })).to.be.an.api.error(400, "invalid_dose");
         });
-        it("should not allow an invalid quantity", function () {
+        it("does not allow an invalid quantity", function () {
             return expect(updatePatientMedication({}, {
                 quantity: -1
             })).to.be.an.api.error(400, "invalid_quantity");
         });
-        it("should not allow a nonnumeric quantity", function () {
+        it("does not allow a nonnumeric quantity", function () {
             return expect(updatePatientMedication({}, {
                 quantity: "foo"
             })).to.be.an.api.error(400, "invalid_quantity");
         });
-        it("should not allow an invalid schedule", function () {
+        it("does not allow an invalid schedule", function () {
             return expect(updatePatientMedication({}, {
                 schedule: { type: "invalid" }
             })).to.be.an.api.error(400, "invalid_schedule");
         });
-        it("should not allow a non-object schedule", function () {
+        it("does not allow a non-object schedule", function () {
             return expect(updatePatientMedication({}, {
                 schedule: "foo"
             })).to.be.an.api.error(400, "invalid_schedule");
         });
-        it("should not accept an invalid doctor ID", function () {
+        it("rejects an invalid doctor ID", function () {
             return expect(updatePatientMedication({}, {
                 doctor_id: "foo"
             })).to.be.an.api.error(400, "invalid_doctor_id");
         });
-        it("should not accept a nonexistent doctor ID", function () {
+        it("rejects a nonexistent doctor ID", function () {
             return expect(updatePatientMedication({}, {
                 doctor_id: 9999
             })).to.be.an.api.error(400, "invalid_doctor_id");
         });
-        it("should not accept an invalid pharmacy ID", function () {
+        it("rejects an invalid pharmacy ID", function () {
             return expect(updatePatientMedication({}, {
                 pharmacy_id: "foo"
             })).to.be.an.api.error(400, "invalid_pharmacy_id");
         });
-        it("should not accept a nonexistent pharmacy ID", function () {
+        it("rejects a nonexistent pharmacy ID", function () {
             return expect(updatePatientMedication({}, {
                 pharmacy_id: 9999
             })).to.be.an.api.error(400, "invalid_pharmacy_id");
@@ -283,28 +283,28 @@ describe("Medications", function () {
                 });
             });
 
-            it("should accept a doctor ID corresponding to a valid doctor", function () {
+            it("accepts a doctor ID corresponding to a valid doctor", function () {
                 var endpoint = updatePatient({
                     name: "foobar",
                     doctor_id: patient.doctors[0]._id
                 }, {}, patient);
                 return expect(endpoint).to.be.a.medication.success;
             });
-            it("should not accept a doctor ID corresponding to another patient's doctor", function () {
+            it("rejects a doctor ID corresponding to another patient's doctor", function () {
                 var endpoint = updatePatient({
                     name: "foobar",
                     doctor_id: otherPatient.doctors[0]._id
                 }, {}, patient);
                 return expect(endpoint).to.be.an.api.error(400, "invalid_doctor_id");
             });
-            it("should accept a pharmacy ID corresponding to a valid pharmacy", function () {
+            it("accepts a pharmacy ID corresponding to a valid pharmacy", function () {
                 var endpoint = updatePatient({
                     name: "foobar",
                     pharmacy_id: patient.pharmacies[0]._id
                 }, {}, patient);
                 return expect(endpoint).to.be.a.medication.success;
             });
-            it("should not accept a pharmacy ID corresponding to another patient's pharmacy", function () {
+            it("rejects a pharmacy ID corresponding to another patient's pharmacy", function () {
                 var endpoint = updatePatient({
                     name: "foobar",
                     pharmacy_id: otherPatient.pharmacies[0]._id

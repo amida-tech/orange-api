@@ -574,7 +574,7 @@ describe("Schedule", function () {
                     }, habits);
                 });
 
-                it("should return an EST schedule", function () {
+                it("returns an EST schedule", function () {
                     expect(schedule.isValid()).to.be.true;
                     // takeAt takes UTC times
                     var results = schedule.generate(
@@ -601,7 +601,7 @@ describe("Schedule", function () {
                 describe("when timezone updated to PST", function () {
                     // habits should not change time modulo local time
                     // real times should change time
-                    it("should return a PST schedule", function () {
+                    it("returns a PST schedule", function () {
                         var newHabits = extend(habits, {
                             // PST all year round (no PDT)
                             tz: "America/Metlakatla"

@@ -81,13 +81,13 @@ module.exports.itRequiresValidPharmacyId = function (endpoint) {
             });
         });
 
-        it("should not accept invalid pharmacy IDs", function () {
+        it("rejects invalid pharmacy IDs", function () {
             return expect(endpoint("f", patient._id, user.accessToken)).to.be.an.api.error(404, "invalid_pharmacy_id");
         });
-        it("should not accept pharmacy IDs not corresponding to real pharmacies", function () {
+        it("rejects pharmacy IDs not corresponding to real pharmacies", function () {
             return expect(endpoint(9999, patient._id, user.accessToken)).to.be.an.api.error(404, "invalid_pharmacy_id");
         });
-        it("should not accept pharmacy IDs not corresponding to pharmacies belonging to other patients", function () {
+        it("rejects pharmacy IDs not corresponding to pharmacies belonging to other patients", function () {
             var request = endpoint(otherPatient.pharmacies[0]._id, patient._id, user.accessToken);
             return expect(request).to.be.an.api.error(404, "invalid_pharmacy_id");
         });

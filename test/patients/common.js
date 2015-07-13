@@ -79,10 +79,10 @@ module.exports.itRequiresValidPatientId = function (endpoint) {
             });
         });
 
-        it("should not accept invalid patient IDs", function () {
+        it("rejects invalid patient IDs", function () {
             return expect(endpoint("foobar", accessToken)).to.be.an.api.error(404, "invalid_patient_id");
         });
-        it("should not accept patient IDs not corresponding to real patients", function () {
+        it("rejects patient IDs not corresponding to real patients", function () {
             return expect(endpoint(99999, accessToken)).to.be.an.api.error(404, "invalid_patient_id");
         });
     });

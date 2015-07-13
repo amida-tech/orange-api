@@ -90,10 +90,10 @@ describe("Patients", function () {
                 return expect(setAPatient(placeholder())).to.be.an.avatar.setSuccess;
             });
 
-            it("should not allow empty images", function () {
+            it("does not allow empty images", function () {
                 return expect(setAPatient("")).to.be.an.api.error(400, "invalid_image");
             });
-            it("should not allow invalid images", function () {
+            it("does not allow invalid images", function () {
                 return expect(setAPatient("foo")).to.be.an.api.error(400, "invalid_image");
             });
         });

@@ -37,7 +37,7 @@ describe("Pharmacies", function () {
         common.itRequiresValidPharmacyId(remove);
         patients.itRequiresWriteAuthorization(curry(removePharmacy)({}));
 
-        it("should let me remove pharmacies for my patients", function () {
+        it("lets me remove pharmacies for my patients", function () {
             return expect(removePatientPharmacy({})).to.be.a.pharmacy.success;
         });
     });

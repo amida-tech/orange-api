@@ -37,18 +37,18 @@ describe("Patients", function () {
         // check access token authentication
         auth.itRequiresAuthentication(curry(create)({}));
 
-        it("should return a successful response", function () {
+        it("returns a successful response", function () {
             return expect(createPatient({})).to.be.a.patient.createSuccess;
         });
 
         // validation
-        it("should require a first name", function () {
+        it("requires a first name", function () {
             return expect(createPatient({ first_name: undefined })).to.be.an.api.error(400, "first_name_required");
         });
-        it("should reject a null first name", function () {
+        it("rejects a null first name", function () {
             return expect(createPatient({ first_name: null })).to.be.an.api.error(400, "first_name_required");
         });
-        it("should not accept a blank first name", function () {
+        it("rejects a blank first name", function () {
             return expect(createPatient({ first_name: "" })).to.be.an.api.error(400, "first_name_required");
         });
         it("doesn't require a last name and defaults to blank", function () {

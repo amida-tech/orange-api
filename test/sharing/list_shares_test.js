@@ -57,7 +57,7 @@ describe("Patients", function () {
                 });
             });
 
-            it("should show the new share", function () {
+            it("shows the new share", function () {
                 return listAPatient().then(function (response) {
                     // filter shares to find those for existing users only, also removing
                     // the share showing who owns the patient
@@ -80,7 +80,7 @@ describe("Patients", function () {
                 return Q.nbind(patient.share, patient)("email.not@auser.com", "write", "anyone");
             });
 
-            it("should show the new share", function () {
+            it("shows the new share", function () {
                 return listAPatient().then(function (response) {
                     // filter shares to find those for nonexistent users only
                     // (this also filters out the owner share for us)

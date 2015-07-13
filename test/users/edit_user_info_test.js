@@ -43,25 +43,25 @@ describe("Users", function () {
                 request = updateUser({}, { first_name: "newname" });
             });
 
-            it("should return a successful response", function () {
+            it("returns a successful response", function () {
                 return expect(request).to.be.a.user.success;
             });
-            it("should not revoke our access tokens", function () {
+            it("does not revoke our access tokens", function () {
                 return request.then(auth.checkTokenWorks(token));
             });
-            it("should still let us authenticate", function () {
+            it("still lets us authenticate", function () {
                 return request.then(function () {
                     return expect(tokenEndpoint(credentials)).to.be.an.api.postSuccess;
                 });
             });
 
-            it("should allow a null first_name", function () {
+            it("allows a null first_name", function () {
                 return updateUser({}, { first_name: null }).then(function (response) {
                     expect(response).to.be.a.user.success;
                     expect(response.body.first_name).to.equal("");
                 });
             });
-            it("should allow a blank first_name", function () {
+            it("allows a blank first_name", function () {
                 return updateUser({}, { first_name: "" }).then(function (response) {
                     expect(response).to.be.a.user.success;
                     expect(response.body.first_name).to.equal("");
@@ -75,25 +75,25 @@ describe("Users", function () {
                 request = updateUser({}, { last_name: "newname" });
             });
 
-            it("should return a successful response", function () {
+            it("returns a successful response", function () {
                 return expect(request).to.be.a.user.success;
             });
-            it("should not revoke our access tokens", function () {
+            it("does not revoke our access tokens", function () {
                 return request.then(auth.checkTokenWorks(token));
             });
-            it("should still let us authenticate", function () {
+            it("stills let us authenticate", function () {
                 return request.then(function () {
                     return expect(tokenEndpoint(credentials)).to.be.an.api.postSuccess;
                 });
             });
 
-            it("should allow a null last_name", function () {
+            it("allows a null last_name", function () {
                 return updateUser({}, { last_name: null }).then(function (response) {
                     expect(response).to.be.a.user.success;
                     expect(response.body.last_name).to.equal("");
                 });
             });
-            it("should allow a blank last_name", function () {
+            it("allows a blank last_name", function () {
                 return updateUser({}, { last_name: "" }).then(function (response) {
                     expect(response).to.be.a.user.success;
                     expect(response.body.last_name).to.equal("");
@@ -116,26 +116,26 @@ describe("Users", function () {
                 };
             });
 
-            it("should return a successful response", function () {
+            it("returns a successful response", function () {
                 return expect(request).to.be.a.user.success;
             });
-            it("should revoke our access tokens", function () {
+            it("revokes our access tokens", function () {
                 return request.then(auth.checkTokenFails(token));
             });
-            it("should not let us authenticate with the old password", function () {
+            it("does not let us authenticate with the old password", function () {
                 return request.then(function () {
                     return expect(tokenEndpoint(oldCredentials)).to.be.an.api.error(401, "wrong_email_password");
                 });
             });
-            it("should let us authenticate with the new password", function () {
+            it("lets us authenticate with the new password", function () {
                 return request.then(function () {
                     return expect(tokenEndpoint(newCredentials)).to.be.an.api.postSuccess;
                 });
             });
-            it("should not allow a null password", function () {
+            it("does not allow a null password", function () {
                 return expect(updateUser({}, { password: null })).to.be.an.api.error(400, "password_required");
             });
-            it("should not allow an empty password", function () {
+            it("does not allow an empty password", function () {
                 return expect(updateUser({}, { password: "" })).to.be.an.api.error(400, "password_required");
             });
         });

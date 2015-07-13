@@ -52,7 +52,7 @@ describe("Doses", function () {
             }, patient);
         });
 
-        it("should let me view doses for my patients", function () {
+        it("lets me view doses for my patients", function () {
             return expect(showPatientDose({})).to.be.a.dose.viewSuccess;
         });
     });

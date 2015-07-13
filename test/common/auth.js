@@ -14,13 +14,13 @@ var auth = {};
 // endpoint should be a function taking an access token and
 // returning a chakram promise
 auth.itRequiresAuthentication = function (endpoint) {
-    it("should require an access token", function () {
+    it("requires an access token", function () {
         return expect(endpoint(undefined)).to.be.an.api.error(401, "access_token_required");
     });
-    it("should not accept a blank access token", function () {
+    it("rejects a blank access token", function () {
         return expect(endpoint("")).to.be.an.api.error(401, "invalid_access_token");
     });
-    it("should not accept an invalid access token", function () {
+    it("rejects an invalid access token", function () {
         return expect(endpoint("foo")).to.be.an.api.error(401, "invalid_access_token");
     });
 };

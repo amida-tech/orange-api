@@ -22,7 +22,7 @@ describe("Patients", function () {
         common.itRequiresReadAuthorization(curry(showPatient));
 
         // authorization test
-        it("should let me view my patients", function () {
+        it("lets me view my patients", function () {
             return expect(showAPatient({})).to.be.a.patient.success;
         });
     });

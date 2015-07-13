@@ -55,7 +55,7 @@ describe("Journal", function () {
             }, {}, patient);
         });
 
-        it("should let me edit entries for my patients", function () {
+        it("lets me edit entries for my patients", function () {
             return expect(updatePatientEntry({}, {})).to.be.a.journal.success;
         });
 

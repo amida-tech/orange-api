@@ -40,10 +40,10 @@ describe("Patients", function () {
         });
 
         // authorization test
-        it("should let me delete my patients", function () {
+        it("lets me delete my patients", function () {
             return expect(removeAPatient({})).to.be.a.patient.success;
         });
-        it("should actually delete the patient", function () {
+        it("actually deletes the patient", function () {
             return common.testMyPatient({}).then(function (patient) {
                 return removePatient(patient).then(function () {
                     var endpoint = common.show(patient._id, patient.user.accessToken);

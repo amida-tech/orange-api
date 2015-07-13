@@ -184,7 +184,7 @@ describe("Schedule", function () {
                     return create(patient)().then(create(otherPatient));
                 });
 
-                it("should not include medications not belonging to this patient", function () {
+                it("does not include medications not belonging to this patient", function () {
                     return show(null, null, null, patient._id, user.accessToken).then(function (response) {
                         expect(response).to.be.a.schedule.success;
                         response.body.schedule.forEach(function (item) {

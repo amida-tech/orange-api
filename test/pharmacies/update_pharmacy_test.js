@@ -38,7 +38,7 @@ describe("Pharmacies", function () {
         patients.itRequiresWriteAuthorization(curry(updatePharmacy)({}, {}));
 
         // access permissions
-        it("should let me update pharmacies for my patients", function () {
+        it("lets me update pharmacies for my patients", function () {
             return expect(updatePatientPharmacy({}, {})).to.be.a.pharmacy.success;
         });
 

@@ -48,7 +48,7 @@ describe("Journal", function () {
             }, patient);
         });
 
-        it("should let me view entries for my patients", function () {
+        it("lets me view entries for my patients", function () {
             return expect(showPatientEntry({})).to.be.a.journal.viewSuccess;
         });
 

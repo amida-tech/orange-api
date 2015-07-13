@@ -90,13 +90,13 @@ module.exports.itRequiresValidDoseId = function (endpoint) {
             });
         });
 
-        it("should not accept invalid dose IDs", function () {
+        it("rejects invalid dose IDs", function () {
             return expect(endpoint("foo", patient._id, user.accessToken)).to.be.an.api.error(404, "invalid_dose_id");
         });
-        it("should not accept dose IDs not corresponding to real dose events", function () {
+        it("rejects dose IDs not corresponding to real dose events", function () {
             return expect(endpoint(9999, patient._id, user.accessToken)).to.be.an.api.error(404, "invalid_dose_id");
         });
-        it("should not accept dose IDs corresponding to dose events belonging to other patients", function () {
+        it("rejects dose IDs corresponding to dose events belonging to other patients", function () {
             var request = endpoint(otherPatient.doses[0]._id, patient._id, user.accessToken);
             return expect(request).to.be.an.api.error(404, "invalid_dose_id");
         });

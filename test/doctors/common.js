@@ -58,13 +58,13 @@ module.exports.itRequiresValidDoctorId = function (endpoint) {
             });
         });
 
-        it("should not accept invalid doctor IDs", function () {
+        it("rejects invalid doctor IDs", function () {
             return expect(endpoint("foo", patient._id, user.accessToken)).to.be.an.api.error(404, "invalid_doctor_id");
         });
-        it("should not accept doctor IDs not corresponding to real doctors", function () {
+        it("rejects doctor IDs not corresponding to real doctors", function () {
             return expect(endpoint(9999, patient._id, user.accessToken)).to.be.an.api.error(404, "invalid_doctor_id");
         });
-        it("should not accept doctor IDs not corresponding to doctors belonging to other patients", function () {
+        it("rejects doctor IDs not corresponding to doctors belonging to other patients", function () {
             var request = endpoint(otherPatient.doctors[0]._id, patient._id, user.accessToken);
             return expect(request).to.be.an.api.error(404, "invalid_doctor_id");
         });

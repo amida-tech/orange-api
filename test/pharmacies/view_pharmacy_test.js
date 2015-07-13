@@ -37,7 +37,7 @@ describe("Pharmacies", function () {
         common.itRequiresValidPharmacyId(show);
         patients.itRequiresReadAuthorization(curry(showPharmacy)({}));
 
-        it("should let me view pharmacies for my patients", function () {
+        it("lets me view pharmacies for my patients", function () {
             return expect(showPatientPharmacy({})).to.be.a.pharmacy.success;
         });
     });

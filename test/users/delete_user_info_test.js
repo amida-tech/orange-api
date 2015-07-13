@@ -35,15 +35,15 @@ describe("Users", function () {
                 request = removeUser({});
             });
 
-            it("should return a successful response", function () {
+            it("returns a successful response", function () {
                 return expect(request).to.be.a.user.success;
             });
 
-            it("should invalidate our access token", function () {
+            it("invalidates our access token", function () {
                 return request.then(auth.checkTokenFails(token));
             });
 
-            it("should not let us get another access token", function () {
+            it("does not let us get another access token", function () {
                 return request.then(function () {
                     return expect(tokenEndpoint({
                         email: user.email,
