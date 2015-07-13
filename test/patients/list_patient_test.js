@@ -52,7 +52,8 @@ describe("Patients", function () {
                 // create 1 patient with a custom name
                 promises.push(function () {
                     return create({
-                        name: "test fuzzy matching"
+                        first_name: "test fuzzy matching",
+                        last_name: "also a name"
                     });
                 });
                 // create 38 patients with default data, to give a total of 40
@@ -225,13 +226,25 @@ describe("Patients", function () {
                     });
                 });
 
-                it("allows sorting by name", function () {
-                    return listUser(user, { sort_by: "name" }).then(function (response) {
+                it("allows sorting by first name", function () {
+                    return listUser(user, { sort_by: "first_name" }).then(function (response) {
                         expect(response).to.be.a.patient.listSuccess;
 
                         var sorted = response.body.patients.slice(0).sort(function (patientA, patientB) {
                             // string names
-                            return patientA.name.localeCompare(patientB.name);
+                            return patientA.first_name.localeCompare(patientB.first_name);
+                        });
+                        expect(response.body.patients).to.deep.equal(sorted);
+                    });
+                });
+
+                it("allows sorting by last name", function () {
+                    return listUser(user, { sort_by: "last_name" }).then(function (response) {
+                        expect(response).to.be.a.patient.listSuccess;
+
+                        var sorted = response.body.patients.slice(0).sort(function (patientA, patientB) {
+                            // string names
+                            return patientA.last_name.localeCompare(patientB.last_name);
                         });
                         expect(response.body.patients).to.deep.equal(sorted);
                     });
@@ -287,11 +300,11 @@ describe("Patients", function () {
                 });
 
                 it("allows both sort_by and sort_order", function () {
-                    return listUser(user, { sort_order: "desc", sort_by: "name" }).then(function (response) {
+                    return listUser(user, { sort_order: "desc", sort_by: "first_name" }).then(function (response) {
                         expect(response).to.be.a.patient.listSuccess;
                         var sorted = response.body.patients.slice(0).sort(function (patientA, patientB) {
                             // string names
-                            return patientA.name.localeCompare(patientB.name);
+                            return patientA.first_name.localeCompare(patientB.first_name);
                         }).reverse();
                         expect(response.body.patients).to.deep.equal(sorted);
                     });
@@ -313,23 +326,23 @@ describe("Patients", function () {
                 });
             });
 
-            describe("with name parameter", function () {
-                it("doesn't filter by name by default", function () {
+            describe("with first_name parameter", function () {
+                it("doesn't filter by first_name by default", function () {
                     return listUser(user).then(function (response) {
                         expect(response).to.be.a.patient.listSuccess;
                         expect(response.body.count).to.equal(40);
                     });
                 });
 
-                it("ignores a null name paramter", function () {
-                    return listUser(user, { name: null }).then(function (response) {
+                it("ignores a null first_name paramter", function () {
+                    return listUser(user, { first_name: null }).then(function (response) {
                         expect(response).to.be.a.patient.listSuccess;
                         expect(response.body.count).to.equal(40);
                     });
                 });
 
                 it("handles no results", function () {
-                    return listUser(user, { name: "notanamelikethis" }).then(function (response) {
+                    return listUser(user, { first_name: "notanamelikethis" }).then(function (response) {
                         expect(response).to.be.a.patient.listSuccess;
                         expect(response.body.count).to.equal(0);
                         expect(response.body.patients.length).to.equal(0);
@@ -337,20 +350,62 @@ describe("Patients", function () {
                 });
 
                 it("handles searching exactly", function () {
-                    return listUser(user, { name: "matching" }).then(function (response) {
+                    return listUser(user, { first_name: "matching" }).then(function (response) {
                         expect(response).to.be.a.patient.listSuccess;
                         expect(response.body.count).to.equal(1);
                         expect(response.body.patients.length).to.equal(1);
-                        expect(response.body.patients[0].name).to.equal("test fuzzy matching");
+                        expect(response.body.patients[0].first_name).to.equal("test fuzzy matching");
                     });
                 });
 
                 it("handles searching fuzzily", function () {
-                    return listUser(user, { name: "fzzy" }).then(function (response) {
+                    return listUser(user, { first_name: "fzzy" }).then(function (response) {
                         expect(response).to.be.a.patient.listSuccess;
                         expect(response.body.count).to.equal(1);
                         expect(response.body.patients.length).to.equal(1);
-                        expect(response.body.patients[0].name).to.equal("test fuzzy matching");
+                        expect(response.body.patients[0].first_name).to.equal("test fuzzy matching");
+                    });
+                });
+            });
+
+            describe("with last_name parameter", function () {
+                it("doesn't filter by last_name by default", function () {
+                    return listUser(user).then(function (response) {
+                        expect(response).to.be.a.patient.listSuccess;
+                        expect(response.body.count).to.equal(40);
+                    });
+                });
+
+                it("ignores a null last_name paramter", function () {
+                    return listUser(user, { last_name: null }).then(function (response) {
+                        expect(response).to.be.a.patient.listSuccess;
+                        expect(response.body.count).to.equal(40);
+                    });
+                });
+
+                it("handles no results", function () {
+                    return listUser(user, { last_name: "notanamelikethis" }).then(function (response) {
+                        expect(response).to.be.a.patient.listSuccess;
+                        expect(response.body.count).to.equal(0);
+                        expect(response.body.patients.length).to.equal(0);
+                    });
+                });
+
+                it("handles searching exactly", function () {
+                    return listUser(user, { last_name: "also a name" }).then(function (response) {
+                        expect(response).to.be.a.patient.listSuccess;
+                        expect(response.body.count).to.equal(1);
+                        expect(response.body.patients.length).to.equal(1);
+                        expect(response.body.patients[0].last_name).to.equal("also a name");
+                    });
+                });
+
+                it("handles searching fuzzily", function () {
+                    return listUser(user, { last_name: "nme" }).then(function (response) {
+                        expect(response).to.be.a.patient.listSuccess;
+                        expect(response.body.count).to.equal(1);
+                        expect(response.body.patients.length).to.equal(1);
+                        expect(response.body.patients[0].last_name).to.equal("also a name");
                     });
                 });
             });

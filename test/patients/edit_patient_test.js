@@ -31,11 +31,26 @@ describe("Patients", function () {
         common.itRequiresWriteAuthorization(curry(editPatient)({}));
 
         // validations
-        it("allows a valid name", function () {
-            return expect(editAPatient({}, { name: "newname" })).to.be.a.patient.success;
+        it("allows a valid first name", function () {
+            return expect(editAPatient({}, { first_name: "newname" })).to.be.a.patient.success;
         });
-        it("rejects a blank name", function () {
-            return expect(editAPatient({}, { name: "" })).to.be.an.api.error(400, "name_required");
+        it("rejects a blank first name", function () {
+            return expect(editAPatient({}, { first_name: "" })).to.be.an.api.error(400, "first_name_required");
+        });
+        it("rejects a null first name", function () {
+            return expect(editAPatient({}, { first_name: null })).to.be.an.api.error(400, "first_name_required");
+        });
+        it("accepts a valid last name", function () {
+            return expect(editAPatient({}, { last_name: "newname" })).to.be.a.patient.success;
+        });
+        it("accepts a blank last name", function () {
+            return expect(editAPatient({}, { last_name: "" })).to.be.a.patient.success;
+        });
+        it("accepts a null last name to reset to blank", function () {
+            return editAPatient({}, { last_name: null }).then(function (response) {
+                expect(response).to.be.a.patient.success;
+                expect(response.body.last_name).to.equal("");
+            });
         });
         it("doesn't require any data", function () {
             return expect(editAPatient({}, {})).to.be.a.patient.success;

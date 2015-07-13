@@ -48,7 +48,8 @@ create a patient for the end user, and can later be called to create a new patie
 the child of the patient.
 
 + Parameters
-    + name (string, required) - the full human name of the patient
+    + first_name (string, required) - the first name of the patient
+    + last_name (string, optional) - the last name of the patient
     + birthdate (string, optional)
 
         Optional date of birth of the patient, formatted as an ISO 8601 YYYY-MM-DD
@@ -76,7 +77,8 @@ the child of the patient.
     + Body
     
             {
-                name: "Dependent Patient",
+                first_name: "Dependent",
+                last_name: "Patient",
                 birthdate: "1990-01-01",
                 sex: "male",
                 avatar: "/v1/patients/1/avatar.jpg",
@@ -90,7 +92,7 @@ the child of the patient.
     + `access_token_required` (401) - no access token specified in
     `Authorization` header
     + `invalid_access_token` (401) - the access token specified is invalid
-    + `name_required` (400) - no name specified
+    + `first_name_required` (400) - no first name specified
     + `invalid_sex` (400)
 
         the sex field, if passed, must be either `male`, `female`, `other` or `unspecified`
@@ -104,7 +106,8 @@ the child of the patient.
 
             {
                 id: 1,
-                name: "Dependent Patient",
+                first_name: "Dependent",
+                last_name: "Patient",
                 birthdate: "1990-01-01",
                 sex: "male",
                 avatar: "/v1/patients/1/avatar.jpg",
@@ -131,17 +134,21 @@ View a list of all patients the current user has access to (either read or write
 
     + sort_by (string, optional)
     
-        Field to sort results by. Must by either `id` or `name`, and defaults
-        to `id`.
+        Field to sort results by. Must by either `id`, `first_name` or `last_name`,
+        and defaults to `id`.
 
     + sort_order (string, optional)
     
         The order to sort results by: either `asc` or `desc`. Defaults to
         `asc`.
 
-    + name (string, optional)
+    + first_name (string, optional)
 
-        Filter results by name of patient. Performs fuzzy matching.
+        Filter results by first name of patient. Performs fuzzy matching.
+
+    + last_name (string, optional)
+
+        Filter results by last name of patient. Performs fuzzy matching.
 
 + Request
     + Headers
@@ -164,7 +171,8 @@ View a list of all patients the current user has access to (either read or write
                 patients: [
                     {
                         id: 1,
-                        name: "Dependent Patient",
+                        first_name: "Dependent",
+                        last_name: "Patient",
                         birthdate: "1990-01-01",
                         sex: "male",
                         avatar: "/v1/patients/1/avatar.jpg",
@@ -210,7 +218,8 @@ View the name of a specific patient as well as the current user's access (`read`
 
             {
                 id: 1,
-                name: "Dependent Patient",
+                first_name: "Dependent",
+                last_name: "Patient",
                 birthdate: "1990-01-01",
                 sex: "male",
                 avatar: "/v1/patients/1/avatar.jpg",
@@ -238,7 +247,8 @@ Setting `access` to `none` will stop sharing the patient with the current user.
 
         unique ID of the patient (**not** user-specific) (*url*)
 
-    + name (string, optional) - new full human name of the patient
+    + first_name (string, optional) - new first name of the patient
+    + last_name (string, optional) - new last name of the patient
     + birthdate (string, optional)
 
         Optional date of birth of the patient, formatted as an ISO 8601 YYYY-MM-DD
@@ -272,7 +282,8 @@ Setting `access` to `none` will stop sharing the patient with the current user.
     + Body
     
             {
-                name: "Gin Smith",
+                first_name: "Gin",
+                last_name: "Smith",
                 birthdate: "1991-01-01",
                 sex: "female",
                 access: "write",
@@ -305,7 +316,8 @@ Setting `access` to `none` will stop sharing the patient with the current user.
 
             {
                 id: 1,
-                name: "Gin Smith",
+                first_name: "Gin",
+                last_name: "Smith",
                 birthdate: "1991-01-01",
                 sex: "female",
                 avatar: "/v1/patients/1/avatar.jpg",
@@ -347,7 +359,8 @@ called with `access="none"` rather than this method.
 
             {
                 id: 1,
-                name: "Gin Smith",
+                first_name: "Gin",
+                last_name: "Smith",
                 birthdate: "1991-01-01",
                 sex: "female",
                 avatar: "/v1/patients/1/avatar.jpg",

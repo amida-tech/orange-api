@@ -21,12 +21,15 @@ describe("Patients", function () {
                 return fixtures.build("Patient", data).then(function (patient) {
                     // explicitly set access_X fields because they're permisisons.X in patient
                     // model so the fixture doesn't handle them
-                    patient = patient.toObject();
-                    patient.access_prime = data.access_prime;
-                    patient.access_family = data.access_family;
-                    patient.access_anyone = data.access_anyone;
+                    var output = patient.toObject();
+                    output.access_prime = data.access_prime;
+                    output.access_family = data.access_family;
+                    output.access_anyone = data.access_anyone;
+                    // do the same for first and last name (because they're camelCase internally)
+                    output.first_name = patient.first_name;
+                    output.last_name = patient.last_name;
 
-                    return create(patient, user.accessToken);
+                    return create(output, user.accessToken);
                 });
             });
         };
@@ -39,11 +42,32 @@ describe("Patients", function () {
         });
 
         // validation
-        it("should require a name", function () {
-            return expect(createPatient({ name: undefined })).to.be.an.api.error(400, "name_required");
+        it("should require a first name", function () {
+            return expect(createPatient({ first_name: undefined })).to.be.an.api.error(400, "first_name_required");
         });
-        it("should not accept a blank name", function () {
-            return expect(createPatient({ name: "" })).to.be.an.api.error(400, "name_required");
+        it("should reject a null first name", function () {
+            return expect(createPatient({ first_name: null })).to.be.an.api.error(400, "first_name_required");
+        });
+        it("should not accept a blank first name", function () {
+            return expect(createPatient({ first_name: "" })).to.be.an.api.error(400, "first_name_required");
+        });
+        it("doesn't require a last name and defaults to blank", function () {
+            return createPatient({ last_name: undefined }).then(function (response) {
+                expect(response).to.be.a.patient.createSuccess;
+                expect(response.body.last_name).to.equal("");
+            });
+        });
+        it("accepts a null last name", function () {
+            return createPatient({ last_name: null }).then(function (response) {
+                expect(response).to.be.a.patient.createSuccess;
+                expect(response.body.last_name).to.equal("");
+            });
+        });
+        it("accepts a blank last name", function () {
+            return createPatient({ last_name: "" }).then(function (response) {
+                expect(response).to.be.a.patient.createSuccess;
+                expect(response.body.last_name).to.equal("");
+            });
         });
         it("doesn't require a sex and defaults to unspecified", function () {
             return createPatient({ sex: undefined }).then(function (response) {
