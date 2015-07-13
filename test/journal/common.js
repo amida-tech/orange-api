@@ -68,6 +68,9 @@ common.addApiChain("journal", {
     "success": function (respObj) {
         expect(respObj).to.be.an.api.getSuccess;
         expect(respObj).to.have.schema(entrySchema);
+    },
+    "listSuccess": function (respObj) {
+        expect(respObj).to.be.an.api.genericListSuccess("entries", entrySchema);
     }
 });
 

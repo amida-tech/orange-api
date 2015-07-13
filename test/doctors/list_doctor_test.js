@@ -353,8 +353,5 @@ describe("Doctors", function () {
                 });
             });
         });
-
-
-        // TODO: sortby, sortorder, name
     });
 });

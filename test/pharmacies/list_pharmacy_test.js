@@ -362,8 +362,5 @@ describe("Pharmacies", function () {
                 });
             });
         });
-
-
-        // TODO: sortby, sortorder, name
     });
 });
