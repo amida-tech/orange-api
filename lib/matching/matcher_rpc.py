@@ -13,7 +13,7 @@ class MatcherRPC(object):
 class MatcherDaemon(Daemon):
     def run(self):
         s = zerorpc.Server(MatcherRPC())
-        s.bind("tcp://0.0.0.0:4242")
+        s.bind("tcp://127.0.0.1:4242")
         s.run()
 
 if __name__ == "__main__":

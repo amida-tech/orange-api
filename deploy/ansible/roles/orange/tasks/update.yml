@@ -7,7 +7,7 @@
 
 - name: Stop API
   sudo: yes
-  command: pm2 stop run
+  command: pm2 stop orange
 
 - name: Remove old source and current folder
   command: rm -rf "/var/www/oramge/source" "/var/www/orange/current"
@@ -45,4 +45,13 @@
   
 - name: Launch Orange through PM2
   sudo: yes
-  command: pm2 start /var/www/orange/current/run.js
+  command: pm2 start orange
+
+- name: Switch to docs branch
+  command: cd /var/www/orange/source && git checkout gh-pages
+
+- name: Copy documentation
+  command: cp /var/www/orange/source/index.html /var/www/orange/docs/
+
+- name: Switch back to master branch
+  command: cd /var/www/orange/source && git checkout master

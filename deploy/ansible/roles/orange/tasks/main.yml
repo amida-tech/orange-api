@@ -13,6 +13,9 @@
 - name: Make source folder
   command: mkdir -p "/var/www/orange/source"
 
+- name: Make docs folder
+  command: mkdir -p "/var/www/orange/docs"
+
 - name: Make shared folder
   command: mkdir -p "/var/www/orange/shared"
 
@@ -78,7 +81,17 @@
   command: /etc/init.d/orange-matcher start
   
 - name: Launch Orange through PM2
-  command: pm2 start /var/www/orange/current/run.js
+  command: pm2 start /var/www/orange/current/deploy/processes.json
   
 - name:  Configure PM2 for Auto-reload
   command: pm2 startup centos -u node && pm2 save
+
+- name: Switch to docs branch
+  command: cd /var/www/orange/source && git checkout gh-pages
+
+- name: Copy documentation
+  sudo: yes
+  command: cp /var/www/orange/source/index.html /var/www/orange/docs/
+
+- name: Switch back to master branch
+  command: cd /var/www/orange/source && git checkout master

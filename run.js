@@ -42,7 +42,7 @@ async.waterfall([
         app.set("zerorpc", zrpc);
         app.set("gridfs", gfs);
         app.set("secret", secret);
-        server = app.listen(3000, callback);
+        server = app.listen(3000, "localhost", callback);
     }
 ], function (err) {
     if (err) throw err;

@@ -1,0 +1,8 @@
+[{
+  "name"        : "orange",
+  "script"      : "run.js",
+  "cwd"         : "/var/www/orange/current",
+  "env": {
+      "NODE_ENV": "production"
+  }
+}]
