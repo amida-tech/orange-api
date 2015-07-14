@@ -1,0 +1,6 @@
+---
+#file: roles/orange/tasks/main.yml
+- include: setup.yml
+- include: deploy.yml
+- include: start.yml
+- include: docs.yml
