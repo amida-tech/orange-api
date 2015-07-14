@@ -1,0 +1,14 @@
+---
+- hosts: all
+  user: vagrant
+  sudo: yes
+  roles:
+    # - common
+    # - mongodb
+    # - nodejs
+    - orange
+
+  vars_prompt:
+    - name: "secret"
+      prompt: "What is the client secret?"
+      private: yes

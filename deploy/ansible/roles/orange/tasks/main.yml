@@ -1,0 +1,84 @@
+---
+#file: roles/orange/tasks/main.yml
+
+- name: Make node group
+  group: name=node system=yes state=present
+
+- name: Make node user
+  user: name=node group=node system=yes state=present
+
+- name: Make Orange folder
+  command: mkdir -p "/var/www/orange"
+
+- name: Make source folder
+  command: mkdir -p "/var/www/orange/source"
+
+- name: Make shared folder
+  command: mkdir -p "/var/www/orange/shared"
+
+- name: Make current folder
+  command: mkdir -p "/var/www/orange/current"
+
+- name: Clone Orange repository
+  git: repo="https://github.com/amida-tech/orange-api.git" dest="/var/www/orange/source"
+
+- name: Copy Orange source to current
+  command: cp -r /var/www/orange/source/. /var/www/orange/current
+
+- name: Create secret
+  sudo: yes
+  command: su -c "echo \"{{ secret }}\" > /var/www/orange/shared/.secret"
+
+- name: Link secret from shared to current
+  command: ln -sf /var/www/orange/shared/.secret /var/www/orange/current/.secret
+
+- name:  Install grunt CLI tools
+  sudo: yes
+  command: npm install -g grunt-cli
+
+- name: Install zeromq
+  yum: name={{ item }} state="latest"
+  sudo: yes
+  with_items:
+   - zeromq
+   - zeromq-devel
+
+- name: Install python package dependencies
+  yum: name={{ item }} state="latest"
+  sudo: yes
+  with_items:
+   - python-pip
+   - python-devel
+
+- name: Install python dependencies
+  sudo: yes
+  command: pip install -r /var/www/orange/current/lib/matching/requirements.txt
+
+- name:  Install node-gyp
+  sudo: yes
+  command: npm install -g node-gyp
+
+- name:  Install orange dependencies
+  command: npm install --production chdir=/var/www/orange/current 
+
+- name:  Install PM2
+  sudo: yes
+  command: npm install -g pm2 --unsafe-perm
+
+- name: Install matcher init.d script
+  sudo: yes
+  command: "{{ item }}"
+  with_items:
+   - cp /var/www/orange/current/deploy/matcher.init.d /etc/init.d/orange-matcher
+   - chmod +x /etc/init.d/orange-matcher
+   - chkconfig orange-matcher on
+
+- name: Launch Orange matcher
+  sudo: yes
+  command: /etc/init.d/orange-matcher start
+  
+- name: Launch Orange through PM2
+  command: pm2 start /var/www/orange/current/run.js
+  
+- name:  Configure PM2 for Auto-reload
+  command: pm2 startup centos -u node && pm2 save
