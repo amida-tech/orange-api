@@ -30,7 +30,7 @@ API for Orange medication adherence apps. quasi-REST and implemented in Node & M
 - Grunt.js
 - MongoDB
 - ZeroMQ
-- `zerorpc`, `python-dateutil`, `termcolor`, `pyevolve` and `pytz` python libraries (for schedule matching)
+- `zerorpc`, `python-dateutil`, `termcolor`, `pyevolve` and `pytz` python libraries (for schedule matching) (`pip install -r lib/matching/requirements.txt`)
 
 ```
 # you need Node.js and Grunt.js installed
