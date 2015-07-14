@@ -1,5 +1,5 @@
 FORMAT: 1A
-HOST: http://orange.amida-tech.com
+HOST: http://orange-api.amida-demo.com/api/
 
 # Orange API
 
