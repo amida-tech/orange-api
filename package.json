@@ -25,6 +25,7 @@
     "express": "4.12.x",
     "gridfs-stream": "^1.1.1",
     "image-type": "^2.0.2",
+    "moment": "^2.10.3",
     "moment-timezone": "^0.4.0",
     "mongodb": "^2.0.35",
     "mongoose": "^4.0.5",
@@ -53,7 +54,6 @@
     "load-grunt-tasks": "^3.2.0",
     "mocha": "^2.2.5",
     "mocha-shared": "^0.2.0",
-    "moment": "^2.10.3",
     "monky": "^0.6.7",
     "q": "^1.4.1",
     "sinon": "^1.14.1"
