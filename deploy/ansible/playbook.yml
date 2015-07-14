@@ -3,9 +3,9 @@
   user: vagrant
   sudo: yes
   roles:
-    # - common
-    # - mongodb
-    # - nodejs
+    - common
+    - mongodb
+    - nodejs
     - orange
 
   vars_prompt:

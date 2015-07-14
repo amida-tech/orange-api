@@ -1,0 +1,48 @@
+---
+#file: roles/orange/tasks/main.yml
+
+- name: Stop matcher
+  sudo: yes
+  command: /etc/init.d/orange-matcher stop
+
+- name: Stop API
+  sudo: yes
+  command: pm2 stop run
+
+- name: Remove old source and current folder
+  command: rm -rf "/var/www/oramge/source" "/var/www/orange/current"
+
+- name: Make new source and current folder
+  command: mkdir -p "/var/www/orange/source" "/var/wwww/orange/current"
+
+- name: Clone Orange repository
+  git: repo="https://github.com/amida-tech/orange-api.git" dest="/var/www/orange/source"
+
+- name: Copy Orange source to current
+  command: cp -r /var/www/orange/source/. /var/www/orange/current
+
+- name: Link secret from shared to current
+  command: ln -sf /var/www/orange/shared/.secret /var/www/orange/current/.secret
+
+- name: Install python dependencies
+  sudo: yes
+  command: pip install -r /var/www/orange/current/lib/matching/requirements.txt
+
+- name:  Install orange dependencies
+  command: npm install --production chdir=/var/www/orange/current 
+
+- name: Install matcher init.d script
+  sudo: yes
+  command: "{{ item }}"
+  with_items:
+   - cp /var/www/orange/current/deploy/matcher.init.d /etc/init.d/orange-matcher
+   - chmod +x /etc/init.d/orange-matcher
+   - chkconfig orange-matcher on
+
+- name: Launch Orange matcher
+  sudo: yes
+  command: /etc/init.d/orange-matcher start
+  
+- name: Launch Orange through PM2
+  sudo: yes
+  command: pm2 start /var/www/orange/current/run.js
