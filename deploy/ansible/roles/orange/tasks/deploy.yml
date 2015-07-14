@@ -26,10 +26,12 @@
 - name:  Install orange dependencies
   command: npm install --production chdir=/var/www/orange/current 
 
+- name: Copy matcher init.d script
+  template: src="matcher.init.d" dest="/etc/init.d/orange-matcher"
+
 - name: Install matcher init.d script
   sudo: yes
   command: "{{ item }}"
   with_items:
-   - cp /var/www/orange/current/deploy/matcher.init.d /etc/init.d/orange-matcher
    - chmod +x /etc/init.d/orange-matcher
    - chkconfig orange-matcher on

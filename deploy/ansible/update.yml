@@ -1,6 +1,11 @@
 ---
 - hosts: all
-  user: vagrant
+  user: centos
   sudo: yes
   tasks:
     - include: roles/orange/tasks/update.yml
+
+  vars_prompt:
+    - name: "secret"
+      prompt: "What is the client secret?"
+      private: yes

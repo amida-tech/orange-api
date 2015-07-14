@@ -1,6 +1,6 @@
 ---
 - hosts: all
-  user: vagrant
+  user: centos
   sudo: yes
   roles:
     - common
