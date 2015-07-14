@@ -3,7 +3,7 @@
 # should be run from in docs/ dir
 # i.e., ./build.sh
 
-# we're using a shell script becuase the latest versions of aglio
+# we're using a shell script because the latest versions of aglio
 # don't play too well with grunt-aglio
 
 pushd src/

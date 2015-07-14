@@ -63,7 +63,7 @@ describe("Schedule", function () {
                 });
             };
 
-            // check it requires read acces to patient
+            // check it requires read access to patient
             patients.itRequiresReadAuthorization(showSchedule);
             // check it only returns schedule results for medications we have access to
             medications.itRequiresReadListAuthorization("schedule")(showScheduleMedication);

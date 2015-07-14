@@ -334,7 +334,7 @@ describe("Patients", function () {
                     });
                 });
 
-                it("ignores a null first_name paramter", function () {
+                it("ignores a null first_name parameter", function () {
                     return listUser(user, { first_name: null }).then(function (response) {
                         expect(response).to.be.a.patient.listSuccess;
                         expect(response.body.count).to.equal(40);
@@ -376,7 +376,7 @@ describe("Patients", function () {
                     });
                 });
 
-                it("ignores a null last_name paramter", function () {
+                it("ignores a null last_name parameter", function () {
                     return listUser(user, { last_name: null }).then(function (response) {
                         expect(response).to.be.a.patient.listSuccess;
                         expect(response.body.count).to.equal(40);

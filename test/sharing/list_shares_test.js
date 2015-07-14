@@ -512,7 +512,7 @@ describe("Patients", function () {
                     });
                 });
 
-                it("ignores a null email paramter", function () {
+                it("ignores a null email parameter", function () {
                     return listAPatient({ email: null }).then(function (response) {
                         expect(response).to.be.a.share.listSuccess;
                         expect(response.body.count).to.equal(40);

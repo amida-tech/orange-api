@@ -8,7 +8,7 @@ var chakram     = require("chakram"),
 
 describe("Medications", function () {
     describe("Remove A Medication (DELETE /patients/:patientid/medications/:medicationid)", function () {
-        // given a patient ID, medication ID and acces token, try and delete the medication
+        // given a patient ID, medication ID and access token, try and delete the medication
         var remove = function (medicationId, patientId, accessToken) {
             var url = util.format("http://localhost:3000/v1/patients/%d/medications/%d", patientId, medicationId);
             return chakram.delete(url, {}, auth.genAuthHeaders(accessToken));

@@ -25,7 +25,7 @@ class ScheduleMatcher(object):
             return dose
         self.doses = map(parseDose, doses)
         self.doses = sorted(self.doses, key = lambda dose: dose["date"])
-        # store time's seperately for quick access in cost function
+        # store time's separately for quick access in cost function
         self.doseTimes = map(lambda dose: dose["date"], self.doses)
 
         # store schedule

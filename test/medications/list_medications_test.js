@@ -340,7 +340,7 @@ describe("Medications", function () {
                     });
                 });
 
-                it("ignores a null name paramter", function () {
+                it("ignores a null name parameter", function () {
                     return listPatient(patient, { name: null }).then(function (response) {
                         expect(response).to.be.a.medication.listSuccess;
                         expect(response.body.count).to.equal(40);

@@ -518,7 +518,7 @@ describe("Journal", function () {
                     });
                 });
 
-                it("ignores a null text paramter", function () {
+                it("ignores a null text parameter", function () {
                     return listPatient(patient, { text: null }).then(function (response) {
                         expect(response).to.be.a.journal.listSuccess;
                         expect(response.body.count).to.equal(40);
