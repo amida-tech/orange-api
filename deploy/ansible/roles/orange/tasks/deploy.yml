@@ -1,14 +1,5 @@
 ---
-#file: roles/orange/tasks/main.yml
-
-- name: Stop matcher
-  sudo: yes
-  command: /etc/init.d/orange-matcher stop
-
-- name: Stop API
-  sudo: yes
-  command: pm2 stop orange
-
+#file: roles/orange/tasks/deploy.yml
 - name: Remove old source and current folder
   command: rm -rf "/var/www/oramge/source" "/var/www/orange/current"
 
@@ -20,6 +11,10 @@
 
 - name: Copy Orange source to current
   command: cp -r /var/www/orange/source/. /var/www/orange/current
+
+- name: Create secret
+  sudo: yes
+  command: su -c "echo \"{{ secret }}\" > /var/www/orange/shared/.secret"
 
 - name: Link secret from shared to current
   command: ln -sf /var/www/orange/shared/.secret /var/www/orange/current/.secret
@@ -38,20 +33,3 @@
    - cp /var/www/orange/current/deploy/matcher.init.d /etc/init.d/orange-matcher
    - chmod +x /etc/init.d/orange-matcher
    - chkconfig orange-matcher on
-
-- name: Launch Orange matcher
-  sudo: yes
-  command: /etc/init.d/orange-matcher start
-  
-- name: Launch Orange through PM2
-  sudo: yes
-  command: pm2 start orange
-
-- name: Switch to docs branch
-  command: cd /var/www/orange/source && git checkout gh-pages
-
-- name: Copy documentation
-  command: cp /var/www/orange/source/index.html /var/www/orange/docs/
-
-- name: Switch back to master branch
-  command: cd /var/www/orange/source && git checkout master

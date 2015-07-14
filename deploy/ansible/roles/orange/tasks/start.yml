@@ -1,0 +1,12 @@
+---
+#file: roles/orange/tasks/start.yml
+- name: Launch Orange matcher
+  sudo: yes
+  command: /etc/init.d/orange-matcher start
+  
+- name: Launch Orange through PM2
+  sudo: yes
+  command: pm2 start orange
+
+- name:  Configure PM2 for Auto-reload
+  command: pm2 startup centos -u node && pm2 save

@@ -3,7 +3,7 @@
 # description: orange API matcher
 
 DAEMON="/var/www/orange/current/lib/matching/matcher_rpc.py"
-DAEMONUSER="centos"
+DAEMONUSER="{{ user }}"
 DEAMON_NAME="orange-matcher"
 
 PATH="/sbin:/bin:/usr/sbin:/usr/bin"

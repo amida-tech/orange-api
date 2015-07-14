@@ -3,7 +3,7 @@ The Orange backend has an accompanying deployment script to get an instance runn
 
 Additionally, this deployment script is designed to work with a Vagrant instance.  Vagrant automates the creation of virtual machines on local computers.  For more information on Vagrant, visit [www.vagrantup.com](https://www.vagrantup.com/).
 
-Note:  These scripts are designed to work with Red Hat Enterprise Linux 6.5 (or equivalent CentOS).
+Note:  These scripts are designed to work with Red Hat Enterprise Linux 7.0 (or equivalent CentOS).
 
 ###Vagrant Instructions
 
@@ -21,6 +21,7 @@ You can access the box via ssh by typing:
 vagrant ssh
 ```
 
+The API will then be running on port 80 of the Vagrant box, which will be mapped to port 8080 locally. Documentation will then be accessible at `http://localhost:8080/docs/`, and the API itself at `http://localhost:8080/api/v1/`.
 
 ###Server Instructions
 
@@ -31,3 +32,7 @@ To get a webserver running, you typically need to specify a hosts file, a privat
 ```
 ansible-playbook playbook.yml -i "hosts/hosts.ini" --private-key="your_key.pem"
 ```
+
+The server should be running CentOS 7 and have port 80 open to the public. Documentation will then be accessible at `http://SERVER/docs/`, and the API itself at `http://SERVER/api/v1/`.
+
+The playbook `update.yml` can be used to deploy new code changes without having to wipe the server.
