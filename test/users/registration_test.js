@@ -51,6 +51,12 @@ describe("Users", function () {
         it("accepts a blank last name", function () {
             return expect(register({ last_name: "" })).to.be.a.user.registerSuccess;
         });
+        it("does not require a phone", function () {
+            return expect(register({ phone: undefined })).to.be.a.user.registerSuccess;
+        });
+        it("accepts a blank phone", function () {
+            return expect(register({ phone: "" })).to.be.a.user.registerSuccess;
+        });
 
         // require valid email
         it("rejects an invalid email", function () {

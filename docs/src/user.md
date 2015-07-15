@@ -11,6 +11,7 @@ Register a new user, and create a new patient for them as well.
     + password (string, required) - the password of the new user
     + first_name (string, optional) - the first name of the new user
     + last_name (string, optional) - the last name of the new user
+    + phone (string, optional) - the phone number of the new user
 
 + Request
     + Body
@@ -19,7 +20,8 @@ Register a new user, and create a new patient for them as well.
                 email: "foo@bar.com",
                 password: "foobar",
                 first_name: "Foo",
-                last_name: "Bar"
+                last_name: "Bar",
+                phone: "6177140000"
             }
 
 + Response 201
@@ -36,6 +38,7 @@ Register a new user, and create a new patient for them as well.
                 email: "foo@bar.com",
                 first_name: "Foo",
                 last_name: "Bar",
+                phone: "6177140000",
                 success: true
             }
 
@@ -59,6 +62,7 @@ Get basic metadata about the current user.
                 email: "foo@bar.com",
                 first_name: "Foo",
                 last_name: "Bar",
+                phone: "6177140000",
                 success: true
             }
 
@@ -68,6 +72,7 @@ Change basic metadata about the current user, including their password.
 + Parameters
     + first_name (string, optional) - new first name
     + last_name (string, optional) - new last name
+    + phone (string, optional) - new phone number
     + password (string, optional)
 
         New password. **Note that if the password is changed, all access tokens are revoked**.
@@ -81,6 +86,7 @@ Change basic metadata about the current user, including their password.
             {
                 first_name: "Foo",
                 last_name: "Baz",
+                phone: "6177140001",
                 password: "foobaz"
             }
 + Response 200
@@ -95,6 +101,7 @@ Change basic metadata about the current user, including their password.
                 email: "foo@bar.com",
                 first_name: "Foo",
                 last_name: "Baz",
+                phone: "6177140001",
                 success: true
             }
 
@@ -121,6 +128,7 @@ will not be deleted.
                 email: "foo@bar.com",
                 first_name: "Foo",
                 last_name: "Bar",
+                phone: "6177140000",
                 success: true
             }
 

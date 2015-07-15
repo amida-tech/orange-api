@@ -101,6 +101,38 @@ describe("Users", function () {
             });
         });
 
+        describe("changing phone", function () {
+            var request;
+            beforeEach(function () {
+                request = updateUser({}, { phone: "1231231212" });
+            });
+
+            it("returns a successful response", function () {
+                return expect(request).to.be.a.user.success;
+            });
+            it("does not revoke our access tokens", function () {
+                return request.then(auth.checkTokenWorks(token));
+            });
+            it("stills let us authenticate", function () {
+                return request.then(function () {
+                    return expect(tokenEndpoint(credentials)).to.be.an.api.postSuccess;
+                });
+            });
+
+            it("allows a null phone", function () {
+                return updateUser({}, { phone: null }).then(function (response) {
+                    expect(response).to.be.a.user.success;
+                    expect(response.body.phone).to.equal("");
+                });
+            });
+            it("allows a blank phone", function () {
+                return updateUser({}, { phone: "" }).then(function (response) {
+                    expect(response).to.be.a.user.success;
+                    expect(response.body.phone).to.equal("");
+                });
+            });
+        });
+
 
         describe("changing password", function () {
             var request, oldCredentials, newCredentials;
