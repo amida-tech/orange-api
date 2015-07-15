@@ -65,7 +65,7 @@ before(function () {
         itemSchema = JSON.parse(JSON.stringify(itemSchema));
         if (typeof itemSchema.required !== "undefined" && itemSchema.required !== null) {
             var successIndex = itemSchema.required.indexOf("success");
-            if (successIndex >= 0) itemSchema.required.splice(successIndex);
+            if (successIndex >= 0) itemSchema.required.splice(successIndex, 1);
         }
         if (typeof itemSchema.properties !== "undefined" && itemSchema.properties !== null) {
             delete itemSchema.properties.success;

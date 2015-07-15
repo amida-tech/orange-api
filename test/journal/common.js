@@ -11,7 +11,7 @@ var expect = chakram.expect;
 // we validate child medication schemata, but success shouldn't be present on a
 // medication object here
 var medicationSchema = JSON.parse(JSON.stringify(medications.schema));
-medicationSchema.required.splice(medicationSchema.required.indexOf("success"));
+medicationSchema.required.splice(medicationSchema.required.indexOf("success"), 1);
 delete medicationSchema.properties.success;
 
 // verify successful responses

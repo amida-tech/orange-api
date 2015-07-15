@@ -151,7 +151,7 @@ describe("Patients", function () {
                 // remove success and ignore additional properties (not just patient
                 // data shown here);
                 var patientSchema = JSON.parse(JSON.stringify(common.schema));
-                patientSchema.required.splice(patientSchema.required.indexOf("success"));
+                patientSchema.required.splice(patientSchema.required.indexOf("success"), 1);
                 delete patientSchema.properties.success;
                 patientSchema.additionalProperties = true;
 
