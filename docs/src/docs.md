@@ -12,6 +12,7 @@
 <!-- include(api.md) -->
 <!-- include(authentication.md) -->
 <!-- include(user.md) -->
+<!-- include(requests.md) -->
 <!-- include(patients.md) -->
 <!-- include(habits.md) -->
 <!-- include(journal.md) -->
