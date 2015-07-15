@@ -58,7 +58,7 @@ before(function () {
 
     // take an object schema and the slug for the list of objects, and validate a list
     // response (e.g., GET /patients)
-    chakram.addMethod("genericListSuccess", function (respObj, slug, itemSchema) {
+    chakram.addMethod("genericListSuccess", function (respObj, slug, itemSchema, countRequired) {
         expect(respObj).to.be.an.api.genericSuccess(200);
 
         // remove success from schema (in case it's present)
@@ -71,15 +71,20 @@ before(function () {
             delete itemSchema.properties.success;
         }
 
+        // require a count by default
+        if (countRequired !== false) countRequired = true;
+        var required = ["success", slug];
+        if (countRequired) required.push("count");
+
         // build up schema for overall response
         /*eslint-disable key-spacing */
         var schema = {
-            required:   ["success", slug, "count"],
+            required:   required,
             properties: {
                 success:    { type: "boolean" },
                 count:      { type: "number" }
             },
-            additionalProperties: false
+            additionalProperties: !countRequired // allow extra properties in place of count
         };
         schema.properties[slug] = {
             type:  "array",

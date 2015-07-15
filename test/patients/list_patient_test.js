@@ -10,7 +10,7 @@ var chakram         = require("chakram"),
 var expect = chakram.expect;
 
 describe("Patients", function () {
-    describe("List Patients (GET /patients/:patientid/patients)", function () {
+    describe("List Patients (GET /patients/)", function () {
         // basic endpoint
         var list = function (accessToken, parameters) {
             if (typeof parameters === "undefined" || parameters === null) parameters = {};

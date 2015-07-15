@@ -12,7 +12,7 @@ var expect = chakram.expect;
 
 // verify successful responses
 /*eslint-disable key-spacing */
-var patientSchema = {
+var patientSchema = module.exports.schema = {
     required: ["id", "first_name", "last_name", "sex", "birthdate", "avatar", "access", "group", "access_anyone",
                 "access_family", "access_prime", "success"],
     properties: {
@@ -51,6 +51,10 @@ common.addApiChain("patient", {
     },
     "listSuccess": function (respObj) {
         expect(respObj).to.be.an.api.genericListSuccess("patients", patientSchema);
+    },
+    "dumpSuccess": function (respObj) {
+        expect(respObj).to.be.an.api.getSuccess;
+        // schema validated in test
     }
 });
 

@@ -7,7 +7,7 @@ var expect = chakram.expect;
 
 // verify successful responses
 /*eslint-disable key-spacing */
-var habitsSchema = {
+var habitsSchema = module.exports.schema = {
     required: ["success", "wake", "sleep", "breakfast", "lunch", "dinner", "tz"],
     properties: {
         success:        { type: "boolean" },

@@ -9,7 +9,7 @@ var expect = chakram.expect;
 
 // verify successful responses
 /*eslint-disable key-spacing */
-var shareSchema = {
+var shareSchema = module.exports.schema = {
     required: ["id", "email", "access", "group", "is_user", "success"],
     properties: {
         success:    { type: "boolean" },

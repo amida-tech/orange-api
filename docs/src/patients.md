@@ -372,6 +372,147 @@ called with `access="none"` rather than this method.
                 success: true
             }
 
+## Patient Data Dump [/patients/{patientid}.json]
+### View JSON Data Dump [GET]
+View a data dump of all data associated with a patient (specifically the patient metadata,
+habits, journal entries, doctors, pharmacies, medications and dose events). Only those journal
+entries, medications and dose events that the user has read access to (remember medications can
+override patient-wide access permissions) are shown.
+
++ Parameters
+    + patientid (integer, required)
+
+        unique ID of the patient (**not** user-specific) (*url*)
+
++ Request
+    + Headers
+
+            Authorization: Bearer ACCESS_TOKEN
+
++ Response 200
+    Errors
+    + `access_token_required` (401) - no access token specified in
+    `Authorization` header
+    + `invalid_access_token` (401) - the access token specified is invalid
+    + `invalid_patient_id` (404) - a patient with the specified ID was not found
+    + `unauthorized` (403) - the current user does not have write access to this patient
+
+    + Body
+
+            {
+                id: 34,
+                first_name: "Patient 11",
+                last_name: "number 11",
+                birthdate: "1990-01-01",
+                sex: "male",
+                avatar: "/v1/patients/34/avatar.png",
+                access_anyone: "read",
+                access_family: "read",
+                access_prime: "write",
+                group: "anyone",
+                access: "read",
+                habits: {
+                    wake: null,
+                    sleep: null,
+                    breakfast: null,
+                    lunch: null,
+                    dinner: null,
+                    tz: "Etc/UTC"
+                },
+                entries: [
+                    {
+                        date: "2015-07-15T13:18:21.000-04:00",
+                        text: "example journal entry",
+                        medication_ids: [
+                            1
+                        ],
+                        mood: "",
+                        id: 1
+                    }
+                ],
+                doctors: [
+                    {
+                        name: "test doctor",
+                        phone: "",
+                        address: "",
+                        notes: "",
+                        id: 1
+                    }
+                ],
+                pharmacies: [
+                    {
+                        name: "test pharmacy",
+                        phone: "",
+                        address: "",
+                        hours: {
+                            monday: {},
+                            tuesday: {},
+                            wednesday: {},
+                            thursday: {},
+                            friday: {},
+                            saturday: {},
+                            sunday: {}
+                        },
+                        notes: "",
+                        id: 1
+                    }
+                ],
+                medications: [
+                    {
+                        name: "test medication",
+                        rx_norm: "",
+                        rx_number: "",
+                        ndc: "",
+                        dose: {
+                            quantity: 1,
+                            unit: "dose"
+                        },
+                        route: "",
+                        form: "",
+                        quantity: 1,
+                        type: "",
+                        fill_date: null,
+                        doctor_id: null,
+                        pharmacy_id: null,
+                        access_anyone: "default",
+                        access_family: "default",
+                        access_prime: "default",
+                        number_left: null,
+                        schedule: {
+                            as_needed: true,
+                            regularly: false
+                        },
+                        id: 1
+                    }
+                ],
+                doses: [
+                    {
+                        medication_id: 1,
+                        date: "2015-07-15T13:18:21.000-04:00",
+                        notes: "",
+                        id: 1
+                    }
+                ],
+                shares: [
+                    {
+                        is_user: true,
+                        access: "write",
+                        group: "owner",
+                        email: "foo26@bar.com",
+                        id: 42
+                    },
+                    {
+                        is_user: true,
+                        access: "default",
+                        group: "anyone",
+                        email: "foo25@bar.com",
+                        id: 43
+                    }
+                ],
+                success: true
+            }
+
+
 ## Patient's Avatar [/patients/{patientid}/avatar(.ext)]
 ### View Patient Avatar [GET]
 View the image avatar of a specific patient. File extensions can be added to the URL

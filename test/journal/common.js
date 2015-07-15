@@ -16,7 +16,7 @@ delete medicationSchema.properties.success;
 
 // verify successful responses
 /*eslint-disable key-spacing */
-var entrySchema = {
+var entrySchema = module.exports.schema = {
     required: ["success", "id", "date", "text", "mood", "hashtags"],
     properties: {
         success:        { type: "boolean" },
