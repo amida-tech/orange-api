@@ -41,7 +41,5 @@ describe("RXNorm", function () {
                 expect(response.body.result.suggestionGroup.suggestionList.suggestion.length).to.be.above(0);
             });
         });
-
-        it("handles the API being down");
     });
 });

@@ -39,7 +39,5 @@ describe("NPI", function () {
                 expect(response.body.count).to.equal(response.body.providers.length);
             });
         });
-
-        it("handles the API being down");
     });
 });
