@@ -4,7 +4,7 @@ by name using the `/group` endpoint. If no results are found, then search for sp
 using the `/spelling` endpoint, and use the results to search by the correct name using the `/group`
 endpoint.
 
-## Medications by Name [/npi/group]
+## Medications by Name [/rxnorm/group]
 ### Query [POST]
 Searches rxnorm for drug by name. Receives a response object with the name searched for and arrays
 of information. Possible matches for drugs (if any) are located in the
@@ -97,7 +97,7 @@ of information. Possible matches for drugs (if any) are located in the
                 success: true
             }
 
-## Medications by Spelling [/npi/spelling]
+## Medications by Spelling [/rxnorm/spelling]
 ### Query [POST]
 Searches RXNorm for spelling suggestions for a given medication.
 
@@ -109,7 +109,7 @@ Searches RXNorm for spelling suggestions for a given medication.
     + Body
 
             {
-                medname: "Allegra-D"
+                medname: "allegrad"
             }
 
 + Response 200
