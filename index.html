@@ -1,4 +1,4 @@
-<!DOCTYPE html><html><head><meta charset="utf-8"><title>API Documentation</title><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css"><style>@import url(http://fonts.googleapis.com/css?family=Roboto:400,700|Inconsolata|Raleway:200);.hljs-comment,.hljs-title{color:#8e908c}.hljs-variable,.hljs-attribute,.hljs-tag,.hljs-regexp,.ruby .hljs-constant,.xml .hljs-tag .hljs-title,.xml .hljs-pi,.xml .hljs-doctype,.html .hljs-doctype,.css .hljs-id,.css .hljs-class,.css .hljs-pseudo{color:#c82829}.hljs-number,.hljs-preprocessor,.hljs-pragma,.hljs-built_in,.hljs-literal,.hljs-params,.hljs-constant{color:#f5871f}.ruby .hljs-class .hljs-title,.css .hljs-rules .hljs-attribute{color:#eab700}.hljs-string,.hljs-value,.hljs-inheritance,.hljs-header,.ruby .hljs-symbol,.xml .hljs-cdata{color:#718c00}.css .hljs-hexcolor{color:#3e999f}.hljs-function,.python .hljs-decorator,.python .hljs-title,.ruby .hljs-function .hljs-title,.ruby .hljs-title .hljs-keyword,.perl .hljs-sub,.javascript .hljs-title,.coffeescript .hljs-title{color:#4271ae}.hljs-keyword,.javascript .hljs-function{color:#8959a8}.hljs{display:block;background:white;color:#4d4d4c;padding:.5em}.coffeescript .javascript,.javascript .xml,.tex .hljs-formula,.xml .javascript,.xml .vbscript,.xml .css,.xml .hljs-cdata{opacity:.5}.hljs-comment,.hljs-title{color:#8e908c}.hljs-variable,.hljs-attribute,.hljs-tag,.hljs-regexp,.ruby .hljs-constant,.xml .hljs-tag .hljs-title,.xml .hljs-pi,.xml .hljs-doctype,.html .hljs-doctype,.css .hljs-id,.css .hljs-class,.css .hljs-pseudo{color:#c82829}.hljs-number,.hljs-preprocessor,.hljs-pragma,.hljs-built_in,.hljs-literal,.hljs-params,.hljs-constant{color:#f5871f}.ruby .hljs-class .hljs-title,.css .hljs-rules .hljs-attribute{color:#eab700}.hljs-string,.hljs-value,.hljs-inheritance,.hljs-header,.ruby .hljs-symbol,.xml .hljs-cdata{color:#718c00}.css .hljs-hexcolor{color:#3e999f}.hljs-function,.python .hljs-decorator,.python .hljs-title,.ruby .hljs-function .hljs-title,.ruby .hljs-title .hljs-keyword,.perl .hljs-sub,.javascript .hljs-title,.coffeescript .hljs-title{color:#4271ae}.hljs-keyword,.javascript .hljs-function{color:#8959a8}.hljs{display:block;background:white;color:#4d4d4c;padding:.5em}.coffeescript .javascript,.javascript .xml,.tex .hljs-formula,.xml .javascript,.xml .vbscript,.xml .css,.xml .hljs-cdata{opacity:.5}body{color:black;background:white;font-family:'Roboto',Helvetica,sans-serif;font-size:14px;line-height:1.42}header{border-bottom:1px solid #ededed;margin-bottom:12px}h1,h2,h3,h4,h5{margin:12px 0}h1 .permalink,h2 .permalink,h3 .permalink,h4 .permalink,h5 .permalink{margin-left:6px;opacity:0;transition:opacity .25s ease}h1:hover .permalink,h2:hover .permalink,h3:hover .permalink,h4:hover .permalink,h5:hover .permalink{opacity:1}h1{font-family:'Raleway',Helvetica,sans-serif;font-size:36px;font-weight:500}h2{font-family:'Raleway',Helvetica,sans-serif;font-size:30px;font-weight:500}h3{font-size:100%;text-transform:uppercase}h5{font-size:100%;font-weight:normal}p{margin:0 0 10px}p.choices{line-height:1.6}a{color:#18bc9c;text-decoration:none}li p{margin:0}dl dt{float:left;width:160px;clear:left;text-align:right;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:700}dl dd{margin-left:180px}blockquote{font-size:17.5px;padding:10px 20px;margin:12px 0;border-left:5px solid #e8e8e8}blockquote p:last-child{margin-bottom:0}pre{background-color:#f5f5f5;padding:12px;border:1px solid #cfcfcf;border-radius:6px}pre code{background-color:transparent;border:none}code{color:#444;background-color:#ddd;font-family:'Inconsolata',monospace;padding:1px 4px;border:1px solid #cfcfcf;border-radius:3px}nav{position:fixed;top:24px;bottom:0;overflow-y:auto}nav .heading a{display:block;color:black;opacity:.7;border-left:2px solid transparent}nav .heading a:hover{border-left:2px solid black}nav ul{list-style-type:none;padding-left:0}nav ul a{display:block;font-size:13px;color:black;opacity:.7;padding:8px 12px;border-top:1px solid #ededed;border-left:2px solid transparent}nav ul a:hover{border-left:2px solid black}nav ul>li{margin:0 -12px}nav ul>li:first-child{margin-top:-12px}nav ul>li:last-child{margin-bottom:-24px}nav ul ul a{padding-left:24px}nav ul ul li{margin:0}nav ul ul li:first-child{margin-top:0}nav ul ul li:last-child{margin-bottom:0}nav>div>ul>li:first-child>a{border-top:none}.preload *{transition:none !important}.pull-left{float:left}.pull-right{float:right}.badge{display:inline-block;float:right;min-width:10px;min-height:14px;padding:3px 7px;font-size:12px;color:#000;background-color:#ededed;border-radius:10px;margin-top:-2px}.badge.get{color:#fff;background-color:#3498db}.badge.put{color:#fff;background-color:#f39c12}.badge.post{color:#fff;background-color:#18bc9c}.badge.delete{color:#fff;background-color:#e74c3c}.collapse-button{float:right}.collapse-button .close{display:none;color:#18bc9c;cursor:pointer}.collapse-button .open{color:#18bc9c;cursor:pointer}.collapse-button.show .close{display:inline}.collapse-button.show .open{display:none}.collapse-content{max-height:0;overflow:hidden;transition:max-height .3s ease-in-out}nav{width:220px}.container{max-width:940px;margin-left:auto;margin-right:auto}.container .row .content{margin-left:244px;width:696px}.container .row:after{content:'';display:block;clear:both}.container-fluid nav{width:22%}.container-fluid .row .content{margin-left:24%;width:76%}@media (max-width:1200px){nav{width:220px}.container{max-width:770px}.container .row .content{margin-left:244px;width:526px}}@media (max-width:992px){nav{width:170px}.container{max-width:720px}.container .row .content{margin-left:194px;width:526px}}@media (max-width:768px){nav{display:none}.container{width:95%;max-width:none}.container .row .content,.container-fluid .row .content{margin-left:auto;margin-right:auto;width:95%}}.back-to-top{position:fixed;z-index:1;bottom:0;right:24px;padding:4px 8px;color:rgba(0,0,0,0.5);background-color:#ededed;text-decoration:none !important;border-top:1px solid #ededed;border-left:1px solid #ededed;border-right:1px solid #ededed;border-top-left-radius:3px;border-top-right-radius:3px}.resource-group{padding:12px;margin-bottom:12px;border:1px solid #ededed;border-radius:6px}.resource-group h2,.resource-group .heading a{padding:12px;margin:-12px -12px 12px -12px;background-color:#ededed;border-bottom:1px solid #ededed;border-top-left-radius:6px;border-top-right-radius:6px;white-space:nowrap;text-overflow:ellipsis;overflow:hidden}.action{margin-bottom:12px;padding:12px 12px 0 12px;overflow:hidden;border:1px solid transparent;border-radius:6px}.action h4{padding:12px;margin:-12px -12px 12px -12px;border-bottom:1px solid transparent;border-top-left-radius:6px;border-top-right-radius:6px;white-space:nowrap;text-overflow:ellipsis;overflow:hidden}.action h4 .name{float:right;font-weight:normal}.action h4 .method{padding:6px 12px;margin-right:12px;border-radius:3px}.action h4 .method.get{color:#000;background-color:white}.action h4 .method.put{color:#000;background-color:white}.action h4 .method.post{color:#000;background-color:white}.action h4 .method.delete{color:#000;background-color:white}.action h4 code{color:#444;background-color:rgba(255,255,255,0.7);border-color:transparent}.action .title{border-bottom:1px solid #ededed;margin:0 -12px -1px -12px;padding:12px}.action.get{border-color:#3498db}.action.get h4{color:white;background:#3498db;border-bottom-color:#3498db}.action.post{border-color:#18bc9c}.action.post h4{color:white;background:#18bc9c;border-bottom-color:#18bc9c}.action.put{border-color:#f39c12}.action.put h4{color:white;background:#f39c12;border-bottom-color:#f39c12}.action.delete{border-color:#e74c3c}.action.delete h4{color:white;background:#e74c3c;border-bottom-color:#e74c3c}</style></head><body class="preload"><a href="#top" class="text-muted back-to-top"><i class="fa fa-toggle-up"></i>&nbsp;Back to top</a><div class="container"><div class="row"><nav><div class="resource-group"><div class="heading"><a href="#authentication">Authentication</a></div><ul><li><a href="#authentication-access-tokens-post">Access Tokens<span class="badge post"><i class="fa fa-plus"></i></span></a></li></ul></div><div class="resource-group"><div class="heading"><a href="#users">Users</a></div><ul><li><a href="#users-user">User</a><ul><li><a href="#users-user-post">Register a New User<span class="badge post"><i class="fa fa-plus"></i></span></a></li><li><a href="#users-user-get">View User Info<span class="badge get"><i class="fa fa-arrow-down"></i></span></a></li><li><a href="#users-user-put">Change User Info<span class="badge put"><i class="fa fa-pencil"></i></span></a></li><li><a href="#users-user-delete">Delete User<span class="badge delete"><i class="fa fa-times"></i></span></a></li></ul></li></ul></div><div class="resource-group"><div class="heading"><a href="#patients">Patients</a></div><ul><li><a href="#patients-user's-patients">User's Patients</a><ul><li><a href="#patients-user's-patients-post">Create new Patient<span class="badge post"><i class="fa fa-plus"></i></span></a></li><li><a href="#patients-user's-patients-get">List Patients<span class="badge get"><i class="fa fa-arrow-down"></i></span></a></li></ul></li><li><a href="#patients-patient">Patient</a><ul><li><a href="#patients-patient-get">View Patient Info<span class="badge get"><i class="fa fa-arrow-down"></i></span></a></li><li><a href="#patients-patient-put">Update Patient Info<span class="badge put"><i class="fa fa-pencil"></i></span></a></li><li><a href="#patients-patient-delete">Delete Patient<span class="badge delete"><i class="fa fa-times"></i></span></a></li></ul></li><li><a href="#patients-patient's-avatar">Patient's Avatar</a><ul><li><a href="#patients-patient's-avatar-get">View Patient Avatar<span class="badge get"><i class="fa fa-arrow-down"></i></span></a></li><li><a href="#patients-patient's-avatar-post">Upload Patient Avatar<span class="badge post"><i class="fa fa-plus"></i></span></a></li></ul></li><li><a href="#patients-patient's-shared-users">Patient's Shared Users</a><ul><li><a href="#patients-patient's-shared-users-post">Share with a User<span class="badge post"><i class="fa fa-plus"></i></span></a></li><li><a href="#patients-patient's-shared-users-get">List all Shared Users<span class="badge get"><i class="fa fa-arrow-down"></i></span></a></li></ul></li><li><a href="#patients-shared-user">Shared User</a><ul><li><a href="#patients-shared-user-put">Update Access Level<span class="badge put"><i class="fa fa-pencil"></i></span></a></li><li><a href="#patients-shared-user-delete">Stop Sharing with User<span class="badge delete"><i class="fa fa-times"></i></span></a></li></ul></li></ul></div><div class="resource-group"><div class="heading"><a href="#habits">Habits</a></div><ul><li><a href="#habits-patient-habits">Patient Habits</a><ul><li><a href="#habits-patient-habits-get">Get Patient Habits<span class="badge get"><i class="fa fa-arrow-down"></i></span></a></li><li><a href="#habits-patient-habits-put">Set Patient Habits<span class="badge put"><i class="fa fa-pencil"></i></span></a></li></ul></li></ul></div><div class="resource-group"><div class="heading"><a href="#journal-entries">Journal Entries</a></div><ul><li><a href="#journal-entries-journal-entries">Journal Entries</a><ul><li><a href="#journal-entries-journal-entries-post">Create an Entry<span class="badge post"><i class="fa fa-plus"></i></span></a></li><li><a href="#journal-entries-journal-entries-get">Retrieve all Entries<span class="badge get"><i class="fa fa-arrow-down"></i></span></a></li></ul></li><li><a href="#journal-entries-journal-entry">Journal Entry</a><ul><li><a href="#journal-entries-journal-entry-get">Retrieve One Entry<span class="badge get"><i class="fa fa-arrow-down"></i></span></a></li><li><a href="#journal-entries-journal-entry-put">Change an Entry<span class="badge put"><i class="fa fa-pencil"></i></span></a></li><li><a href="#journal-entries-journal-entry-delete">Delete an Entry<span class="badge delete"><i class="fa fa-times"></i></span></a></li></ul></li></ul></div><div class="resource-group"><div class="heading"><a href="#doctors">Doctors</a></div><ul><li><a href="#doctors-doctors-collection">Doctors Collection</a><ul><li><a href="#doctors-doctors-collection-post">Create a Doctor<span class="badge post"><i class="fa fa-plus"></i></span></a></li><li><a href="#doctors-doctors-collection-get">Retrieve all Doctors<span class="badge get"><i class="fa fa-arrow-down"></i></span></a></li></ul></li><li><a href="#doctors-doctor">Doctor</a><ul><li><a href="#doctors-doctor-get">Retrieve a Doctor<span class="badge get"><i class="fa fa-arrow-down"></i></span></a></li><li><a href="#doctors-doctor-put">Change a Doctor's Info<span class="badge put"><i class="fa fa-pencil"></i></span></a></li><li><a href="#doctors-doctor-delete">Delete a Doctor<span class="badge delete"><i class="fa fa-times"></i></span></a></li></ul></li></ul></div><div class="resource-group"><div class="heading"><a href="#pharmacies">Pharmacies</a></div><ul><li><a href="#pharmacies-pharmacies-collection">Pharmacies Collection</a><ul><li><a href="#pharmacies-pharmacies-collection-post">Create a Pharmacy<span class="badge post"><i class="fa fa-plus"></i></span></a></li><li><a href="#pharmacies-pharmacies-collection-get">Retrieve all Pharmacies<span class="badge get"><i class="fa fa-arrow-down"></i></span></a></li></ul></li><li><a href="#pharmacies-pharmacy">Pharmacy</a><ul><li><a href="#pharmacies-pharmacy-get">Retrieve a Pharmacy<span class="badge get"><i class="fa fa-arrow-down"></i></span></a></li><li><a href="#pharmacies-pharmacy-put">Change a Pharmacy's Info<span class="badge put"><i class="fa fa-pencil"></i></span></a></li><li><a href="#pharmacies-pharmacy-delete">Delete a Pharmacy<span class="badge delete"><i class="fa fa-times"></i></span></a></li></ul></li></ul></div><div class="resource-group"><div class="heading"><a href="#medications">Medications</a></div><ul><li><a href="#medications-medications-collection">Medications Collection</a><ul><li><a href="#medications-medications-collection-post">Create a new Medication<span class="badge post"><i class="fa fa-plus"></i></span></a></li><li><a href="#medications-medications-collection-get">Retrieve all Medications<span class="badge get"><i class="fa fa-arrow-down"></i></span></a></li></ul></li><li><a href="#medications-medication">Medication</a><ul><li><a href="#medications-medication-get">Retrieve a Medication<span class="badge get"><i class="fa fa-arrow-down"></i></span></a></li><li><a href="#medications-medication-put">Change a Med's Info<span class="badge put"><i class="fa fa-pencil"></i></span></a></li><li><a href="#medications-medication-delete">Delete a Medication<span class="badge delete"><i class="fa fa-times"></i></span></a></li></ul></li></ul></div><div class="resource-group"><div class="heading"><a href="#dose-events">Dose Events</a></div><ul><li><a href="#dose-events-dose-events-collection">Dose Events Collection</a><ul><li><a href="#dose-events-dose-events-collection-post">Create an Event<span class="badge post"><i class="fa fa-plus"></i></span></a></li><li><a href="#dose-events-dose-events-collection-get">Retrieve all Doses<span class="badge get"><i class="fa fa-arrow-down"></i></span></a></li></ul></li><li><a href="#dose-events-dose-event">Dose Event</a><ul><li><a href="#dose-events-dose-event-get">Retrieve One Event<span class="badge get"><i class="fa fa-arrow-down"></i></span></a></li><li><a href="#dose-events-dose-event-put">Change an Event<span class="badge put"><i class="fa fa-pencil"></i></span></a></li><li><a href="#dose-events-dose-event-delete">Delete an Event<span class="badge delete"><i class="fa fa-times"></i></span></a></li></ul></li></ul></div><div class="resource-group"><div class="heading"><a href="#schedule">Schedule</a></div><ul><li><a href="#schedule-schedule-get">Schedule<span class="badge get"><i class="fa fa-arrow-down"></i></span></a></li></ul></div></nav><div class="content"><header><h1 id="top">API Documentation</h1></header><style>
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>API Documentation</title><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css"><style>@import url(http://fonts.googleapis.com/css?family=Roboto:400,700|Inconsolata|Raleway:200);.hljs-comment,.hljs-title{color:#8e908c}.hljs-variable,.hljs-attribute,.hljs-tag,.hljs-regexp,.ruby .hljs-constant,.xml .hljs-tag .hljs-title,.xml .hljs-pi,.xml .hljs-doctype,.html .hljs-doctype,.css .hljs-id,.css .hljs-class,.css .hljs-pseudo{color:#c82829}.hljs-number,.hljs-preprocessor,.hljs-pragma,.hljs-built_in,.hljs-literal,.hljs-params,.hljs-constant{color:#f5871f}.ruby .hljs-class .hljs-title,.css .hljs-rules .hljs-attribute{color:#eab700}.hljs-string,.hljs-value,.hljs-inheritance,.hljs-header,.ruby .hljs-symbol,.xml .hljs-cdata{color:#718c00}.css .hljs-hexcolor{color:#3e999f}.hljs-function,.python .hljs-decorator,.python .hljs-title,.ruby .hljs-function .hljs-title,.ruby .hljs-title .hljs-keyword,.perl .hljs-sub,.javascript .hljs-title,.coffeescript .hljs-title{color:#4271ae}.hljs-keyword,.javascript .hljs-function{color:#8959a8}.hljs{display:block;background:white;color:#4d4d4c;padding:.5em}.coffeescript .javascript,.javascript .xml,.tex .hljs-formula,.xml .javascript,.xml .vbscript,.xml .css,.xml .hljs-cdata{opacity:.5}.hljs-comment,.hljs-title{color:#8e908c}.hljs-variable,.hljs-attribute,.hljs-tag,.hljs-regexp,.ruby .hljs-constant,.xml .hljs-tag .hljs-title,.xml .hljs-pi,.xml .hljs-doctype,.html .hljs-doctype,.css .hljs-id,.css .hljs-class,.css .hljs-pseudo{color:#c82829}.hljs-number,.hljs-preprocessor,.hljs-pragma,.hljs-built_in,.hljs-literal,.hljs-params,.hljs-constant{color:#f5871f}.ruby .hljs-class .hljs-title,.css .hljs-rules .hljs-attribute{color:#eab700}.hljs-string,.hljs-value,.hljs-inheritance,.hljs-header,.ruby .hljs-symbol,.xml .hljs-cdata{color:#718c00}.css .hljs-hexcolor{color:#3e999f}.hljs-function,.python .hljs-decorator,.python .hljs-title,.ruby .hljs-function .hljs-title,.ruby .hljs-title .hljs-keyword,.perl .hljs-sub,.javascript .hljs-title,.coffeescript .hljs-title{color:#4271ae}.hljs-keyword,.javascript .hljs-function{color:#8959a8}.hljs{display:block;background:white;color:#4d4d4c;padding:.5em}.coffeescript .javascript,.javascript .xml,.tex .hljs-formula,.xml .javascript,.xml .vbscript,.xml .css,.xml .hljs-cdata{opacity:.5}body{color:black;background:white;font-family:'Roboto',Helvetica,sans-serif;font-size:14px;line-height:1.42}header{border-bottom:1px solid #ededed;margin-bottom:12px}h1,h2,h3,h4,h5{margin:12px 0}h1 .permalink,h2 .permalink,h3 .permalink,h4 .permalink,h5 .permalink{margin-left:6px;opacity:0;transition:opacity .25s ease}h1:hover .permalink,h2:hover .permalink,h3:hover .permalink,h4:hover .permalink,h5:hover .permalink{opacity:1}h1{font-family:'Raleway',Helvetica,sans-serif;font-size:36px;font-weight:500}h2{font-family:'Raleway',Helvetica,sans-serif;font-size:30px;font-weight:500}h3{font-size:100%;text-transform:uppercase}h5{font-size:100%;font-weight:normal}p{margin:0 0 10px}p.choices{line-height:1.6}a{color:#18bc9c;text-decoration:none}li p{margin:0}dl dt{float:left;width:160px;clear:left;text-align:right;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:700}dl dd{margin-left:180px}blockquote{font-size:17.5px;padding:10px 20px;margin:12px 0;border-left:5px solid #e8e8e8}blockquote p:last-child{margin-bottom:0}pre{background-color:#f5f5f5;padding:12px;border:1px solid #cfcfcf;border-radius:6px}pre code{background-color:transparent;border:none}code{color:#444;background-color:#ddd;font-family:'Inconsolata',monospace;padding:1px 4px;border:1px solid #cfcfcf;border-radius:3px}nav{position:fixed;top:24px;bottom:0;overflow-y:auto}nav .heading a{display:block;color:black;opacity:.7;border-left:2px solid transparent}nav .heading a:hover{border-left:2px solid black}nav ul{list-style-type:none;padding-left:0}nav ul a{display:block;font-size:13px;color:black;opacity:.7;padding:8px 12px;border-top:1px solid #ededed;border-left:2px solid transparent}nav ul a:hover{border-left:2px solid black}nav ul>li{margin:0 -12px}nav ul>li:first-child{margin-top:-12px}nav ul>li:last-child{margin-bottom:-24px}nav ul ul a{padding-left:24px}nav ul ul li{margin:0}nav ul ul li:first-child{margin-top:0}nav ul ul li:last-child{margin-bottom:0}nav>div>ul>li:first-child>a{border-top:none}.preload *{transition:none !important}.pull-left{float:left}.pull-right{float:right}.badge{display:inline-block;float:right;min-width:10px;min-height:14px;padding:3px 7px;font-size:12px;color:#000;background-color:#ededed;border-radius:10px;margin-top:-2px}.badge.get{color:#fff;background-color:#3498db}.badge.put{color:#fff;background-color:#f39c12}.badge.post{color:#fff;background-color:#18bc9c}.badge.delete{color:#fff;background-color:#e74c3c}.collapse-button{float:right}.collapse-button .close{display:none;color:#18bc9c;cursor:pointer}.collapse-button .open{color:#18bc9c;cursor:pointer}.collapse-button.show .close{display:inline}.collapse-button.show .open{display:none}.collapse-content{max-height:0;overflow:hidden;transition:max-height .3s ease-in-out}nav{width:220px}.container{max-width:940px;margin-left:auto;margin-right:auto}.container .row .content{margin-left:244px;width:696px}.container .row:after{content:'';display:block;clear:both}.container-fluid nav{width:22%}.container-fluid .row .content{margin-left:24%;width:76%}@media (max-width:1200px){nav{width:220px}.container{max-width:770px}.container .row .content{margin-left:244px;width:526px}}@media (max-width:992px){nav{width:170px}.container{max-width:720px}.container .row .content{margin-left:194px;width:526px}}@media (max-width:768px){nav{display:none}.container{width:95%;max-width:none}.container .row .content,.container-fluid .row .content{margin-left:auto;margin-right:auto;width:95%}}.back-to-top{position:fixed;z-index:1;bottom:0;right:24px;padding:4px 8px;color:rgba(0,0,0,0.5);background-color:#ededed;text-decoration:none !important;border-top:1px solid #ededed;border-left:1px solid #ededed;border-right:1px solid #ededed;border-top-left-radius:3px;border-top-right-radius:3px}.resource-group{padding:12px;margin-bottom:12px;border:1px solid #ededed;border-radius:6px}.resource-group h2,.resource-group .heading a{padding:12px;margin:-12px -12px 12px -12px;background-color:#ededed;border-bottom:1px solid #ededed;border-top-left-radius:6px;border-top-right-radius:6px;white-space:nowrap;text-overflow:ellipsis;overflow:hidden}.action{margin-bottom:12px;padding:12px 12px 0 12px;overflow:hidden;border:1px solid transparent;border-radius:6px}.action h4{padding:12px;margin:-12px -12px 12px -12px;border-bottom:1px solid transparent;border-top-left-radius:6px;border-top-right-radius:6px;white-space:nowrap;text-overflow:ellipsis;overflow:hidden}.action h4 .name{float:right;font-weight:normal}.action h4 .method{padding:6px 12px;margin-right:12px;border-radius:3px}.action h4 .method.get{color:#000;background-color:white}.action h4 .method.put{color:#000;background-color:white}.action h4 .method.post{color:#000;background-color:white}.action h4 .method.delete{color:#000;background-color:white}.action h4 code{color:#444;background-color:rgba(255,255,255,0.7);border-color:transparent}.action .title{border-bottom:1px solid #ededed;margin:0 -12px -1px -12px;padding:12px}.action.get{border-color:#3498db}.action.get h4{color:white;background:#3498db;border-bottom-color:#3498db}.action.post{border-color:#18bc9c}.action.post h4{color:white;background:#18bc9c;border-bottom-color:#18bc9c}.action.put{border-color:#f39c12}.action.put h4{color:white;background:#f39c12;border-bottom-color:#f39c12}.action.delete{border-color:#e74c3c}.action.delete h4{color:white;background:#e74c3c;border-bottom-color:#e74c3c}</style></head><body class="preload"><a href="#top" class="text-muted back-to-top"><i class="fa fa-toggle-up"></i>&nbsp;Back to top</a><div class="container"><div class="row"><nav><div class="resource-group"><div class="heading"><a href="#authentication">Authentication</a></div><ul><li><a href="#authentication-access-tokens-post">Access Tokens<span class="badge post"><i class="fa fa-plus"></i></span></a></li></ul></div><div class="resource-group"><div class="heading"><a href="#users">Users</a></div><ul><li><a href="#users-user">User</a><ul><li><a href="#users-user-post">Register a New User<span class="badge post"><i class="fa fa-plus"></i></span></a></li><li><a href="#users-user-get">View User Info<span class="badge get"><i class="fa fa-arrow-down"></i></span></a></li><li><a href="#users-user-put">Change User Info<span class="badge put"><i class="fa fa-pencil"></i></span></a></li><li><a href="#users-user-delete">Delete User<span class="badge delete"><i class="fa fa-times"></i></span></a></li></ul></li></ul></div><div class="resource-group"><div class="heading"><a href="#patients">Patients</a></div><ul><li><a href="#patients-user's-patients">User's Patients</a><ul><li><a href="#patients-user's-patients-post">Create new Patient<span class="badge post"><i class="fa fa-plus"></i></span></a></li><li><a href="#patients-user's-patients-get">List Patients<span class="badge get"><i class="fa fa-arrow-down"></i></span></a></li></ul></li><li><a href="#patients-patient">Patient</a><ul><li><a href="#patients-patient-get">View Patient Info<span class="badge get"><i class="fa fa-arrow-down"></i></span></a></li><li><a href="#patients-patient-put">Update Patient Info<span class="badge put"><i class="fa fa-pencil"></i></span></a></li><li><a href="#patients-patient-delete">Delete Patient<span class="badge delete"><i class="fa fa-times"></i></span></a></li></ul></li><li><a href="#patients-patient-data-dump-get">Patient Data Dump<span class="badge get"><i class="fa fa-arrow-down"></i></span></a></li><li><a href="#patients-patient's-avatar">Patient's Avatar</a><ul><li><a href="#patients-patient's-avatar-get">View Patient Avatar<span class="badge get"><i class="fa fa-arrow-down"></i></span></a></li><li><a href="#patients-patient's-avatar-post">Upload Patient Avatar<span class="badge post"><i class="fa fa-plus"></i></span></a></li></ul></li><li><a href="#patients-patient's-shared-users">Patient's Shared Users</a><ul><li><a href="#patients-patient's-shared-users-post">Share with a User<span class="badge post"><i class="fa fa-plus"></i></span></a></li><li><a href="#patients-patient's-shared-users-get">List all Shared Users<span class="badge get"><i class="fa fa-arrow-down"></i></span></a></li></ul></li><li><a href="#patients-shared-user">Shared User</a><ul><li><a href="#patients-shared-user-put">Update Access Level<span class="badge put"><i class="fa fa-pencil"></i></span></a></li><li><a href="#patients-shared-user-delete">Stop Sharing with User<span class="badge delete"><i class="fa fa-times"></i></span></a></li></ul></li></ul></div><div class="resource-group"><div class="heading"><a href="#habits">Habits</a></div><ul><li><a href="#habits-patient-habits">Patient Habits</a><ul><li><a href="#habits-patient-habits-get">Get Patient Habits<span class="badge get"><i class="fa fa-arrow-down"></i></span></a></li><li><a href="#habits-patient-habits-put">Set Patient Habits<span class="badge put"><i class="fa fa-pencil"></i></span></a></li></ul></li></ul></div><div class="resource-group"><div class="heading"><a href="#journal-entries">Journal Entries</a></div><ul><li><a href="#journal-entries-journal-entries">Journal Entries</a><ul><li><a href="#journal-entries-journal-entries-post">Create an Entry<span class="badge post"><i class="fa fa-plus"></i></span></a></li><li><a href="#journal-entries-journal-entries-get">Retrieve all Entries<span class="badge get"><i class="fa fa-arrow-down"></i></span></a></li></ul></li><li><a href="#journal-entries-journal-entry">Journal Entry</a><ul><li><a href="#journal-entries-journal-entry-get">Retrieve One Entry<span class="badge get"><i class="fa fa-arrow-down"></i></span></a></li><li><a href="#journal-entries-journal-entry-put">Change an Entry<span class="badge put"><i class="fa fa-pencil"></i></span></a></li><li><a href="#journal-entries-journal-entry-delete">Delete an Entry<span class="badge delete"><i class="fa fa-times"></i></span></a></li></ul></li></ul></div><div class="resource-group"><div class="heading"><a href="#doctors">Doctors</a></div><ul><li><a href="#doctors-doctors-collection">Doctors Collection</a><ul><li><a href="#doctors-doctors-collection-post">Create a Doctor<span class="badge post"><i class="fa fa-plus"></i></span></a></li><li><a href="#doctors-doctors-collection-get">Retrieve all Doctors<span class="badge get"><i class="fa fa-arrow-down"></i></span></a></li></ul></li><li><a href="#doctors-doctor">Doctor</a><ul><li><a href="#doctors-doctor-get">Retrieve a Doctor<span class="badge get"><i class="fa fa-arrow-down"></i></span></a></li><li><a href="#doctors-doctor-put">Change a Doctor's Info<span class="badge put"><i class="fa fa-pencil"></i></span></a></li><li><a href="#doctors-doctor-delete">Delete a Doctor<span class="badge delete"><i class="fa fa-times"></i></span></a></li></ul></li></ul></div><div class="resource-group"><div class="heading"><a href="#pharmacies">Pharmacies</a></div><ul><li><a href="#pharmacies-pharmacies-collection">Pharmacies Collection</a><ul><li><a href="#pharmacies-pharmacies-collection-post">Create a Pharmacy<span class="badge post"><i class="fa fa-plus"></i></span></a></li><li><a href="#pharmacies-pharmacies-collection-get">Retrieve all Pharmacies<span class="badge get"><i class="fa fa-arrow-down"></i></span></a></li></ul></li><li><a href="#pharmacies-pharmacy">Pharmacy</a><ul><li><a href="#pharmacies-pharmacy-get">Retrieve a Pharmacy<span class="badge get"><i class="fa fa-arrow-down"></i></span></a></li><li><a href="#pharmacies-pharmacy-put">Change a Pharmacy's Info<span class="badge put"><i class="fa fa-pencil"></i></span></a></li><li><a href="#pharmacies-pharmacy-delete">Delete a Pharmacy<span class="badge delete"><i class="fa fa-times"></i></span></a></li></ul></li></ul></div><div class="resource-group"><div class="heading"><a href="#medications">Medications</a></div><ul><li><a href="#medications-medications-collection">Medications Collection</a><ul><li><a href="#medications-medications-collection-post">Create a new Medication<span class="badge post"><i class="fa fa-plus"></i></span></a></li><li><a href="#medications-medications-collection-get">Retrieve all Medications<span class="badge get"><i class="fa fa-arrow-down"></i></span></a></li></ul></li><li><a href="#medications-medication">Medication</a><ul><li><a href="#medications-medication-get">Retrieve a Medication<span class="badge get"><i class="fa fa-arrow-down"></i></span></a></li><li><a href="#medications-medication-put">Change a Med's Info<span class="badge put"><i class="fa fa-pencil"></i></span></a></li><li><a href="#medications-medication-delete">Delete a Medication<span class="badge delete"><i class="fa fa-times"></i></span></a></li></ul></li></ul></div><div class="resource-group"><div class="heading"><a href="#dose-events">Dose Events</a></div><ul><li><a href="#dose-events-dose-events-collection">Dose Events Collection</a><ul><li><a href="#dose-events-dose-events-collection-post">Create an Event<span class="badge post"><i class="fa fa-plus"></i></span></a></li><li><a href="#dose-events-dose-events-collection-get">Retrieve all Doses<span class="badge get"><i class="fa fa-arrow-down"></i></span></a></li></ul></li><li><a href="#dose-events-dose-event">Dose Event</a><ul><li><a href="#dose-events-dose-event-get">Retrieve One Event<span class="badge get"><i class="fa fa-arrow-down"></i></span></a></li><li><a href="#dose-events-dose-event-put">Change an Event<span class="badge put"><i class="fa fa-pencil"></i></span></a></li><li><a href="#dose-events-dose-event-delete">Delete an Event<span class="badge delete"><i class="fa fa-times"></i></span></a></li></ul></li></ul></div><div class="resource-group"><div class="heading"><a href="#schedule">Schedule</a></div><ul><li><a href="#schedule-schedule-get">Schedule<span class="badge get"><i class="fa fa-arrow-down"></i></span></a></li></ul></div><div class="resource-group"><div class="heading"><a href="#npi">NPI</a></div><ul><li><a href="#npi-provider-collection-post">Provider Collection<span class="badge post"><i class="fa fa-plus"></i></span></a></li></ul></div><div class="resource-group"><div class="heading"><a href="#rxnorm">RXNorm</a></div><ul><li><a href="#rxnorm-medications-by-name-post">Medications by Name<span class="badge post"><i class="fa fa-plus"></i></span></a></li><li><a href="#rxnorm-medications-by-spelling-post">Medications by Spelling<span class="badge post"><i class="fa fa-plus"></i></span></a></li></ul></div></nav><div class="content"><header><h1 id="top">API Documentation</h1></header><style>
     /* wrap code in pre blocks courtesy https://longren.io/wrapping-text-inside-pre-tags/ */
     pre {
         white-space: pre-wrap;       /* CSS 3 */
@@ -503,6 +503,139 @@ called with <code>access=&quot;none&quot;</code> rather than this method.</p>
     access_prime: <span class="hljs-string">"write"</span>,
     access: <span class="hljs-string">"write"</span>,
     group: <span class="hljs-string">"owner"</span>,
+    success: <span class="hljs-literal">true</span>
+}
+</code></pre><div style="height: 1px;"></div></div></div></div></div><div id="patients-patient-data-dump" class="resource"><h3>Patient Data Dump<a href="#patients-patient-data-dump" class="permalink"><i class="fa fa-link"></i></a></h3><div id="patients-patient-data-dump-get" class="action get"><h4><div class="name">View JSON Data Dump</div><a href="#patients-patient-data-dump-get" class="method get">GET</a><code class="uri">/patients/{patientid}.json</code></h4><p>View a data dump of all data associated with a patient (specifically the patient metadata,
+habits, journal entries, doctors, pharmacies, medications and dose events). Only those journal
+entries, medications and dose events that the user has read access to (remember medications can
+override patient-wide access permissions) are shown.</p>
+<div class="title"><strong>Parameters</strong><div class="collapse-button show"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><dl class="inner"><dt>patientid</dt><dd><code>integer</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>unique ID of the patient (<strong>not</strong> user-specific) (<em>url</em>)</p>
+</dd></dl></div><div class="title"><strong>Request</strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><h5>Headers</h5><pre><code><span class="hljs-attribute">Authorization</span>: <span class="hljs-string">Bearer ACCESS_TOKEN</span><br></code></pre><div style="height: 1px;"></div></div></div><div class="title"><strong>Response&nbsp;&nbsp;<code>200</code></strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><div class="description"><p>Errors</p>
+<ul>
+<li>
+<p><code>access_token_required</code> (401) - no access token specified in
+<code>Authorization</code> header</p>
+</li>
+<li>
+<p><code>invalid_access_token</code> (401) - the access token specified is invalid</p>
+</li>
+<li>
+<p><code>invalid_patient_id</code> (404) - a patient with the specified ID was not found</p>
+</li>
+<li>
+<p><code>unauthorized</code> (403) - the current user does not have write access to this patient</p>
+</li>
+</ul>
+</div><h5>Body</h5><pre><code>{
+    id: <span class="hljs-number">34</span>,
+    first_name: <span class="hljs-string">"Patient 11"</span>,
+    last_name: <span class="hljs-string">"number 11"</span>,
+    birthdate: <span class="hljs-string">"1990-01-01"</span>,
+    sex: <span class="hljs-string">"male"</span>,
+    avatar: <span class="hljs-string">"/v1/patients/34/avatar.png"</span>,
+    access_anyone: <span class="hljs-string">"read"</span>,
+    access_family: <span class="hljs-string">"read"</span>,
+    access_prime: <span class="hljs-string">"write"</span>,
+    group: <span class="hljs-string">"anyone"</span>,
+    access: <span class="hljs-string">"read"</span>,
+    habits: {
+        wake: <span class="hljs-literal">null</span>,
+        sleep: <span class="hljs-literal">null</span>,
+        breakfast: <span class="hljs-literal">null</span>,
+        lunch: <span class="hljs-literal">null</span>,
+        dinner: <span class="hljs-literal">null</span>,
+        tz: <span class="hljs-string">"Etc/UTC"</span>
+    },
+    entries: [
+        {
+            date: <span class="hljs-string">"2015-07-15T13:18:21.000-04:00"</span>,
+            text: <span class="hljs-string">"example journal entry"</span>,
+            medication_ids: [
+                <span class="hljs-number">1</span>
+            ],
+            mood: <span class="hljs-string">""</span>,
+            id: <span class="hljs-number">1</span>
+        }
+    ],
+    doctors: [
+        {
+            name: <span class="hljs-string">"test doctor"</span>,
+            phone: <span class="hljs-string">""</span>,
+            address: <span class="hljs-string">""</span>,
+            notes: <span class="hljs-string">""</span>,
+            id: <span class="hljs-number">1</span>
+        }
+    ],
+    pharmacies: [
+        {
+            name: <span class="hljs-string">"test pharmacy"</span>,
+            phone: <span class="hljs-string">""</span>,
+            address: <span class="hljs-string">""</span>,
+            hours: {
+                monday: {},
+                tuesday: {},
+                wednesday: {},
+                thursday: {},
+                friday: {},
+                saturday: {},
+                sunday: {}
+            },
+            notes: <span class="hljs-string">""</span>,
+            id: <span class="hljs-number">1</span>
+        }
+    ],
+    medications: [
+        {
+            name: <span class="hljs-string">"test medication"</span>,
+            rx_norm: <span class="hljs-string">""</span>,
+            rx_number: <span class="hljs-string">""</span>,
+            ndc: <span class="hljs-string">""</span>,
+            dose: {
+                quantity: <span class="hljs-number">1</span>,
+                unit: <span class="hljs-string">"dose"</span>
+            },
+            route: <span class="hljs-string">""</span>,
+            form: <span class="hljs-string">""</span>,
+            quantity: <span class="hljs-number">1</span>,
+            type: <span class="hljs-string">""</span>,
+            fill_date: <span class="hljs-literal">null</span>,
+            doctor_id: <span class="hljs-literal">null</span>,
+            pharmacy_id: <span class="hljs-literal">null</span>,
+            access_anyone: <span class="hljs-string">"default"</span>,
+            access_family: <span class="hljs-string">"default"</span>,
+            access_prime: <span class="hljs-string">"default"</span>,
+            number_left: <span class="hljs-literal">null</span>,
+            schedule: {
+                as_needed: <span class="hljs-literal">true</span>,
+                regularly: <span class="hljs-literal">false</span>
+            },
+            id: <span class="hljs-number">1</span>
+        }
+    ],
+    doses: [
+        {
+            medication_id: <span class="hljs-number">1</span>,
+            date: <span class="hljs-string">"2015-07-15T13:18:21.000-04:00"</span>,
+            notes: <span class="hljs-string">""</span>,
+            id: <span class="hljs-number">1</span>
+        }
+    ],
+    shares: [
+        {
+            is_user: <span class="hljs-literal">true</span>,
+            access: <span class="hljs-string">"write"</span>,
+            group: <span class="hljs-string">"owner"</span>,
+            email: <span class="hljs-string">"foo26@bar.com"</span>,
+            id: <span class="hljs-number">42</span>
+        },
+        {
+            is_user: <span class="hljs-literal">true</span>,
+            access: <span class="hljs-string">"default"</span>,
+            group: <span class="hljs-string">"anyone"</span>,
+            email: <span class="hljs-string">"foo25@bar.com"</span>,
+            id: <span class="hljs-number">43</span>
+        }
+    ],
     success: <span class="hljs-literal">true</span>
 }
 </code></pre><div style="height: 1px;"></div></div></div></div></div><div id="patients-patient's-avatar" class="resource"><h3>Patient's Avatar<a href="#patients-patient's-avatar" class="permalink"><i class="fa fa-link"></i></a></h3><div id="patients-patient's-avatar-get" class="action get"><h4><div class="name">View Patient Avatar</div><a href="#patients-patient's-avatar-get" class="method get">GET</a><code class="uri">/patients/{patientid}/avatar(.ext)</code></h4><p>View the image avatar of a specific patient. File extensions can be added to the URL
@@ -2682,7 +2815,167 @@ one week later than the current time.</p>
     },
     success: <span class="hljs-literal">true</span>
 }
-</code></pre><div style="height: 1px;"></div></div></div></div></div></section></div></div></div><p style="text-align: center;" class="text-muted">Generated by&nbsp;<a href="https://github.com/danielgtaylor/aglio" class="aglio">aglio</a>&nbsp;on 14 Jul 2015</p><script>function toggleCollapse(event) {
+</code></pre><div style="height: 1px;"></div></div></div></div></div></section><section id="npi" class="resource-group"><h2>NPI<a href="#npi" class="permalink"><i class="fa fa-link"></i></a></h2><p>Uses the BloomAPI to look up provider information in the National Plan and Provider Enumeration System (NPPES).</p>
+<div id="npi-provider-collection" class="resource"><h3>Provider Collection<a href="#npi-provider-collection" class="permalink"><i class="fa fa-link"></i></a></h3><div id="npi-provider-collection-post" class="action post"><h4><div class="name">Query Providers</div><a href="#npi-provider-collection-post" class="method post">POST</a><code class="uri">/npi</code></h4><p>Searches BloomAPI using a combination of first name, last name and State (two letter code). Receives an
+array of possible Prescriber matches. BloomAPI limits the response to 100 possible matches.</p>
+<div class="title"><strong>Parameters</strong><div class="collapse-button show"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><dl class="inner"><dt>search</dt><dd><code>object</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>Query object to search by. See example below, as well as <a href="https://github.com/amida-tech/npi-js">here</a>
+and <a href="https://www.bloomapi.com/documentation/public-data/">here</a> for documentation.</p>
+</dd></dl></div><div class="title"><strong>Request</strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><h5>Body</h5><pre><code>{
+    name: [{
+        first: <span class="hljs-string">"Harry"</span>, <span class="hljs-comment">//String, Optional</span>
+        last: <span class="hljs-string">"Dennis"</span> <span class="hljs-comment">//String, required</span>
+    }],
+    address: [{
+        state: <span class="hljs-string">"CA"</span> <span class="hljs-comment">//String, optional</span>
+    }]
+}
+</code></pre><div style="height: 1px;"></div></div></div><div class="title"><strong>Response&nbsp;&nbsp;<code>200</code></strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><div class="description"><ul>
+<li><code>rxnorm_error</code> (500) - error communicating with Bloom API</li>
+</ul>
+</div><h5>Body</h5><pre><code>{
+    providers: [ 
+        {
+            business_address: {
+                address_details_line: <span class="hljs-string">"2ND FLOOR"</span>,
+                address_line: <span class="hljs-string">"2350 W EL CAMINO REAL"</span>,
+                city: <span class="hljs-string">"MOUNTAIN VIEW"</span>,
+                country_code: <span class="hljs-string">"US"</span>,
+                state: <span class="hljs-string">"CA"</span>,
+                zip: <span class="hljs-string">"940406203"</span>
+            },
+            credential: <span class="hljs-string">"MD"</span>,
+            enumeration_date: <span class="hljs-string">"2006-08-31T00:00:00.000Z"</span>,
+            first_name: <span class="hljs-string">"HARRY"</span>,
+            gender: <span class="hljs-string">"male"</span>,
+            last_name: <span class="hljs-string">"DENNIS"</span>,
+            last_update_date: <span class="hljs-string">"2012-01-10T00:00:00.000Z"</span>,
+            npi: <span class="hljs-number">1073624029</span>,
+            practice_address: {
+                address_line: <span class="hljs-string">"795 EL CAMINO REAL"</span>,
+                city: <span class="hljs-string">"PALO ALTO"</span>,
+                country_code: <span class="hljs-string">"US"</span>,
+                phone: <span class="hljs-string">"6508532992"</span>,
+                state: <span class="hljs-string">"CA"</span>,
+                zip: <span class="hljs-string">"943012302"</span>
+            },
+            provider_details: [{
+                healthcare_taxonomy_code: <span class="hljs-string">"208000000X"</span>,
+                license_number: <span class="hljs-string">"G68571"</span>,
+                license_number_state: <span class="hljs-string">"CA"</span>,
+                taxonomy_switch: <span class="hljs-string">"yes"</span>
+            }],
+            sole_proprietor: <span class="hljs-string">"no"</span>,
+            type: <span class="hljs-string">"individual"</span>
+        },
+        ...
+    ],
+    count: <span class="hljs-number">3</span>,
+    success: <span class="hljs-literal">true</span>
+}
+</code></pre><div style="height: 1px;"></div></div></div></div></div></section><section id="rxnorm" class="resource-group"><h2>RXNorm<a href="#rxnorm" class="permalink"><i class="fa fa-link"></i></a></h2><p>Uses the RXNorm and OpenFDA APIs to look up medication details. An example flow would be to search
+by name using the <code>/group</code> endpoint. If no results are found, then search for spelling suggestions
+using the <code>/spelling</code> endpoint, and use the results to search by the correct name using the <code>/group</code>
+endpoint.</p>
+<div id="rxnorm-medications-by-name" class="resource"><h3>Medications by Name<a href="#rxnorm-medications-by-name" class="permalink"><i class="fa fa-link"></i></a></h3><div id="rxnorm-medications-by-name-post" class="action post"><h4><div class="name">Query</div><a href="#rxnorm-medications-by-name-post" class="method post">POST</a><code class="uri">/npi/group</code></h4><p>Searches rxnorm for drug by name. Receives a response object with the name searched for and arrays
+of information. Possible matches for drugs (if any) are located in the
+<code>response.drugGroup.conceptGroup</code> array, with the bulk of the information in
+<code>response.drugGroup.conceptGroup[].conceptProperties</code>.</p>
+<div class="title"><strong>Parameters</strong><div class="collapse-button show"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><dl class="inner"><dt>medname</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>Medication name to search by.</p>
+</dd></dl></div><div class="title"><strong>Request</strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><h5>Body</h5><pre><code>{
+    medname: <span class="hljs-string">"Allegra-D"</span>
+}
+</code></pre><div style="height: 1px;"></div></div></div><div class="title"><strong>Response&nbsp;&nbsp;<code>200</code></strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><div class="description"><ul>
+<li><code>rxnorm_error</code> (500) - error communicating with Bloom API</li>
+</ul>
+</div><h5>Body</h5><pre><code>{
+    result: {
+        drugGroup: {
+            name: <span class="hljs-string">"Allegra-D"</span>,
+            conceptGroup: [
+                {
+                    tty: <span class="hljs-string">"BPCK"</span>
+                },
+                {
+                    tty: <span class="hljs-string">"SBD"</span>,
+                    conceptProperties: [
+                        {
+                            rxcui: <span class="hljs-string">"997512"</span>,
+                            name: <span class="hljs-string">"12 HR Fexofenadine hydrochloride 60 MG / Pseudoephedrine Hydrochloride 120 MG Extended Release Oral Tablet [Allegra-D]"</span>,
+                            synonym: <span class="hljs-string">"Allegra-D 12 Hour (fexofenadine hydrochloride 60 MG / pseudoephedrine hydrochloride 120 MG) Extended Release Oral Tablet"</span>,
+                            tty: <span class="hljs-string">"SBD"</span>,
+                            language: <span class="hljs-string">"ENG"</span>,
+                            suppress: <span class="hljs-string">"N"</span>,
+                            umlscui: <span class="hljs-string">"C0716180"</span>,
+                            dfg: [<span class="hljs-string">"Oral Tablet"</span>],
+                            brand: <span class="hljs-string">"Allegra-D"</span>,
+                            modifiedname: <span class="hljs-string">"12 HR Fexofenadine hydrochloride 60 MG / Pseudoephedrine Hydrochloride 120 MG Extended Release  "</span>
+                        }, {
+                            rxcui: <span class="hljs-string">"997515"</span>,
+                            name: <span class="hljs-string">"24 HR Fexofenadine hydrochloride 180 MG / Pseudoephedrine Hydrochloride 240 MG Extended Release Oral Tablet [Allegra-D]"</span>,
+                            synonym: <span class="hljs-string">"Allegra-D 24 Hour (fexofenadine hydrochloride 180 MG / pseudoephedrine hydrochloride 240 MG) Extended Release Oral Tablet"</span>,
+                            tty: <span class="hljs-string">"SBD"</span>,
+                            language: <span class="hljs-string">"ENG"</span>,
+                            suppress: <span class="hljs-string">"N"</span>,
+                            umlscui: <span class="hljs-string">"C1616745"</span>,
+                            dfg: [<span class="hljs-string">"Oral Tablet"</span>],
+                            brand: <span class="hljs-string">"Allegra-D"</span>,
+                            modifiedname: <span class="hljs-string">"24 HR Fexofenadine hydrochloride 180 MG / Pseudoephedrine Hydrochloride 240 MG Extended Release  "</span>
+                        }
+                    ]
+                }
+            ]
+        },
+        compiled: [
+            {
+                rxcui: <span class="hljs-string">"997512"</span>,
+                name: <span class="hljs-string">"12 HR Fexofenadine hydrochloride 60 MG / Pseudoephedrine Hydrochloride 120 MG Extended Release Oral Tablet [Allegra-D]"</span>,
+                synonym: <span class="hljs-string">"Allegra-D 12 Hour (fexofenadine hydrochloride 60 MG / pseudoephedrine hydrochloride 120 MG) Extended Release Oral Tablet"</span>,
+                tty: <span class="hljs-string">"SBD"</span>,
+                language: <span class="hljs-string">"ENG"</span>,
+                suppress: <span class="hljs-string">"N"</span>,
+                umlscui: <span class="hljs-string">"C0716180"</span>,
+                dfg: [<span class="hljs-string">"Oral Tablet"</span>],
+                brand: <span class="hljs-string">"Allegra-D"</span>,
+                modifiedname: <span class="hljs-string">"12 HR Fexofenadine hydrochloride 60 MG / Pseudoephedrine Hydrochloride 120 MG Extended Release  "</span>
+            },
+            {
+                rxcui: <span class="hljs-string">"997515"</span>,
+                name: <span class="hljs-string">"24 HR Fexofenadine hydrochloride 180 MG / Pseudoephedrine Hydrochloride 240 MG Extended Release Oral Tablet [Allegra-D]"</span>,
+                synonym: <span class="hljs-string">"Allegra-D 24 Hour (fexofenadine hydrochloride 180 MG / pseudoephedrine hydrochloride 240 MG) Extended Release Oral Tablet"</span>,
+                tty: <span class="hljs-string">"SBD"</span>,
+                language: <span class="hljs-string">"ENG"</span>,
+                suppress: <span class="hljs-string">"N"</span>,
+                umlscui: <span class="hljs-string">"C1616745"</span>,
+                dfg: [<span class="hljs-string">"Oral Tablet"</span>],
+                brand: <span class="hljs-string">"Allegra-D"</span>,
+                modifiedname: <span class="hljs-string">"24 HR Fexofenadine hydrochloride 180 MG / Pseudoephedrine Hydrochloride 240 MG Extended Release  "</span>
+            }
+        ],
+        dfg: [<span class="hljs-string">"Oral Tablet"</span>],
+        brand: [<span class="hljs-string">"Allegra-D"</span>]
+    },
+    success: <span class="hljs-literal">true</span>
+}
+</code></pre><div style="height: 1px;"></div></div></div></div></div><div id="rxnorm-medications-by-spelling" class="resource"><h3>Medications by Spelling<a href="#rxnorm-medications-by-spelling" class="permalink"><i class="fa fa-link"></i></a></h3><div id="rxnorm-medications-by-spelling-post" class="action post"><h4><div class="name">Query</div><a href="#rxnorm-medications-by-spelling-post" class="method post">POST</a><code class="uri">/npi/spelling</code></h4><p>Searches RXNorm for spelling suggestions for a given medication.</p>
+<div class="title"><strong>Parameters</strong><div class="collapse-button show"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><dl class="inner"><dt>medname</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>Medication name to search by.</p>
+</dd></dl></div><div class="title"><strong>Request</strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><h5>Body</h5><pre><code>{
+    medname: <span class="hljs-string">"Allegra-D"</span>
+}
+</code></pre><div style="height: 1px;"></div></div></div><div class="title"><strong>Response&nbsp;&nbsp;<code>200</code></strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><div class="description"><ul>
+<li><code>rxnorm_error</code> (500) - error communicating with Bloom API</li>
+</ul>
+</div><h5>Body</h5><pre><code>{
+    result: {
+        suggestionGroup: {
+            name: <span class="hljs-string">"allegrad"</span>,
+            suggestionList: {
+                suggestion: [<span class="hljs-string">"Allegra-D"</span>, <span class="hljs-string">"Allegra"</span>, <span class="hljs-string">"Allermax"</span>, <span class="hljs-string">"Alera"</span>, <span class="hljs-string">"Alkeran"</span>, <span class="hljs-string">"Aloeguard"</span>]
+            }
+        }
+    },
+    success: <span class="hljs-literal">true</span>
+}
+</code></pre><div style="height: 1px;"></div></div></div></div></div></section></div></div></div><p style="text-align: center;" class="text-muted">Generated by&nbsp;<a href="https://github.com/danielgtaylor/aglio" class="aglio">aglio</a>&nbsp;on 15 Jul 2015</p><script>function toggleCollapse(event) {
     var button = event.target.parentNode;
     var content = button.parentNode.nextSibling;
     var inner = content.children[0];
