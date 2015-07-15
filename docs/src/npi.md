@@ -25,7 +25,7 @@ array of possible Prescriber matches. BloomAPI limits the response to 100 possib
             }
 
 + Response 200
-    + `bloom_error` (500) - error communicating with Bloom API
+    + `rxnorm_error` (500) - error communicating with Bloom API
 
     + Body
 
@@ -66,6 +66,7 @@ array of possible Prescriber matches. BloomAPI limits the response to 100 possib
                     },
                     ...
                 ],
-                count: 3
+                count: 3,
+                success: true
             }
 

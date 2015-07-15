@@ -70,6 +70,7 @@ router.use("/user", require("./lib/controllers/users.js"));
 
 // External APIs
 router.use("/npi", require("./lib/controllers/npi.js"));
+router.use("/rxnorm", require("./lib/controllers/rxnorm.js"));
 
 // Patient CRUD and sharing
 router.use("/patients", require("./lib/controllers/patients/patients.js"));

@@ -21,3 +21,4 @@
 <!-- include(doses.md) -->
 <!-- include(schedule.md) -->
 <!-- include(npi.md) -->
+<!-- include(rxnorm.md) -->
