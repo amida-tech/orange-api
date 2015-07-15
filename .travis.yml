@@ -11,4 +11,4 @@ install:
   - npm install
   - echo "0123456789abcdef" > .secret
 script: grunt test
-after_success: grunt coverage:push
+# after_success: grunt coverage:push
