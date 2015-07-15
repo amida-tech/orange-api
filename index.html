@@ -107,11 +107,13 @@ email address.</p>
 </dd><dt>password</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>the password of the new user</p>
 </dd><dt>first_name</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>the first name of the new user</p>
 </dd><dt>last_name</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>the last name of the new user</p>
+</dd><dt>phone</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>the phone number of the new user</p>
 </dd></dl></div><div class="title"><strong>Request</strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><h5>Body</h5><pre><code>{
     email: <span class="hljs-string">"foo@bar.com"</span>,
     password: <span class="hljs-string">"foobar"</span>,
     first_name: <span class="hljs-string">"Foo"</span>,
-    last_name: <span class="hljs-string">"Bar"</span>
+    last_name: <span class="hljs-string">"Bar"</span>,
+    phone: <span class="hljs-string">"6177140000"</span>
 }
 </code></pre><div style="height: 1px;"></div></div></div><div class="title"><strong>Response&nbsp;&nbsp;<code>201</code></strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><div class="description"><p>Errors</p>
 <ul>
@@ -133,6 +135,7 @@ address</p>
     email: <span class="hljs-string">"foo@bar.com"</span>,
     first_name: <span class="hljs-string">"Foo"</span>,
     last_name: <span class="hljs-string">"Bar"</span>,
+    phone: <span class="hljs-string">"6177140000"</span>,
     success: <span class="hljs-literal">true</span>
 }
 </code></pre><div style="height: 1px;"></div></div></div></div><div id="users-user-get" class="action get"><h4><div class="name">View User Info</div><a href="#users-user-get" class="method get">GET</a><code class="uri">/user</code></h4><p>Get basic metadata about the current user.</p>
@@ -150,15 +153,18 @@ header</p>
     email: <span class="hljs-string">"foo@bar.com"</span>,
     first_name: <span class="hljs-string">"Foo"</span>,
     last_name: <span class="hljs-string">"Bar"</span>,
+    phone: <span class="hljs-string">"6177140000"</span>,
     success: <span class="hljs-literal">true</span>
 }
 </code></pre><div style="height: 1px;"></div></div></div></div><div id="users-user-put" class="action put"><h4><div class="name">Change User Info</div><a href="#users-user-put" class="method put">PUT</a><code class="uri">/user</code></h4><p>Change basic metadata about the current user, including their password.</p>
 <div class="title"><strong>Parameters</strong><div class="collapse-button show"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><dl class="inner"><dt>first_name</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>new first name</p>
 </dd><dt>last_name</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>new last name</p>
+</dd><dt>phone</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>new phone number</p>
 </dd><dt>password</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>New password. <strong>Note that if the password is changed, all access tokens are revoked</strong>.</p>
 </dd></dl></div><div class="title"><strong>Request</strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><h5>Headers</h5><pre><code><span class="hljs-attribute">Authorization</span>: <span class="hljs-string">Bearer ACCESS_TOKEN</span><br></code></pre><div style="height: 1px;"></div><h5>Body</h5><pre><code>{
     first_name: <span class="hljs-string">"Foo"</span>,
     last_name: <span class="hljs-string">"Baz"</span>,
+    phone: <span class="hljs-string">"6177140001"</span>,
     password: <span class="hljs-string">"foobaz"</span>
 }
 </code></pre><div style="height: 1px;"></div></div></div><div class="title"><strong>Response&nbsp;&nbsp;<code>200</code></strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><div class="description"><p>Errors</p>
@@ -175,6 +181,7 @@ header</p>
     email: <span class="hljs-string">"foo@bar.com"</span>,
     first_name: <span class="hljs-string">"Foo"</span>,
     last_name: <span class="hljs-string">"Baz"</span>,
+    phone: <span class="hljs-string">"6177140001"</span>,
     success: <span class="hljs-literal">true</span>
 }
 </code></pre><div style="height: 1px;"></div></div></div></div><div id="users-user-delete" class="action delete"><h4><div class="name">Delete User</div><a href="#users-user-delete" class="method delete">DELETE</a><code class="uri">/user</code></h4><p>Permanently remove the user, including all metadata stored on them (e.g., their password).
@@ -194,6 +201,7 @@ header</p>
     email: <span class="hljs-string">"foo@bar.com"</span>,
     first_name: <span class="hljs-string">"Foo"</span>,
     last_name: <span class="hljs-string">"Bar"</span>,
+    phone: <span class="hljs-string">"6177140000"</span>,
     success: <span class="hljs-literal">true</span>
 }
 </code></pre><div style="height: 1px;"></div></div></div></div></div></section><section id="patients" class="resource-group"><h2>Patients<a href="#patients" class="permalink"><i class="fa fa-link"></i></a></h2><p>Remember, patients are the resources for which we actually store medication/etc
@@ -237,6 +245,7 @@ the child of the patient.</p>
 </dd><dt>last_name</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>the last name of the patient</p>
 </dd><dt>birthdate</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>Optional date of birth of the patient, formatted as an ISO 8601 YYYY-MM-DD</p>
 </dd><dt>sex</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>String representing sex of the user. Must be “male”, “female”, “other” or “unspecified”.</p>
+</dd><dt>phone</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>Optional phone number of the patient, formatted as a string</p>
 </dd><dt>access_anyone</dt><dd><code>*string*</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>The default access permissions that users this patient is shared with under the <code>anyone</code>
 group should have. Must be either <code>read</code> or <code>write</code>.  Defaults to <code>read</code>.</p>
 </dd><dt>access_family</dt><dd><code>*string*</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>The default access permissions that users this patient is shared with under the <code>family</code>
@@ -248,6 +257,7 @@ should have. Must be either <code>read</code> or <code>write</code>.  Defaults t
     last_name: <span class="hljs-string">"Patient"</span>,
     birthdate: <span class="hljs-string">"1990-01-01"</span>,
     sex: <span class="hljs-string">"male"</span>,
+    phone: <span class="hljs-string">"6177140000"</span>,
     avatar: <span class="hljs-string">"/v1/patients/1/avatar.jpg"</span>,
     access_anyone: <span class="hljs-string">"read"</span>,
     access_family: <span class="hljs-string">"read"</span>,
@@ -288,6 +298,7 @@ should have. Must be either <code>read</code> or <code>write</code>.  Defaults t
     last_name: <span class="hljs-string">"Patient"</span>,
     birthdate: <span class="hljs-string">"1990-01-01"</span>,
     sex: <span class="hljs-string">"male"</span>,
+    phone: <span class="hljs-string">"6177140000"</span>,
     avatar: <span class="hljs-string">"/v1/patients/1/avatar.jpg"</span>,
     access_anyone: <span class="hljs-string">"read"</span>,
     access_family: <span class="hljs-string">"read"</span>,
@@ -336,6 +347,7 @@ and defaults to <code>id</code>.</p>
             last_name: <span class="hljs-string">"Patient"</span>,
             birthdate: <span class="hljs-string">"1990-01-01"</span>,
             sex: <span class="hljs-string">"male"</span>,
+            phone: <span class="hljs-string">"6177140000"</span>,
             avatar: <span class="hljs-string">"/v1/patients/1/avatar.jpg"</span>,
             access_anyone: <span class="hljs-string">"read"</span>,
             access_family: <span class="hljs-string">"read"</span>,
@@ -375,6 +387,7 @@ and defaults to <code>id</code>.</p>
     last_name: <span class="hljs-string">"Patient"</span>,
     birthdate: <span class="hljs-string">"1990-01-01"</span>,
     sex: <span class="hljs-string">"male"</span>,
+    phone: <span class="hljs-string">"6177140000"</span>,
     avatar: <span class="hljs-string">"/v1/patients/1/avatar.jpg"</span>,
     access_anyone: <span class="hljs-string">"read"</span>,
     access_family: <span class="hljs-string">"read"</span>,
@@ -394,7 +407,8 @@ current user has to the patient, and setting <code>access_prime</code>, <code>ac
 </dd><dt>first_name</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>new first name of the patient</p>
 </dd><dt>last_name</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>new last name of the patient</p>
 </dd><dt>birthdate</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>Optional date of birth of the patient, formatted as an ISO 8601 YYYY-MM-DD</p>
-</dd><dt>sex</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>String representing sex of the user. Must be “male”, “female”, “other” or “unspecified”.</p>
+</dd><dt>sex</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>String representing sex of the patient. Must be “male”, “female”, “other” or “unspecified”.</p>
+</dd><dt>phone</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>New phone number of the patient</p>
 </dd><dt>access</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>Explicitly set the patient’s access level to <code>read</code>, <code>write</code>, <code>default</code> or <code>none</code>.
 <code>none</code> stops sharing the patient with the user. <strong>This is permanent and potentially
 irreversible, and hence should be used with caution</strong>.</p>
@@ -408,6 +422,7 @@ Otherwise, the group can be changed between <code>prime</code>, <code>family</co
     last_name: <span class="hljs-string">"Smith"</span>,
     birthdate: <span class="hljs-string">"1991-01-01"</span>,
     sex: <span class="hljs-string">"female"</span>,
+    phone: <span class="hljs-string">"6177140001"</span>,
     access: <span class="hljs-string">"write"</span>,
     group: <span class="hljs-string">"family"</span>,
     access_anyone: <span class="hljs-string">"read"</span>,
@@ -461,6 +476,7 @@ Otherwise, the group can be changed between <code>prime</code>, <code>family</co
     last_name: <span class="hljs-string">"Smith"</span>,
     birthdate: <span class="hljs-string">"1991-01-01"</span>,
     sex: <span class="hljs-string">"female"</span>,
+    phone: <span class="hljs-string">"6177140001"</span>,
     avatar: <span class="hljs-string">"/v1/patients/1/avatar.jpg"</span>,
     access_anyone: <span class="hljs-string">"read"</span>,
     access_family: <span class="hljs-string">"read"</span>,
@@ -497,6 +513,7 @@ called with <code>access=&quot;none&quot;</code> rather than this method.</p>
     last_name: <span class="hljs-string">"Smith"</span>,
     birthdate: <span class="hljs-string">"1991-01-01"</span>,
     sex: <span class="hljs-string">"female"</span>,
+    phone: <span class="hljs-string">"6177140001"</span>,
     avatar: <span class="hljs-string">"/v1/patients/1/avatar.jpg"</span>,
     access_anyone: <span class="hljs-string">"read"</span>,
     access_family: <span class="hljs-string">"read"</span>,
@@ -532,6 +549,7 @@ override patient-wide access permissions) are shown.</p>
     last_name: <span class="hljs-string">"number 11"</span>,
     birthdate: <span class="hljs-string">"1990-01-01"</span>,
     sex: <span class="hljs-string">"male"</span>,
+    phone: <span class="hljs-string">"6177140000"</span>,
     avatar: <span class="hljs-string">"/v1/patients/34/avatar.png"</span>,
     access_anyone: <span class="hljs-string">"read"</span>,
     access_family: <span class="hljs-string">"read"</span>,
@@ -2876,7 +2894,7 @@ and <a href="https://www.bloomapi.com/documentation/public-data/">here</a> for d
 by name using the <code>/group</code> endpoint. If no results are found, then search for spelling suggestions
 using the <code>/spelling</code> endpoint, and use the results to search by the correct name using the <code>/group</code>
 endpoint.</p>
-<div id="rxnorm-medications-by-name" class="resource"><h3>Medications by Name<a href="#rxnorm-medications-by-name" class="permalink"><i class="fa fa-link"></i></a></h3><div id="rxnorm-medications-by-name-post" class="action post"><h4><div class="name">Query</div><a href="#rxnorm-medications-by-name-post" class="method post">POST</a><code class="uri">/npi/group</code></h4><p>Searches rxnorm for drug by name. Receives a response object with the name searched for and arrays
+<div id="rxnorm-medications-by-name" class="resource"><h3>Medications by Name<a href="#rxnorm-medications-by-name" class="permalink"><i class="fa fa-link"></i></a></h3><div id="rxnorm-medications-by-name-post" class="action post"><h4><div class="name">Query</div><a href="#rxnorm-medications-by-name-post" class="method post">POST</a><code class="uri">/rxnorm/group</code></h4><p>Searches rxnorm for drug by name. Receives a response object with the name searched for and arrays
 of information. Possible matches for drugs (if any) are located in the
 <code>response.drugGroup.conceptGroup</code> array, with the bulk of the information in
 <code>response.drugGroup.conceptGroup[].conceptProperties</code>.</p>
@@ -2956,10 +2974,10 @@ of information. Possible matches for drugs (if any) are located in the
     },
     success: <span class="hljs-literal">true</span>
 }
-</code></pre><div style="height: 1px;"></div></div></div></div></div><div id="rxnorm-medications-by-spelling" class="resource"><h3>Medications by Spelling<a href="#rxnorm-medications-by-spelling" class="permalink"><i class="fa fa-link"></i></a></h3><div id="rxnorm-medications-by-spelling-post" class="action post"><h4><div class="name">Query</div><a href="#rxnorm-medications-by-spelling-post" class="method post">POST</a><code class="uri">/npi/spelling</code></h4><p>Searches RXNorm for spelling suggestions for a given medication.</p>
+</code></pre><div style="height: 1px;"></div></div></div></div></div><div id="rxnorm-medications-by-spelling" class="resource"><h3>Medications by Spelling<a href="#rxnorm-medications-by-spelling" class="permalink"><i class="fa fa-link"></i></a></h3><div id="rxnorm-medications-by-spelling-post" class="action post"><h4><div class="name">Query</div><a href="#rxnorm-medications-by-spelling-post" class="method post">POST</a><code class="uri">/rxnorm/spelling</code></h4><p>Searches RXNorm for spelling suggestions for a given medication.</p>
 <div class="title"><strong>Parameters</strong><div class="collapse-button show"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><dl class="inner"><dt>medname</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>Medication name to search by.</p>
 </dd></dl></div><div class="title"><strong>Request</strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><h5>Body</h5><pre><code>{
-    medname: <span class="hljs-string">"Allegra-D"</span>
+    medname: <span class="hljs-string">"allegrad"</span>
 }
 </code></pre><div style="height: 1px;"></div></div></div><div class="title"><strong>Response&nbsp;&nbsp;<code>200</code></strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><div class="description"><ul>
 <li><code>rxnorm_error</code> (500) - error communicating with Bloom API</li>
