@@ -52,6 +52,18 @@ describe("Patients", function () {
                 expect(response.body.last_name).to.equal("");
             });
         });
+        it("accepts a valid phone", function () {
+            return expect(editAPatient({}, { phone: "newname" })).to.be.a.patient.success;
+        });
+        it("accepts a blank phone", function () {
+            return expect(editAPatient({}, { phone: "" })).to.be.a.patient.success;
+        });
+        it("accepts a null phone to reset to blank", function () {
+            return editAPatient({}, { phone: null }).then(function (response) {
+                expect(response).to.be.a.patient.success;
+                expect(response.body.phone).to.equal("");
+            });
+        });
         it("doesn't require any data", function () {
             return expect(editAPatient({}, {})).to.be.a.patient.success;
         });

@@ -3,7 +3,6 @@ var chakram         = require("chakram"),
     util            = require("util"),
     curry           = require("curry"),
     Q               = require("q"),
-    querystring     = require("querystring"),
     auth            = require("../common/auth.js"),
     common          = require("./common.js"),
     sharing         = require("../sharing/common.js"),
@@ -12,8 +11,7 @@ var chakram         = require("chakram"),
     doctors         = require("../doctors/common.js"),
     pharmacies      = require("../pharmacies/common.js"),
     medications     = require("../medications/common.js"),
-    doses           = require("../doses/common.js"),
-    fixtures        = require("./fixtures.js");
+    doses           = require("../doses/common.js");
 
 var expect = chakram.expect;
 

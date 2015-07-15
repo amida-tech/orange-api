@@ -9,6 +9,7 @@ var monky = module.exports = new Monky(mongoose);
 monky.factory("Patient", {
     first_name: "Patient #n",
     last_name: "number #n",
+    phone: "6177140000",
     sex: "male",
     birthdate: "1990-01-01"
 });

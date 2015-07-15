@@ -69,6 +69,24 @@ describe("Patients", function () {
                 expect(response.body.last_name).to.equal("");
             });
         });
+        it("doesn't require a phone and defaults to blank", function () {
+            return createPatient({ phone: undefined }).then(function (response) {
+                expect(response).to.be.a.patient.createSuccess;
+                expect(response.body.phone).to.equal("");
+            });
+        });
+        it("accepts a null phone", function () {
+            return createPatient({ phone: null }).then(function (response) {
+                expect(response).to.be.a.patient.createSuccess;
+                expect(response.body.phone).to.equal("");
+            });
+        });
+        it("accepts a blank phone", function () {
+            return createPatient({ phone: "" }).then(function (response) {
+                expect(response).to.be.a.patient.createSuccess;
+                expect(response.body.phone).to.equal("");
+            });
+        });
         it("doesn't require a sex and defaults to unspecified", function () {
             return createPatient({ sex: undefined }).then(function (response) {
                 expect(response).to.be.a.patient.createSuccess;

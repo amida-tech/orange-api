@@ -56,6 +56,9 @@ the child of the patient.
     + sex (string, optional)
 
         String representing sex of the user. Must be "male", "female", "other" or "unspecified".
+    + phone (string, optional)
+
+        Optional phone number of the patient, formatted as a string
     + access_anyone (*string*)
 
         The default access permissions that users this patient is shared with under the `anyone`
@@ -81,6 +84,7 @@ the child of the patient.
                 last_name: "Patient",
                 birthdate: "1990-01-01",
                 sex: "male",
+                phone: "6177140000",
                 avatar: "/v1/patients/1/avatar.jpg",
                 access_anyone: "read",
                 access_family: "read",
@@ -110,6 +114,7 @@ the child of the patient.
                 last_name: "Patient",
                 birthdate: "1990-01-01",
                 sex: "male",
+                phone: "6177140000",
                 avatar: "/v1/patients/1/avatar.jpg",
                 access_anyone: "read",
                 access_family: "read",
@@ -175,6 +180,7 @@ View a list of all patients the current user has access to (either read or write
                         last_name: "Patient",
                         birthdate: "1990-01-01",
                         sex: "male",
+                        phone: "6177140000",
                         avatar: "/v1/patients/1/avatar.jpg",
                         access_anyone: "read",
                         access_family: "read",
@@ -222,6 +228,7 @@ View the name of a specific patient as well as the current user's access (`read`
                 last_name: "Patient",
                 birthdate: "1990-01-01",
                 sex: "male",
+                phone: "6177140000",
                 avatar: "/v1/patients/1/avatar.jpg",
                 access_anyone: "read",
                 access_family: "read",
@@ -254,7 +261,10 @@ Setting `access` to `none` will stop sharing the patient with the current user.
         Optional date of birth of the patient, formatted as an ISO 8601 YYYY-MM-DD
     + sex (string, optional)
 
-        String representing sex of the user. Must be "male", "female", "other" or "unspecified".
+        String representing sex of the patient. Must be "male", "female", "other" or "unspecified".
+    + phone (string, optional)
+
+        New phone number of the patient
     + access (string, optional)
 
         Explicitly set the patient's access level to `read`, `write`, `default` or `none`.
@@ -286,6 +296,7 @@ Setting `access` to `none` will stop sharing the patient with the current user.
                 last_name: "Smith",
                 birthdate: "1991-01-01",
                 sex: "female",
+                phone: "6177140001",
                 access: "write",
                 group: "family",
                 access_anyone: "read",
@@ -320,6 +331,7 @@ Setting `access` to `none` will stop sharing the patient with the current user.
                 last_name: "Smith",
                 birthdate: "1991-01-01",
                 sex: "female",
+                phone: "6177140001",
                 avatar: "/v1/patients/1/avatar.jpg",
                 access_anyone: "read",
                 access_family: "read",
@@ -363,6 +375,7 @@ called with `access="none"` rather than this method.
                 last_name: "Smith",
                 birthdate: "1991-01-01",
                 sex: "female",
+                phone: "6177140001",
                 avatar: "/v1/patients/1/avatar.jpg",
                 access_anyone: "read",
                 access_family: "read",
@@ -405,6 +418,7 @@ override patient-wide access permissions) are shown.
                 last_name: "number 11",
                 birthdate: "1990-01-01",
                 sex: "male",
+                phone: "6177140000",
                 avatar: "/v1/patients/34/avatar.png",
                 access_anyone: "read",
                 access_family: "read",
