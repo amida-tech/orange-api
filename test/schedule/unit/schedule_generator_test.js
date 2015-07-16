@@ -8,6 +8,19 @@ var expect = chai.expect;
 
 describe("Schedule", function () {
     describe("generates schedules correctly in a single timezone", function () {
+        // filter out index keys that are only used internally in the app (and tested
+        // in medication_schedule_generator_test.js), and likewise with take_with_food,
+        // take_with_medications and take_without_medications keys
+        var formatResults = function (events) {
+            return events.map(function (item) {
+                delete item.index;
+                delete item.take_with_food;
+                delete item.take_with_medications;
+                delete item.take_without_medications;
+                return item;
+            });
+        };
+
         // generic method to promise to generate a schedule
         var gen = function (input, start, end, habits, numberTaken) {
             // format dates as YYYY-MM-DDD
@@ -26,13 +39,9 @@ describe("Schedule", function () {
             // create Schedule object and generate using it
             var schedule = new Schedule(input, habits);
             expect(schedule.isValid()).to.be.true;
-            // filter out index keys that are only used internally in the app (and tested
-            // in medication_schedule_generator_test.js)
-            return schedule.generate(start, end, habits, numberTaken).map(function (item) {
-                delete item.index;
-                return item;
-            });
+            return formatResults(schedule.generate(start, end, habits, numberTaken));
         };
+
         // check the desired schedule is generated
         var check = function (inSchedule, start, end, desiredSchedule, habits, numberTaken) {
             expect(gen(inSchedule, start, end, habits, numberTaken)).to.deep.equal(desiredSchedule);
@@ -577,14 +586,11 @@ describe("Schedule", function () {
                 it("returns an EST schedule", function () {
                     expect(schedule.isValid()).to.be.true;
                     // takeAt takes UTC times
-                    var results = schedule.generate(
+                    var results = formatResults(schedule.generate(
                             today.format("YYYY-MM-DD"),
                             tomorrow.format("YYYY-MM-DD"),
                             habits
-                    ).map(function (item) {
-                        delete item.index;
-                        return item;
-                    });
+                    ));
 
                     return expect(results).to.deep.equal([
                         takeAt(today, "17:00"),
@@ -606,14 +612,11 @@ describe("Schedule", function () {
                             // PST all year round (no PDT)
                             tz: "America/Metlakatla"
                         });
-                        var results = schedule.generate(
+                        var results = formatResults(schedule.generate(
                                 today.format("YYYY-MM-DD"),
                                 tomorrow.format("YYYY-MM-DD"),
                                 newHabits
-                        ).map(function (item) {
-                            delete item.index;
-                            return item;
-                        });
+                        ));
 
                         return expect(results).to.deep.equal([
                             takeAt(today, "19:00"), // 2PM *EST* in UTC
