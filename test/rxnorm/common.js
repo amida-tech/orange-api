@@ -5,14 +5,6 @@ var chakram     = require("chakram"),
 var expect = chakram.expect;
 
 // verify successful responses
-common.addApiChain("rxnorm", {
-    "groupSuccess": function (respObj) {
-        // don't check the schema of actual items returned
-        expect(respObj).to.be.an.api.genericListSuccess("providers", { additionalProperties: true });
-    }
-});
-
-// verify successful responses
 /*eslint-disable key-spacing */
 var groupSchema = module.exports.schema = {
     required: ["success", "result"],

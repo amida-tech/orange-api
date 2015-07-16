@@ -10,6 +10,9 @@ depending on the outcome. Note that `DELETE`ing the request does not actually sh
 that must be done seperately using the `POST /patients/:patientid/shares` endpoint. This way the
 user can choose to selectively share just some of their patients.
 
+Note that if user A requests access from user B, the request ID for user A (at `/requested`) is
+not necessarily the same as the request ID for user B (at `/requests`).
+
 ## Requests From User [/requested]
 ### Create new Request [POST]
 Request access to another user's patients from the current user.
@@ -33,7 +36,9 @@ Request access to another user's patients from the current user.
     + `access_token_required` (401) - no access token specified in
     `Authorization` header
     + `invalid_access_token` (401) - the access token specified is invalid
+    + `email_required` (400) - an email address must be specified
     + `invalid_email` (400) - the email address specified does not correspond to an existing user
+    + `already_requested` (400) - a request has already been made to that user from this user
 
     + Body
 
@@ -68,7 +73,8 @@ View a list of all requests the current user has made.
 
     + email (string, optional)
 
-        Filter results by email address of the user the request was made to. Matches exactly.
+        Filter results by email address of the user the request was made to. Matches any email
+        addresses that contain the specified email as a substring.
 
 + Request
     + Headers
@@ -156,7 +162,8 @@ to share their patient data.
 
     + email (string, optional)
 
-        Filter results by email address of the user the request was made from. Matches exactly.
+        Filter results by email address of the user the request was made from. Matches any email
+        addresses that contain the specified email as a substring.
 
 + Request
     + Headers

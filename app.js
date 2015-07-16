@@ -68,6 +68,9 @@ router.use("/auth", require("./lib/controllers/auth.js"));
 // User registration/signup
 router.use("/user", require("./lib/controllers/users.js"));
 
+// User sharing
+router.use("/", require("./lib/controllers/requests.js"));
+
 // External APIs
 router.use("/npi", require("./lib/controllers/npi.js"));
 router.use("/rxnorm", require("./lib/controllers/rxnorm.js"));
