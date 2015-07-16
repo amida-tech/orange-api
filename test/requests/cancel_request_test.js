@@ -1,9 +1,7 @@
 "use strict";
 var chakram     = require("chakram"),
     curry       = require("curry"),
-    Q           = require("q"),
     util        = require("util"),
-    querystring = require("querystring"),
     auth        = require("../common/auth.js");
 
 var expect = chakram.expect;
@@ -15,5 +13,28 @@ describe("Requests", function () {
             var url = util.format("http://localhost:3000/v1/requested/%d", requestId);
             return chakram.delete(url, {}, auth.genAuthHeaders(accessToken));
         };
+
+        // check it requires authentication
+        auth.itRequiresAuthentication(curry(cancelRequest)(1));
+
+        describe("with test user", function () {
+            // setup user to test with
+            var user;
+            before(function () {
+                return auth.createTestUser().then(function (u) {
+                    user = u;
+                });
+            });
+
+            // check it requires a valid request ID
+            it("rejects invalid request ids", function () {
+                return expect(cancelRequest("foo", user.accessToken)).to.be.an.api.error(404, "invalid_request_id");
+            });
+            it("rejects request ids not corresponding to real requests", function () {
+                return expect(cancelRequest(9999, user.accessToken)).to.be.an.api.error(404, "invalid_request_id");
+            });
+
+            // everything else tested in lifecycle test
+        });
     });
 });

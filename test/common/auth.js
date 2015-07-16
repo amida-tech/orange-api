@@ -59,9 +59,9 @@ auth.genAccessToken = function (user) {
 
 // create a new user from the factory and generate an access token,
 // returning user with user.accessToken present
-auth.createTestUser = function () {
+auth.createTestUser = function (data) {
     var user;
-    return userFixtures.create("User").then(function (u) {
+    return userFixtures.create("User", data).then(function (u) {
         user = u;
         return user;
     }).then(auth.genAccessToken).then(function (t) {

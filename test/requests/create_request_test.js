@@ -1,9 +1,6 @@
 "use strict";
 var chakram     = require("chakram"),
     curry       = require("curry"),
-    Q           = require("q"),
-    util        = require("util"),
-    querystring = require("querystring"),
     auth        = require("../common/auth.js");
 
 var expect = chakram.expect;
@@ -63,5 +60,7 @@ describe("Requests", function () {
                 }, me.accessToken)).to.be.an.api.error(400, "already_requested");
             });
         });
+
+        // everything else tested in lifecycle test
     });
 });

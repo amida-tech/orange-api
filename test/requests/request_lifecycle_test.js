@@ -1,9 +1,6 @@
 "use strict";
 var chakram         = require("chakram"),
-    curry           = require("curry"),
     Q               = require("q"),
-    util            = require("util"),
-    querystring     = require("querystring"),
     auth            = require("../common/auth.js"),
     create          = require("./create_request_test.js").create,
     listRequested   = require("./list_requested_test.js").listRequested,
@@ -132,7 +129,8 @@ describe("Requests", function () {
 
         // as opposed to 'closing' it
         it("returns an error if the other user tries to *cancel* the request", function () {
-            return expect(cancelRequest(request._id, otherUser.accessToken)).to.be.an.api.error(404, "invalid_request_id");
+            var endpoint = cancelRequest(request._id, otherUser.accessToken);
+            return expect(endpoint).to.be.an.api.error(404, "invalid_request_id");
         });
 
         it("still shows that I have made a request", function () {
