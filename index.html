@@ -213,6 +213,8 @@ by making a <code>DELETE</code> request to <code>/requests/:id</code>. As discus
 depending on the outcome. Note that <code>DELETE</code>ing the request does not actually share any patients:
 that must be done seperately using the <code>POST /patients/:patientid/shares</code> endpoint. This way the
 user can choose to selectively share just some of their patients.</p>
+<p>Note that if user A requests access from user B, the request ID for user A (at <code>/requested</code>) is
+not necessarily the same as the request ID for user B (at <code>/requests</code>).</p>
 <div id="requests-requests-from-user" class="resource"><h3>Requests From User<a href="#requests-requests-from-user" class="permalink"><i class="fa fa-link"></i></a></h3><div id="requests-requests-from-user-post" class="action post"><h4><div class="name">Create new Request</div><a href="#requests-requests-from-user-post" class="method post">POST</a><code class="uri">/requested</code></h4><p>Request access to another user’s patients from the current user.</p>
 <div class="title"><strong>Parameters</strong><div class="collapse-button show"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><dl class="inner"><dt>email</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>email address of the user to request access from</p>
 </dd></dl></div><div class="title"><strong>Request</strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><h5>Headers</h5><pre><code><span class="hljs-attribute">Authorization</span>: <span class="hljs-string">Bearer ACCESS_TOKEN</span><br></code></pre><div style="height: 1px;"></div><h5>Body</h5><pre><code>{
@@ -228,7 +230,13 @@ user can choose to selectively share just some of their patients.</p>
 <p><code>invalid_access_token</code> (401) - the access token specified is invalid</p>
 </li>
 <li>
+<p><code>email_required</code> (400) - an email address must be specified</p>
+</li>
+<li>
 <p><code>invalid_email</code> (400) - the email address specified does not correspond to an existing user</p>
+</li>
+<li>
+<p><code>already_requested</code> (400) - a request has already been made to that user from this user</p>
 </li>
 </ul>
 </div><h5>Body</h5><pre><code>{
@@ -244,7 +252,8 @@ for pagination. Defaults to 0.</p>
 and defaults to <code>id</code>.</p>
 </dd><dt>sort_order</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>The order to sort results by: either <code>asc</code> or <code>desc</code>. Defaults to
 <code>asc</code>.</p>
-</dd><dt>email</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>Filter results by email address of the user the request was made to. Matches exactly.</p>
+</dd><dt>email</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>Filter results by email address of the user the request was made to. Matches any email
+addresses that contain the specified email as a substring.</p>
 </dd></dl></div><div class="title"><strong>Request</strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><h5>Headers</h5><pre><code><span class="hljs-attribute">Authorization</span>: <span class="hljs-string">Bearer ACCESS_TOKEN</span><br></code></pre><div style="height: 1px;"></div></div></div><div class="title"><strong>Response&nbsp;&nbsp;<code>200</code></strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><div class="description"><p>Errors</p>
 <ul>
 <li>
@@ -307,7 +316,8 @@ for pagination. Defaults to 0.</p>
 and defaults to <code>id</code>.</p>
 </dd><dt>sort_order</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>The order to sort results by: either <code>asc</code> or <code>desc</code>. Defaults to
 <code>asc</code>.</p>
-</dd><dt>email</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>Filter results by email address of the user the request was made from. Matches exactly.</p>
+</dd><dt>email</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>Filter results by email address of the user the request was made from. Matches any email
+addresses that contain the specified email as a substring.</p>
 </dd></dl></div><div class="title"><strong>Request</strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><h5>Headers</h5><pre><code><span class="hljs-attribute">Authorization</span>: <span class="hljs-string">Bearer ACCESS_TOKEN</span><br></code></pre><div style="height: 1px;"></div></div></div><div class="title"><strong>Response&nbsp;&nbsp;<code>200</code></strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><div class="description"><p>Errors</p>
 <ul>
 <li>
@@ -2916,6 +2926,11 @@ datetime at which the medication should be taken (and are formatted as an ISO-86
 in the patient’s <em>local</em> timezone). <code>date</code> items indicate that the medication can be taken at
 any time on the specified day, and have the date formatted as <code>YYYY-MM-DD</code> in the patient’s
 <em>local</em> timezone.</p>
+<p>Each event will also contain a <code>happened</code> boolean key indicating whether it took place in the
+past (<code>true</code>) or will take place in the future (<code>false</code>).</p>
+<p>Additionally, each event will contain the <code>take_with_food</code> (boolean or null), <code>take_with_medications</code>
+(array of integers) and <code>take_without_medications</code> (array of integers) keys, each representing
+the same data and formatted the same way as in the medication <code>schedule</code> field.</p>
 <p>The schedule will also contain an overall <code>statistics</code> object, containing floats <code>took_medication</code>
 (a mean average value for <code>took_medication</code> as a percentage out of 100), <code>delta</code> (a mean average
 value of all of the <code>delay</code>s) and <code>delay</code> (a mean average value of the <strong>absolute values</strong> of all
@@ -2966,31 +2981,46 @@ one week later than the current time.</p>
             medication_id: <span class="hljs-number">1</span>,
             took_medication: <span class="hljs-literal">true</span>,
             delay: -<span class="hljs-number">17</span>,
-            dose_id: <span class="hljs-number">14</span>
+            dose_id: <span class="hljs-number">14</span>,
+            take_with_food: <span class="hljs-literal">true</span>,
+            take_with_medications: [<span class="hljs-number">1</span>],
+            take_without_medications: [<span class="hljs-number">3</span>]
         },
         {
             type: <span class="hljs-string">"time"</span>,
             date: <span class="hljs-string">"2015-03-31T19:27:09+00:00"</span>,
             medication_id: <span class="hljs-number">1</span>,
-            took_medication: <span class="hljs-literal">false</span>
+            took_medication: <span class="hljs-literal">false</span>,
+            take_with_food: <span class="hljs-literal">null</span>,
+            take_with_medications: [],
+            take_without_medications: []
         },
         {
             type: <span class="hljs-string">"time"</span>,
             date: <span class="hljs-string">"2015-03-31T19:27:09+00:00"</span>,
             medication_id: <span class="hljs-number">1</span>,
-            took_medication: <span class="hljs-literal">false</span>
+            took_medication: <span class="hljs-literal">false</span>,
+            take_with_food: <span class="hljs-literal">null</span>,
+            take_with_medications: [],
+            take_without_medications: []
         },
         ... <span class="hljs-comment">// more events that have already taken place</span>
         {
             type: <span class="hljs-string">"time"</span>,
             date: <span class="hljs-string">"2015-05-31T19:27:09+00:00"</span>,
-            medication_id: <span class="hljs-number">1</span>
+            medication_id: <span class="hljs-number">1</span>,
+            take_with_food: <span class="hljs-literal">null</span>,
+            take_with_medications: [],
+            take_without_medications: []
         },
         {
             <span class="hljs-comment">// no time specified, just the date</span>
             type: <span class="hljs-string">"date"</span>,
             date: <span class="hljs-string">"2015-05-31"</span>,
-            medication_id: <span class="hljs-number">3</span>
+            medication_id: <span class="hljs-number">3</span>,
+            take_with_food: <span class="hljs-literal">null</span>,
+            take_with_medications: [],
+            take_without_medications: []
         },
         ... <span class="hljs-comment">// more events in the future</span>
     ],
@@ -3162,7 +3192,7 @@ of information. Possible matches for drugs (if any) are located in the
     },
     success: <span class="hljs-literal">true</span>
 }
-</code></pre><div style="height: 1px;"></div></div></div></div></div></section></div></div></div><p style="text-align: center;" class="text-muted">Generated by&nbsp;<a href="https://github.com/danielgtaylor/aglio" class="aglio">aglio</a>&nbsp;on 15 Jul 2015</p><script>function toggleCollapse(event) {
+</code></pre><div style="height: 1px;"></div></div></div></div></div></section></div></div></div><p style="text-align: center;" class="text-muted">Generated by&nbsp;<a href="https://github.com/danielgtaylor/aglio" class="aglio">aglio</a>&nbsp;on 16 Jul 2015</p><script>function toggleCollapse(event) {
     var button = event.target.parentNode;
     var content = button.parentNode.nextSibling;
     var inner = content.children[0];
