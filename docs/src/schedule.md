@@ -17,6 +17,13 @@ in the patient's _local_ timezone). `date` items indicate that the medication ca
 any time on the specified day, and have the date formatted as `YYYY-MM-DD` in the patient's
 _local_ timezone.
 
+Each event will also contain a `happened` boolean key indicating whether it took place in the
+past (`true`) or will take place in the future (`false`).
+
+Additionally, each event will contain the `take_with_food` (boolean or null), `take_with_medications`
+(array of integers) and `take_without_medications` (array of integers) keys, each representing
+the same data and formatted the same way as in the medication `schedule` field.
+
 The schedule will also contain an overall `statistics` object, containing floats `took_medication`
 (a mean average value for `took_medication` as a percentage out of 100), `delta` (a mean average
 value of all of the `delay`s) and `delay` (a mean average value of the **absolute values** of all
@@ -75,31 +82,46 @@ will be shown.
                         medication_id: 1,
                         took_medication: true,
                         delay: -17,
-                        dose_id: 14
+                        dose_id: 14,
+                        take_with_food: true,
+                        take_with_medications: [1],
+                        take_without_medications: [3]
                     },
                     {
                         type: "time",
                         date: "2015-03-31T19:27:09+00:00",
                         medication_id: 1,
-                        took_medication: false
+                        took_medication: false,
+                        take_with_food: null,
+                        take_with_medications: [],
+                        take_without_medications: []
                     },
                     {
                         type: "time",
                         date: "2015-03-31T19:27:09+00:00",
                         medication_id: 1,
-                        took_medication: false
+                        took_medication: false,
+                        take_with_food: null,
+                        take_with_medications: [],
+                        take_without_medications: []
                     },
                     ... // more events that have already taken place
                     {
                         type: "time",
                         date: "2015-05-31T19:27:09+00:00",
-                        medication_id: 1
+                        medication_id: 1,
+                        take_with_food: null,
+                        take_with_medications: [],
+                        take_without_medications: []
                     },
                     {
                         // no time specified, just the date
                         type: "date",
                         date: "2015-05-31",
-                        medication_id: 3
+                        medication_id: 3,
+                        take_with_food: null,
+                        take_with_medications: [],
+                        take_without_medications: []
                     },
                     ... // more events in the future
                 ],
