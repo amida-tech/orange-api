@@ -536,8 +536,17 @@ describe("Patients", function () {
                     });
                 });
 
-                it("doesn't search fuzzily", function () {
+                it("searches based on substrings", function () {
                     return listAPatient({ email: "foo1@barsharing.co" }).then(function (response) {
+                        expect(response).to.be.a.share.listSuccess;
+                        expect(response.body.count).to.equal(1);
+                        expect(response.body.shares.length).to.equal(1);
+                        expect(response.body.shares[0].email).to.equal("foo1@barsharing.com");
+                    });
+                });
+
+                it("doesn't search fuzzily", function () {
+                    return listAPatient({ email: "foo1@brsharing.co" }).then(function (response) {
                         expect(response).to.be.a.share.listSuccess;
                         expect(response.body.count).to.equal(0);
                         expect(response.body.shares.length).to.equal(0);
