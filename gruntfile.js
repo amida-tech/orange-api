@@ -11,7 +11,7 @@ module.exports = function (grunt) {
 
     // clean up code and run tests
     grunt.registerTask("default", ["eslint", "test", "exec:matcherStop"]);
-    grunt.registerTask("test", ["dropDatabase", "server:test", "mochaTest:all"]);
+    grunt.registerTask("test", ["env:test", "dropDatabase", "server:test", "mochaTest:all"]);
 
     // generate code coverage using bash istanbul wrapper
     grunt.registerTask("coverage", ["exec:coverage"]);
@@ -59,6 +59,13 @@ module.exports = function (grunt) {
                     timeout: "10000"
                 },
                 src: ["test/common/db_helper.js", "test/common/*.js", "test/*/unit/*.js", "test/*/unit/**/*.js"]
+            }
+        },
+
+        // set NODE_ENV so we don't send real emails or SMS' from tests
+        env: {
+            test: {
+                NODE_ENV: "test"
             }
         },
 

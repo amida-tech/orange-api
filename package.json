@@ -50,6 +50,7 @@
     "grunt": "0.4.x",
     "grunt-contrib-watch": "^0.6.1",
     "grunt-coveralls": "^1.0.0",
+    "grunt-env": "^0.4.4",
     "grunt-eslint": "^14.0.0",
     "grunt-exec": "^0.4.6",
     "grunt-express-server": "^0.5.1",
