@@ -11,12 +11,12 @@ var expect = chakram.expect;
 
 describe("Medication Time Notification Settings", function () {
     // get/set notification settings
-    var show = function (timeId, medicationId, patientId, accessToken) {
-        var url = util.format("http://localhost:3000/v1/patients/%d/medications/%d/times/%d", patientId, medicationId, timeId);
+    var show = function (tId, mId, pId, accessToken) {
+        var url = util.format("http://localhost:3000/v1/patients/%d/medications/%d/times/%d", pId, mId, tId);
         return chakram.get(url, auth.genAuthHeaders(accessToken));
     };
-    var update = function (data, timeId, medicationId, patientId, accessToken) {
-        var url = util.format("http://localhost:3000/v1/patients/%d/medications/%d/times/%d", patientId, medicationId, timeId);
+    var update = function (data, tId, mId, pId, accessToken) {
+        var url = util.format("http://localhost:3000/v1/patients/%d/medications/%d/times/%d", pId, mId, tId);
         return chakram.put(url, data, auth.genAuthHeaders(accessToken));
     };
 

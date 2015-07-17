@@ -163,7 +163,7 @@ common.addApiChain("medication", {
 
 // do the same with notification setting responses
 /*eslint-disable key-spacing */
-var notificationsSchema = module.exports.schema = {
+var notificationsSchema = {
     required: ["default", "user", "success"],
     properties: {
         success:        { type: "boolean" },

@@ -10,7 +10,7 @@ var expect = chakram.expect;
 // one 'event' item within the schedule
 var scheduleItemSchema = {
     required: ["type", "date", "medication_id", "happened", "take_with_food", "take_with_medications",
-               "take_without_medications", "notification"],
+               "take_without_medications"],
     properties: {
         type:                       { type: "string" },
         date:                       { type: "string" },
