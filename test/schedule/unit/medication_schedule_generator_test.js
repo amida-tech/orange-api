@@ -47,6 +47,14 @@ describe("Schedule", function () {
             });
         });
 
+        // set the default notification offset to be 15 minutes
+        before(function () {
+            var timeId = medication.schedule.times[0].id;
+            return Q.nbind(medication.updateNotificationSettings, medication)(timeId, patient.user, {
+                default: 15
+            });
+        });
+
         // setup a timeline: day1, day2, day3 and day4, each at the
         // start of their respective days
         // to be used in the rest of this test
@@ -86,7 +94,7 @@ describe("Schedule", function () {
             start = day1.format("YYYY-MM-DD");
             end = day4.format("YYYY-MM-DD");
             var generate = Q.nbind(patient.generateSchedule, patient);
-            return generate(start, end, patient.user, medication._id).then(function (s) {
+            return generate(start, end, patient.user, medication._id, patient.user._id).then(function (s) {
                 schedule = s;
             });
         });
@@ -115,6 +123,49 @@ describe("Schedule", function () {
             expect(schedule.schedule.filter(function (item) {
                 return typeof item.delay !== "undefined";
             }).length).to.equal(2);
+        });
+
+        it("generates notification times correctly", function () {
+            schedule.schedule.forEach(function (item) {
+                if (item.type !== "time") return;
+
+                // check notification time is 15 mins before (the default notification
+                // offset we set above) the event time
+                expect(item).to.include.keys("date");
+                expect(item).to.include.keys("notification");
+                expect(moment(item.date).diff(item.notification, "minutes")).to.equal(15);
+            });
+        });
+
+        describe("with a user-specific notification", function () {
+            // set the user notification offset to be 15 minutes
+            before(function () {
+                var timeId = medication.schedule.times[0].id;
+                return Q.nbind(medication.updateNotificationSettings, medication)(timeId, patient.user, {
+                    default: 20,
+                    user: 10
+                });
+            });
+
+            before(function () {
+                var generate = Q.nbind(patient.generateSchedule, patient);
+                return generate(start, end, patient.user, medication._id, patient.user._id).then(function (s) {
+                    schedule = s;
+                });
+            });
+
+
+            it("generates notification times correctly", function () {
+                schedule.schedule.forEach(function (item) {
+                    if (item.type !== "time") return;
+
+                    // check notification time is 10 mins before (the notification time we set
+                    // for just this user above) the event time
+                    expect(item).to.include.keys("date");
+                    expect(item).to.include.keys("notification");
+                    expect(moment(item.date).diff(item.notification, "minutes")).to.equal(10);
+                });
+            });
         });
 
         it("calculates statistics correctly", function () {
