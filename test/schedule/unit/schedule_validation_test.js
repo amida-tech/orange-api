@@ -67,12 +67,117 @@ describe("Schedule", function () {
             });
         });
 
+        it("rejects schedules with an invalid as_needed key", function () {
+            return rejects({
+                as_needed: "foo",
+                regularly: true
+            });
+        });
+
+        it("rejects schedules with a null as_needed key", function () {
+            return rejects({
+                as_needed: null,
+                regularly: true
+            });
+        });
+
+        it("rejects schedules with an invalid regularly key", function () {
+            return rejects({
+                regularly: "foo",
+                as_needed: true
+            });
+        });
+
+        it("rejects schedules with a null regularly key", function () {
+            return rejects({
+                regularly: null,
+                as_needed: true
+            });
+        });
+
         describe("'until' key", function () {
+            it("rejects a null value", function () {
+                return rejects({
+                    as_needed: false,
+                    regularly: true,
+                    until: null,
+                    frequency: { n: 1, unit: "day" },
+                    times: [{ type: "unspecified" }],
+                    take_with_food: null,
+                    take_with_medications: [],
+                    take_without_medications: []
+                });
+            });
+
+            it("requires it for regular schedule types", function () {
+                return rejects({
+                    as_needed: false,
+                    regularly: true,
+                    frequency: { n: 1, unit: "day" },
+                    times: [{ type: "unspecified" }],
+                    take_with_food: null,
+                    take_with_medications: [],
+                    take_without_medications: []
+                });
+            });
+
+            it("rejects a non-object value", function () {
+                return rejects({
+                    as_needed: false,
+                    regularly: true,
+                    until: "foo",
+                    frequency: { n: 1, unit: "day" },
+                    times: [{ type: "unspecified" }],
+                    take_with_food: null,
+                    take_with_medications: [],
+                    take_without_medications: []
+                });
+            });
+
+            it("rejects an empty object", function () {
+                return rejects({
+                    as_needed: false,
+                    regularly: true,
+                    until: {},
+                    frequency: { n: 1, unit: "day" },
+                    times: [{ type: "unspecified" }],
+                    take_with_food: null,
+                    take_with_medications: [],
+                    take_without_medications: []
+                });
+            });
+
             it("accepts In Perpetuity schedules", function () {
                 return accepts({
                     as_needed: false,
                     regularly: true,
                     until: { type: "forever" },
+                    frequency: { n: 1, unit: "day" },
+                    times: [{ type: "unspecified" }],
+                    take_with_food: null,
+                    take_with_medications: [],
+                    take_without_medications: []
+                });
+            });
+
+            it("rejects In perpetuity schedules with a date stop key", function () {
+                return rejects({
+                    as_needed: false,
+                    regularly: true,
+                    until: { type: "forever", stop: "2015-08-08" },
+                    frequency: { n: 1, unit: "day" },
+                    times: [{ type: "unspecified" }],
+                    take_with_food: null,
+                    take_with_medications: [],
+                    take_without_medications: []
+                });
+            });
+
+            it("rejects In perpetuity schedules with a numeric stop key", function () {
+                return rejects({
+                    as_needed: false,
+                    regularly: true,
+                    until: { type: "forever", stop: 5 },
                     frequency: { n: 1, unit: "day" },
                     times: [{ type: "unspecified" }],
                     take_with_food: null,
@@ -110,6 +215,18 @@ describe("Schedule", function () {
                     as_needed: false,
                     regularly: true,
                     until: { type: "number", stop: "foo" },
+                    frequency: { n: 1, unit: "day" },
+                    times: [{ type: "unspecified" }],
+                    take_with_food: null,
+                    take_with_medications: [],
+                    take_without_medications: []
+                });
+            });
+            it("rejects {Number} of times schedules with a date number", function () {
+                return rejects({
+                    as_needed: false,
+                    regularly: true,
+                    until: { type: "number", stop: "2015-08-08" },
                     frequency: { n: 1, unit: "day" },
                     times: [{ type: "unspecified" }],
                     take_with_food: null,
@@ -193,12 +310,37 @@ describe("Schedule", function () {
                 });
             });
 
+            it("rejects Until {Date} schedules with a numeric date", function () {
+                return rejects({
+                    as_needed: false,
+                    regularly: true,
+                    until: { type: "date", stop: 5 },
+                    frequency: { n: 1, unit: "day" },
+                    times: [{ type: "unspecified" }],
+                    take_with_food: null,
+                    take_with_medications: [],
+                    take_without_medications: []
+                });
+            });
 
             it("rejects Until {Date} schedules with an invalid date", function () {
                 return rejects({
                     as_needed: false,
                     regularly: true,
                     until: { type: "date", stop: "foo" },
+                    frequency: { n: 1, unit: "day" },
+                    times: [{ type: "unspecified" }],
+                    take_with_food: null,
+                    take_with_medications: [],
+                    take_without_medications: []
+                });
+            });
+
+            it("rejects schedules with an extra key present", function () {
+                return rejects({
+                    as_needed: false,
+                    regularly: true,
+                    until: { type: "forever", foo: "bar" },
                     frequency: { n: 1, unit: "day" },
                     times: [{ type: "unspecified" }],
                     take_with_food: null,
@@ -430,6 +572,19 @@ describe("Schedule", function () {
                 });
             });
 
+            it("rejects frequencies with an extra key", function () {
+                return rejects({
+                    as_needed: false,
+                    regularly: true,
+                    until: { type: "forever" },
+                    frequency: { n: 1, unit: "day", foo: "bar" },
+                    times: [{ type: "unspecified" }],
+                    take_with_food: null,
+                    take_with_medications: [],
+                    take_without_medications: []
+                });
+            });
+
             it("allows frequencies with a null 'exclude' key", function () {
                 return accepts({
                     as_needed: false,
@@ -644,6 +799,19 @@ describe("Schedule", function () {
                     regularly: true,
                     until: { type: "forever" },
                     frequency: { n: 1, unit: "day", exclude: {exclude: [1], repeat: 0.5} },
+                    times: [{ type: "unspecified" }],
+                    take_with_food: null,
+                    take_with_medications: [],
+                    take_without_medications: []
+                });
+            });
+
+            it("rejects frequencies with an extra key inside 'exclude'", function () {
+                return rejects({
+                    as_needed: false,
+                    regularly: true,
+                    until: { type: "forever" },
+                    frequency: { n: 1, unit: "day", exclude: {exclude: [1], repeat: 2, foo: "bar"} },
                     times: [{ type: "unspecified" }],
                     take_with_food: null,
                     take_with_medications: [],
@@ -1032,6 +1200,46 @@ describe("Schedule", function () {
                 });
             });
 
+            it("allows each time to have an ID", function () {
+                return accepts({
+                    as_needed: false,
+                    regularly: true,
+                    until: { type: "forever" },
+                    frequency: { n: 1, unit: "day" },
+                    times: [
+                        { id: 1, type: "event", event: "breakfast", when: "before" },
+                        { id: 2, type: "event", event: "breakfast", when: "after" },
+                        { id: 3, type: "event", event: "lunch", when: "before" },
+                        { id: 4, type: "event", event: "lunch", when: "after" },
+                        { id: 5, type: "event", event: "dinner", when: "before" },
+                        { id: 6, type: "event", event: "dinner", when: "after" },
+                        { id: 7, type: "event", event: "sleep", when: "before" },
+                        { id: 8, type: "event", event: "sleep", when: "after" },
+                        { id: 9, type: "exact", time: "09:00" },
+                        { id: 10, type: "exact", time: "21:30" },
+                        { id: 11, type: "unspecified" }
+                    ],
+                    take_with_food: null,
+                    take_with_medications: [],
+                    take_without_medications: []
+                });
+            });
+
+            it("rejects extra keys in times", function () {
+                return rejects({
+                    as_needed: false,
+                    regularly: true,
+                    until: { type: "forever" },
+                    frequency: { n: 1, unit: "day" },
+                    times: [
+                        { type: "unspecified", foo: "bar" }
+                    ],
+                    take_with_food: null,
+                    take_with_medications: [],
+                    take_without_medications: []
+                });
+            });
+
             it("rejects invalid types", function () {
                 return rejects({
                     as_needed: false,
@@ -1147,6 +1355,19 @@ describe("Schedule", function () {
                         take_without_medications: []
                     });
                 });
+
+                it("rejects a time field", function () {
+                    return rejects({
+                        as_needed: false,
+                        regularly: true,
+                        until: { type: "forever" },
+                        frequency: { n: 1, unit: "day" },
+                        times: [{ type: "event", event: "lunch", when: "before", time: "09:00" }],
+                        take_with_food: null,
+                        take_with_medications: [],
+                        take_without_medications: []
+                    });
+                });
             });
             describe("exact", function () {
                 it("requires a time field", function () {
@@ -1192,6 +1413,42 @@ describe("Schedule", function () {
                         until: { type: "forever" },
                         frequency: { n: 1, unit: "day" },
                         times: [{ type: "exact", time: "99:99" }],
+                        take_with_food: null,
+                        take_with_medications: [],
+                        take_without_medications: []
+                    });
+                });
+                it("rejects if an 'event' field is present", function () {
+                    return rejects({
+                        as_needed: false,
+                        regularly: true,
+                        until: { type: "forever" },
+                        frequency: { n: 1, unit: "day" },
+                        times: [{ type: "exact", time: "10:00", event: "breakfast" }],
+                        take_with_food: null,
+                        take_with_medications: [],
+                        take_without_medications: []
+                    });
+                });
+                it("rejects if a 'when' field is present", function () {
+                    return rejects({
+                        as_needed: false,
+                        regularly: true,
+                        until: { type: "forever" },
+                        frequency: { n: 1, unit: "day" },
+                        times: [{ type: "exact", time: "10:00", when: "after" }],
+                        take_with_food: null,
+                        take_with_medications: [],
+                        take_without_medications: []
+                    });
+                });
+                it("rejects if an 'event' and a 'when' field is present", function () {
+                    return rejects({
+                        as_needed: false,
+                        regularly: true,
+                        until: { type: "forever" },
+                        frequency: { n: 1, unit: "day" },
+                        times: [{ type: "exact", time: "10:00", event: "breakfast", when: "after" }],
                         take_with_food: null,
                         take_with_medications: [],
                         take_without_medications: []
