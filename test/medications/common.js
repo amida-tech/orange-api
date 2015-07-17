@@ -160,6 +160,26 @@ common.addApiChain("medication", {
         expect(respObj).to.be.an.api.genericListSuccess("medications", medicationSchema);
     }
 });
+
+// do the same with notification setting responses
+/*eslint-disable key-spacing */
+var notificationsSchema = module.exports.schema = {
+    required: ["default", "user", "success"],
+    properties: {
+        success:        { type: "boolean" },
+        default:        { type: "number" },
+        user:           { type: ["number", "string"] }
+    },
+    additionalProperties: false
+};
+/*eslint-enable key-spacing */
+common.addApiChain("notifications", {
+    "success": function (respObj) {
+        expect(respObj).to.be.an.api.getSuccess;
+        expect(respObj).to.have.schema(notificationsSchema);
+    }
+});
+
 // generate testcase names
 var accessName = function (level, scenario) {
     if (level) return "it gives me access to " + scenario;
