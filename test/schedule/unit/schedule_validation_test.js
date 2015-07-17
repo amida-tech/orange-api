@@ -1225,6 +1225,82 @@ describe("Schedule", function () {
                 });
             });
 
+            it("allows each time to have a notifications key and ignores it", function () {
+                return acceptsManual({
+                    as_needed: false,
+                    regularly: true,
+                    until: { type: "forever" },
+                    frequency: { n: 1, unit: "day" },
+                    times: [
+                        { type: "event", event: "breakfast", when: "before", notifications: { default: 5 } },
+                        { type: "event", event: "breakfast", when: "after", notifications: { default: 5 } },
+                        { type: "event", event: "lunch", when: "before", notifications: { default: 5 } },
+                        { type: "event", event: "lunch", when: "after", notifications: { default: 5 } },
+                        { type: "event", event: "dinner", when: "before", notifications: { default: 5 } },
+                        { type: "event", event: "dinner", when: "after", notifications: { default: 5 } },
+                        { type: "event", event: "sleep", when: "before", notifications: { default: 5 } },
+                        { type: "event", event: "sleep", when: "after", notifications: { default: 5 } },
+                        { type: "exact", time: "09:00", notifications: { default: 5 } },
+                        { type: "exact", time: "21:30", notifications: { default: 5 } },
+                        { type: "unspecified", notifications: { default: 5 } }
+                    ],
+                    take_with_food: null,
+                    take_with_medications: [],
+                    take_without_medications: []
+                }, {
+                    as_needed: false,
+                    regularly: true,
+                    until: { type: "forever" },
+                    frequency: { n: 1, unit: "day" },
+                    times: [
+                        { type: "event", event: "breakfast", when: "before" },
+                        { type: "event", event: "breakfast", when: "after" },
+                        { type: "event", event: "lunch", when: "before" },
+                        { type: "event", event: "lunch", when: "after" },
+                        { type: "event", event: "dinner", when: "before" },
+                        { type: "event", event: "dinner", when: "after" },
+                        { type: "event", event: "sleep", when: "before" },
+                        { type: "event", event: "sleep", when: "after" },
+                        { type: "exact", time: "09:00" },
+                        { type: "exact", time: "21:30" },
+                        { type: "unspecified" }
+                    ],
+                    take_with_food: null,
+                    take_with_medications: [],
+                    take_without_medications: []
+                });
+            });
+
+            it("rejects a notifications key that's null", function () {
+                return rejects({
+                    as_needed: false,
+                    regularly: true,
+                    until: { type: "forever" },
+                    frequency: { n: 1, unit: "day" },
+                    times: [
+                        { type: "unspecified", notifications: null }
+                    ],
+                    take_with_food: null,
+                    take_with_medications: [],
+                    take_without_medications: []
+                });
+            });
+
+            it("rejects a notifications key that's a string", function () {
+                return rejects({
+                    as_needed: false,
+                    regularly: true,
+                    until: { type: "forever" },
+                    frequency: { n: 1, unit: "day" },
+                    times: [
+                        { type: "unspecified", notifications: "foo" }
+                    ],
+                    take_with_food: null,
+                    take_with_medications: [],
+                    take_without_medications: []
+                });
+            });
+
             it("rejects extra keys in times", function () {
                 return rejects({
                     as_needed: false,
