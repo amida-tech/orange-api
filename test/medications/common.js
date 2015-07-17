@@ -87,8 +87,9 @@ var medicationSchema = module.exports.schema = {
                     type:   "array",
                     items:  {
                         type:       "object",
-                        required:   ["type"],
+                        required:   ["id", "type"],
                         properties: {
+                            id:     { type: "number" },
                             type:   { type: "string" },
                             time:   { type: "string" },
                             event:  { type: "string" },

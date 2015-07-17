@@ -165,6 +165,11 @@ a time of the day at which the medication should be taken. There are 3 different
 }
 ```
 
+When sent to the API, each `time` will be given an ID that will be returned in all endpoints returning
+the medication schedule. These IDs can be used in the `/medications/:medicationid/times/:timeid` endpoint
+to set notification settings on a user-specific basis for that specific time in that specific medication
+schedule.
+
 The schedule must also include a `take_with_food` key. This is a boolean specifying whether
 or not the medication must be taken with food. `true` means it must be taken with food, `false` means
 it must not be taken with food, and `null` means it does not matter. Note that `false` means
@@ -248,9 +253,26 @@ must have write access to the patient.
                 quantity: 50,
                 type: "OTC",
                 schedule: {
-                    type: "regularly",
-                    frequency: 1,
-                    times_of_day: ["after_lunch", "before_sleep"]
+                    as_needed: false,
+                    regularly: true,
+                    until: { type: "forever" },
+                    frequency: { n: 1, unit: "day" },
+                    times: [
+                        { type: "event", event: "breakfast", when: "before" },
+                        { type: "event", event: "breakfast", when: "after" },
+                        { type: "event", event: "lunch", when: "before" },
+                        { type: "event", event: "lunch", when: "after" },
+                        { type: "event", event: "dinner", when: "before" },
+                        { type: "event", event: "dinner", when: "after" },
+                        { type: "event", event: "sleep", when: "before" },
+                        { type: "event", event: "sleep", when: "after" },
+                        { type: "exact", time: "09:00" },
+                        { type: "exact", time: "21:30" },
+                        { type: "unspecified" }
+                    ],
+                    take_with_food: null,
+                    take_with_medications: [],
+                    take_without_medications: []
                 },
                 access_anyone: "default",
                 access_family: "default",
@@ -296,9 +318,26 @@ must have write access to the patient.
                 quantity: 50,
                 type: "OTC",
                 schedule: {
-                    type: "regularly",
-                    frequency: 1,
-                    times_of_day: ["after_lunch", "before_sleep"]
+                    as_needed: false,
+                    regularly: true,
+                    until: { type: "forever" },
+                    frequency: { n: 1, unit: "day" },
+                    times: [
+                        { id: 1, type: "event", event: "breakfast", when: "before" },
+                        { id: 2, type: "event", event: "breakfast", when: "after" },
+                        { id: 3, type: "event", event: "lunch", when: "before" },
+                        { id: 4, type: "event", event: "lunch", when: "after" },
+                        { id: 5, type: "event", event: "dinner", when: "before" },
+                        { id: 6, type: "event", event: "dinner", when: "after" },
+                        { id: 7, type: "event", event: "sleep", when: "before" },
+                        { id: 8, type: "event", event: "sleep", when: "after" },
+                        { id: 9, type: "exact", time: "09:00" },
+                        { id: 10, type: "exact", time: "21:30" },
+                        { id: 11, type: "unspecified" }
+                    ],
+                    take_with_food: null,
+                    take_with_medications: [],
+                    take_without_medications: []
                 },
                 access_anyone: "default",
                 access_family: "default",
@@ -376,9 +415,26 @@ medications for which the current user has read access will be returned.
                         quantity: 50,
                         type: "OTC",
                         schedule: {
-                            type: "regularly",
-                            frequency: 1,
-                            times_of_day: ["after_lunch", "before_sleep"]
+                            as_needed: false,
+                            regularly: true,
+                            until: { type: "forever" },
+                            frequency: { n: 1, unit: "day" },
+                            times: [
+                                { id: 1, type: "event", event: "breakfast", when: "before" },
+                                { id: 2, type: "event", event: "breakfast", when: "after" },
+                                { id: 3, type: "event", event: "lunch", when: "before" },
+                                { id: 4, type: "event", event: "lunch", when: "after" },
+                                { id: 5, type: "event", event: "dinner", when: "before" },
+                                { id: 6, type: "event", event: "dinner", when: "after" },
+                                { id: 7, type: "event", event: "sleep", when: "before" },
+                                { id: 8, type: "event", event: "sleep", when: "after" },
+                                { id: 9, type: "exact", time: "09:00" },
+                                { id: 10, type: "exact", time: "21:30" },
+                                { id: 11, type: "unspecified" }
+                            ],
+                            take_with_food: null,
+                            take_with_medications: [],
+                            take_without_medications: []
                         },
                         access_anyone: "default",
                         access_family: "default",
@@ -438,9 +494,26 @@ The current user must have read access to **both** the patient and the medicatio
                 quantity: 50,
                 type: "OTC",
                 schedule: {
-                    type: "regularly",
-                    frequency: 1,
-                    times_of_day: ["after_lunch", "before_sleep"]
+                    as_needed: false,
+                    regularly: true,
+                    until: { type: "forever" },
+                    frequency: { n: 1, unit: "day" },
+                    times: [
+                        { id: 1, type: "event", event: "breakfast", when: "before" },
+                        { id: 2, type: "event", event: "breakfast", when: "after" },
+                        { id: 3, type: "event", event: "lunch", when: "before" },
+                        { id: 4, type: "event", event: "lunch", when: "after" },
+                        { id: 5, type: "event", event: "dinner", when: "before" },
+                        { id: 6, type: "event", event: "dinner", when: "after" },
+                        { id: 7, type: "event", event: "sleep", when: "before" },
+                        { id: 8, type: "event", event: "sleep", when: "after" },
+                        { id: 9, type: "exact", time: "09:00" },
+                        { id: 10, type: "exact", time: "21:30" },
+                        { id: 11, type: "unspecified" }
+                    ],
+                    take_with_food: null,
+                    take_with_medications: [],
+                    take_without_medications: []
                 },
                 access_anyone: "default",
                 access_family: "default",
@@ -561,9 +634,8 @@ user must have read access to the patient and write access to the medication.
                 quantity: 50,
                 type: "OTC",
                 schedule: {
-                    type: "regularly",
-                    frequency: 1,
-                    times_of_day: ["after_lunch", "before_sleep"]
+                    as_needed: true,
+                    regularly: false
                 },
                 access_anyone: "write",
                 access_family: "write",
@@ -609,9 +681,8 @@ user must have read access to the patient and write access to the medication.
                 quantity: 50,
                 type: "OTC",
                 schedule: {
-                    type: "regularly",
-                    frequency: 1,
-                    times_of_day: ["after_lunch", "before_sleep"]
+                    as_needed: true,
+                    regularly: false
                 },
                 access_anyone: "write",
                 access_family: "write",
@@ -667,9 +738,26 @@ write access to the medication.
                 quantity: 50,
                 type: "OTC",
                 schedule: {
-                    type: "regularly",
-                    frequency: 1,
-                    times_of_day: ["after_lunch", "before_sleep"]
+                    as_needed: false,
+                    regularly: true,
+                    until: { type: "forever" },
+                    frequency: { n: 1, unit: "day" },
+                    times: [
+                        { id: 1, type: "event", event: "breakfast", when: "before" },
+                        { id: 2, type: "event", event: "breakfast", when: "after" },
+                        { id: 3, type: "event", event: "lunch", when: "before" },
+                        { id: 4, type: "event", event: "lunch", when: "after" },
+                        { id: 5, type: "event", event: "dinner", when: "before" },
+                        { id: 6, type: "event", event: "dinner", when: "after" },
+                        { id: 7, type: "event", event: "sleep", when: "before" },
+                        { id: 8, type: "event", event: "sleep", when: "after" },
+                        { id: 9, type: "exact", time: "09:00" },
+                        { id: 10, type: "exact", time: "21:30" },
+                        { id: 11, type: "unspecified" }
+                    ],
+                    take_with_food: null,
+                    take_with_medications: [],
+                    take_without_medications: []
                 },
                 access_anyone: "write",
                 access_family: "write",

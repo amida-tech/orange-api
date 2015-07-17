@@ -68,8 +68,14 @@ describe("Schedule", function () {
                 expect(showResponse).to.be.a.medication.viewSuccess;
 
                 // schedule returned as expected
-                expect(createResponse.body.schedule).to.deep.equal(schedule);
-                expect(showResponse.body.schedule).to.deep.equal(schedule);
+                // this tests time IDs are consistent as well
+                expect(createResponse.body.schedule).to.deep.equal(showResponse.body.schedule);
+                var s = showResponse.body.schedule;
+                s.times = s.times.filter(function (time) {
+                    delete time.id;
+                    return time;
+                });
+                expect(s).to.deep.equal(schedule);
             });
         });
     });
