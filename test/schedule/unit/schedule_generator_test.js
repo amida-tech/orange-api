@@ -10,13 +10,14 @@ describe("Schedule", function () {
     describe("generates schedules correctly in a single timezone", function () {
         // filter out index keys that are only used internally in the app (and tested
         // in medication_schedule_generator_test.js), and likewise with take_with_food,
-        // take_with_medications and take_without_medications keys
+        // take_with_medications, take_without_medications and notification keys
         var formatResults = function (events) {
             return events.map(function (item) {
                 delete item.index;
                 delete item.take_with_food;
                 delete item.take_with_medications;
                 delete item.take_without_medications;
+                delete item.notification;
                 return item;
             });
         };

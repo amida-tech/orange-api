@@ -28,6 +28,7 @@ var scheduleItemSchema = {
 
         took_medication:            { type: "boolean" },
         delay:                      { type: "number" },
+        notification:               { type: "string" },
         dose_id:                    { type: "number" }
     },
     additionalProperties: false

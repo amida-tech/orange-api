@@ -56,7 +56,7 @@ describe("Schedule", function () {
                 regularly: true,
                 until: { type: "forever" },
                 frequency: { n: 1, unit: "day" },
-                times: [{ type: "unspecified" }],
+                times: [{ id: 9997, type: "unspecified" }],
                 take_with_food: null,
                 take_with_medications: [],
                 take_without_medications: []
@@ -67,9 +67,24 @@ describe("Schedule", function () {
                 expect(createResponse).to.be.a.medication.createSuccess;
                 expect(showResponse).to.be.a.medication.viewSuccess;
 
+                // should silently ignore id we passed on time field
+                expect(createResponse.body.schedule.times[0].id).to.be.a("number");
+                expect(createResponse.body.schedule.times[0].id).to.not.equal(9997);
+
                 // schedule returned as expected
-                expect(createResponse.body.schedule).to.deep.equal(schedule);
-                expect(showResponse.body.schedule).to.deep.equal(schedule);
+                // this tests time IDs are consistent as well
+                expect(createResponse.body.schedule).to.deep.equal(showResponse.body.schedule);
+                var s = showResponse.body.schedule;
+                s.times = s.times.filter(function (time) {
+                    delete time.id;
+                    return time;
+                });
+                schedule.times = schedule.times.filter(function (time) {
+                    delete time.id;
+                    return time;
+                });
+                expect(s).to.deep.equal(schedule);
+
             });
         });
     });

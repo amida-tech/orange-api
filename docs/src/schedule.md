@@ -20,6 +20,12 @@ _local_ timezone.
 Each event will also contain a `happened` boolean key indicating whether it took place in the
 past (`true`) or will take place in the future (`false`).
 
+Crucially, each event contains a `notification` key containing an ISO-8601 datetime in the
+patient's local timezone representing the time at which the patient should be notified they need
+to take their medication. This uses the **user-specific** notification settings set in
+the `/patients/:patientid/medications/:medicationid/times/:timeid` endpoints (and defaults to
+30 minutes prior).
+
 Additionally, each event will contain the `take_with_food` (boolean or null), `take_with_medications`
 (array of integers) and `take_without_medications` (array of integers) keys, each representing
 the same data and formatted the same way as in the medication `schedule` field.
@@ -79,6 +85,7 @@ will be shown.
                     {
                         type: "time",
                         date: "2015-03-31T19:27:09+00:00",
+                        notification: "2015-03-31T18:57:09+00:00",
                         medication_id: 1,
                         took_medication: true,
                         delay: -17,
@@ -90,6 +97,7 @@ will be shown.
                     {
                         type: "time",
                         date: "2015-03-31T19:27:09+00:00",
+                        notification: "2015-03-31T18:57:09+00:00",
                         medication_id: 1,
                         took_medication: false,
                         take_with_food: null,
@@ -99,6 +107,7 @@ will be shown.
                     {
                         type: "time",
                         date: "2015-03-31T19:27:09+00:00",
+                        notification: "2015-03-31T18:57:09+00:00",
                         medication_id: 1,
                         took_medication: false,
                         take_with_food: null,
@@ -109,6 +118,7 @@ will be shown.
                     {
                         type: "time",
                         date: "2015-05-31T19:27:09+00:00",
+                        notification: "2015-03-31T18:57:09+00:00",
                         medication_id: 1,
                         take_with_food: null,
                         take_with_medications: [],
@@ -118,6 +128,7 @@ will be shown.
                         // no time specified, just the date
                         type: "date",
                         date: "2015-05-31",
+                        notification: "2015-03-31T18:57:09+00:00",
                         medication_id: 3,
                         take_with_food: null,
                         take_with_medications: [],
