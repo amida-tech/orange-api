@@ -820,7 +820,7 @@ View the current notification settings for the current user and the global user-
                 success: true
             }
 
-### Set Notification Settings [GET]
+### Set Notification Settings [PUT]
 Set the current notification settings for the current user and the global user-wide default
 
 + Parameters
