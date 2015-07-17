@@ -45,7 +45,6 @@ describe("Requests", function () {
                 });
             });
 
-
             // check it requires a valid request ID
             it("rejects invalid request ids", function () {
                 return expect(closeRequest({

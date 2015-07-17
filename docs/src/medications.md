@@ -766,3 +766,110 @@ write access to the medication.
                 pharmacy_id: 1,
                 success: true
             }
+
+## Medication Time [/patients/{patientid}/medications/{medicationid}/times/{timeid}]
+This endpoint represents a single 'abstract' time at which the schedule indicates a medication
+should be taken: i.e., one item in the `times` array of a medication. This endpoint should be
+used to both view and set the notification settings for this specific medication time, both at a
+a default user-wide level (the `default` key) and specifically for this *user* (**not** patient)
+(the `user` key).
+
+Both keys represent an 'offset': the number of minutes before the medication should be scheduled
+at which the user should be notified they need to take the med. For example, if `user = 5` and
+`default = 30` then the current user will get a notification 5 minutes before the med should be taken,
+and all other users (unless they have set their own notification settings) will get a notification
+30 minutes before. Values will default to 30 minutes before.
+
+The user key can be the string `default` to represent that that user has not set a custom offset
+and the default should be respected.
+
+### View Notification Settings [GET]
+View the current notification settings for the current user and the global user-wide default
+
++ Parameters
+    + patientid (integer, required)
+
+        unique ID of the patient
+    + medicationid (integer, required)
+
+        unique ID of the medication
+    + timeid (integer, required)
+
+        unique ID of the medication time
+
++ Request
+    + Headers
+
+            Authorization: Bearer ACCESS_TOKEN
+
++ Response 200
+    Errors
+    + `access_token_required` (401) - no access token specified in
+    `Authorization` header
+    + `invalid_access_token` (401) - the access token specified is invalid
+    + `unauthorized` (403) - the current user does not have read access to this patient
+    + `invalid_patient_id` (404) - a patient with the specified ID was not found
+    + `invalid_medication_id` (404) - a medication with that ID was not found
+    + `invalid_time_id` (404) - a time with that ID was not found for that medication
+
+    + Body
+
+            {
+                default: 30,
+                user: "default",
+                success: true
+            }
+
+### Set Notification Settings [GET]
+Set the current notification settings for the current user and the global user-wide default
+
++ Parameters
+    + patientid (integer, required)
+
+        unique ID of the patient (*url)
+    + medicationid (integer, required)
+
+        unique ID of the medication (*url)
+    + timeid (integer, required)
+
+        unique ID of the medication time (*url)
+    + default (number, optional)
+
+        number of minutes to change the notification offset to for all users who haven't set
+        a custom value
+    + user (number or string, optional)
+
+        number of minutes to change the notification offset to for this user, or `"default"`
+        to indicate that the default value should be used
+
++ Request
+    + Headers
+
+            Authorization: Bearer ACCESS_TOKEN
+
+    + Body
+
+            {
+                default: 20,
+                user: 15
+            }
+
++ Response 200
+    Errors
+    + `access_token_required` (401) - no access token specified in
+    `Authorization` header
+    + `invalid_access_token` (401) - the access token specified is invalid
+    + `unauthorized` (403) - the current user does not have read access to this patient
+    + `invalid_patient_id` (404) - a patient with the specified ID was not found
+    + `invalid_medication_id` (404) - a medication with that ID was not found
+    + `invalid_time_id` (404) - a time with that ID was not found for that medication
+    + `invalid_default` (400) - invalid `default` value (must be a positive number)
+    + `invalid_user` (400) - invalid `user` value (must be a positive number or `"default"`)
+
+    + Body
+
+            {
+                default: 20,
+                user: 15,
+                success: true
+            }
