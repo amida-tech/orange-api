@@ -106,8 +106,8 @@ describe("Users", function () {
                 expect(data.subject).to.be.a("string");
                 expect(data.subject.length).to.be.above(0);
                 // should have a default body
-                expect(data.text).to.be.a("string");
-                expect(data.text.length).to.be.above(0);
+                expect(data.html).to.be.a("string");
+                expect(data.html.length).to.be.above(0);
             });
         });
 
@@ -117,7 +117,7 @@ describe("Users", function () {
                 body: "testbody"
             }).then(function (data) {
                 expect(data.subject).to.equal("testsubject");
-                expect(data.text).to.equal("testbody");
+                expect(data.html).to.equal("testbody");
             });
         });
 
@@ -156,7 +156,7 @@ describe("Users", function () {
                 // should have the correct subject and body
                 expect(data.subject).to.equal("testsubject");
                 // should have the specified body
-                expect(data.text).to.equal("testbody");
+                expect(data.html).to.equal("testbody");
             });
         });
 
@@ -173,7 +173,37 @@ describe("Users", function () {
                 expect(data.subject).to.be.a("string");
                 expect(data.subject.length).to.be.above(0);
                 // should have a default body
-                expect(data.text).to.equal("testtext");
+                expect(data.html).to.equal("testtext");
+            });
+        });
+
+        it("allows templating when sending emails", function () {
+            return notifyMail("testuser@amida-demo.com", "", {
+                template: "test"
+            }).then(function (data) {
+                // should send to the right email address
+                expect(data.to).to.equal("testuser@amida-demo.com");
+                // should come from an email address
+                expect(data.from).to.be.a("string");
+                expect(data.from.length).to.be.above(0);
+                // should have the subject specified in the template (see views/test/email_subject.handlebars)
+                expect(data.subject).to.equal("Test subject testuser@amida-demo.com");
+                // should have the body specified in the template (see views/test/email_body.handlebars)
+                expect(data.html).to.equal("<b>Hello</b> testuser@amida-demo.com");
+            });
+        });
+
+        it("allows templating when sending SMS", function () {
+            return notifyText("testuser@amida-demo.com", "6176170000", {
+                template: "test"
+            }).then(function (data) {
+                // should send to the right phone number
+                expect(data.to).to.equal("6176170000");
+                // should come from a phone number
+                expect(data.from).to.be.a("string");
+                expect(data.from.length).to.be.above(0);
+                // should have the body specified in the template (see views/test/text.handlebars)
+                expect(data.body).to.equal("Hello 6176170000");
             });
         });
     });

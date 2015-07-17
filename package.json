@@ -24,6 +24,7 @@
     "double-metaphone": "^0.1.4",
     "express": "4.12.x",
     "gridfs-stream": "^1.1.1",
+    "handlebars": "^3.0.3",
     "image-type": "^2.0.2",
     "moment": "^2.10.3",
     "moment-timezone": "^0.4.0",
