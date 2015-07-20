@@ -9,7 +9,7 @@ exec 3< <(NODE_ENV=test ./node_modules/.bin/istanbul cover run.js --dir ./covera
 # wait til we see "Orange API listening at..." to indicate the server's started, then
 # kill sed
 # run cat to stop istanbul blocking fd 3 (see Stack Overflow #21001220)
-sed '/Orange API listening at http:\/\/0.0.0.0:3000$/q' <&3 ; cat <&3 &
+sed '/Orange API listening at http:\/\/127.0.0.1:3000$/q' <&3 ; cat <&3 &
 
 # run tests
 NODE_ENV=test grunt dropDatabase mochaTest:all dropDatabase

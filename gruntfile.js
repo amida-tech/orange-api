@@ -14,7 +14,7 @@ module.exports = function (grunt) {
     grunt.registerTask("test", ["env:test", "dropDatabase", "server:test", "mochaTest:all"]);
 
     // generate code coverage using bash istanbul wrapper
-    grunt.registerTask("coverage", ["exec:coverage"]);
+    grunt.registerTask("coverage", ["matchStart", "exec:coverage"]);
     // push code coverage to coveralls.io
     grunt.registerTask("coverage:push", ["exec:coverage", "coveralls"]);
 
