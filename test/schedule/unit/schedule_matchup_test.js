@@ -103,5 +103,22 @@ describe("Schedule", function () {
                 done();
             });
         });
+
+        // 1d lists are an edge case for crossovers in the GA so we test explicitly
+        // to make sure nothing errors out here
+        it("handles matching up when one dose is present", function (done) {
+            schedule.match([times[0]], client, {
+                tz: "America/New_York",
+                wake: "08:00",
+                sleep: "00:00",
+                breakfast: "09:30",
+                lunch: "13:00",
+                dinner: "18:00"
+            }, function (err, result) {
+                if (err) return done(err);
+                expect(result.length).to.not.equal(0);
+                done();
+            });
+        });
     });
 });

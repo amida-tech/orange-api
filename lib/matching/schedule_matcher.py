@@ -7,6 +7,7 @@ from pyevolve import Selectors
 from pyevolve import Initializators, Mutators
 from pyevolve import Scaling
 from pyevolve import Consts
+from pyevolve import Crossovers
 
 class ScheduleMatcher(object):
     # scheduled = API-style schedule data object
@@ -57,6 +58,11 @@ class ScheduleMatcher(object):
         genome = G1DList.G1DList(self.n)
         genome.setParams(rangemin=0, rangemax=self.M)
         genome.evaluator.set(self.score)
+
+        # use single point crossover unless n=1 (pyevolve's throws errors on single point crossover)
+        # when we don't crossover
+        if self.n == 1: genome.crossover.clear()
+        else: genome.crossover.set(Crossovers.G1DListCrossoverSinglePoint)
 
         # genetic algorithm engine
         self.ga = GSimpleGA.GSimpleGA(genome, interactiveMode=False)
