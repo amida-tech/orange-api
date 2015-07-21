@@ -1,14 +1,44 @@
 language: node_js
 node_js:
     - "0.10"
+sudo: false # use container-based infrastructure
 services:
     - mongodb
+addons:
+    apt:
+        packages:
+         - libzmq3-dev
+         - python-virtualenv
+
+# cache node and python installs
+cache:
+    directories:
+        - $HOME/.cache/pip
+        - venv/.cache/pip
+        - node_modules
+
+# setup python virtualenv so we can pip install packages without
+# sudo
+before_install:
+  - virtualenv venv
+  - source venv/bin/activate
+
+# install python and node prereqs
 install:
-  - sudo apt-get update
-  - sudo apt-get install libzmq3-dev
-  - sudo pip install -r lib/matching/requirements.txt
+  - source venv/bin/activate
+  - pip install -r lib/matching/requirements.txt
   - npm install -g grunt-cli
   - npm install
+
+# setup client secret to test with
+before_script:
   - echo "0123456789abcdef" > .secret
-script: grunt test
-after_success: grunt coverage:push
+
+# run e2e & unit tests
+script:
+  - grunt test
+
+# instrument code and run tests against instrumented code, then
+# push to coveralls.io
+after_success:
+  - grunt coverage:push
