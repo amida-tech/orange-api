@@ -76,9 +76,18 @@ describe("Users", function () {
             var headers = auth.genAuthHeaders(undefined);
 
             // build but don't save user with full data
-            var newUser = fixtures.build("User");
+            var newUser = fixtures.build("User", {
+                firstName: "Test",
+                lastName: "User",
+                phone: "6177140900"
+            });
             // register user at endpoint
-            var registerUser = function (user) {
+            var registerUser = function (inst) {
+                // camel case keys override
+                var user = inst.toObject();
+                user.first_name = user.firstName;
+                user.last_name = user.lastName;
+
                 return chakram.post("http://localhost:3000/v1/user", user, headers).then(function () {
                     return user;
                 });
@@ -99,6 +108,11 @@ describe("Users", function () {
             return newUser.then(registerUser).then(token).then(list).then(function (response) {
                 // check we have exactly one patient
                 expect(response.body.patients.length).to.equal(1);
+                // check it has the right name and phone number
+                var patient = response.body.patients[0];
+                expect(patient.first_name).to.equal("Test");
+                expect(patient.last_name).to.equal("User");
+                expect(patient.phone).to.equal("6177140900");
             });
         });
     });
