@@ -2,7 +2,7 @@
 var chakram         = require("chakram"),
     mongoose        = require("mongoose"),
     Q               = require("q"),
-    auth            = require("../common/auth.js");
+    auth            = require("../../common/auth.js");
 
 var expect = chakram.expect;
 

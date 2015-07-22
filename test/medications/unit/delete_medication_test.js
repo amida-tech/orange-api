@@ -20,11 +20,30 @@ describe("Medications", function () {
             });
         });
 
-        // setup test medication
+        // setup a test doctor and pharmacy
+        var doctorId, pharmacyId;
+        before(function () {
+            return Q.nbind(patient.createDoctor, patient)({
+                name: "test doctor"
+            }).then(function (d) {
+                doctorId = d._id;
+            });
+        });
+        before(function () {
+            return Q.nbind(patient.createPharmacy, patient)({
+                name: "test pharmacy"
+            }).then(function (p) {
+                pharmacyId = p._id;
+            });
+        });
+
+        // setup test medication for that doctor and pharmacy
         var medication;
         before(function () {
             return Q.nbind(patient.createMedication, patient)({
-                name: "test medication"
+                name: "test medication",
+                doctorId: doctorId,
+                pharmacyId: pharmacyId
             }).then(function (m) {
                 medication = m;
             });
@@ -50,23 +69,29 @@ describe("Medications", function () {
             });
         });
 
-        // functions to try and retrieve that dose and journal entry (to check
-        // for their existence)
+        // functions to try and retrieve that pharmacy, doctor, dose and journal entry
+        // and check for their existence
         var Patient = mongoose.model("Patient");
-        var entryExists = function () {
+        var resourceExists = function (collectionName, wantedId) {
             return Q.npost(Patient, "findOne", [{ _id: patient._id }]).then(function (p) {
-                return !!p.entries.filter(function (e) {
-                    return e._id === entryId;
+                return !!p[collectionName].filter(function (e) {
+                    return e._id === wantedId;
                 })[0];
             });
+        };
+        var entryExists = function () {
+            return resourceExists("entries", entryId);
         };
         var doseExists = function () {
-            return Q.npost(Patient, "findOne", [{ _id: patient._id }]).then(function (p) {
-                return !!p.doses.filter(function (d) {
-                    return d._id === doseId;
-                })[0];
-            });
+            return resourceExists("doses", doseId);
         };
+        var doctorExists = function () {
+            return resourceExists("doctors", doctorId);
+        };
+        var pharmacyExists = function () {
+            return resourceExists("pharmacies", pharmacyId);
+        };
+
 
         describe("initially", function () {
             it("has a dose", function () {
@@ -75,6 +100,14 @@ describe("Medications", function () {
 
             it("has an entry", function () {
                 return expect(entryExists()).to.be.true;
+            });
+
+            it("has a doctor", function () {
+                return expect(doctorExists()).to.be.true;
+            });
+
+            it("has a pharmacy", function () {
+                return expect(pharmacyExists()).to.be.true;
             });
         });
 
@@ -89,6 +122,14 @@ describe("Medications", function () {
 
             it("has no entry", function () {
                 return expect(entryExists()).to.be.false;
+            });
+
+            it("has a doctor", function () {
+                return expect(doctorExists()).to.be.true;
+            });
+
+            it("has a pharmacy", function () {
+                return expect(pharmacyExists()).to.be.true;
             });
         });
     });
