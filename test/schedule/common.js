@@ -25,7 +25,6 @@ var scheduleItemSchema = {
             type:   "array",
             items:  { type: "number" }
         },
-
         took_medication:            { type: "boolean" },
         delay:                      { type: "number" },
         notification:               { type: "string" },
