@@ -31,3 +31,24 @@ nginx:
    - "80:80"
    - "443:443"
   restart: always
+
+# for logstash
+elasticsearch:
+  build: elasticsearch
+  volumes_from:
+   - data
+  restart: always
+
+logstash:
+  build: logstash
+  links:
+   - elasticsearch
+  ports:
+   - "9998:9998"
+  restart: always
+
+kibana:
+  build: kibana
+  links:
+   - elasticsearch
+  restart: always
