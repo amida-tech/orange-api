@@ -139,7 +139,7 @@ will be shown.
             }
 
 
-## Dose Event [/patients/{patientid}/dose/{doseid}]
+## Dose Event [/patients/{patientid}/doses/{doseid}]
 ### Retrieve One Event [GET]
 View information on an individual dose event. `medication_id` is helpfully
 expanded out into `medication`. The current user will need read access to **both**
