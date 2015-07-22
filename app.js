@@ -1,9 +1,42 @@
 "use strict";
 // Web
-var express = require("express");
+var express         = require("express"),
+    bunyan          = require("express-bunyan-logger"),
+    bunyanLogstash  = require("bunyan-logstash");
 var app = module.exports = express();
 
+// Logging
 var config = require("./config.js");
+var streams = [];
+if (typeof config.logger.file !== "undefined") {
+    streams.push({
+        level: config.logger.file.level,
+        path: config.logger.file.path
+    });
+}
+if (typeof config.logger.stdout !== "undefined") {
+    streams.push({
+        level: config.logger.stdout.level,
+        stream:  process.stdout
+    });
+}
+if (typeof config.logger.logstash !== "undefined") {
+    console.log(config.logger.logstash);
+    streams.push({
+        level: config.logger.logstash.level,
+        type: "raw",
+        stream: bunyanLogstash.createStream({
+            host: config.logger.logstash.host,
+            port: config.logger.logstash.port
+        })
+    });
+}
+var logger = bunyan({
+    name: "logger",
+    streams: streams
+});
+app.use(logger);
+
 // Database setup in run.js
 
 // CORS
