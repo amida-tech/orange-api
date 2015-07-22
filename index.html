@@ -2957,7 +2957,7 @@ owned by the current patient. Defaults to not filtering by medication.</p>
     count: <span class="hljs-number">46</span>,
     success: <span class="hljs-literal">true</span>
 }
-</code></pre><div style="height: 1px;"></div></div></div></div></div><div id="dose-events-dose-event" class="resource"><h3>Dose Event<a href="#dose-events-dose-event" class="permalink"><i class="fa fa-link"></i></a></h3><div id="dose-events-dose-event-get" class="action get"><h4><div class="name">Retrieve One Event</div><a href="#dose-events-dose-event-get" class="method get">GET</a><code class="uri">/patients/{patientid}/dose/{doseid}</code></h4><p>View information on an individual dose event. <code>medication_id</code> is helpfully
+</code></pre><div style="height: 1px;"></div></div></div></div></div><div id="dose-events-dose-event" class="resource"><h3>Dose Event<a href="#dose-events-dose-event" class="permalink"><i class="fa fa-link"></i></a></h3><div id="dose-events-dose-event-get" class="action get"><h4><div class="name">Retrieve One Event</div><a href="#dose-events-dose-event-get" class="method get">GET</a><code class="uri">/patients/{patientid}/doses/{doseid}</code></h4><p>View information on an individual dose event. <code>medication_id</code> is helpfully
 expanded out into <code>medication</code>. The current user will need read access to <strong>both</strong>
 the patient and the dose event.</p>
 <div class="title"><strong>Parameters</strong><div class="collapse-button show"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><dl class="inner"><dt>patientid</dt><dd><code>integer</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>unique ID of the patient</p>
@@ -3011,7 +3011,7 @@ the patient and the dose event.</p>
     },
     success: <span class="hljs-literal">true</span>
 }
-</code></pre><div style="height: 1px;"></div></div></div></div><div id="dose-events-dose-event-put" class="action put"><h4><div class="name">Change an Event</div><a href="#dose-events-dose-event-put" class="method put">PUT</a><code class="uri">/patients/{patientid}/dose/{doseid}</code></h4><p>Change information (medication, date and/or notes) of a single dose event. The current
+</code></pre><div style="height: 1px;"></div></div></div></div><div id="dose-events-dose-event-put" class="action put"><h4><div class="name">Change an Event</div><a href="#dose-events-dose-event-put" class="method put">PUT</a><code class="uri">/patients/{patientid}/doses/{doseid}</code></h4><p>Change information (medication, date and/or notes) of a single dose event. The current
 user will need write access to the patient, the old medication, and the new medication
 (if different).</p>
 <div class="title"><strong>Parameters</strong><div class="collapse-button show"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><dl class="inner"><dt>patientid</dt><dd><code>integer</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>unique ID of the patient (<em>url</em>)</p>
@@ -3058,7 +3058,7 @@ field blank correspondingly.</p>
     notes: <span class="hljs-string">"Not sleepy from this - forgot I took a melatonin pill earlier!"</span>,
     success: <span class="hljs-literal">true</span>
 }
-</code></pre><div style="height: 1px;"></div></div></div></div><div id="dose-events-dose-event-delete" class="action delete"><h4><div class="name">Delete an Event</div><a href="#dose-events-dose-event-delete" class="method delete">DELETE</a><code class="uri">/patients/{patientid}/dose/{doseid}</code></h4><p>Remove a single dose event (this will update generated statistics correspondingly, so be careful!)
+</code></pre><div style="height: 1px;"></div></div></div></div><div id="dose-events-dose-event-delete" class="action delete"><h4><div class="name">Delete an Event</div><a href="#dose-events-dose-event-delete" class="method delete">DELETE</a><code class="uri">/patients/{patientid}/doses/{doseid}</code></h4><p>Remove a single dose event (this will update generated statistics correspondingly, so be careful!)
 The current user will need write access to both the patient and the medication.</p>
 <div class="title"><strong>Parameters</strong><div class="collapse-button show"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><dl class="inner"><dt>patientid</dt><dd><code>integer</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>unique ID of the patient (<em>url</em>)</p>
 </dd><dt>doseid</dt><dd><code>integer</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>unique ID of the dose (<em>url</em>)</p>
@@ -3377,7 +3377,7 @@ of information. Possible matches for drugs (if any) are located in the
     },
     success: <span class="hljs-literal">true</span>
 }
-</code></pre><div style="height: 1px;"></div></div></div></div></div></section></div></div></div><p style="text-align: center;" class="text-muted">Generated by&nbsp;<a href="https://github.com/danielgtaylor/aglio" class="aglio">aglio</a>&nbsp;on 20 Jul 2015</p><script>function toggleCollapse(event) {
+</code></pre><div style="height: 1px;"></div></div></div></div></div></section></div></div></div><p style="text-align: center;" class="text-muted">Generated by&nbsp;<a href="https://github.com/danielgtaylor/aglio" class="aglio">aglio</a>&nbsp;on 22 Jul 2015</p><script>function toggleCollapse(event) {
     var button = event.target.parentNode;
     var content = button.parentNode.nextSibling;
     var inner = content.children[0];
