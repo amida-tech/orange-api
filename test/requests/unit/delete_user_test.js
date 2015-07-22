@@ -2,8 +2,7 @@
 var chakram         = require("chakram"),
     mongoose        = require("mongoose"),
     Q               = require("q"),
-    auth            = require("../common/auth.js"),
-    create          = require("./create_request_test.js").create;
+    auth            = require("../common/auth.js");
 
 var expect = chakram.expect;
 
@@ -57,7 +56,7 @@ describe("Requests", function () {
 
         // update users from DB and then count requests made from userA to userB
         // (by counting requested field in userA)
-        var countRequests = function (key, userA, userB, done) {
+        var countRequests = function (key, userA, userB) {
             return Q.npost(User, "findOne", [userA._id]).then(function (user) {
                 var requests = user[key].filter(function (r) {
                     return r.email === userB.email;
