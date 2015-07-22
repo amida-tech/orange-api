@@ -27,8 +27,12 @@ API for Orange medication adherence apps. quasi-REST and implemented in Node & M
 # you need Node.js and Grunt.js installed
 # and MongoDB running
 
+# you'll also need to configure the various settings documented in config.js
+# (the only vital ones are the client secret (any hexstring is suitable) and the
+# addresses for web/db/zeromq)
+
 # you also need a client secret (any hexstring) which should be
-# placed into .secret in the root app directory (often `orange-api`)
+# placed into config.js in the root app directory (often `orange-api`)
 
 # finally you'll also need to configure the notification settings
 # (primarily twilio and sendgrid API auth keys) in config.js

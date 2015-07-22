@@ -2,17 +2,16 @@
 var fs          = require("fs"),
     Q           = require("q"),
     chakram     = require("chakram"),
+    config      = require("../config.js"),
     fixtures    = require("./users/fixtures.js");
 
 var expect = chakram.expect;
 
 describe("API", function () {
-    // read in secret from .secret file
+    // read in secret from config.js file
     var secret;
     before(function () {
-        return Q.nbind(fs.readFile)(".secret", { encoding: "utf8" }).then(function (s) {
-            secret = s.trim();
-        });
+        secret = config.secret;
     });
 
     // sample endpoint to hit
