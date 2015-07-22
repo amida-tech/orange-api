@@ -43,6 +43,9 @@ if (process.env.NODE_ENV === "production") {
             port: 9999
         }
     };
+} else if (process.env.NODE_ENV === "test") {
+    // don't log anything in testing
+    config.logger = {};
 } else {
     config.logger = {
         stdout: {
