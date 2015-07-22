@@ -1,0 +1,4 @@
+---
+#file: roles/orange/tasks/docs.yml
+- name: Clone Orange docs repository
+  git: repo="https://github.com/amida-tech/orange-api.git" dest="/var/www/orange/docs" version="gh-pages"

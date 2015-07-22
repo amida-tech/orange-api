@@ -1,0 +1,15 @@
+---
+- hosts: all
+  user: centos
+  sudo: yes
+  roles:
+    - common
+    - mongodb
+    - nginx
+    - nodejs
+    - orange
+
+  vars_prompt:
+    - name: "secret"
+      prompt: "What is the client secret?"
+      private: yes

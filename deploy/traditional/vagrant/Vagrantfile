@@ -1,0 +1,31 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure("2") do |config|
+  # All Vagrant configuration is done here. See: vagrantup.com.
+
+  # Build against CentOS 6.4, without any config management utilities.
+  config.vm.box = "chef/centos-7.0"
+
+  # Enable port forwarding 
+  config.vm.network :forwarded_port, host: 8080, guest: 80
+
+  # Provisioning configuration for Ansible.
+  config.vm.provision "ansible" do |ansible|
+    ansible.groups = {
+     "servers" => ["default"],
+    }
+
+    ansible.playbook = "../ansible/playbook.yml"
+    # Enable verbose output.
+    ansible.verbose = "vvvv"
+    # Run commands as root.
+    ansible.sudo = true
+    ansible.host_key_checking = false
+  end
+
+  # Set the name of the VM. See: http://stackoverflow.com/a/17864388/100134
+  config.vm.define :orange do |orange|
+    orange.vm.hostname = "orange"
+  end
+end
