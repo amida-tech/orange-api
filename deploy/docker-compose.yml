@@ -1,0 +1,33 @@
+data:
+  image: cogniteev/echo
+  volumes:
+   - data/:/data
+  
+db:
+  image: mongo:3.0
+  volumes_from:
+   - data
+  restart: always
+
+matcher:
+  build: ../lib/matching
+  restart: always
+
+api:
+  build: ../
+  links:
+   - db
+   - matcher
+   - logstash
+  restart: always
+
+nginx:
+  build: ../
+  dockerfile: deploy/nginx/Dockerfile
+  links:
+   - api
+   - kibana
+  ports:
+   - "80:80"
+   - "443:443"
+  restart: always
