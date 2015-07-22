@@ -32,9 +32,9 @@ install:
   - npm install -g grunt-cli
   - npm install
 
-# setup client secret to test with
+# setup config to test with
 before_script:
-  - echo "0123456789abcdef" > .secret
+  - cp config.js.example config.js
 
 # run e2e & unit tests
 script:

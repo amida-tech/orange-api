@@ -1,6 +1,7 @@
 "use strict";
 
 var chakram         = require("chakram"),
+    config          = require("../../config.js"),
     Q               = require("q"),
     fs              = require("fs"),
     userFixtures    = require("../users/fixtures.js");
@@ -25,12 +26,10 @@ auth.itRequiresAuthentication = function (endpoint) {
     });
 };
 
-// read in and store client secret from .secret file
+// read in and store client secret from config.js file
 var secret;
 before(function () {
-    return Q.nbind(fs.readFile)(".secret", { encoding: "utf8" }).then(function (s) {
-        secret = s.trim();
-    });
+    secret = config.secret;
 });
 
 // generate authentication headers to send from an access token,
