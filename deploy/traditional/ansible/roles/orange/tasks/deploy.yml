@@ -12,12 +12,8 @@
 - name: Copy Orange source to current
   command: cp -r /var/www/orange/source/. /var/www/orange/current
 
-- name: Create secret
-  sudo: yes
-  command: su -c "echo \"{{ secret }}\" > /var/www/orange/shared/.secret"
-
-- name: Link secret from shared to current
-  command: ln -sf /var/www/orange/shared/.secret /var/www/orange/current/.secret
+- name: Copy Orange config
+  command: cp /var/www/orange/current/config.js.example /var/www/orange/current/config.js
 
 - name: Install python dependencies
   sudo: yes

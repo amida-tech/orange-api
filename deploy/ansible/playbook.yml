@@ -3,8 +3,6 @@
   user: centos
   sudo: yes
   roles:
-    - common
-    - mongodb
-    - nginx
-    - nodejs
+    # - common
+    # - docker
     - orange
