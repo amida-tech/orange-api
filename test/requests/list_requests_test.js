@@ -351,6 +351,8 @@ describe("Requests", function () {
                     });
                 });
             });
+
+            xit("allows filtering by request status");
         });
     });
 });

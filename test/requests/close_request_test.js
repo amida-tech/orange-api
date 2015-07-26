@@ -56,6 +56,12 @@ describe("Requests", function () {
                     status: "accepted"
                 }, 9999, otherUser.accessToken)).to.be.an.api.error(404, "invalid_request_id");
             });
+            xit("rejects request ids corresponding to accepted requests", function () {
+            });
+            xit("rejects request ids corresponding to denied requests", function () {
+            });
+            xit("rejects request ids corresponding to cancelled requests", function () {
+            });
 
             it("requires a status key", function () {
                 return expect(closeRequest({

@@ -7,11 +7,12 @@ var expect = chakram.expect;
 // verify successful responses
 /*eslint-disable key-spacing */
 var requestSchema = module.exports.schema = {
-    required: ["success", "id", "email"],
+    required: ["success", "id", "email", "status"],
     properties: {
         success:    { type: "boolean" },
         id:         { type: "number" },
-        email:      { type: "string" }
+        email:      { type: "string" },
+        status:     { type: "string" }
     },
     additionalProperties: false
 };

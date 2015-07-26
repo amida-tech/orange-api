@@ -59,6 +59,11 @@ describe("Requests", function () {
                     email: otherUser.email
                 }, me.accessToken)).to.be.an.api.error(400, "already_requested");
             });
+            xit("accepts an email address for a user we've already requested access from and has closed", function () {
+                return expect(create({
+                    email: otherUser.email
+                }, me.accessToken)).to.be.an.api.error(400, "already_requested");
+            });
         });
 
         // everything else tested in lifecycle test

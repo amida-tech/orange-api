@@ -33,6 +33,12 @@ describe("Requests", function () {
             it("rejects request ids not corresponding to real requests", function () {
                 return expect(cancelRequest(9999, user.accessToken)).to.be.an.api.error(404, "invalid_request_id");
             });
+            xit("rejects request ids corresponding to accepted requests", function () {
+            });
+            xit("rejects request ids corresponding to denied requests", function () {
+            });
+            xit("rejects request ids corresponding to cancelled requests", function () {
+            });
 
             // everything else tested in lifecycle test
         });
