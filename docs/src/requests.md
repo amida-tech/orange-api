@@ -135,8 +135,9 @@ Cancel an existing request to access another user's patient data.
     + `access_token_required` (401) - no access token specified in
     `Authorization` header
     + `invalid_access_token` (401) - the access token specified is invalid
-    + `invalid_request_id` (404) - a request made with the specified ID by the current user was not found
+    + `invalid_request_id` (404)
 
+        a request made with the specified ID by the current user was not found, or it was already cancelled or closed
     + Body
 
             {
@@ -244,7 +245,9 @@ endpoint. This way the user can selectively choose to share just some of thier p
     + `access_token_required` (401) - no access token specified in
     `Authorization` header
     + `invalid_access_token` (401) - the access token specified is invalid
-    + `invalid_request_id` (404) - a request made with the specified ID to the current user was not found
+    + `invalid_request_id` (404)
+
+        a request made with the specified ID by the current user was not found, or it was already cancelled or closed
     + `invalid_status` (400) - the `status` body key must be either `accepted` or `rejected`
 
     + Body

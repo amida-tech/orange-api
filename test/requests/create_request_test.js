@@ -1,7 +1,8 @@
 "use strict";
-var chakram     = require("chakram"),
-    curry       = require("curry"),
-    auth        = require("../common/auth.js");
+var chakram         = require("chakram"),
+    curry           = require("curry"),
+    auth            = require("../common/auth.js"),
+    closeRequest    = require("./close_request_test.js").closeRequest;
 
 var expect = chakram.expect;
 
@@ -16,14 +17,14 @@ describe("Requests", function () {
         auth.itRequiresAuthentication(curry(create)({}));
 
         describe("with test data", function () {
-            // setup two users to test with
+            // setup two users to test with (beforeEach so we can play around with requests)
             var me, otherUser;
-            before(function () {
+            beforeEach(function () {
                 return auth.createTestUser().then(function (u) {
                     me = u;
                 });
             });
-            before(function () {
+            beforeEach(function () {
                 return auth.createTestUser().then(function (u) {
                     otherUser = u;
                 });
@@ -55,14 +56,37 @@ describe("Requests", function () {
                 }, me.accessToken)).to.be.a.requested.createSuccess;
             });
             it("rejects an email address for a user we've already requested access from", function () {
-                return expect(create({
+                // create
+                return create({
                     email: otherUser.email
-                }, me.accessToken)).to.be.an.api.error(400, "already_requested");
+                }, me.accessToken).then(function (resp) {
+                    expect(resp).to.be.a.requested.createSuccess;
+
+                    // duplicate create that should error
+                    return expect(create({
+                        email: otherUser.email
+                    }, me.accessToken)).to.be.an.api.error(400, "already_requested");
+                });
             });
-            xit("accepts an email address for a user we've already requested access from and has closed", function () {
-                return expect(create({
+
+            it("accepts an email address for a user we've got a closed request to", function () {
+                // create
+                return create({
                     email: otherUser.email
-                }, me.accessToken)).to.be.an.api.error(400, "already_requested");
+                }, me.accessToken).then(function (resp) {
+                    expect(resp).to.be.a.requested.createSuccess;
+
+                    // close
+                    return closeRequest({
+                        status: "accepted"
+                    }, resp.body.id, otherUser.accessToken).then(function() {
+
+                        // create again
+                        return expect(create({
+                            email: otherUser.email
+                        }, me.accessToken)).to.be.an.api.error(400, "already_requested");
+                    });
+                });
             });
         });
 
