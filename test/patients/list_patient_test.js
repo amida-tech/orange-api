@@ -445,6 +445,43 @@ describe("Patients", function () {
                     })).to.be.an.api.error(400, "invalid_group");
                 });
             });
+
+            describe("with creator parameter", function () {
+                it("doesn't filter by creator by default", function () {
+                    return listUser(user).then(function (response) {
+                        expect(response).to.be.a.patient.listSuccess;
+                        expect(response.body.patients.length).to.equal(25);
+                    });
+                });
+
+                it("ignores a null creator parameter", function () {
+                    return listUser(user, { creator: null }).then(function (response) {
+                        expect(response).to.be.a.patient.listSuccess;
+                        expect(response.body.patients.length).to.equal(25);
+                    });
+                });
+
+                it("handles no results", function () {
+                    return listUser(user, { creator: "foobarbaz@noone.com" }).then(function (response) {
+                        expect(response).to.be.a.patient.listSuccess;
+                        expect(response.body.patients.length).to.equal(0);
+                    });
+                });
+
+                it("handles searching exactly", function () {
+                    return listUser(user, { creator: user.email }).then(function (response) {
+                        expect(response).to.be.a.patient.listSuccess;
+                        expect(response.body.patients.length).to.equal(25);
+                    });
+                });
+
+                it("handles searching by substring ", function () {
+                    return listUser(user, { creator: user.email.slice(0, 2) }).then(function (response) {
+                        expect(response).to.be.a.patient.listSuccess;
+                        expect(response.body.patients.length).to.equal(25);
+                    });
+                });
+            });
         });
     });
 });

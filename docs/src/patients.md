@@ -157,6 +157,10 @@ View a list of all patients the current user has access to (either read or write
     + last_name (string, optional)
 
         Filter results by group of patient. Matches exactly.
+    + creator (string, optional)
+
+        Filter results by email address of creator. Matches any email addresses that
+        contain the specified email as a substring.
 
 + Request
     + Headers
