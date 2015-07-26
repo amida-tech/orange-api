@@ -8,7 +8,7 @@ var expect = chakram.expect;
 
 describe("Requests", function () {
     // test that when users are deleted, the corresponding requests (both in
-    // requests and requested) disappear
+    // requests and requested) are cancelled/closed
     describe("Delete Cascade", function () {
         // setup three users
         var alice, bob, carol;
@@ -54,20 +54,22 @@ describe("Requests", function () {
             });
         });
 
-        // update users from DB and then count requests made from userA to userB
-        // (by counting requested field in userA)
-        var countRequests = function (key, userA, userB) {
+        // update users from DB and then return the status of the request from
+        // userA to userB or vice versa, returning null if not present
+        // key should be requests or requested
+        var requestStatus = function (key, userA, userB) {
             return Q.npost(User, "findOne", [userA._id]).then(function (user) {
-                var requests = user[key].filter(function (r) {
+                var request = user[key].filter(function (r) {
                     return r.email === userB.email;
-                });
-                return requests.length;
+                })[0];
+                if (typeof request === "undefined" || request === null) return null;
+                return request.status;
             });
         };
 
         describe("bob (user to whom request was made) is deleted", function () {
             it("alice should initially have a request made to bob", function () {
-                return expect(countRequests("requested", alice, bob)).to.equal(1);
+                return expect(requestStatus("requested", alice, bob)).to.equal("pending");
             });
 
             describe("after deletion", function () {
@@ -75,15 +77,15 @@ describe("Requests", function () {
                     return Q.npost(bob, "remove");
                 });
 
-                it("alice should no longer have a request made to bob", function () {
-                    return expect(countRequests("requested", alice, bob)).to.equal(0);
+                it("alice's request to bob should be denied", function () {
+                    return expect(requestStatus("requested", alice, bob)).to.equal("denied");
                 });
             });
         });
 
         describe("alice (user who made request) is deleted", function () {
             it("carol should initially have a request from alice", function () {
-                expect(countRequests("requests", carol, alice)).to.equal(1);
+                expect(requestStatus("requests", carol, alice)).to.equal("pending");
             });
 
             describe("after deletion", function () {
@@ -91,8 +93,8 @@ describe("Requests", function () {
                     return Q.npost(alice, "remove");
                 });
 
-                it("carol should no longer have a request from alice", function () {
-                    expect(countRequests("requests", carol, alice)).to.equal(0);
+                it("carol's request from alice should be cancelled", function () {
+                    expect(requestStatus("requests", carol, alice)).to.equal("cancelled");
                 });
             });
         });

@@ -10,6 +10,9 @@ depending on the outcome. Note that `DELETE`ing the request does not actually sh
 that must be done seperately using the `POST /patients/:patientid/shares` endpoint. This way the
 user can choose to selectively share just some of their patients.
 
+Deleted requests are still shown, so the `status` field should be used to determine between
+requests. Possible values are `pending`, `cancelled`, `accepted` and `rejected`.
+
 Note that if user A requests access from user B, the request ID for user A (at `/requested`) is
 not necessarily the same as the request ID for user B (at `/requests`).
 
@@ -45,6 +48,7 @@ Request access to another user's patients from the current user.
             {
                 id: 1,
                 email: "another@user.com",
+                status: "pending",
                 success: true
             }
 
@@ -76,6 +80,10 @@ View a list of all requests the current user has made.
         Filter results by email address of the user the request was made to. Matches any email
         addresses that contain the specified email as a substring.
 
+    + status (string, optional)
+
+        Filter results by request status (matches exactly).
+
 + Request
     + Headers
 
@@ -90,6 +98,7 @@ View a list of all requests the current user has made.
     + `invalid_offset` (400) - the specified result offset is invalid
     + `invalid_sort_by` (400) - the specified sort field is invalid
     + `invalid_sort_order` (400) - the specified sort order is invalid
+    + `invalid_status` (400) - the specified status to filter by is not `pending`, `cancelled`, `accepted` or `rejected`
 
     + Body
 
@@ -98,6 +107,7 @@ View a list of all requests the current user has made.
                     {
                         id: 1,
                         email: "another@user.com"
+                        status: "pending",
                     },
                     ...
                 ],
@@ -125,13 +135,15 @@ Cancel an existing request to access another user's patient data.
     + `access_token_required` (401) - no access token specified in
     `Authorization` header
     + `invalid_access_token` (401) - the access token specified is invalid
-    + `invalid_request_id` (404) - a request made with the specified ID by the current user was not found
+    + `invalid_request_id` (404)
 
+        a request made with the specified ID by the current user was not found, or it was already cancelled or closed
     + Body
 
             {
                 id: 1,
                 email: "another@user.com",
+                status: "cancelled",
                 success: true
             }
 
@@ -164,6 +176,9 @@ to share their patient data.
 
         Filter results by email address of the user the request was made from. Matches any email
         addresses that contain the specified email as a substring.
+    + status (string, optional)
+
+        Filter results by request status (matches exactly).
 
 + Request
     + Headers
@@ -179,6 +194,7 @@ to share their patient data.
     + `invalid_offset` (400) - the specified result offset is invalid
     + `invalid_sort_by` (400) - the specified sort field is invalid
     + `invalid_sort_order` (400) - the specified sort order is invalid
+    + `invalid_status` (400) - the specified status to filter by is not `pending`, `cancelled`, `accepted` or `rejected`
 
     + Body
 
@@ -186,7 +202,8 @@ to share their patient data.
                 requests: [
                     {
                         id: 1,
-                        email: "original@user.com"
+                        email: "original@user.com",
+                        status: "pending"
                     },
                     ...
                 ],
@@ -228,7 +245,9 @@ endpoint. This way the user can selectively choose to share just some of thier p
     + `access_token_required` (401) - no access token specified in
     `Authorization` header
     + `invalid_access_token` (401) - the access token specified is invalid
-    + `invalid_request_id` (404) - a request made with the specified ID to the current user was not found
+    + `invalid_request_id` (404)
+
+        a request made with the specified ID by the current user was not found, or it was already cancelled or closed
     + `invalid_status` (400) - the `status` body key must be either `accepted` or `rejected`
 
     + Body
@@ -236,6 +255,7 @@ endpoint. This way the user can selectively choose to share just some of thier p
             {
                 id: 1,
                 email: "another@user.com",
+                status: "accepted",
                 success: true
             }
 

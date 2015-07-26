@@ -57,6 +57,7 @@ describe("Requests", function () {
                 expect(response.body.requested.length).to.equal(1);
                 expect(response.body.count).to.equal(1);
                 expect(response.body.requested[0].email).to.equal(otherUser.email);
+                expect(response.body.requested[0].status).to.equal("pending");
             });
         });
 
@@ -66,6 +67,7 @@ describe("Requests", function () {
                 expect(response.body.requests.length).to.equal(1);
                 expect(response.body.count).to.equal(1);
                 expect(response.body.requests[0].email).to.equal(me.email);
+                expect(response.body.requests[0].status).to.equal("pending");
             });
         });
 
@@ -159,25 +161,125 @@ describe("Requests", function () {
             });
         });
 
-        it("shows I no longer have any requests made", function () {
+        it("shows I have a cancelled requests made", function () {
             return listRequested({}, me.accessToken).then(function (response) {
                 expect(response).to.be.a.requested.listSuccess;
-                expect(response.body.requested.length).to.equal(0);
-                expect(response.body.count).to.equal(0);
+                expect(response.body.requested.length).to.equal(1);
+                expect(response.body.count).to.equal(1);
+                expect(response.body.requested[0].email).to.equal(otherUser.email);
+                expect(response.body.requested[0].status).to.equal("cancelled");
             });
         });
 
-        it("shows the other user no longer has any pending requests made", function () {
+        it("shows the other user has a cancelled request made to them", function () {
             return listRequests({}, otherUser.accessToken).then(function (response) {
                 expect(response).to.be.a.requests.listSuccess;
-                expect(response.body.requests.length).to.equal(0);
-                expect(response.body.count).to.equal(0);
+                expect(response.body.requests.length).to.equal(1);
+                expect(response.body.count).to.equal(1);
+                expect(response.body.requests[0].email).to.equal(me.email);
+                expect(response.body.requests[0].status).to.equal("cancelled");
             });
         });
     });
 
-    // test lifecycle for the user who made a request closing a request
-    describe("Request Closing Lifecycle", function () {
+    // test lifecycle for the user who made a request accepting a request
+    describe("Request Accepting Lifecycle", function () {
+        // setup a user for me and a user for another
+        var me, otherUser;
+        before(function () {
+            return auth.createTestUser().then(function (u) {
+                me = u;
+            });
+        });
+        before(function () {
+            return auth.createTestUser().then(function (u) {
+                otherUser = u;
+            });
+        });
+
+        // setup an example request
+        before(function () {
+            return Q.npost(me, "makeRequest", [otherUser.email]);
+        });
+
+        it("initially shows that I have made a request", function () {
+            return listRequested({}, me.accessToken).then(function (response) {
+                expect(response).to.be.a.requested.listSuccess;
+                expect(response.body.requested.length).to.equal(1);
+                expect(response.body.count).to.equal(1);
+                expect(response.body.requested[0].email).to.equal(otherUser.email);
+            });
+        });
+
+        var requestId;
+        it("initially shows that the other user has received a request", function () {
+            return listRequests({}, otherUser.accessToken).then(function (response) {
+                expect(response).to.be.a.requests.listSuccess;
+                expect(response.body.requests.length).to.equal(1);
+                expect(response.body.count).to.equal(1);
+                expect(response.body.requests[0].email).to.equal(me.email);
+                requestId = response.body.requests[0].id;
+            });
+        });
+
+        // as opposed to 'cancelling' it
+        it("returns an error if I try to *close* the request", function () {
+            return expect(closeRequest({
+                status: "rejected"
+            }, requestId, me.accessToken)).to.be.an.api.error(404, "invalid_request_id");
+        });
+
+        it("still shows that I have made a request", function () {
+            return listRequested({}, me.accessToken).then(function (response) {
+                expect(response).to.be.a.requested.listSuccess;
+                expect(response.body.requested.length).to.equal(1);
+                expect(response.body.count).to.equal(1);
+                expect(response.body.requested[0].email).to.equal(otherUser.email);
+            });
+        });
+
+        it("still shows that the other user has received a request", function () {
+            return listRequests({}, otherUser.accessToken).then(function (response) {
+                expect(response).to.be.a.requests.listSuccess;
+                expect(response.body.requests.length).to.equal(1);
+                expect(response.body.count).to.equal(1);
+                expect(response.body.requests[0].email).to.equal(me.email);
+            });
+        });
+
+        it("lets the other user close the request", function () {
+            return closeRequest({
+                status: "accepted"
+            }, requestId, otherUser.accessToken).then(function (response) {
+                expect(response).to.be.a.requests.success;
+                expect(response.body.id).to.equal(requestId);
+                expect(response.body.email).to.equal(me.email);
+            });
+        });
+
+        it("shows I have a request I've accepted", function () {
+            return listRequested({}, me.accessToken).then(function (response) {
+                expect(response).to.be.a.requested.listSuccess;
+                expect(response.body.requested.length).to.equal(1);
+                expect(response.body.count).to.equal(1);
+                expect(response.body.requested[0].email).to.equal(otherUser.email);
+                expect(response.body.requested[0].status).to.equal("accepted");
+            });
+        });
+
+        it("shows the other user has an accepted request", function () {
+            return listRequests({}, otherUser.accessToken).then(function (response) {
+                expect(response).to.be.a.requests.listSuccess;
+                expect(response.body.requests.length).to.equal(1);
+                expect(response.body.count).to.equal(1);
+                expect(response.body.requests[0].email).to.equal(me.email);
+                expect(response.body.requests[0].status).to.equal("accepted");
+            });
+        });
+    });
+
+    // test lifecycle for the user who made a request denying a request
+    describe("Request Accepting Lifecycle", function () {
         // setup a user for me and a user for another
         var me, otherUser;
         before(function () {
@@ -251,19 +353,23 @@ describe("Requests", function () {
             });
         });
 
-        it("shows I no longer have any requests made", function () {
+        it("shows I have a request I've rejected", function () {
             return listRequested({}, me.accessToken).then(function (response) {
                 expect(response).to.be.a.requested.listSuccess;
-                expect(response.body.requested.length).to.equal(0);
-                expect(response.body.count).to.equal(0);
+                expect(response.body.requested.length).to.equal(1);
+                expect(response.body.count).to.equal(1);
+                expect(response.body.requested[0].email).to.equal(otherUser.email);
+                expect(response.body.requested[0].status).to.equal("rejected");
             });
         });
 
-        it("shows the other user no longer has any pending requests made", function () {
+        it("shows the other user has an rejected request", function () {
             return listRequests({}, otherUser.accessToken).then(function (response) {
                 expect(response).to.be.a.requests.listSuccess;
-                expect(response.body.requests.length).to.equal(0);
-                expect(response.body.count).to.equal(0);
+                expect(response.body.requests.length).to.equal(1);
+                expect(response.body.count).to.equal(1);
+                expect(response.body.requests[0].email).to.equal(me.email);
+                expect(response.body.requests[0].status).to.equal("rejected");
             });
         });
     });
