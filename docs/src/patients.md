@@ -711,7 +711,8 @@ who have (either `read` or `write`) access to the patient.
 
     + email (string, optional)
 
-        Filter results by email address of user. Matches exactly.
+        Filter results by email address of user. Matches any email addresses that
+        contain the specified email as a substring.
 
     + is_user (boolean, optional)
 
