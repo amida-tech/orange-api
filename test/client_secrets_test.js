@@ -1,7 +1,5 @@
 "use strict";
-var fs          = require("fs"),
-    Q           = require("q"),
-    chakram     = require("chakram"),
+var chakram     = require("chakram"),
     config      = require("../config.js"),
     fixtures    = require("./users/fixtures.js");
 

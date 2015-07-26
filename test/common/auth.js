@@ -1,9 +1,7 @@
 "use strict";
-
 var chakram         = require("chakram"),
     config          = require("../../config.js"),
     Q               = require("q"),
-    fs              = require("fs"),
     userFixtures    = require("../users/fixtures.js");
 
 var expect = chakram.expect;

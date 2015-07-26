@@ -17,7 +17,7 @@ if (typeof config.logger.file !== "undefined") {
 if (typeof config.logger.stdout !== "undefined") {
     streams.push({
         level: config.logger.stdout.level,
-        stream:  process.stdout
+        stream: process.stdout
     });
 }
 if (typeof config.logger.logstash !== "undefined") {
