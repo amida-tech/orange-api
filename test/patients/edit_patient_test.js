@@ -86,6 +86,13 @@ describe("Patients", function () {
             return expect(editAPatient({}, { birthdate: "1995-01-01" })).to.be.a.patient.success;
         });
 
+        it("doesn't let a user change the creator (silently fails)", function () {
+            return editAPatient({}, { creator: "new@creator.com" }).then(function (response) {
+                expect(response).to.be.a.patient.success;
+                expect(response.body.creator).to.not.equal("new@creator.com");
+            });
+        });
+
         it("doesn't let the owner change their group", function () {
             return expect(editAPatient({}, { group: "prime" })).to.be.an.api.error(400, "is_owner");
         });

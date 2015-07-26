@@ -136,6 +136,29 @@ describe("Patients", function () {
                 expect(response.body.group).to.equal("owner");
             });
         });
+        it("uses my email address", function () {
+            return auth.createTestUser().then(function (user) {
+                return create({
+                    first_name: "Test"
+                }, user.accessToken).then(function (response) {
+                    expect(response).to.be.a.patient.createSuccess;
+                    console.log(response.body.creator);
+                    console.log(user.email);
+                    expect(response.body.creator).to.equal(user.email);
+                });
+            });
+        });
+        it("uses my email address even if another is passed", function () {
+            return auth.createTestUser().then(function (user) {
+                return create({
+                    first_name: "Test",
+                    email: "notmy.email@address.com"
+                }, user.accessToken).then(function (response) {
+                    expect(response).to.be.a.patient.createSuccess;
+                    expect(response.body.creator).to.equal(user.email);
+                });
+            });
+        });
 
         // access levels
         it("lets me set the 'anyone' access level to a valid value", function () {
