@@ -6,7 +6,7 @@
   
 - name: Launch Orange through PM2
   sudo: yes
-  command: pm2 start orange
+  command: pm2 start /var/www/orange/current/deploy/traditional/processes.json
 
 - name:  Configure PM2 for Auto-reload
   command: pm2 startup centos -u node && pm2 save
