@@ -352,7 +352,43 @@ describe("Requests", function () {
                 });
             });
 
-            xit("allows filtering by request status");
+            describe("with status parameter", function () {
+                it("doesn't filter by status by default", function () {
+                    return listUser(me).then(function (response) {
+                        expect(response).to.be.a.requested.listSuccess;
+                        expect(response.body.count).to.equal(40);
+                    });
+                });
+
+                it("ignores a null status parameter", function () {
+                    return listUser(me, { status: null }).then(function (response) {
+                        expect(response).to.be.a.requested.listSuccess;
+                        expect(response.body.count).to.equal(40);
+                    });
+                });
+
+                it("handles no results", function () {
+                    return listUser(me, { status: "accepted" }).then(function (response) {
+                        expect(response).to.be.a.requested.listSuccess;
+                        expect(response.body.count).to.equal(0);
+                        expect(response.body.requested.length).to.equal(0);
+                    });
+                });
+
+                it("handles searching exactly", function () {
+                    return listUser(me, { status: "pending" }).then(function (response) {
+                        expect(response).to.be.a.requested.listSuccess;
+                        expect(response.body.count).to.equal(40);
+                        expect(response.body.requested.length).to.equal(25);
+                    });
+                });
+
+                it("rejects invalid status value", function () {
+                    return listUser(me, { status: "foobar" }).then(function (response) {
+                        expect(response).to.be.an.api.error(400, "invalid_status");
+                    });
+                });
+            });
         });
     });
 });
