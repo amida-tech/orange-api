@@ -409,6 +409,42 @@ describe("Patients", function () {
                     });
                 });
             });
+
+            describe("with group parameter", function () {
+                it("doesn't filter by group by default", function () {
+                    return listUser(user).then(function (response) {
+                        expect(response).to.be.a.patient.listSuccess;
+                        expect(response.body.patients.length).to.equal(25);
+                    });
+                });
+
+                it("ignores a null group parameter", function () {
+                    return listUser(user, { group: null }).then(function (response) {
+                        expect(response).to.be.a.patient.listSuccess;
+                        expect(response.body.patients.length).to.equal(25);
+                    });
+                });
+
+                it("handles no results", function () {
+                    return listUser(user, { group: "anyone" }).then(function (response) {
+                        expect(response).to.be.a.patient.listSuccess;
+                        expect(response.body.patients.length).to.equal(0);
+                    });
+                });
+
+                it("handles searching exactly", function () {
+                    return listUser(user, { group: "owner" }).then(function (response) {
+                        expect(response).to.be.a.patient.listSuccess;
+                        expect(response.body.patients.length).to.equal(25);
+                    });
+                });
+
+                it("rejects invalid values", function () {
+                    return expect(listUser(user, {
+                        group: "foobar"
+                    })).to.be.an.api.error(400, "invalid_group");
+                });
+            });
         });
     });
 });

@@ -154,6 +154,9 @@ View a list of all patients the current user has access to (either read or write
     + last_name (string, optional)
 
         Filter results by last name of patient. Performs fuzzy matching.
+    + last_name (string, optional)
+
+        Filter results by group of patient. Matches exactly.
 
 + Request
     + Headers
@@ -169,6 +172,10 @@ View a list of all patients the current user has access to (either read or write
     + `invalid_offset` (400) - the specified result offset is invalid
     + `invalid_sort_by` (400) - the specified sort field is invalid
     + `invalid_sort_order` (400) - the specified sort order is invalid
+    + `invalid_group` (400)
+
+        the specified group to filter by is invalid (must be `owner`, `anyone`,
+        `family` or `prime`)
 
     + Body
 
