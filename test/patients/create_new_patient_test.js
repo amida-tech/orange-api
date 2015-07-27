@@ -41,6 +41,13 @@ describe("Patients", function () {
             return expect(createPatient({})).to.be.a.patient.createSuccess;
         });
 
+        it("sets me to 'false'", function () {
+            return createPatient({}).then(function (response) {
+                expect(response).to.be.a.patient.createSuccess;
+                expect(response.body.me).to.be.false;
+            });
+        });
+
         // validation
         it("requires a first name", function () {
             return expect(createPatient({ first_name: undefined })).to.be.an.api.error(400, "first_name_required");
@@ -142,8 +149,6 @@ describe("Patients", function () {
                     first_name: "Test"
                 }, user.accessToken).then(function (response) {
                     expect(response).to.be.a.patient.createSuccess;
-                    console.log(response.body.creator);
-                    console.log(user.email);
                     expect(response.body.creator).to.equal(user.email);
                 });
             });

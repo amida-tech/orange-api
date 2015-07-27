@@ -113,6 +113,8 @@ describe("Users", function () {
                 expect(patient.first_name).to.equal("Test");
                 expect(patient.last_name).to.equal("User");
                 expect(patient.phone).to.equal("6177140900");
+                // check it has me set to true
+                expect(patient.me).to.equal(true);
             });
         });
     });

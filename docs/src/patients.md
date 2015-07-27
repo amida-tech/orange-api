@@ -40,6 +40,11 @@ avatar (image) endpoint. As documented below, `GET`ting this path returns the us
 (initially a default image) and `POST`ing to this path with raw image data sets the avatar
 to the POSTed data.
 
+Each patient returned also has a `creator` field (which cannot be modified) containing the email address
+of the user who created the patient, and a `me` boolean field representing whether the patient corresponds
+to that user's "own log". `me` is `true` for the patient automatically created when a user registers,
+and `false` otherwise.
+
 ## User's Patients [/patients]
 ### Create new Patient [POST]
 Create a new patient, initially shared with the current user with write permissions,
@@ -116,6 +121,7 @@ the child of the patient.
                 phone: "6177140000",
                 avatar: "/v1/patients/1/avatar.jpg",
                 creator: "foo@bar.com",
+                me: true,
                 access_anyone: "read",
                 access_family: "read",
                 access_prime: "write",
@@ -194,6 +200,7 @@ View a list of all patients the current user has access to (either read or write
                         phone: "6177140000",
                         avatar: "/v1/patients/1/avatar.jpg",
                         creator: "foo@bar.com",
+                        me: true,
                         access_anyone: "read",
                         access_family: "read",
                         access_prime: "write",
@@ -243,6 +250,7 @@ View the name of a specific patient as well as the current user's access (`read`
                 phone: "6177140000",
                 avatar: "/v1/patients/1/avatar.jpg",
                 creator: "foo@bar.com",
+                me: true,
                 access_anyone: "read",
                 access_family: "read",
                 access_prime: "write",
@@ -347,6 +355,7 @@ Setting `access` to `none` will stop sharing the patient with the current user.
                 phone: "6177140001",
                 avatar: "/v1/patients/1/avatar.jpg",
                 creator: "foo@bar.com",
+                me: true,
                 access_anyone: "read",
                 access_family: "read",
                 access_prime: "read",
@@ -392,6 +401,7 @@ called with `access="none"` rather than this method.
                 phone: "6177140001",
                 avatar: "/v1/patients/1/avatar.jpg",
                 creator: "foo@bar.com",
+                me: true,
                 access_anyone: "read",
                 access_family: "read",
                 access_prime: "write",
@@ -436,6 +446,7 @@ override patient-wide access permissions) are shown.
                 phone: "6177140000",
                 avatar: "/v1/patients/34/avatar.png",
                 creator: "foo@bar.com",
+                me: true,
                 access_anyone: "read",
                 access_family: "read",
                 access_prime: "write",

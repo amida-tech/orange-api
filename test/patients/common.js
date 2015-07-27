@@ -14,7 +14,7 @@ var expect = chakram.expect;
 /*eslint-disable key-spacing */
 var patientSchema = module.exports.schema = {
     required: ["id", "first_name", "last_name", "sex", "birthdate", "avatar", "access", "group", "access_anyone",
-                "access_family", "access_prime", "phone", "creator", "success"],
+                "access_family", "access_prime", "phone", "creator", "me", "success"],
     properties: {
         success:        { type: "boolean" },
         id:             { type: "number" },
@@ -29,7 +29,8 @@ var patientSchema = module.exports.schema = {
         access_prime:   { type: "string" },
         birthdate:      { type: ["string", "null"] },
         phone:          { type: "string" },
-        creator:        { type: "string" }
+        creator:        { type: "string" },
+        me:             { type: "boolean" }
     },
     additionalProperties: false
 };
