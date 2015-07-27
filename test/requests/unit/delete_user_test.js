@@ -78,14 +78,14 @@ describe("Requests", function () {
                 });
 
                 it("alice's request to bob should be denied", function () {
-                    return expect(requestStatus("requested", alice, bob)).to.equal("denied");
+                    return expect(requestStatus("requested", alice, bob)).to.equal("rejected");
                 });
             });
         });
 
         describe("alice (user who made request) is deleted", function () {
             it("carol should initially have a request from alice", function () {
-                expect(requestStatus("requests", carol, alice)).to.equal("pending");
+                return expect(requestStatus("requests", carol, alice)).to.equal("pending");
             });
 
             describe("after deletion", function () {
@@ -94,7 +94,7 @@ describe("Requests", function () {
                 });
 
                 it("carol's request from alice should be cancelled", function () {
-                    expect(requestStatus("requests", carol, alice)).to.equal("cancelled");
+                    return expect(requestStatus("requests", carol, alice)).to.equal("cancelled");
                 });
             });
         });
