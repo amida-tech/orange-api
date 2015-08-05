@@ -40,6 +40,7 @@ monky.factory("Pharmacy", {
             close: "17:00"
         }
     },
-    notes: "Lorem ipsum"
+    notes: "Lorem ipsum",
+    loc: [50.9692224, 0.0893951]
 });
 /*eslint-enable key-spacing */

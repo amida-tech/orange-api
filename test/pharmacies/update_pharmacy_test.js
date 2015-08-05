@@ -22,7 +22,12 @@ describe("Pharmacies", function () {
         // pharmacy for the patient based on the factory template, and then update the pharmacy
         var updatePharmacy = function (data, modifications, patient) {
             var create = Q.nbind(patient.createPharmacy, patient);
-            return fixtures.build("Pharmacy", data).then(create).then(function (pharmacy) {
+            return fixtures.build("Pharmacy", data).then(function (pharmacy) {
+                var output = pharmacy.getData();
+                if ("lat" in data) output.lat = data.lat;
+                if ("lon" in data) output.lon = data.lon;
+                return output;
+            }).then(create).then(function (pharmacy) {
                 return update(modifications, pharmacy._id, patient._id, patient.user.accessToken);
             });
         };
@@ -55,7 +60,9 @@ describe("Pharmacies", function () {
                 address: null,
                 phone: null,
                 notes: null,
-                hours: null
+                hours: null,
+                lat: null,
+                lon: null
             }).then(function (response) {
                 expect(response.body.address).to.equal("");
                 expect(response.body.phone).to.equal("");
@@ -69,6 +76,8 @@ describe("Pharmacies", function () {
                     saturday: {},
                     sunday: {}
                 });
+                expect(response.body.lat).to.equal(null);
+                expect(response.body.lon).to.equal(null);
                 expect(response).to.be.a.pharmacy.success;
             });
         });
@@ -85,6 +94,23 @@ describe("Pharmacies", function () {
                 expect(response.body.notes).to.equal("");
                 expect(response).to.be.a.pharmacy.success;
             });
+        });
+
+        it("doesn't allow resetting lat but not lon", function () {
+            return expect(updatePatientPharmacy({
+                lat: 50.0,
+                lon: 0.0
+            }, {
+                lat: null
+            })).to.be.an.api.error(400, "invalid_lat");
+        });
+        it("doesn't allow resetting lon but not lat", function () {
+            return expect(updatePatientPharmacy({
+                lat: 50.0,
+                lon: 0.0
+            }, {
+                lon: null
+            })).to.be.an.api.error(400, "invalid_lon");
         });
 
         it("merges hours rather than replacing them", function () {
