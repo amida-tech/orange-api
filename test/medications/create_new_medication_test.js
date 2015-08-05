@@ -65,6 +65,7 @@ describe("Medications", function () {
                 quantity: undefined,
                 fill_date: undefined,
                 type: undefined,
+                brand: undefined,
                 schedule: undefined,
                 doctor_id: undefined,
                 pharmacy_id: undefined,
@@ -84,6 +85,7 @@ describe("Medications", function () {
                 quantity: null,
                 fill_date: null,
                 type: null,
+                brand: null,
                 schedule: null,
                 doctor_id: null,
                 pharmacy_id: null

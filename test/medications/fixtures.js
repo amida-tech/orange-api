@@ -19,6 +19,7 @@ monky.factory("Medication", {
     rx_number: "123456789",
     quantity: 50,
     fill_date: "2015-05-01",
-    type: "OTC"
+    type: "OTC",
+    brand: "Claritin"
 });
 /*eslint-enable key-spacing */

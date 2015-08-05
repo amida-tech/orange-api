@@ -205,6 +205,7 @@ must have write access to the patient.
         ISO 8601 YYYY-MM-DD in local time of the last date the medication was filled
     + quantity (integer, optional) - number of medication in each 'pack'
     + type (string, optional) - legal medication type: e.g., `"OTC"`
+    + brand (string, optional) - brand name of medication
     + schedule (dictionary, optional) - a schedule datum in the form described above
     + access_prime (string, optional)
 
@@ -252,6 +253,7 @@ must have write access to the patient.
                 fill_date: "2015-05-01",
                 quantity: 50,
                 type: "OTC",
+                brand: "Claritin",
                 schedule: {
                     as_needed: false,
                     regularly: true,
@@ -317,6 +319,7 @@ must have write access to the patient.
                 number_left: 17,
                 quantity: 50,
                 type: "OTC",
+                brand: "Claritin",
                 schedule: {
                     as_needed: false,
                     regularly: true,
@@ -414,6 +417,7 @@ medications for which the current user has read access will be returned.
                         number_left: 17,
                         quantity: 50,
                         type: "OTC",
+                        brand: "Claritin",
                         schedule: {
                             as_needed: false,
                             regularly: true,
@@ -493,6 +497,7 @@ The current user must have read access to **both** the patient and the medicatio
                 number_left: 17,
                 quantity: 50,
                 type: "OTC",
+                brand: "Claritin",
                 schedule: {
                     as_needed: false,
                     regularly: true,
@@ -591,6 +596,7 @@ user must have read access to the patient and write access to the medication.
         ISO 8601 YYYY-MM-DD in local time of the last date the medication was filled
     + quantity (integer, optional) - number of medication in each 'pack'
     + type (string, optional) - legal medication type: e.g., `"OTC"`
+    + brand (string, optional) - brand name of medication
     + schedule (dictionary, optional)
 
         As in `POST`. A whole new schedule must be sent.
@@ -633,6 +639,7 @@ user must have read access to the patient and write access to the medication.
                 fill_date: "2015-05-01",
                 quantity: 50,
                 type: "OTC",
+                brand: "Claritin",
                 schedule: {
                     as_needed: true,
                     regularly: false
@@ -680,6 +687,7 @@ user must have read access to the patient and write access to the medication.
                 number_left: 17,
                 quantity: 50,
                 type: "OTC",
+                brand: "Claritin",
                 schedule: {
                     as_needed: true,
                     regularly: false
@@ -737,6 +745,7 @@ write access to the medication.
                 number_left: 17,
                 quantity: 50,
                 type: "OTC",
+                brand: "Claritin",
                 schedule: {
                     as_needed: false,
                     regularly: true,
