@@ -34,6 +34,7 @@
     "mongodb": "^2.0.35",
     "mongoose": "^4.0.5",
     "mongoose-unique-validator": "^0.4.1",
+    "node-geocoder": "^2.22.0",
     "npi-js": "^0.1.0",
     "request": "^2.58.0",
     "rxnorm-js": "^0.1.0",

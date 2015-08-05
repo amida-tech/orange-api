@@ -20,10 +20,7 @@ describe("Pharmacies", function () {
         // pharmacy for the patient based on the factory template
         var createPharmacy = function (data, patient) {
             return fixtures.build("Pharmacy", data).then(function (pharmacy) {
-                var output = pharmacy.getData();
-                if ("lat" in data) output.lat = data.lat;
-                if ("lon" in data) output.lon = data.lon;
-                return create(output, patient._id, patient.user.accessToken);
+                return create(pharmacy, patient._id, patient.user.accessToken);
             });
         };
         // create patient and user automatically
@@ -55,9 +52,7 @@ describe("Pharmacies", function () {
                 phone: undefined,
                 address: undefined,
                 hours: undefined,
-                notes: undefined,
-                lat: undefined,
-                lon: undefined
+                notes: undefined
             })).to.be.a.pharmacy.createSuccess;
         });
         it("does not require non-null fields for anything other than a name", function () {
@@ -65,9 +60,7 @@ describe("Pharmacies", function () {
                 phone: null,
                 address: null,
                 hours: null,
-                notes: null,
-                lat: null,
-                lon: null
+                notes: null
             })).to.be.a.pharmacy.createSuccess;
         });
         it("allows partially filled hours", function () {
@@ -88,38 +81,24 @@ describe("Pharmacies", function () {
             })).to.be.a.pharmacy.createSuccess;
         });
 
-        it("rejects an empty string lat field", function () {
-            return expect(createPatientPharmacy({
-                lat: ""
-            })).to.be.an.api.error(400, "invalid_lat");
-        });
-        it("rejects a non-numeric lat field", function () {
-            return expect(createPatientPharmacy({
-                lat: "foo"
-            })).to.be.an.api.error(400, "invalid_lat");
-        });
-        it("rejects an empty string lon field", function () {
-            return expect(createPatientPharmacy({
-                lon: ""
-            })).to.be.an.api.error(400, "invalid_lon");
-        });
-        it("rejects a non-numeric lon field", function () {
-            return expect(createPatientPharmacy({
-                lon: "foo"
-            })).to.be.an.api.error(400, "invalid_lon");
+        it("geocodes successfully", function () {
+            return createPatientPharmacy({
+                address: "3 Ames Street, Cambridge, MA, 02142"
+            }).then(function (response) {
+                expect(response.body.lat).to.not.be.null;
+                expect(response.body.lon).to.not.be.null;
+                expect(response.body.lat).to.be.within(42.3, 43.4);
+                expect(response.body.lon).to.be.within(-71.1, -71.0);
+            });
         });
 
-        it("doesn't allow setting lat but not lon", function () {
-            return expect(createPatientPharmacy({
-                lat: 50.0,
-                lon: null
-            })).to.be.an.api.error(400, "invalid_lon");
-        });
-        it("doesn't allow setting lon but not lat", function () {
-            return expect(createPatientPharmacy({
-                lon: 50.0,
-                lat: null
-            })).to.be.an.api.error(400, "invalid_lat");
+        it("handles invalid addresses when geocoding", function () {
+            return createPatientPharmacy({
+                address: "aiyo78s6r728yiu4h3kjwrelsf"
+            }).then(function (response) {
+                expect(response.body.lat).to.be.null;
+                expect(response.body.lon).to.be.null;
+            });
         });
     });
 });

@@ -1,6 +1,8 @@
 # Group Pharmacies
 Details for all pharmacies from whom the selected patient receives medication.
 
+The `address` field is geocoded into the `lat` and `lon` fields.
+
 ## Pharmacies Collection [/patients/{patientid}/pharmacies]
 ### Create a Pharmacy [POST]
 Store details of a new pharmacy. The current user will need write access to the
@@ -24,14 +26,6 @@ patient.
         format specified in ISO 8601. These hours should be in the local timezone of
         the patient.
     + notes (string, optional) - freeform text notes about the pharmacy by the patient
-    + lat (string, optional)
-
-        Geographic latitude of pharmacy location. If not set, defaults to null. For lat
-        to be set, lon must also be set.
-    + lon (string, optional)
-
-        Geographic longitude of pharmacy location. If not set, defaults to null. For lon
-        to be set, lat must also be set.
 
 + Request
     + Headers
@@ -74,8 +68,6 @@ patient.
                         close: "17:00"
                     }
                 },
-                lat: 50.9692224,
-                lon: 0.0893951,
                 notes: "Great pharmacy! Love the smell"
             }
 
@@ -89,8 +81,6 @@ patient.
     + `name_required` (400) - a non-blank name must be provided
     + `invalid_hours` (400) - the opening/closing hours dictionary is not in the
     form specified above
-    + `invalid_lat` (400) - the latitude specified is not valid
-    + `invalid_lon` (400) - the longitude specified is not valid
 
     + Body
 
@@ -291,14 +281,6 @@ current user will need write access to the patient.
         Opening/closing hours, in the format specified in `POST`. The dictionary can
         be partially empty.
     + notes (string, optional) - freeform text notes about the pharmacy by the patient
-    + lat (string, optional)
-
-        Geographic latitude of pharmacy location. To reset to unknown, send null. If
-        resetting lat to unknown, lon must also be reset to unknown.
-    + lon (string, optional)
-        
-        Geographic longitude of pharmacy location. To reset to unknown, send null. If
-        resetting lon to unknown, lat must also be reset to unknown.
 
 + Request
     + Headers
@@ -316,9 +298,7 @@ current user will need write access to the patient.
                         open: "10:00"
                     }
                 },
-                notes: "Doesn't smell like it used to",
-                lat: 50.9692224,
-                lon: 0.0893951
+                notes: "Doesn't smell like it used to"
             }
 
 + Response 200
@@ -332,8 +312,6 @@ current user will need write access to the patient.
     form specified above in `POST`
     + `invalid_pharmacy_id` (404) - a pharmacy with that ID was not found
     + `name_required` (400) - the name cannot be changed to a blank name
-    + `invalid_lat` (400) - the latitude specified is not valid
-    + `invalid_lon` (400) - the longitude specified is not valid
     
     + Body
 
