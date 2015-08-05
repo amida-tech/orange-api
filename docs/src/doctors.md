@@ -18,6 +18,7 @@ need write access to the patient).
         Postal address of the doctor. Newlines can optionally be used to split
         lines.
     + notes (string, optional) - freeform text notes about the doctor by the patient
+    + title (string, optional) - position of doctor (e.g., dentist)
 
 + Request
     + Headers
@@ -30,7 +31,8 @@ need write access to the patient).
                 name: "Dr. X",
                 phone: "(617) 617-6177",
                 address: "Doctor Street, DC, 20052",
-                notes: "Love this doc!"
+                notes: "Love this doc!",
+                title: "Primary Care Physician"
             }
 
 + Response 201
@@ -50,6 +52,7 @@ need write access to the patient).
                 phone: "(617) 617-6177",
                 address: "Doctor Street, DC, 20052"
                 notes: "Love this doc!",
+                title: "Primary Care Physician"
                 success: true
             }
 
@@ -110,6 +113,7 @@ current user will need read access to the patient.
                         name: "Dr. X",
                         phone: "(617) 617-6177",
                         address: "Doctor Street, DC, 20052",
+                        title: "Primary Care Physician",
                         notes: "Love this doc!"
                     },
                     ...
@@ -154,6 +158,7 @@ patient.
                 phone: "(617) 617-6177",
                 address: "Doctor Street, DC, 20052",
                 notes: "Love this doc!",
+                title: "Primary Care Physician",
                 success: true
             }
 
@@ -175,6 +180,7 @@ write access to the patient data.
     + phone (string, optional) - contact phone number for the doctor
     + address (string, optional) - postal address, in the format specified above in `POST`
     + notes (string, optional) - freeform text notes about the doctor by the patient
+    + title (string, optional) - position of doctor (e.g., dentist)
 
 + Request
     + Headers
@@ -187,6 +193,7 @@ write access to the patient data.
                 name: "Dr. Y",
                 phone: "(716) 716-7166",
                 address: "Doctor Street, DC, 20052",
+                title: "Primary Care Physician",
                 notes: "Love this doc the most!"
             }
 
@@ -207,6 +214,7 @@ write access to the patient data.
                 name: "Dr. Y",
                 phone: "(716) 716-7166",
                 address: "Doctor Street, DC, 20052",
+                title: "Primary Care Physician",
                 notes: "Love this doc the most!",
                 success: true
             }
@@ -245,6 +253,7 @@ data.
                 phone: "(617) 617-6177",
                 address: "Doctor Street, DC, 20052",
                 notes: "Love this doc the most!",
+                title: "Primary Care Physician",
                 success: true
             }
 

@@ -52,21 +52,24 @@ describe("Doctors", function () {
             return expect(createPatientDoctor({
                 phone: undefined,
                 address: undefined,
-                notes: undefined
+                notes: undefined,
+                title: undefined
             })).to.be.a.doctor.createSuccess;
         });
         it("allows nulls for everything other than name", function () {
             return expect(createPatientDoctor({
                 phone: null,
                 address: null,
-                notes: null
+                notes: null,
+                title: null
             })).to.be.a.doctor.createSuccess;
         });
         it("allows blank strings for all fields other than name", function () {
             return expect(createPatientDoctor({
                 phone: "",
                 address: "",
-                notes: ""
+                notes: "",
+                title: ""
             })).to.be.a.doctor.createSuccess;
         });
     });

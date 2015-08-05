@@ -10,6 +10,7 @@ monky.factory("Doctor", {
     name: "Dr. #n",
     phone: "(617) 716-6176",
     address: "#n Medical Way, Washington, DC, 20052",
-    notes: "Lorem ipsum"
+    notes: "Lorem ipsum",
+    title: "Primary Care Physician"
 });
 /*eslint-enable key-spacing */

@@ -49,24 +49,28 @@ describe("Doctors", function () {
             return updatePatientDoctor({}, {
                 phone: "",
                 address: "",
-                notes: ""
+                notes: "",
+                title: ""
             }).then(function (response) {
                 expect(response).to.be.a.doctor.success;
                 expect(response.body.phone).to.equal("");
                 expect(response.body.address).to.equal("");
                 expect(response.body.notes).to.equal("");
+                expect(response.body.title).to.equal("");
             });
         });
         it("allows nulls for all other fields to reset them", function () {
             return updatePatientDoctor({}, {
                 phone: null,
                 address: null,
-                notes: null
+                notes: null,
+                title: null
             }).then(function (response) {
                 expect(response).to.be.a.doctor.success;
                 expect(response.body.phone).to.equal("");
                 expect(response.body.address).to.equal("");
                 expect(response.body.notes).to.equal("");
+                expect(response.body.title).to.equal("");
             });
         });
     });
