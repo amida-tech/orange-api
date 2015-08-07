@@ -1547,7 +1547,7 @@ need write access to the patient).</p>
 </dd><dt>address</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>Postal address of the doctor. Newlines can optionally be used to split
 lines.</p>
 </dd><dt>notes</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>freeform text notes about the doctor by the patient</p>
-</dd><dt>title</dt><dd><code></code>&nbsp;<span class="required">(required)</span>&nbsp;</dd></dl></div><div class="title"><strong>Request</strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><h5>Headers</h5><pre><code><span class="hljs-attribute">Authorization</span>: <span class="hljs-string">Bearer ACCESS_TOKEN</span><br></code></pre><div style="height: 1px;"></div><h5>Body</h5><pre><code>{
+</dd><dt>title</dt><dd><code>string) - position of doctor (e.g. dentist</code>&nbsp;<span>(optional)</span>&nbsp;</dd></dl></div><div class="title"><strong>Request</strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><h5>Headers</h5><pre><code><span class="hljs-attribute">Authorization</span>: <span class="hljs-string">Bearer ACCESS_TOKEN</span><br></code></pre><div style="height: 1px;"></div><h5>Body</h5><pre><code>{
     name: <span class="hljs-string">"Dr. X"</span>,
     phone: <span class="hljs-string">"(617) 617-6177"</span>,
     address: <span class="hljs-string">"Doctor Street, DC, 20052"</span>,
@@ -1676,7 +1676,7 @@ write access to the patient data.</p>
 </dd><dt>phone</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>contact phone number for the doctor</p>
 </dd><dt>address</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>postal address, in the format specified above in <code>POST</code></p>
 </dd><dt>notes</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>freeform text notes about the doctor by the patient</p>
-</dd><dt>title</dt><dd><code></code>&nbsp;<span class="required">(required)</span>&nbsp;</dd></dl></div><div class="title"><strong>Request</strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><h5>Headers</h5><pre><code><span class="hljs-attribute">Authorization</span>: <span class="hljs-string">Bearer ACCESS_TOKEN</span><br></code></pre><div style="height: 1px;"></div><h5>Body</h5><pre><code>{
+</dd><dt>title</dt><dd><code>string) - position of doctor (e.g. dentist</code>&nbsp;<span>(optional)</span>&nbsp;</dd></dl></div><div class="title"><strong>Request</strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><h5>Headers</h5><pre><code><span class="hljs-attribute">Authorization</span>: <span class="hljs-string">Bearer ACCESS_TOKEN</span><br></code></pre><div style="height: 1px;"></div><h5>Body</h5><pre><code>{
     name: <span class="hljs-string">"Dr. Y"</span>,
     phone: <span class="hljs-string">"(716) 716-7166"</span>,
     address: <span class="hljs-string">"Doctor Street, DC, 20052"</span>,
@@ -2217,7 +2217,19 @@ words, indices are taken modulo this. See the examples below for illustration.</
 </code></pre>
 <p><code>frequency</code> can also include a <code>start</code> key: a <code>YYYY-MM-DD</code> formatted (local) date representing
 any date that the medication was taken on (for example, the date the medication was started on).
-This means that, for example, Orange knows which day of the week a weekly medication is taken on.</p>
+This means that, for example, Orange knows which day of the week a weekly medication is taken on.
+<code>start</code> can either be a string or an array of strings.</p>
+<p>For example, a <code>start</code> array can be used to represent a medication that should be taken on the 1st
+and the 15th of every month</p>
+<pre><code class="language-javascript">frequency: {
+    n: <span class="hljs-number">1</span>,
+    unit: <span class="hljs-string">"month"</span>,
+    start: [
+        <span class="hljs-string">"2015-01-01"</span>,
+        <span class="hljs-string">"2015-01-15"</span>
+    ]
+}
+</code></pre>
 <p>The schedule must also include a <code>times</code> key representing the times of the day the medication
 is taken on (i.e., <code>frequency</code> dictates which days and <code>times</code> dictates which times on those days).
 The number of times the medication is taken each day should not be explicitly specified, this is instead
