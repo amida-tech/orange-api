@@ -16,8 +16,10 @@ config.secret = "testsecret";
 
 // DB connections
 if (process.env.NODE_ENV === "production") {
-    config.mongo = "mongodb://db/orange-api";
-    config.zerorpc = "tcp://matcher:4242";
+    // config.mongo = "mongodb://db/orange-api";
+    // config.zerorpc = "tcp://matcher:4242";
+    config.mongo = "mongodb://localhost/orange-api";
+    config.zerorpc = "tcp://127.0.0.1:4242";
 } else {
     config.mongo = "mongodb://localhost/orange-api";
     config.zerorpc = "tcp://127.0.0.1:4242";
@@ -25,14 +27,16 @@ if (process.env.NODE_ENV === "production") {
 
 // Express connections
 config.port = 3000;
-if (process.env.NODE_ENV === "production")
-    config.listen = "0.0.0.0";
-else
+if (process.env.NODE_ENV === "production") {
+    // config.listen = "0.0.0.0";
     config.listen = "localhost";
+} else {
+    config.listen = "localhost";
+}
 
 // Logging
 if (process.env.NODE_ENV === "production") {
-    config.logger = {
+    /*config.logger = {
         // file: {
             // level: "info",
             // path: "/var/log/orange.log"
@@ -41,6 +45,11 @@ if (process.env.NODE_ENV === "production") {
             level: "debug",
             host: "logstash",
             port: 9999
+        }
+    };*/
+    config.logger = {
+        stdout: {
+            level: "info"
         }
     };
 } else if (process.env.NODE_ENV === "test") {
