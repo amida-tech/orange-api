@@ -7,4 +7,4 @@
 - name: Stop API
   sudo: yes
   command: pm2 stop orange
-
+  ignore_errors: yes
