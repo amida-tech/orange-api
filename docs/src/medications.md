@@ -134,6 +134,20 @@ frequency: {
 `frequency` can also include a `start` key: a `YYYY-MM-DD` formatted (local) date representing
 any date that the medication was taken on (for example, the date the medication was started on).
 This means that, for example, Orange knows which day of the week a weekly medication is taken on.
+`start` can either be a string or an array of strings.
+
+For example, a `start` array can be used to represent a medication that should be taken on the 1st
+and the 15th of every month
+```javascript
+frequency: {
+    n: 1,
+    unit: "month",
+    start: [
+        "2015-01-01",
+        "2015-01-15"
+    ]
+}
+```
 
 The schedule must also include a `times` key representing the times of the day the medication
 is taken on (i.e., `frequency` dictates which days and `times` dictates which times on those days).

@@ -19,9 +19,9 @@ describe("Schedule", function () {
         // given a patient ID, start date and end date, try and show the schedule
         var show = function (startDate, endDate, medicationId, patientId, accessToken) {
             if (typeof startDate !== "undefined" && startDate !== null && typeof startDate !== "string")
-                startDate = startDate.toISOString();
+                startDate = startDate.format("YYYY-MM-DD");
             if (typeof endDate !== "undefined" && endDate !== null && typeof endDate !== "string")
-                endDate = endDate.toISOString();
+                endDate = endDate.format("YYYY-MM-DD");
 
             var query = {
                 start_date: startDate,

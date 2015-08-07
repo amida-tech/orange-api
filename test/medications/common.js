@@ -81,7 +81,7 @@ var medicationSchema = module.exports.schema = {
                                 repeat: { type: "number" }
                             }
                         },
-                        start:      { type: "string" }
+                        start:      { type: ["string", "array"] }
                     }
                 },
                 times: {

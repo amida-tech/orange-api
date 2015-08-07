@@ -870,6 +870,58 @@ describe("Schedule", function () {
                     take_without_medications: []
                 });
             });
+
+            it("allows frequencies with a valid array start date", function () {
+                return accepts({
+                    as_needed: false,
+                    regularly: true,
+                    until: { type: "forever" },
+                    frequency: { n: 1, unit: "day", start: ["2015-01-01", "2015-01-02"] },
+                    times: [{ type: "unspecified" }],
+                    take_with_food: null,
+                    take_with_medications: [],
+                    take_without_medications: []
+                });
+            });
+
+            it("rejects frequencies with an empty array start date", function () {
+                return rejects({
+                    as_needed: false,
+                    regularly: true,
+                    until: { type: "forever" },
+                    frequency: { n: 1, unit: "day", start: [] },
+                    times: [{ type: "unspecified" }],
+                    take_with_food: null,
+                    take_with_medications: [],
+                    take_without_medications: []
+                });
+            });
+
+            it("rejects frequencies with an array start date with a null in", function () {
+                return rejects({
+                    as_needed: false,
+                    regularly: true,
+                    until: { type: "forever" },
+                    frequency: { n: 1, unit: "day", start: ["2015-01-01", null] },
+                    times: [{ type: "unspecified" }],
+                    take_with_food: null,
+                    take_with_medications: [],
+                    take_without_medications: []
+                });
+            });
+
+            it("rejects frequencies with an array start date with a invalid date in", function () {
+                return rejects({
+                    as_needed: false,
+                    regularly: true,
+                    until: { type: "forever" },
+                    frequency: { n: 1, unit: "day", start: ["2015-01-01", "foo"] },
+                    times: [{ type: "unspecified" }],
+                    take_with_food: null,
+                    take_with_medications: [],
+                    take_without_medications: []
+                });
+            });
         });
 
         describe("'take_with_food' key", function () {

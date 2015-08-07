@@ -28,7 +28,14 @@ describe("Schedule", function () {
             if (typeof start === "object") start = start.format("YYYY-MM-DD");
             if (typeof end === "object") end = end.format("YYYY-MM-DD");
             if (input && typeof input.frequency === "object" && typeof input.frequency.start === "object")
-                input.frequency.start = input.frequency.start.format("YYYY-MM-DD");
+                if (input.frequency.start.constructor === Array) {
+                    input.frequency.start = input.frequency.start.map(function (s) {
+                        if (typeof s === "object") return s.format("YYYY-MM-DD");
+                        return s;
+                    });
+                } else {
+                    input.frequency.start = input.frequency.start.format("YYYY-MM-DD");
+                }
             if (input && typeof input.until === "object" && typeof input.until.stop === "object")
                 input.until.stop = input.until.stop.format("YYYY-MM-DD");
 
@@ -387,6 +394,55 @@ describe("Schedule", function () {
                         takeAt(moment(startOfYear).add(9, "months"), "09:00"),
                         takeAt(moment(startOfYear).add(10, "months"), "09:00"),
                         takeAt(moment(startOfYear).add(11, "months"), "09:00")
+                    ]);
+                });
+
+                it("handles on the 15th of each month", function () {
+                    return check({
+                        regularly: true,
+                        as_needed: false,
+                        until: { type: "forever" },
+                        frequency: {
+                            n: 1,
+                            unit: "month",
+                            start: [
+                                moment(startOfYear).add(14, "days")
+                            ]
+                        },
+                        times: [{ type: "exact", time: "09:00" }],
+                        take_with_food: null,
+                        take_with_medications: [],
+                        take_without_medications: []
+                    }, startOfYear, moment(startOfYear).add(2, "months"), [
+                        takeAt(moment(startOfYear).add(14, "days"), "09:00"),
+                        takeAt(moment(startOfYear).add(14, "days").add(1, "month"), "09:00")
+                    ]);
+                });
+
+
+                it("handles on the 1st and 15th of each month", function () {
+                    return check({
+                        regularly: true,
+                        as_needed: false,
+                        until: { type: "forever" },
+                        frequency: {
+                            n: 1,
+                            unit: "month",
+                            start: [
+                                startOfYear,
+                                moment(startOfYear).add(14, "days")
+                            ]
+                        },
+                        times: [{ type: "exact", time: "09:00" }],
+                        take_with_food: null,
+                        take_with_medications: [],
+                        take_without_medications: []
+                    }, startOfYear, moment(startOfYear).add(2, "months"), [
+                        takeAt(startOfYear, "09:00"),
+                        takeAt(moment(startOfYear).add(14, "days"), "09:00"),
+                        takeAt(moment(startOfYear).add(1, "month"), "09:00"),
+                        takeAt(moment(startOfYear).add(14, "days").add(1, "month"), "09:00"),
+                        takeAt(moment(startOfYear).add(2, "months"), "09:00")
                     ]);
                 });
 
