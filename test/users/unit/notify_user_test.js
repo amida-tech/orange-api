@@ -134,6 +134,25 @@ describe("Users", function () {
             });
         });
 
+        it("sends emails if a valid phone number is present but sendText is false", function () {
+            return notifyMail("testuser@amida-demo.com", "6176170000", {
+                sendText: false
+            }).then(function (data) {
+                // should send to the right email
+                expect(data.to).to.equal("testuser@amida-demo.com");
+                // should come from an email address
+                expect(data.from).to.be.a("string");
+                expect(data.from.length).to.be.above(0);
+                // should have a default subject
+                expect(data.subject).to.be.a("string");
+                expect(data.subject.length).to.be.above(0);
+                // should have a default body
+                expect(data.html).to.be.a("string");
+                expect(data.html.length).to.be.above(0);
+            });
+        });
+
+
         it("allows a custom SMS text", function () {
             return notifyText("testuser@amida-demo.com", "6176170000", {
                 text: "testtext"

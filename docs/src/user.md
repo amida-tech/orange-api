@@ -132,3 +132,32 @@ will not be deleted.
                 success: true
             }
 
+## Reset Password [/user/reset_password]
+### Reset a User's Password [POST]
+Reset password for a specific user. Takes the email address of a user, generates a new
+temporary password for them, emails them the new password, and revokes all existing access
+tokens.
+
++ Parameters
+    + email (string, required)
+        The email address of the user whose password should be reset. Must correspond
+        to an existing user account.
+
++ Request
+    + Body
+
+            {
+                email: "foo@bar.com"
+            }
+
++ Response 201
+    Errors
+    + `email_required` (`400`) - no email address specified
+    + `user_not_found` (`400`) - an existing user with that email address was not found
+
+    + Body
+
+            {
+                email: "foo@bar.com",
+                success: true
+            }

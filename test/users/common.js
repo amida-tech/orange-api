@@ -27,6 +27,14 @@ var tokenSchema = {
     },
     additionalProperties: false
 };
+var resetPasswordSchema = {
+    required: ["email", "success"],
+    properties: {
+        success:        { type: "boolean" },
+        email:          { type: "string" }
+    },
+    additionalProperties: false
+};
 /*eslint-enable key-spacing */
 common.addApiChain("user", {
     "registerSuccess": function (respObj) {
@@ -42,6 +50,12 @@ common.addApiChain("authentication", {
     "success": function (respObj) {
         expect(respObj).to.be.an.api.postSuccess;
         expect(respObj).to.have.schema(tokenSchema);
+    }
+});
+common.addApiChain("resetPassword", {
+    "success": function (respObj) {
+        expect(respObj).to.be.an.api.postSuccess;
+        expect(respObj).to.have.schema(resetPasswordSchema);
     }
 });
 
