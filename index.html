@@ -2307,6 +2307,10 @@ and <code>UNIT</code> is a string (e.g., <code>&quot;mg&quot;</code>)</p>
 </dd><dt>quantity</dt><dd><code>integer</code>&nbsp;<span>(optional)</span>&nbsp;<p>number of medication in each ‘pack’</p>
 </dd><dt>type</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>legal medication type: e.g., <code>&quot;OTC&quot;</code></p>
 </dd><dt>brand</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>brand name of medication</p>
+</dd><dt>origin</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>Optional string containing the source the medication data came from. Suggested use
+case would be to store either <code>&quot;manual&quot;</code> or <code>&quot;imported&quot;</code> in this field for each
+medication, although note that no backend API validation is done of this field so any
+string value can be set.</p>
 </dd><dt>schedule</dt><dd><code>dictionary</code>&nbsp;<span>(optional)</span>&nbsp;<p>a schedule datum in the form described above</p>
 </dd><dt>access_prime</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>The access permissions users in the <code>prime</code> group should have to this medication,
 overriding the patient-wide permissions. Must be either <code>read</code>, <code>write</code>, <code>none</code>
@@ -2336,6 +2340,7 @@ must already exist in <code>/patients/:patientid/doctors</code></p>
     quantity: <span class="hljs-number">50</span>,
     type: <span class="hljs-string">"OTC"</span>,
     brand: <span class="hljs-string">"Claritin"</span>,
+    origin: <span class="hljs-string">"manual"</span>,
     schedule: {
         as_needed: <span class="hljs-literal">false</span>,
         regularly: <span class="hljs-literal">true</span>,
@@ -2427,6 +2432,7 @@ must already exist in <code>/patients/:patientid/doctors</code></p>
     quantity: <span class="hljs-number">50</span>,
     type: <span class="hljs-string">"OTC"</span>,
     brand: <span class="hljs-string">"Claritin"</span>,
+    origin: <span class="hljs-string">"manual"</span>,
     schedule: {
         as_needed: <span class="hljs-literal">false</span>,
         regularly: <span class="hljs-literal">true</span>,
@@ -2515,6 +2521,7 @@ for pagination. Defaults to 0.</p>
             quantity: <span class="hljs-number">50</span>,
             type: <span class="hljs-string">"OTC"</span>,
             brand: <span class="hljs-string">"Claritin"</span>,
+            origin: <span class="hljs-string">"manual"</span>,
             schedule: {
                 as_needed: <span class="hljs-literal">false</span>,
                 regularly: <span class="hljs-literal">true</span>,
@@ -2588,6 +2595,7 @@ The current user must have read access to <strong>both</strong> the patient and 
     quantity: <span class="hljs-number">50</span>,
     type: <span class="hljs-string">"OTC"</span>,
     brand: <span class="hljs-string">"Claritin"</span>,
+    origin: <span class="hljs-string">"manual"</span>,
     schedule: {
         as_needed: <span class="hljs-literal">false</span>,
         regularly: <span class="hljs-literal">true</span>,
@@ -2673,6 +2681,8 @@ user must have read access to the patient and write access to the medication.</p
 </dd><dt>quantity</dt><dd><code>integer</code>&nbsp;<span>(optional)</span>&nbsp;<p>number of medication in each ‘pack’</p>
 </dd><dt>type</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>legal medication type: e.g., <code>&quot;OTC&quot;</code></p>
 </dd><dt>brand</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>brand name of medication</p>
+</dd><dt>origin</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>Place the data for this medication came from (suggested use case: store either <code>&quot;manual&quot;</code>
+or <code>&quot;imported&quot;</code> in this field, although the API does no validation of the string contents)</p>
 </dd><dt>schedule</dt><dd><code>dictionary</code>&nbsp;<span>(optional)</span>&nbsp;<p>As in <code>POST</code>. A whole new schedule must be sent.</p>
 </dd><dt>access_prime</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>The access permissions users in the <code>prime</code> group should have to this medication,
 overriding the patient-wide permissions. Must be either <code>read</code>, <code>write</code>, <code>none</code>
@@ -2700,6 +2710,7 @@ or <code>default</code>. Defaults to <code>default</code>.</p>
     quantity: <span class="hljs-number">50</span>,
     type: <span class="hljs-string">"OTC"</span>,
     brand: <span class="hljs-string">"Claritin"</span>,
+    origin: <span class="hljs-string">"manual"</span>,
     schedule: {
         as_needed: <span class="hljs-literal">true</span>,
         regularly: <span class="hljs-literal">false</span>
@@ -2773,6 +2784,7 @@ or <code>default</code>. Defaults to <code>default</code>.</p>
     quantity: <span class="hljs-number">50</span>,
     type: <span class="hljs-string">"OTC"</span>,
     brand: <span class="hljs-string">"Claritin"</span>,
+    origin: <span class="hljs-string">"manual"</span>,
     schedule: {
         as_needed: <span class="hljs-literal">true</span>,
         regularly: <span class="hljs-literal">false</span>
@@ -2824,6 +2836,7 @@ write access to the medication.</p>
     quantity: <span class="hljs-number">50</span>,
     type: <span class="hljs-string">"OTC"</span>,
     brand: <span class="hljs-string">"Claritin"</span>,
+    origin: <span class="hljs-string">"manual"</span>,
     schedule: {
         as_needed: <span class="hljs-literal">false</span>,
         regularly: <span class="hljs-literal">true</span>,
@@ -2942,18 +2955,28 @@ to indicate that the default value should be used</p>
     success: <span class="hljs-literal">true</span>
 }
 </code></pre><div style="height: 1px;"></div></div></div></div></div></section><section id="dose-events" class="resource-group"><h2>Dose Events<a href="#dose-events" class="permalink"><i class="fa fa-link"></i></a></h2><p>A dose event is when the patient takes their medication (either when they’re
-supposed to, <em>adhering</em>, or not, <em>non-adhering</em>).</p>
+supposed to, <em>adhering</em>, or not, <em>non-adhering</em>) or skips their medication.</p>
 <div id="dose-events-dose-events-collection" class="resource"><h3>Dose Events Collection<a href="#dose-events-dose-events-collection" class="permalink"><i class="fa fa-link"></i></a></h3><div id="dose-events-dose-events-collection-post" class="action post"><h4><div class="name">Create an Event</div><a href="#dose-events-dose-events-collection-post" class="method post">POST</a><code class="uri">/patients/{patientid}/doses</code></h4><p>Store details of a new dose event (e.g., when a patient signifies they’ve
-taken their medication). The current user will need write access to <strong>both</strong> the patient
-and the medication.</p>
+taken their medication or skipped it). The current user will need write access to
+<strong>both</strong> the patient and the medication.</p>
 <div class="title"><strong>Parameters</strong><div class="collapse-button show"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><dl class="inner"><dt>patientid</dt><dd><code>integer</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>unique ID of the patient (<em>url</em>)</p>
 </dd><dt>medication_id</dt><dd><code>integer</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>unique ID of the medication for which the patient has adhered</p>
 </dd><dt>date</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>2015-05-31T19:27:09+00:00</span></span><p>ISO 8601 combined date-time in UTC representing the date and time at which
 <em>the patient took the medication</em></p>
+</dd><dt>taken</dt><dd><code>boolean</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>Boolean representing whether the user took their medication (i.e., <code>true</code> if
+they took it, <code>false</code> if this dose event represents them <em>skipping</em> their
+medication)</p>
+</dd><dt>scheduled</dt><dd><code>integer</code>&nbsp;<span>(optional)</span>&nbsp;<p>Integer representing the ID of a schedule event corresponding to the patient taking their medication.
+These are the same IDs used to set notification settings at the
+<code>/patients/{patientid}/medications/{medicationid}/times/{timeid}</code> endpoints. If this is not set for a
+dose, the matcher will assume the medication was taken for an <code>unspecified</code> schedule event or was
+taken out of schedule (as would be the case normally with an <code>as_needed</code> medication).</p>
 </dd><dt>notes</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>free-text field for things such as observations and reactions recorded by the patient</p>
 </dd></dl></div><div class="title"><strong>Request</strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><h5>Headers</h5><pre><code><span class="hljs-attribute">Authorization</span>: <span class="hljs-string">Bearer ACCESS_TOKEN</span><br></code></pre><div style="height: 1px;"></div><h5>Body</h5><pre><code>{
     medication_id: <span class="hljs-number">1</span>,
     date: <span class="hljs-string">"2015-05-31T19:27:09+00:00"</span>,
+    taken: <span class="hljs-literal">true</span>,
+    scheduled: <span class="hljs-number">3</span>,
     notes: <span class="hljs-string">"Feeling sleepy now!"</span>
 }
 </code></pre><div style="height: 1px;"></div></div></div><div class="title"><strong>Response&nbsp;&nbsp;<code>201</code></strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><div class="description"><p>Errors</p>
@@ -2977,12 +3000,25 @@ and the medication.</p>
 <li>
 <p><code>invalid_patient_id</code> (404) - a patient with the specified ID was not found</p>
 </li>
+<li>
+<p><code>taken_required</code> (400) - a value is not specified (it should be a boolean) for <code>taken</code></p>
+</li>
+<li>
+<p><code>invalid_taken</code> (400) - <code>taken</code> is not a valid boolean</p>
+</li>
+<li>
+<p><code>invalid_scheduled</code> (400)</p>
+<p><code>scheduled</code> is not a valid integer corresponding to an event with that ID in the schedule
+for the medication (with ID <code>medication_id</code>)</p>
+</li>
 </ul>
 </div><h5>Body</h5><pre><code>{
     id: <span class="hljs-number">1</span>,
     medication_id: <span class="hljs-number">1</span>,
     date: <span class="hljs-string">"2015-05-31T19:27:09+00:00"</span>,
     notes: <span class="hljs-string">"Feeling sleepy now!"</span>,
+    taken: <span class="hljs-literal">true</span>,
+    scheduled: <span class="hljs-number">3</span>,
     success: <span class="hljs-literal">true</span>
 }
 </code></pre><div style="height: 1px;"></div></div></div></div><div id="dose-events-dose-events-collection-get" class="action get"><h4><div class="name">Retrieve all Doses</div><a href="#dose-events-dose-events-collection-get" class="method get">GET</a><code class="uri">/patients/{patientid}/doses</code></h4><p>Get a list of all dose events for the patient. Includes full information on each,
@@ -3047,6 +3083,8 @@ owned by the current patient. Defaults to not filtering by medication.</p>
             id: <span class="hljs-number">1</span>,
             medication_id: <span class="hljs-number">1</span>,
             date: <span class="hljs-string">"2015-05-31T19:27:09+00:00"</span>,
+            taken: <span class="hljs-literal">true</span>,
+            scheduled: <span class="hljs-number">3</span>,
             notes: <span class="hljs-string">"Feeling sleepy now!"</span>
         },
         ...
@@ -3082,6 +3120,8 @@ the patient and the dose event.</p>
     id: <span class="hljs-number">1</span>,
     date: <span class="hljs-string">"2015-05-31T19:27:09+00:00"</span>,
     notes: <span class="hljs-string">"Feeling sleepy now!"</span>,
+    taken: <span class="hljs-literal">true</span>,
+    scheduled: <span class="hljs-number">3</span>,
     medication: {
         id: <span class="hljs-number">1</span>,
         name: <span class="hljs-string">"Loratadine"</span>,
@@ -3097,10 +3137,7 @@ the patient and the dose event.</p>
         quantity: <span class="hljs-number">50</span>,
         type: <span class="hljs-string">"OTC"</span>,
         schedule: {
-            type: <span class="hljs-string">"regularly"</span>,
-            frequency: <span class="hljs-number">1</span>,
-            number_of_times: <span class="hljs-number">2</span>,
-            times_of_day: [<span class="hljs-string">"after_lunch"</span>, <span class="hljs-string">"before_sleep"</span>]
+            ...
         },
         doctor_id: <span class="hljs-number">1</span>,
         pharmacy_id: <span class="hljs-number">1</span>,
@@ -3116,11 +3153,18 @@ user will need write access to the patient, the old medication, and the new medi
 </dd><dt>medication_id</dt><dd><code>integer</code>&nbsp;<span>(optional)</span>&nbsp;<p>ID of a medication to change the dose to. Must correspond to an existing
 medication.</p>
 </dd><dt>date</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>new ISO 8601 datetime to change the date of the dose to</p>
+</dd><dt>taken</dt><dd><code>boolean</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>Boolean representing whether the user took their medication (i.e., <code>true</code> if
+they took it, <code>false</code> if this dose event represents them <em>skipping</em> their
+medication)</p>
+</dd><dt>scheduled</dt><dd><code>integer</code>&nbsp;<span>(optional)</span>&nbsp;<p>Number representing the ID of the scheduled dose event. See <code>POST</code> endpoint documentation
+for full details. Send <code>null</code> to remove an existing value.</p>
 </dd><dt>notes</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>String to change the notes field of the dose to. If blank, will save the notes
 field blank correspondingly.</p>
 </dd></dl></div><div class="title"><strong>Request</strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><h5>Headers</h5><pre><code><span class="hljs-attribute">Authorization</span>: <span class="hljs-string">Bearer ACCESS_TOKEN</span><br></code></pre><div style="height: 1px;"></div><h5>Body</h5><pre><code>{
     medication_id: <span class="hljs-number">1</span>,
     date: <span class="hljs-string">"2015-05-31T19:27:09+00:00"</span>,
+    taken: <span class="hljs-literal">true</span>,
+    scheduled: <span class="hljs-number">3</span>,
     notes: <span class="hljs-string">"Not sleepy from this - forgot I took a melatonin pill earlier!"</span>
 }
 </code></pre><div style="height: 1px;"></div></div></div><div class="title"><strong>Response&nbsp;&nbsp;<code>200</code></strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><div class="description"><p>Errors</p>
@@ -3147,11 +3191,21 @@ field blank correspondingly.</p>
 <li>
 <p><code>invalid_medication_id</code> (400) - no medication with the specified ID can be found</p>
 </li>
+<li>
+<p><code>invalid_taken</code> (400) - <code>taken</code> is not a valid boolean</p>
+</li>
+<li>
+<p><code>invalid_scheduled</code> (400)</p>
+<p><code>scheduled</code> is not a valid integer corresponding to an event with that ID in the schedule
+for the medication (with ID <code>medication_id</code>)</p>
+</li>
 </ul>
 </div><h5>Body</h5><pre><code>{
     id: <span class="hljs-number">1</span>,
     medication_id: <span class="hljs-number">1</span>,
     date: <span class="hljs-string">"2015-05-31T19:27:09+00:00"</span>,
+    taken: <span class="hljs-literal">true</span>,
+    scheduled: <span class="hljs-number">3</span>,
     notes: <span class="hljs-string">"Not sleepy from this - forgot I took a melatonin pill earlier!"</span>,
     success: <span class="hljs-literal">true</span>
 }
@@ -3182,6 +3236,8 @@ The current user will need write access to both the patient and the medication.<
     id: <span class="hljs-number">1</span>,
     medication_id: <span class="hljs-number">1</span>,
     date: <span class="hljs-string">"2015-05-31T19:27:09+00:00"</span>,
+    taken: <span class="hljs-literal">true</span>,
+    scheduled: <span class="hljs-number">3</span>,
     notes: <span class="hljs-string">"Feeling sleepy now!"</span>
     success: <span class="hljs-literal">true</span>
 }
@@ -3474,7 +3530,7 @@ of information. Possible matches for drugs (if any) are located in the
     },
     success: <span class="hljs-literal">true</span>
 }
-</code></pre><div style="height: 1px;"></div></div></div></div></div></section></div></div></div><p style="text-align: center;" class="text-muted">Generated by&nbsp;<a href="https://github.com/danielgtaylor/aglio" class="aglio">aglio</a>&nbsp;on 08 Aug 2015</p><script>function toggleCollapse(event) {
+</code></pre><div style="height: 1px;"></div></div></div></div></div></section></div></div></div><p style="text-align: center;" class="text-muted">Generated by&nbsp;<a href="https://github.com/danielgtaylor/aglio" class="aglio">aglio</a>&nbsp;on 10 Aug 2015</p><script>function toggleCollapse(event) {
     var button = event.target.parentNode;
     var content = button.parentNode.nextSibling;
     var inner = content.children[0];
