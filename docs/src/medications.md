@@ -220,6 +220,12 @@ must have write access to the patient.
     + quantity (integer, optional) - number of medication in each 'pack'
     + type (string, optional) - legal medication type: e.g., `"OTC"`
     + brand (string, optional) - brand name of medication
+    + origin (string, optional)
+
+        Optional string containing the source the medication data came from. Suggested use
+        case would be to store either `"manual"` or `"imported"` in this field for each
+        medication, although note that no backend API validation is done of this field so any
+        string value can be set.
     + schedule (dictionary, optional) - a schedule datum in the form described above
     + access_prime (string, optional)
 
@@ -268,6 +274,7 @@ must have write access to the patient.
                 quantity: 50,
                 type: "OTC",
                 brand: "Claritin",
+                origin: "manual",
                 schedule: {
                     as_needed: false,
                     regularly: true,
@@ -334,6 +341,7 @@ must have write access to the patient.
                 quantity: 50,
                 type: "OTC",
                 brand: "Claritin",
+                origin: "manual",
                 schedule: {
                     as_needed: false,
                     regularly: true,
@@ -432,6 +440,7 @@ medications for which the current user has read access will be returned.
                         quantity: 50,
                         type: "OTC",
                         brand: "Claritin",
+                        origin: "manual",
                         schedule: {
                             as_needed: false,
                             regularly: true,
@@ -512,6 +521,7 @@ The current user must have read access to **both** the patient and the medicatio
                 quantity: 50,
                 type: "OTC",
                 brand: "Claritin",
+                origin: "manual",
                 schedule: {
                     as_needed: false,
                     regularly: true,
@@ -611,6 +621,10 @@ user must have read access to the patient and write access to the medication.
     + quantity (integer, optional) - number of medication in each 'pack'
     + type (string, optional) - legal medication type: e.g., `"OTC"`
     + brand (string, optional) - brand name of medication
+    + origin (string, optional)
+
+        Place the data for this medication came from (suggested use case: store either `"manual"`
+        or `"imported"` in this field, although the API does no validation of the string contents)
     + schedule (dictionary, optional)
 
         As in `POST`. A whole new schedule must be sent.
@@ -654,6 +668,7 @@ user must have read access to the patient and write access to the medication.
                 quantity: 50,
                 type: "OTC",
                 brand: "Claritin",
+                origin: "manual",
                 schedule: {
                     as_needed: true,
                     regularly: false
@@ -702,6 +717,7 @@ user must have read access to the patient and write access to the medication.
                 quantity: 50,
                 type: "OTC",
                 brand: "Claritin",
+                origin: "manual",
                 schedule: {
                     as_needed: true,
                     regularly: false
@@ -760,6 +776,7 @@ write access to the medication.
                 quantity: 50,
                 type: "OTC",
                 brand: "Claritin",
+                origin: "manual",
                 schedule: {
                     as_needed: false,
                     regularly: true,

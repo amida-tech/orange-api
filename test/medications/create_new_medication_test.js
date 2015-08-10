@@ -66,6 +66,7 @@ describe("Medications", function () {
                 fill_date: undefined,
                 type: undefined,
                 brand: undefined,
+                origin: undefined,
                 schedule: undefined,
                 doctor_id: undefined,
                 pharmacy_id: undefined,
@@ -86,6 +87,7 @@ describe("Medications", function () {
                 fill_date: null,
                 type: null,
                 brand: null,
+                origin: null,
                 schedule: null,
                 doctor_id: null,
                 pharmacy_id: null
@@ -113,6 +115,31 @@ describe("Medications", function () {
             return createPatientMedication({ fill_date: "2015-05-01" }).then(function (response) {
                 expect(response).to.be.a.medication.createSuccess;
                 expect(response.body.number_left).to.not.be.null;
+            });
+        });
+
+        it("accepts a blank `origin`", function () {
+            return createPatientMedication({ origin: "" }).then(function (response) {
+                expect(response).to.be.a.medication.createSuccess;
+                expect(response.body.origin).to.equal("");
+            });
+        });
+        it("accepts a null `origin` and converts it to a blank string", function () {
+            return createPatientMedication({ origin: null }).then(function (response) {
+                expect(response).to.be.a.medication.createSuccess;
+                expect(response.body.origin).to.equal("");
+            });
+        });
+        it("defaults to a blank string for `origin`", function () {
+            return createPatientMedication({ origin: undefined }).then(function (response) {
+                expect(response).to.be.a.medication.createSuccess;
+                expect(response.body.origin).to.equal("");
+            });
+        });
+        it("accepts a valid string for `origin`", function () {
+            return createPatientMedication({ origin: "manual" }).then(function (response) {
+                expect(response).to.be.a.medication.createSuccess;
+                expect(response.body.origin).to.equal("manual");
             });
         });
 

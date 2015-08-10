@@ -150,6 +150,7 @@ describe("Medications", function () {
                 quantity: null,
                 type: null,
                 brand: null,
+                origin: null,
                 doctor_id: null,
                 pharmacy_id: null
             }).then(function (response) {
@@ -164,6 +165,7 @@ describe("Medications", function () {
                 expect(response.body.quantity).to.equal(1);
                 expect(response.body.type).to.equal("");
                 expect(response.body.brand).to.equal("");
+                expect(response.body.origin).to.equal("");
                 expect(response.body.doctor_id).to.equal(null);
                 expect(response.body.pharmacy_id).to.equal(null);
             });

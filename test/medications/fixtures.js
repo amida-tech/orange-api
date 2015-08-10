@@ -20,6 +20,7 @@ monky.factory("Medication", {
     quantity: 50,
     fill_date: "2015-05-01",
     type: "OTC",
-    brand: "Claritin"
+    brand: "Claritin",
+    origin: "manual"
 });
 /*eslint-enable key-spacing */

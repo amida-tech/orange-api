@@ -27,7 +27,7 @@ delete pharmacySchema.properties.success;
 var medicationSchema = module.exports.schema = {
     required: ["id", "name", "rx_norm", "ndc", "dose", "route", "form", "rx_number",
                 "quantity", "type", "schedule", "fill_date", "number_left", "access_anyone",
-                "access_family", "access_prime", "brand", "success"],
+                "access_family", "access_prime", "brand", "origin", "success"],
     properties: {
         success:        { type: "boolean" },
         id:             { type: "number" },
@@ -50,6 +50,7 @@ var medicationSchema = module.exports.schema = {
         quantity:       { type: "number" },
         type:           { type: "string" },
         brand:          { type: "string" },
+        origin:         { type: "string" },
         schedule:       {
             type:           "object",
             required:       ["as_needed", "regularly"],
