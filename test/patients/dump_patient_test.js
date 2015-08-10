@@ -115,7 +115,8 @@ describe("Patients", function () {
             before(function () {
                 return Q.nbind(patient.createDose, patient)({
                     medication_id: shownMed._id,
-                    date: (new Date()).toISOString()
+                    date: (new Date()).toISOString(),
+                    taken: true
                 }).then(function (d) {
                     shownDose = d;
                 });
@@ -125,7 +126,8 @@ describe("Patients", function () {
             before(function () {
                 return Q.nbind(patient.createDose, patient)({
                     medication_id: hiddenMed._id,
-                    date: (new Date()).toISOString()
+                    date: (new Date()).toISOString(),
+                    taken: true
                 });
             });
 

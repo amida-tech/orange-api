@@ -59,7 +59,8 @@ describe("Medications", function () {
         before(function () {
             return Q.nbind(patient.createDose, patient)({
                 medication_id: medication._id,
-                date: (new Date()).toISOString()
+                date: (new Date()).toISOString(),
+                taken: true
             }).then(function (d) {
                 doseId = d._id;
             });
