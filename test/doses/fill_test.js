@@ -34,6 +34,7 @@ describe("Doses", function () {
                 medication_id: patient.medications[0]._id,
                 // date irrelevant as long as it's after fill_date above
                 date: (new Date()).toISOString(),
+                taken: true,
                 notes: ""
             });
         };

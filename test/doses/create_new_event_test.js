@@ -32,6 +32,7 @@ describe("Doses", function () {
 
                     // have to explitly set these (see journal entry tests for explanation)
                     if ("date" in data) output.date = data.date;
+                    if ("taken" in data) output.taken = data.taken;
 
                     return create(output, patient._id, patient.user.accessToken);
                 });
@@ -65,6 +66,24 @@ describe("Doses", function () {
         });
         it("rejects invalid dates", function () {
             return expect(createPatientDose({ date: "foobar" })).to.be.an.api.error(400, "invalid_date");
+        });
+        it("requires a `taken` value", function () {
+            return expect(createPatientDose({ taken: undefined })).to.be.an.api.error(400, "taken_required");
+        });
+        it("rejects a null `taken`", function () {
+            return expect(createPatientDose({ taken: null })).to.be.an.api.error(400, "invalid_taken");
+        });
+        it("rejects a blank `taken`", function () {
+            return expect(createPatientDose({ taken: "" })).to.be.an.api.error(400, "invalid_taken");
+        });
+        it("rejects a string `taken`", function () {
+            return expect(createPatientDose({ taken: "foo" })).to.be.an.api.error(400, "invalid_taken");
+        });
+        it("accepts a true `taken`", function () {
+            return expect(createPatientDose({ taken: true })).to.be.a.dose.createSuccess;
+        });
+        it("accepts a false `taken`", function () {
+            return expect(createPatientDose({ taken: false })).to.be.a.dose.createSuccess;
         });
 
         it("allows freeform notes", function () {

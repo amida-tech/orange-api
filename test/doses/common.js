@@ -16,11 +16,12 @@ delete medicationSchema.properties.success;
 // verify successful responses
 /*eslint-disable key-spacing */
 var doseSchema = module.exports.schema = {
-    required: ["success", "id", "date", "notes"],
+    required: ["success", "id", "date", "taken", "notes"],
     properties: {
         success:        { type: "boolean" },
         id:             { type: "number" },
         date:           { type: "string" },
+        taken:          { type: "boolean" },
         notes:          { type: "string" }
     },
     definitions: {
@@ -84,6 +85,7 @@ module.exports.itRequiresValidDoseId = function (endpoint) {
                     return Q.nbind(otherPatient.createDose, otherPatient)({
                         medication_id: otherPatient.medications[0]._id,
                         date: (new Date()).toISOString(),
+                        taken: true,
                         notes: "foobar"
                     });
                 });

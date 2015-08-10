@@ -99,6 +99,38 @@ describe("Doses", function () {
             });
         });
 
+        it("allows updating taken", function () {
+            return updatePatientDose({
+                taken: true
+            }, {
+                taken: false
+            }).then(function (response) {
+                expect(response).to.be.a.dose.success;
+                expect(response.body.taken).to.be.false;
+            });
+        });
+        it("rejects a null taken value", function () {
+            return expect(updatePatientDose({
+                taken: true
+            }, {
+                taken: null
+            })).to.be.an.api.error(400, "invalid_taken");
+        });
+        it("rejects a blank taken value", function () {
+            return expect(updatePatientDose({
+                taken: true
+            }, {
+                taken: ""
+            })).to.be.an.api.error(400, "invalid_taken");
+        });
+        it("rejects a string taken value", function () {
+            return expect(updatePatientDose({
+                taken: true
+            }, {
+                taken: "foo"
+            })).to.be.an.api.error(400, "invalid_taken");
+        });
+
         it("rejects a blank medication ID", function () {
             return expect(updatePatientDose({}, {
                 medication_id: ""
@@ -138,6 +170,7 @@ describe("Doses", function () {
                         // create dose
                         return Q.nbind(patient.createDose, patient)({
                             date: (new Date()).toISOString(),
+                            taken: true,
                             medication_id: patient.medications[0]._id
                         });
                     });

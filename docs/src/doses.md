@@ -1,12 +1,12 @@
 # Group Dose Events
 A dose event is when the patient takes their medication (either when they're
-supposed to, _adhering_, or not, _non-adhering_).
+supposed to, _adhering_, or not, _non-adhering_) or skips their medication.
 
 ## Dose Events Collection [/patients/{patientid}/doses]
 ### Create an Event [POST]
 Store details of a new dose event (e.g., when a patient signifies they've
-taken their medication). The current user will need write access to **both** the patient
-and the medication.
+taken their medication or skipped it). The current user will need write access to
+**both** the patient and the medication.
 
 + Parameters
     + patientid (integer, required)
@@ -19,6 +19,11 @@ and the medication.
         
         ISO 8601 combined date-time in UTC representing the date and time at which
         _the patient took the medication_
+    + taken (boolean, required)
+
+        Boolean representing whether the user took their medication (i.e., `true` if
+        they took it, `false` if this dose event represents them *skipping* their
+        medication)
 
     + notes (string, optional)
 
@@ -34,6 +39,7 @@ and the medication.
             {
                 medication_id: 1,
                 date: "2015-05-31T19:27:09+00:00",
+                taken: true,
                 notes: "Feeling sleepy now!"
             }
 
@@ -46,6 +52,8 @@ and the medication.
     + `invalid_medication_id` (400) - no medication with the specified ID can be found
     + `unauthorized` (403) - the current user does not have write access to this patient
     + `invalid_patient_id` (404) - a patient with the specified ID was not found
+    + `taken_required` (400) - a value is not specified (it should be a boolean) for `taken`
+    + `invalid_taken` (400) - `taken` is not a valid boolean
 
     + Body
 
@@ -54,6 +62,7 @@ and the medication.
                 medication_id: 1,
                 date: "2015-05-31T19:27:09+00:00",
                 notes: "Feeling sleepy now!",
+                taken: true,
                 success: true
             }
 
@@ -130,6 +139,7 @@ will be shown.
                         id: 1,
                         medication_id: 1,
                         date: "2015-05-31T19:27:09+00:00",
+                        taken: true,
                         notes: "Feeling sleepy now!"
                     },
                     ...
@@ -173,6 +183,7 @@ the patient and the dose event.
                 id: 1,
                 date: "2015-05-31T19:27:09+00:00",
                 notes: "Feeling sleepy now!",
+                taken: true,
                 medication: {
                     id: 1,
                     name: "Loratadine",
@@ -220,6 +231,11 @@ user will need write access to the patient, the old medication, and the new medi
         medication.
 
     + date (string, optional) - new ISO 8601 datetime to change the date of the dose to
+    + taken (boolean, required)
+
+        Boolean representing whether the user took their medication (i.e., `true` if
+        they took it, `false` if this dose event represents them *skipping* their
+        medication)
 
     + notes (string, optional)
 
@@ -236,6 +252,7 @@ user will need write access to the patient, the old medication, and the new medi
             {
                 medication_id: 1,
                 date: "2015-05-31T19:27:09+00:00",
+                taken: true,
                 notes: "Not sleepy from this - forgot I took a melatonin pill earlier!"
             }
 
@@ -249,6 +266,7 @@ user will need write access to the patient, the old medication, and the new medi
     + `invalid_dose_id` (404) - a dose with that ID was not found
     + `invalid_date` (400) - the date field specified is not in valid ISO 8601 format
     + `invalid_medication_id` (400) - no medication with the specified ID can be found
+    + `invalid_taken` (400) - `taken` is not a valid boolean
     
     + Body
 
@@ -256,6 +274,7 @@ user will need write access to the patient, the old medication, and the new medi
                 id: 1,
                 medication_id: 1,
                 date: "2015-05-31T19:27:09+00:00",
+                taken: true,
                 notes: "Not sleepy from this - forgot I took a melatonin pill earlier!",
                 success: true
             }
@@ -292,6 +311,7 @@ The current user will need write access to both the patient and the medication.
                 id: 1,
                 medication_id: 1,
                 date: "2015-05-31T19:27:09+00:00",
+                taken: true,
                 notes: "Feeling sleepy now!"
                 success: true
             }
