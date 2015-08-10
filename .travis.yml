@@ -37,6 +37,9 @@ before_script:
   - cp config.js.example config.js
 
 # run e2e & unit tests
+env:
+    global:
+        - NODE_ENV=test
 script:
   - grunt test
 
