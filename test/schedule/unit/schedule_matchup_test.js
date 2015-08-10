@@ -14,6 +14,9 @@ describe("Schedule", function () {
             client.connect("tcp://127.0.0.1:4242");
         });
 
+        // timezone to test in
+        var tz = "America/New_York";
+
         // TODO: we should probably test this better, but for now we just test it matches up
         // one complicated schedule containing all possible different types of time correctly
         var schedule = new Schedule({
@@ -42,7 +45,7 @@ describe("Schedule", function () {
             if (typeof taken !== "boolean") taken = true;
 
             // moments are mutable
-            date = moment(date);
+            date = moment.tz(date, tz);
             date.hours(hours);
             date.minutes(minutes);
             date.seconds(0);
@@ -98,7 +101,7 @@ describe("Schedule", function () {
 
         it("matches up correctly", function (done) {
             schedule.match(times, client, {
-                tz: "America/New_York",
+                tz: tz,
                 wake: "08:00",
                 sleep: "00:00",
                 breakfast: "09:30",
@@ -181,7 +184,7 @@ describe("Schedule", function () {
         // to make sure nothing errors out here
         it("handles matching up when one dose is present", function (done) {
             schedule.match([times[0]], client, {
-                tz: "America/New_York",
+                tz: tz,
                 wake: "08:00",
                 sleep: "00:00",
                 breakfast: "09:30",
