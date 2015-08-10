@@ -49,7 +49,7 @@ describe("Schedule", function () {
 
         // set the default notification offset to be 15 minutes
         before(function () {
-            var timeId = medication.schedule.times[0].id;
+            var timeId = medication.schedule.times[0]._id;
             return Q.nbind(medication.updateNotificationSettings, medication)(timeId, patient.user, {
                 default: 15
             });
@@ -74,19 +74,26 @@ describe("Schedule", function () {
             var createDose = Q.nbind(patient.createDose, patient);
             return createDose({
                 medication_id: medication._id,
-                date: moment(moment.tz(day1, tz).startOf("day") + doseDelta).subtract(30, "minutes")
+                date: moment(moment.tz(day1, tz).startOf("day") + doseDelta).subtract(30, "minutes"),
+                scheduled: medication.schedule.times[0]._id,
+                taken: true
             }).then(function () {
                 return createDose({
                     medication_id: medication._id,
-                    date: moment(moment.tz(day3, tz).startOf("day") + doseDelta).add(1, "hour")
+                    date: moment(moment.tz(day3, tz).startOf("day") + doseDelta).add(1, "hour"),
+                    scheduled: medication.schedule.times[0]._id,
+                    taken: true
                 });
             }).then(function () {
                 return createDose({
                     medication_id: medication._id,
-                    date: moment(day1).subtract(2, "days")
+                    date: moment(day1).subtract(2, "days"),
+                    scheduled: medication.schedule.times[0]._id,
+                    taken: true
                 });
             });
         });
+
 
         // get the response from generating the overall schedule in the patient
         var start, end, schedule;
@@ -140,7 +147,7 @@ describe("Schedule", function () {
         describe("with a user-specific notification", function () {
             // set the user notification offset to be 15 minutes
             before(function () {
-                var timeId = medication.schedule.times[0].id;
+                var timeId = medication.schedule.times[0]._id;
                 return Q.nbind(medication.updateNotificationSettings, medication)(timeId, patient.user, {
                     default: 20,
                     user: 10
