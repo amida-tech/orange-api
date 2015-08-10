@@ -9,6 +9,7 @@ var monky = module.exports = new Monky(mongoose);
 monky.factory("Dose", {
     date: (new Date()).toISOString(),
     notes: "Lorem ipsum #n",
-    taken: true
+    taken: true,
+    scheduled: null
 });
 /*eslint-enable key-spacing */

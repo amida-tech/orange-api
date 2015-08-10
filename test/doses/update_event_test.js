@@ -131,6 +131,25 @@ describe("Doses", function () {
             })).to.be.an.api.error(400, "invalid_taken");
         });
 
+        it("allows using a null `scheduled` value to reset `scheduled", function () {
+            return updatePatientDose({}, {
+                scheduled: null
+            }).then(function (response) {
+                expect(response).to.be.a.dose.success;
+                expect(response.body.scheduled).to.be.null;
+            });
+        });
+        it("rejects a blank `scheduled` value", function () {
+            return expect(updatePatientDose({}, {
+                scheduled: ""
+            })).to.be.an.api.error(400, "invalid_scheduled");
+        });
+        it("rejects a string `scheduled` value", function () {
+            return expect(updatePatientDose({}, {
+                scheduled: "foo"
+            })).to.be.an.api.error(400, "invalid_scheduled");
+        });
+
         it("rejects a blank medication ID", function () {
             return expect(updatePatientDose({}, {
                 medication_id: ""

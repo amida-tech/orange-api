@@ -33,6 +33,7 @@ describe("Doses", function () {
                     // have to explitly set these (see journal entry tests for explanation)
                     if ("date" in data) output.date = data.date;
                     if ("taken" in data) output.taken = data.taken;
+                    if ("scheduled" in data) output.scheduled = data.scheduled;
 
                     return create(output, patient._id, patient.user.accessToken);
                 });
@@ -67,6 +68,7 @@ describe("Doses", function () {
         it("rejects invalid dates", function () {
             return expect(createPatientDose({ date: "foobar" })).to.be.an.api.error(400, "invalid_date");
         });
+
         it("requires a `taken` value", function () {
             return expect(createPatientDose({ taken: undefined })).to.be.an.api.error(400, "taken_required");
         });
@@ -84,6 +86,19 @@ describe("Doses", function () {
         });
         it("accepts a false `taken`", function () {
             return expect(createPatientDose({ taken: false })).to.be.a.dose.createSuccess;
+        });
+
+        it("doesn't require a `scheduled` value", function () {
+            return expect(createPatientDose({ scheduled: undefined })).to.be.a.dose.createSuccess;
+        });
+        it("allows a null `scheduled` value", function () {
+            return expect(createPatientDose({ scheduled: null })).to.be.a.dose.createSuccess;
+        });
+        it("rejects a blank `scheduled` value", function () {
+            return expect(createPatientDose({ scheduled: "" })).to.be.an.api.error(400, "invalid_scheduled");
+        });
+        it("rejects a string `scheduled` value", function () {
+            return expect(createPatientDose({ scheduled: "foo" })).to.be.an.api.error(400, "invalid_scheduled");
         });
 
         it("allows freeform notes", function () {
@@ -147,6 +162,57 @@ describe("Doses", function () {
                     medication_id: otherPatient.medications[0]._id
                 }, patient._id, patient.user.accessToken);
                 return expect(endpoint).to.be.an.api.error(400, "invalid_medication_id");
+            });
+        });
+
+        describe("with a scheduled medication setup", function () {
+            var user, patient, medication, scheduled;
+            before(function () {
+                // setup current user and two patients for them, both with a medication
+                return auth.createTestUser().then(function (u) {
+                    user = u;
+                    // create patients
+                    return patients.createMyPatient({}, user);
+                }).then(function (p) {
+                    patient = p;
+                    return Q.nbind(patient.createMedication, patient)({
+                        name: "Loratadine",
+                        schedule: {
+                            as_needed: false,
+                            regularly: true,
+                            until: { type: "forever" },
+                            frequency: { n: 1, unit: "day" },
+                            times: [{ type: "unspecified" }],
+                            take_with_food: null,
+                            take_with_medications: [],
+                            take_without_medications: []
+                        }
+                    });
+                }).then(function (m) {
+                    medication = m;
+                });
+            });
+            it("has created an ID for our scheduled med time", function () {
+                scheduled = medication.schedule.times[0]._id;
+                expect(scheduled).to.be.a("number");
+            });
+            it("accepts a `scheduled` value corresponding to a valid scheduled event time", function () {
+                return expect(create({
+                    notes: "foobar",
+                    date: (new Date()).toISOString(),
+                    medication_id: medication._id,
+                    taken: true,
+                    scheduled: scheduled
+                }, patient._id, patient.user.accessToken)).to.be.a.dose.createSuccess;
+            });
+            it("rejects a `scheduled` value not corresponding to a valid scheduled event time", function () {
+                return expect(create({
+                    notes: "foobar",
+                    date: (new Date()).toISOString(),
+                    medication_id: medication._id,
+                    taken: true,
+                    scheduled: scheduled + 1
+                }, patient._id, patient.user.accessToken)).to.be.an.api.error(400, "invalid_scheduled");
             });
         });
     });

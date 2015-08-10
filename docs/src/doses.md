@@ -24,6 +24,13 @@ taken their medication or skipped it). The current user will need write access t
         Boolean representing whether the user took their medication (i.e., `true` if
         they took it, `false` if this dose event represents them *skipping* their
         medication)
+    + scheduled (integer, optional)
+
+        Integer representing the ID of a schedule event corresponding to the patient taking their medication.
+        These are the same IDs used to set notification settings at the
+        `/patients/{patientid}/medications/{medicationid}/times/{timeid}` endpoints. If this is not set for a
+        dose, the matcher will assume the medication was taken for an `unspecified` schedule event or was
+        taken out of schedule (as would be the case normally with an `as_needed` medication).
 
     + notes (string, optional)
 
@@ -40,6 +47,7 @@ taken their medication or skipped it). The current user will need write access t
                 medication_id: 1,
                 date: "2015-05-31T19:27:09+00:00",
                 taken: true,
+                scheduled: 3,
                 notes: "Feeling sleepy now!"
             }
 
@@ -54,6 +62,10 @@ taken their medication or skipped it). The current user will need write access t
     + `invalid_patient_id` (404) - a patient with the specified ID was not found
     + `taken_required` (400) - a value is not specified (it should be a boolean) for `taken`
     + `invalid_taken` (400) - `taken` is not a valid boolean
+    + `invalid_scheduled` (400)
+
+        `scheduled` is not a valid integer corresponding to an event with that ID in the schedule
+        for the medication (with ID `medication_id`)
 
     + Body
 
@@ -63,6 +75,7 @@ taken their medication or skipped it). The current user will need write access t
                 date: "2015-05-31T19:27:09+00:00",
                 notes: "Feeling sleepy now!",
                 taken: true,
+                scheduled: 3,
                 success: true
             }
 
@@ -140,6 +153,7 @@ will be shown.
                         medication_id: 1,
                         date: "2015-05-31T19:27:09+00:00",
                         taken: true,
+                        scheduled: 3,
                         notes: "Feeling sleepy now!"
                     },
                     ...
@@ -184,6 +198,7 @@ the patient and the dose event.
                 date: "2015-05-31T19:27:09+00:00",
                 notes: "Feeling sleepy now!",
                 taken: true,
+                scheduled: 3,
                 medication: {
                     id: 1,
                     name: "Loratadine",
@@ -199,10 +214,7 @@ the patient and the dose event.
                     quantity: 50,
                     type: "OTC",
                     schedule: {
-                        type: "regularly",
-                        frequency: 1,
-                        number_of_times: 2,
-                        times_of_day: ["after_lunch", "before_sleep"]
+                        ...
                     },
                     doctor_id: 1,
                     pharmacy_id: 1,
@@ -236,6 +248,10 @@ user will need write access to the patient, the old medication, and the new medi
         Boolean representing whether the user took their medication (i.e., `true` if
         they took it, `false` if this dose event represents them *skipping* their
         medication)
+    + scheduled (integer, optional)
+
+        Number representing the ID of the scheduled dose event. See `POST` endpoint documentation
+        for full details. Send `null` to remove an existing value.
 
     + notes (string, optional)
 
@@ -253,6 +269,7 @@ user will need write access to the patient, the old medication, and the new medi
                 medication_id: 1,
                 date: "2015-05-31T19:27:09+00:00",
                 taken: true,
+                scheduled: 3,
                 notes: "Not sleepy from this - forgot I took a melatonin pill earlier!"
             }
 
@@ -267,6 +284,10 @@ user will need write access to the patient, the old medication, and the new medi
     + `invalid_date` (400) - the date field specified is not in valid ISO 8601 format
     + `invalid_medication_id` (400) - no medication with the specified ID can be found
     + `invalid_taken` (400) - `taken` is not a valid boolean
+    + `invalid_scheduled` (400)
+
+        `scheduled` is not a valid integer corresponding to an event with that ID in the schedule
+        for the medication (with ID `medication_id`)
     
     + Body
 
@@ -275,6 +296,7 @@ user will need write access to the patient, the old medication, and the new medi
                 medication_id: 1,
                 date: "2015-05-31T19:27:09+00:00",
                 taken: true,
+                scheduled: 3,
                 notes: "Not sleepy from this - forgot I took a melatonin pill earlier!",
                 success: true
             }
@@ -312,6 +334,7 @@ The current user will need write access to both the patient and the medication.
                 medication_id: 1,
                 date: "2015-05-31T19:27:09+00:00",
                 taken: true,
+                scheduled: 3,
                 notes: "Feeling sleepy now!"
                 success: true
             }
