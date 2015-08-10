@@ -201,6 +201,45 @@ describe("Patients", function () {
                     expect(response.body.length).to.be.at.least(1024);
                 });
             });
+
+            // back to png now
+            it("allows changing of the avatar again", function () {
+                var image = fs.createReadStream("./test/patients/test_image.png");
+                return setPatient(image, patient).then(function (response) {
+                    expect(response).to.be.an.avatar.setSuccess;
+                    // check file extension has been updated
+                    expect(response.body.avatar.split(".").pop()).to.equal("png");
+                });
+            });
+
+            it("returns an updated avatar slug", function () {
+                // check avatar URL file extension has been updated in GET /patients/:id
+                return view.showPatient(patient).then(function (response) {
+                    expect(response.body.avatar.split(".").pop()).to.equal("png");
+                });
+            });
+
+            it("returns an updated MIME type", function () {
+                return getPatient(patient).then(function (response) {
+                    expect(response.response.headers).to.include.key("content-type");
+                    expect(response.response.headers["content-type"]).to.equal("image/png");
+                });
+            });
+
+            it("returns the updated image data", function () {
+                return getPatient(patient).then(function (response) {
+                    expect(response).to.be.an.avatar.imageSuccess;
+
+                    // check a valid *jpeg* image was returned
+                    var type = imageType(response.body);
+                    expect(type).to.not.be.null;
+                    expect(type.mime).to.equal("image/png");
+
+                    // check that a fair (>1kb) amount of image data was returned:
+                    // imageType only reads the first 12 bytes
+                    expect(response.body.length).to.be.at.least(1024);
+                });
+            });
         });
     });
 });
