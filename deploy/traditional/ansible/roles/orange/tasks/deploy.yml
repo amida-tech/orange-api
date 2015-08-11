@@ -15,6 +15,9 @@
 - name: Copy Orange config
   command: cp /var/www/orange/current/config.js.example /var/www/orange/current/config.js
 
+- name: Copy Orange app folder
+  command: cp -r /var/www/orange/current/static /var/www/orange/app
+
 - name: Install python dependencies
   sudo: yes
   command: pip install -r /var/www/orange/current/lib/matching/requirements.txt
