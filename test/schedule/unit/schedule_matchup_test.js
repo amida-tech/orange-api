@@ -70,7 +70,7 @@ describe("Schedule", function () {
                 at(day1, "2200", 12), // early before sleep day 1
 
                 at(day2, "1000", 10), // before breakfast day 2
-                at(day2, "1700", null, false), // MISSED after lunch day 2
+                at(day2, "1700", 11, false), // MISSED after lunch day 2
                 at(day2, "1800", 13), // late 16:00 day 2
                 at(day2, "2130", null), // unspecified day 2 (implicitly specified by no schedule time ID)
                 at(day2, "2200", 12), // early before sleep day 2
@@ -111,8 +111,8 @@ describe("Schedule", function () {
                 if (err) return done(err);
 
                 var m = result.matches;
-                console.log(m);
-                expect(m.length).to.equal(15);
+                // console.log(m);
+                expect(m.length).to.equal(16);
 
                 // check matches as expected
                 expect(m[0].match.day).to.equal(0);
@@ -140,41 +140,44 @@ describe("Schedule", function () {
                 expect(m[5].dose).to.equal(5);
 
                 // dose ID 6 skipped as it wasn't taken
-
                 expect(m[6].match.day).to.equal(1);
-                expect(m[6].match.index).to.equal(13);
-                expect(m[6].dose).to.equal(7);
+                expect(m[6].match.index).to.equal(11);
+                expect(m[6].dose).to.equal(6);
 
                 expect(m[7].match.day).to.equal(1);
-                expect(m[7].match.index).to.equal(14);
-                expect(m[7].dose).to.equal(8);
+                expect(m[7].match.index).to.equal(13);
+                expect(m[7].dose).to.equal(7);
 
                 expect(m[8].match.day).to.equal(1);
-                expect(m[8].match.index).to.equal(12);
-                expect(m[8].dose).to.equal(9);
+                expect(m[8].match.index).to.equal(14);
+                expect(m[8].dose).to.equal(8);
 
-                expect(m[9].match.day).to.equal(2);
-                expect(m[9].match.index).to.equal(10);
-                expect(m[9].dose).to.equal(10);
+                expect(m[9].match.day).to.equal(1);
+                expect(m[9].match.index).to.equal(12);
+                expect(m[9].dose).to.equal(9);
 
                 expect(m[10].match.day).to.equal(2);
-                expect(m[10].match.index).to.equal(11);
-                expect(m[10].dose).to.equal(11);
+                expect(m[10].match.index).to.equal(10);
+                expect(m[10].dose).to.equal(10);
 
                 expect(m[11].match.day).to.equal(2);
-                expect(m[11].match.index).to.equal(14);
-                expect(m[11].dose).to.equal(12);
+                expect(m[11].match.index).to.equal(11);
+                expect(m[11].dose).to.equal(11);
 
                 expect(m[12].match.day).to.equal(2);
-                expect(m[12].match.index).to.equal(13);
-                expect(m[12].dose).to.equal(13);
+                expect(m[12].match.index).to.equal(14);
+                expect(m[12].dose).to.equal(12);
 
-                expect(m[13].match).to.be.null;
-                expect(m[13].dose).to.equal(14);
+                expect(m[13].match.day).to.equal(2);
+                expect(m[13].match.index).to.equal(13);
+                expect(m[13].dose).to.equal(13);
 
-                expect(m[14].match.day).to.equal(2);
-                expect(m[14].match.index).to.equal(12);
-                expect(m[14].dose).to.equal(15);
+                expect(m[14].match).to.be.null;
+                expect(m[14].dose).to.equal(14);
+
+                expect(m[15].match.day).to.equal(2);
+                expect(m[15].match.index).to.equal(12);
+                expect(m[15].dose).to.equal(15);
 
                 done();
             });

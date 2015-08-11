@@ -67,7 +67,7 @@ describe("Schedule", function () {
             day4 = moment(day3).add(1, "day");
         });
 
-        // create 3 dose events: one slightly before the scheduled time on day,
+        // create 3 dose events: two slightly before the scheduled time on day,
         // one slightly after on day3, and one outside the given range
         // create them on day1 and day3
         before(function () {
@@ -76,7 +76,14 @@ describe("Schedule", function () {
                 medication_id: medication._id,
                 date: moment(moment.tz(day1, tz).startOf("day") + doseDelta).subtract(30, "minutes"),
                 scheduled: medication.schedule.times[0]._id,
-                taken: true
+                taken: false
+            }).then(function () {
+                return createDose({
+                    medication_id: medication._id,
+                    date: moment(moment.tz(day2, tz).startOf("day") + doseDelta).subtract(30, "minutes"),
+                    scheduled: medication.schedule.times[0]._id,
+                    taken: true
+                });
             }).then(function () {
                 return createDose({
                     medication_id: medication._id,
@@ -126,7 +133,7 @@ describe("Schedule", function () {
             }).length).to.equal(2);
             expect(schedule.schedule.filter(function (item) {
                 return typeof item.dose_id !== "undefined";
-            }).length).to.equal(2);
+            }).length).to.equal(3);
             expect(schedule.schedule.filter(function (item) {
                 return typeof item.delay !== "undefined";
             }).length).to.equal(2);

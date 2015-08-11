@@ -23,9 +23,6 @@ class ScheduleMatcher(object):
         # dump out data for testing
         # pickle.dump({"schedule": schedule, "doses": doses, "habits": habits}, open("/tmp/input", "wb"))
 
-        # filter doses and remove those where a medication was not taken (at the moment we don't need those
-        # for the deterministic matchup done below)
-        doses = filter(lambda dose: dose["taken"] == True, doses)
         # parse ISO 8601-formatted dates into Date objects, and sort them
         def parseDose(dose):
             dose["date"] = dateutil.parser.parse(dose["date"]).astimezone(self.tz)
