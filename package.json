@@ -36,6 +36,7 @@
     "mongoose-unique-validator": "^0.4.1",
     "node-geocoder": "^2.22.0",
     "npi-js": "^0.1.0",
+    "pdfmake": "^0.1.18",
     "randomstring": "^1.0.7",
     "request": "^2.58.0",
     "rxnorm-js": "^0.1.0",

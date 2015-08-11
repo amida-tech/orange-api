@@ -103,7 +103,7 @@ describe("Patients", function () {
             common.itRequiresAuthentication(get);
             common.itRequiresValidPatientId(get);
             // check it requires read access to the patient
-            common.itRequiresAvatarReadAuthorization(getPatient);
+            common.itRequiresNonJsonReadAuthorization(getPatient);
 
             // check authorization
             it("lets me set images for my patients", function () {

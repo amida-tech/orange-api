@@ -5,13 +5,17 @@ module.exports = function (grunt) {
 
     // run app
     grunt.registerTask("matchStart", ["exec:matcherStop", "exec:matcherStart"]);
-    grunt.registerTask("server:dev", ["matchStart", "express:dev", "watch", "exec:matcherStop"]);
+    grunt.registerTask("server:dev", ["matchStart", "express:dev", "watch:express", "exec:matcherStop"]);
     grunt.registerTask("server:test", ["matchStart", "express:test"]);
     grunt.registerTask("dev", ["eslint", "server:dev"]);
 
     // clean up code and run tests
     grunt.registerTask("default", ["eslint", "test", "exec:matcherStop"]);
     grunt.registerTask("test", ["env:test", "dropDatabase", "server:test", "mochaTest:all"]);
+
+    // watch for changes and regenerate test PDF each time (for pdf development testing)
+    grunt.registerTask("generateTestPdf", ["express:dev", "exec:testPdf"]);
+    grunt.registerTask("report", ["matchStart", "generateTestPdf", "watch:pdf", "exec:matcherStop"]);
 
     // generate code coverage using bash istanbul wrapper
     grunt.registerTask("coverage", ["matchStart", "exec:coverage"]);
@@ -87,8 +91,16 @@ module.exports = function (grunt) {
         watch: {
             express: {
                 // reloading broken on OSX because of EMFILE hence this hack
-                files: [ "gruntfile.js" ],
+                files: [ "gruntfile.js"],
                 tasks: [ "express:dev" ],
+                options: {
+                    spawn: false
+                }
+            },
+            pdf: {
+                // reloading broken on OSX because of EMFILE hence this hack
+                files: [ "lib/controllers/patients/report.js" ],
+                tasks: [ "generateTestPdf" ],
                 options: {
                     spawn: false
                 }
@@ -114,6 +126,10 @@ module.exports = function (grunt) {
             matcherStop: {
                 cwd: "lib/matching",
                 cmd: "./matcher_rpc.py stop"
+            },
+            // generate test PDF (assuming running servers)
+            testPdf: {
+                cmd: "node test_pdf.js"
             }
         },
 

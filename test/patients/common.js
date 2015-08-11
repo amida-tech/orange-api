@@ -282,7 +282,7 @@ var testAuthorizationResponseCodeSuccessful = function (endpoint, patient) {
     // if we should have access check response code was 200
     return expect(endpoint(patient)).to.have.status(200);
 };
-module.exports.itRequiresAvatarReadAuthorization = requiresAuthentication({
+module.exports.itRequiresNonJsonReadAuthorization = requiresAuthentication({
     unassociated: false,
     me: true,
     explicitRead: true,
