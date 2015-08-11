@@ -26,6 +26,11 @@ to take their medication. This uses the **user-specific** notification settings 
 the `/patients/:patientid/medications/:medicationid/times/:timeid` endpoints (and defaults to
 30 minutes prior).
 
+The schedule also contains "as needed" events, where a dose was recorded manually by the user not
+corresponding to any scheduled event. To distinguish between these and scheduled events, a `scheduled`
+key is included: it is not present for "as needed" events, and is present and equal to the ID of the
+scheduled time event for scheduled events.
+
 Additionally, each event will contain the `take_with_food` (boolean or null), `take_with_medications`
 (array of integers) and `take_without_medications` (array of integers) keys, each representing
 the same data and formatted the same way as in the medication `schedule` field.
@@ -34,7 +39,8 @@ The schedule will also contain an overall `statistics` object, containing floats
 (a mean average value for `took_medication` as a percentage out of 100), `delta` (a mean average
 value of all of the `delay`s) and `delay` (a mean average value of the **absolute values** of all
 the `delay`s). Each number in `statistics` will be `null` if there are no schedule events in
-the past found (for example, if start date is in the future).
+the past found (for example, if start date is in the future). As needed events are ignored when
+calculating statistics.
 
 The user will need read access to the patient to get a successful response from this endpoint.
 Further, only schedule events corresponding to medications for which the user has read access

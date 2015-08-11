@@ -67,9 +67,10 @@ describe("Schedule", function () {
             day4 = moment(day3).add(1, "day");
         });
 
-        // create 3 dose events: two slightly before the scheduled time on day,
+        // create 5 dose events: two slightly before the scheduled time on day,
         // one slightly after on day3, and one outside the given range
-        // create them on day1 and day3
+        // create them on day1 and day3, and also a superfluous dose representing
+        // the user taking a medication "as needed"
         before(function () {
             var createDose = Q.nbind(patient.createDose, patient);
             return createDose({
@@ -98,6 +99,13 @@ describe("Schedule", function () {
                     scheduled: medication.schedule.times[0]._id,
                     taken: true
                 });
+            }).then(function () {
+                return createDose({
+                    medication_id: medication._id,
+                    date: moment(moment.tz(day3, tz).startOf("day") + doseDelta).add(2, "hours"),
+                    scheduled: null,
+                    taken: true
+                });
             });
         });
 
@@ -118,25 +126,32 @@ describe("Schedule", function () {
         });
 
         it("returns the right number of items", function () {
-            expect(schedule.schedule.length).to.equal(4);
+            expect(schedule.schedule.length).to.equal(5);
         });
 
         it("returns 'happened' keys correctly", function () {
             expect(schedule.schedule.filter(function (item) {
                 return item.happened;
-            }).length).to.equal(3);
+            }).length).to.equal(4);
         });
 
         it("returns 'took_medication' and associated keys correctly", function () {
             expect(schedule.schedule.filter(function (item) {
                 return item.took_medication;
-            }).length).to.equal(2);
+            }).length).to.equal(3);
             expect(schedule.schedule.filter(function (item) {
                 return typeof item.dose_id !== "undefined";
-            }).length).to.equal(3);
+            }).length).to.equal(4);
             expect(schedule.schedule.filter(function (item) {
                 return typeof item.delay !== "undefined";
             }).length).to.equal(2);
+
+            expect(schedule.schedule.filter(function (item) {
+                return item.happened && (typeof item.scheduled !== "undefined");
+            }).length).to.equal(3);
+            expect(schedule.schedule.filter(function (item) {
+                return (!item.happened) && (typeof item.scheduled !== "undefined");
+            }).length).to.equal(1);
         });
 
         it("generates notification times correctly", function () {
@@ -146,8 +161,10 @@ describe("Schedule", function () {
                 // check notification time is 15 mins before (the default notification
                 // offset we set above) the event time
                 expect(item).to.include.keys("date");
-                expect(item).to.include.keys("notification");
-                expect(moment(item.date).diff(item.notification, "minutes")).to.equal(15);
+                if (typeof item.scheduled !== "undefined") {
+                    expect(item).to.include.keys("notification");
+                    expect(moment(item.date).diff(item.notification, "minutes")).to.equal(15);
+                }
             });
         });
 
@@ -176,8 +193,10 @@ describe("Schedule", function () {
                     // check notification time is 10 mins before (the notification time we set
                     // for just this user above) the event time
                     expect(item).to.include.keys("date");
-                    expect(item).to.include.keys("notification");
-                    expect(moment(item.date).diff(item.notification, "minutes")).to.equal(10);
+                    if (typeof item.scheduled !== "undefined") {
+                        expect(item).to.include.keys("notification");
+                        expect(moment(item.date).diff(item.notification, "minutes")).to.equal(10);
+                    }
                 });
             });
         });
