@@ -56,9 +56,83 @@ Q.nbind(mongoose.connect, mongoose)("mongodb://localhost/orange-api").then(funct
 }).then(function () {
     // setup test medication we have access to
     return Q.nbind(patient.createMedication, patient)({
-        name: "test medication"
+        name: "Atmoxetine",
+        brand: "Strattera (18mg)",
+        schedule: {
+            as_needed: false,
+            regularly: true,
+            until: { type: "date", stop: "2015-07-15" },
+            frequency: {
+                n: 1,
+                unit: "day",
+                exclude: { exclude: [5, 6], repeat: 7 },
+                start: "2015-08-10"
+            },
+            times: [
+                { type: "exact", time: "09:00" },
+                { type: "event", event: "lunch", when: "after" },
+                { type: "event", event: "sleep", when: "before" }
+            ],
+            take_with_food: null,
+            take_with_medications: [],
+            take_without_medications: []
+        }
     }).then(function (m) {
         medication = m;
+    });
+}).then(function () {
+    return Q.nbind(patient.createMedication, patient)({
+        name: "Efavirenz/Emtricitabine/Tenofov",
+        brand: "Atripla",
+        schedule: {
+            as_needed: false,
+            regularly: true,
+            until: { type: "forever" },
+            frequency: { n: 1, unit: "day" },
+            times: [{ type: "event", event: "breakfast", when: "after" }],
+            take_with_food: true,
+            take_with_medications: [],
+            take_without_medications: []
+        }
+    });
+}).then(function () {
+    return Q.nbind(patient.createMedication, patient)({
+        name: "Tretinoin",
+        brand: "Renova",
+        schedule: {
+            as_needed: true,
+            regularly: false
+        }
+    });
+}).then(function () {
+    return Q.nbind(patient.createMedication, patient)({
+        name: "Tylenol",
+        brand: "Acetaminophen",
+        schedule: {
+            as_needed: true,
+            regularly: false
+        }
+    });
+}).then(function () {
+    // doesn't pass validation
+    //return Q.nbind(patient.createMedication, patient)({
+        //name: "",
+        //brand: "iAmANamelessMedication"
+    //});
+}).then(function () {
+    return Q.nbind(patient.createMedication, patient)({
+        name: "iAmABrandlessMedication",
+        brand: "",
+        schedule: {
+            as_needed: false,
+            regularly: true,
+            until: { type: "forever" },
+            frequency: { n: 3, unit: "month", exclude: { exclude: [3], repeat: 4 } },
+            times: [{ type: "unspecified" }],
+            take_with_food: null,
+            take_with_medications: [],
+            take_without_medications: []
+        }
     });
 }).then(function () {
     // create journal entry we have access to
@@ -68,11 +142,20 @@ Q.nbind(mongoose.connect, mongoose)("mongodb://localhost/orange-api").then(funct
         medication_ids: [medication._id]
     });
 }).then(function() {
-    // create dose event we have access to
+    // create dose event where med was taken
     return Q.nbind(patient.createDose, patient)({
         medication_id: medication._id,
-        date: (new Date()).toISOString(),
-        taken: true
+        date: (new Date("2015-07-10")).toISOString(),
+        taken: true,
+        scheduled: 0
+    });
+}).then(function() {
+    // create dose event where med was skipped
+    return Q.nbind(patient.createDose, patient)({
+        medication_id: medication._id,
+        date: (new Date("2015-07-09")).toISOString(),
+        taken: false,
+        scheduled: 0
     });
 }).then(function () {
     console.log("Test data generated");

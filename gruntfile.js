@@ -55,7 +55,7 @@ module.exports = function (grunt) {
                     reporter: "spec",
                     timeout: "10000"
                 },
-                src: ["test/common/db_helper.js", "test/common/*.js", "test/*.js", "test/*/common.js", "test/**/*.js"]
+                src: ["test/common/db_helper.js", "test/common/*.js", "test/*.js", "test/*/common.js", "test/patients/pdf*.js"]
             },
             unit: {
                 options: {
@@ -99,7 +99,7 @@ module.exports = function (grunt) {
             },
             pdf: {
                 // reloading broken on OSX because of EMFILE hence this hack
-                files: [ "lib/controllers/patients/report.js" ],
+                files: [ "lib/controllers/patients/report.js", "test_pdf.js", "gruntfile.js", "lib/models/schedule/schedule.js" ],
                 tasks: [ "generateTestPdf" ],
                 options: {
                     spawn: false
