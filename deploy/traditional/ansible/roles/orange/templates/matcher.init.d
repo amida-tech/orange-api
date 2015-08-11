@@ -27,7 +27,7 @@ case "$1" in
                 ;;
 
         restart)
-                        d_stop
+                        stop
                         start
                 ;;
 
