@@ -199,6 +199,11 @@ be taken simultaneously with. If there are no medications like this, they should
 Store details of a new medication the patient has started taking. The current user
 must have write access to the patient.
 
+If `origin="imported"` and `import_id` is set, then the API will look for an existing
+medication with the same `import_id`. If one exists then it will be updated with the specified
+details, rather than a new medication created. This can be used to merge medication details when
+running an import process in the app multiple times.
+
 + Parameters
     + patientid (integer, required)
 
@@ -226,6 +231,12 @@ must have write access to the patient.
         case would be to store either `"manual"` or `"imported"` in this field for each
         medication, although note that no backend API validation is done of this field so any
         string value can be set.
+    + import_id (integer, optional)
+
+        Optional integer representing a unique ID for an imported medication in the imported data
+        source (for example, the `id` field in the DRE/another FHIR API). If a medication with
+        the same `import_id` value already exists, and `origin="imported"`, then the existing
+        medication will be updated with the new info, rather than a new medication created.
     + schedule (dictionary, optional) - a schedule datum in the form described above
     + access_prime (string, optional)
 
@@ -321,6 +332,7 @@ must have write access to the patient.
     + `invalid_access_prime` (400) - the `access_prime` field, if passed, must be either `read`, `write`, `default` or `none`
     + `invalid_doctor_id` (400) - a doctor with that ID was not found
     + `invalid_pharmacy_id` (400) - a pharmacy with that ID was not found
+    + `invalid_import_id` (400) - the `import_id` value was invalid (must be `undefined`, `null` or an integer)
 
     + Body
 
@@ -625,6 +637,11 @@ user must have read access to the patient and write access to the medication.
 
         Place the data for this medication came from (suggested use case: store either `"manual"`
         or `"imported"` in this field, although the API does no validation of the string contents)
+    + import_id (integer, optional)
+
+        The original ID of the medication in the data source it was imported from. Updating `import_id`
+        here will not cause any merges, but when new medications are created at the `POST` endpoint they
+        will compare to the updated `import_id` value.
     + schedule (dictionary, optional)
 
         As in `POST`. A whole new schedule must be sent.
@@ -697,6 +714,7 @@ user must have read access to the patient and write access to the medication.
     + `invalid_access_prime` (400) - the `access_prime` field, if passed, must be either `read`, `write`, `default` or `none`
     + `invalid_doctor_id` (400) - a doctor with that ID was not found
     + `invalid_pharmacy_id` (400) - a pharmacy with that ID was not found
+    + `invalid_import_id` (400) - the `import_id` value was invalid (must be `undefined`, `null` or an integer)
     
     + Body
 

@@ -1,6 +1,7 @@
 "use strict";
 var chakram         = require("chakram"),
     util            = require("util"),
+    mongoose        = require("mongoose"),
     curry           = require("curry"),
     Q               = require("q"),
     auth            = require("../common/auth.js"),
@@ -72,7 +73,8 @@ describe("Medications", function () {
                 pharmacy_id: undefined,
                 access_anyone: undefined,
                 access_family: undefined,
-                access_prime: undefined
+                access_prime: undefined,
+                import_id: undefined
             })).to.be.a.medication.createSuccess;
         });
         it("allows null values for everything other than name and access_X", function () {
@@ -90,7 +92,8 @@ describe("Medications", function () {
                 origin: null,
                 schedule: null,
                 doctor_id: null,
-                pharmacy_id: null
+                pharmacy_id: null,
+                import_id: null
             })).to.be.a.medication.createSuccess;
         });
         // for these tests we know the fixture has a valid quantity so can assert the
@@ -141,6 +144,31 @@ describe("Medications", function () {
                 expect(response).to.be.a.medication.createSuccess;
                 expect(response.body.origin).to.equal("manual");
             });
+        });
+
+        it("accepts an undefined `import_id` and converts it to null", function () {
+            return createPatientMedication({ import_id: undefined }).then(function (response) {
+                expect(response).to.be.a.medication.createSuccess;
+                expect(response.body.import_id).to.equal(null);
+            });
+        });
+        it("accepts a null `import_id`", function () {
+            return createPatientMedication({ import_id: null }).then(function (response) {
+                expect(response).to.be.a.medication.createSuccess;
+                expect(response.body.import_id).to.equal(null);
+            });
+        });
+        it("rejects a blank string `import_id`", function () {
+            return expect(createPatientMedication({ import_id: "" })).to.be.an.api.error(400, "invalid_import_id");
+        });
+        it("accepts a numerical `import_id`", function () {
+            return createPatientMedication({ import_id: 5 }).then(function (response) {
+                expect(response).to.be.a.medication.createSuccess;
+                expect(response.body.import_id).to.equal(5);
+            });
+        });
+        it("rejects a string `import_id`", function () {
+            return expect(createPatientMedication({ import_id: "foo" })).to.be.an.api.error(400, "invalid_import_id");
         });
 
         // dose testing
@@ -328,6 +356,148 @@ describe("Medications", function () {
                     pharmacy_id: otherPatient.pharmacies[0]._id
                 }, patient._id, patient.user.accessToken);
                 return expect(endpoint).to.be.an.api.error(400, "invalid_pharmacy_id");
+            });
+        });
+
+        describe("testing medication merging", function () {
+            // setup test user and patient
+            var user, patient;
+            before(function () {
+                return auth.createTestUser().then(function (u) {
+                    user = u;
+                }).then(function () {
+                    return patients.createMyPatient({}, user);
+                }).then(function (p) {
+                    patient = p;
+                });
+            });
+
+            // setup an existing medication: one imported and one manually created
+            var manualMedId, importedMedId;
+            before(function () {
+                return create({
+                    name: "Loratadine",
+                    brand: "Claritin-D",
+                    origin: "imported",
+                    import_id: 3
+                }, patient._id, patient.user.accessToken).then(function (response) {
+                    importedMedId = response.body.id;
+                });
+            });
+            before(function () {
+                return create({
+                    name: "Fexofenadine",
+                    origin: "manual"
+                }, patient._id, patient.user.accessToken).then(function (response) {
+                    manualMedId = response.body.id;
+                });
+            });
+            // count number of medications present to check we're modifying not adding when
+            // merging
+            var countMeds = function () {
+                var Patient = mongoose.model("Patient");
+                return Q.nbind(Patient.findById, Patient)(patient._id).then(function (p) {
+                    return p.medications.length;
+                });
+            };
+            var medCount;
+            before(function () {
+                return countMeds().then(function (count) {
+                    medCount = count;
+                });
+            });
+
+            // create a new manual medication and check we get a new med created
+            it("doesn't merge for manual meds", function () {
+                // same name as previous manual med
+                return create({
+                    name: "Fexofenadine",
+                    origin: "manual"
+                }, patient._id, patient.user.accessToken).then(function (response) {
+                    expect(response).to.be.a.medication.createSuccess;
+                    expect(response.body.id).to.not.equal(manualMedId);
+                    expect(response.body.id).to.not.equal(importedMedId);
+                    return countMeds().then(function (count) {
+                        expect(count).to.equal(medCount + 1);
+                        medCount = count;
+                    });
+                });
+            });
+
+            // create a new imported medication with no import_id and check we get a new med created
+            it("doesn't merge for imported meds with no import_id", function () {
+                // same details as previous imported med
+                return create({
+                    name: "Loratadine",
+                    brand: "Claritin-D",
+                    origin: "imported"
+                }, patient._id, patient.user.accessToken).then(function (response) {
+                    expect(response).to.be.a.medication.createSuccess;
+                    expect(response.body.id).to.not.equal(manualMedId);
+                    expect(response.body.id).to.not.equal(importedMedId);
+                    return countMeds().then(function (count) {
+                        expect(count).to.equal(medCount + 1);
+                        medCount = count;
+                    });
+                });
+            });
+
+            // create a new imported medication with no import_id again and check it isn't merged
+            it("doesn't merge for multiple imported meds with no import_id", function () {
+                // same details as previous imported med
+                return create({
+                    name: "Loratadine",
+                    brand: "Claritin-D",
+                    origin: "imported"
+                }, patient._id, patient.user.accessToken).then(function (response) {
+                    expect(response).to.be.a.medication.createSuccess;
+                    return countMeds().then(function (count) {
+                        expect(count).to.equal(medCount + 1);
+                        medCount = count;
+                    });
+                });
+            });
+
+            // create a new imported medication with a different import_id and check we get a new
+            // med created
+            it("doesn't merge for imported meds with a different import_id", function () {
+                // same details as previous imported med
+                return create({
+                    name: "Loratadine",
+                    brand: "Claritin-D",
+                    origin: "imported",
+                    import_id: 7
+                }, patient._id, patient.user.accessToken).then(function (response) {
+                    expect(response).to.be.a.medication.createSuccess;
+                    expect(response.body.id).to.not.equal(manualMedId);
+                    expect(response.body.id).to.not.equal(importedMedId);
+                    return countMeds().then(function (count) {
+                        expect(count).to.equal(medCount + 1);
+                        medCount = count;
+                    });
+                });
+            });
+
+            // create a new imported medication with the same import_id and check it *is* merged
+            it("merges for imported meds with the same import_id", function () {
+                return create({
+                    name: "ANewName",
+                    origin: "imported",
+                    import_id: 3
+                }, patient._id, patient.user.accessToken).then(function (response) {
+                    expect(response).to.be.a.medication.createSuccess;
+
+                    // check new details have been updated
+                    expect(response.body.name).to.equal("ANewName");
+                    // check old details have been preserved
+                    expect(response.body.brand).to.equal("Claritin-D");
+                    expect(response.body.id).to.equal(importedMedId);
+
+                    // check the med has been updated and no new one created
+                    return countMeds().then(function (count) {
+                        expect(count).to.equal(medCount);
+                    });
+                });
             });
         });
     });
