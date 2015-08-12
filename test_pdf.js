@@ -15,7 +15,7 @@ var user, patient, accessToken, medication;
 // connect to DB
 Q.nbind(mongoose.connect, mongoose)("mongodb://localhost/orange-api").then(function () {
     // hackish unique email
-    var email = util.format("%s@test.com", crypto.randomBytes(8).toString("hex"));
+    var email = util.format("%s@test.com", crypto.randomBytes(4).toString("hex"));
     var User = mongoose.model("User");
     return Q.nbind(User.create, User)({
         email: email,
@@ -109,8 +109,14 @@ Q.nbind(mongoose.connect, mongoose)("mongodb://localhost/orange-api").then(funct
         name: "Tylenol",
         brand: "Acetaminophen",
         schedule: {
-            as_needed: true,
-            regularly: false
+            as_needed: false,
+            regularly: true,
+            until: { type: "forever" },
+            frequency: { n: 3, unit: "month", exclude: { exclude: [3], repeat: 4 } },
+            times: [{ type: "unspecified" }],
+            take_with_food: null,
+            take_with_medications: [],
+            take_without_medications: []
         }
     });
 }).then(function () {
@@ -120,6 +126,7 @@ Q.nbind(mongoose.connect, mongoose)("mongodb://localhost/orange-api").then(funct
         //brand: "iAmANamelessMedication"
     //});
 }).then(function () {
+    /*
     return Q.nbind(patient.createMedication, patient)({
         name: "iAmABrandlessMedication",
         brand: "",
@@ -134,6 +141,7 @@ Q.nbind(mongoose.connect, mongoose)("mongodb://localhost/orange-api").then(funct
             take_without_medications: []
         }
     });
+    */
 }).then(function () {
     // create journal entry we have access to
     return Q.nbind(patient.createJournalEntry, patient)({
