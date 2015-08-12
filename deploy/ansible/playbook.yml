@@ -1,8 +1,0 @@
----
-- hosts: all
-  user: centos
-  sudo: yes
-  roles:
-    # - common
-    # - docker
-    - orange

@@ -1,6 +1,0 @@
----
-- hosts: all
-  user: centos
-  sudo: yes
-  tasks:
-    - include: roles/orange/tasks/update.yml

@@ -1,6 +1,0 @@
----
-#file: roles/orange/tasks/update.yml
-- include: stop.yml
-- include: deploy.yml
-- include: start.yml
-- include: docs.yml
