@@ -2294,6 +2294,10 @@ should be arrays of integers that are the IDs of medications with which this med
 be taken simultaneously with. If there are no medications like this, they should both be <code>[]</code>.</p>
 <div id="medications-medications-collection" class="resource"><h3>Medications Collection<a href="#medications-medications-collection" class="permalink"><i class="fa fa-link"></i></a></h3><div id="medications-medications-collection-post" class="action post"><h4><div class="name">Create a new Medication</div><a href="#medications-medications-collection-post" class="method post">POST</a><code class="uri">/patients/{patientid}/medications</code></h4><p>Store details of a new medication the patient has started taking. The current user
 must have write access to the patient.</p>
+<p>If <code>origin=&quot;imported&quot;</code> and <code>import_id</code> is set, then the API will look for an existing
+medication with the same <code>import_id</code>. If one exists then it will be updated with the specified
+details, rather than a new medication created. This can be used to merge medication details when
+running an import process in the app multiple times.</p>
 <div class="title"><strong>Parameters</strong><div class="collapse-button show"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><dl class="inner"><dt>patientid</dt><dd><code>integer</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>unique ID of the patient (<em>url</em>)</p>
 </dd><dt>name</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>human-formatted name of the medication</p>
 </dd><dt>rx_norm</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>rxNorm ID code for the medication</p>
@@ -2311,6 +2315,10 @@ and <code>UNIT</code> is a string (e.g., <code>&quot;mg&quot;</code>)</p>
 case would be to store either <code>&quot;manual&quot;</code> or <code>&quot;imported&quot;</code> in this field for each
 medication, although note that no backend API validation is done of this field so any
 string value can be set.</p>
+</dd><dt>import_id</dt><dd><code>integer</code>&nbsp;<span>(optional)</span>&nbsp;<p>Optional integer representing a unique ID for an imported medication in the imported data
+source (for example, the <code>id</code> field in the DRE/another FHIR API). If a medication with
+the same <code>import_id</code> value already exists, and <code>origin=&quot;imported&quot;</code>, then the existing
+medication will be updated with the new info, rather than a new medication created.</p>
 </dd><dt>schedule</dt><dd><code>dictionary</code>&nbsp;<span>(optional)</span>&nbsp;<p>a schedule datum in the form described above</p>
 </dd><dt>access_prime</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>The access permissions users in the <code>prime</code> group should have to this medication,
 overriding the patient-wide permissions. Must be either <code>read</code>, <code>write</code>, <code>none</code>
@@ -2413,6 +2421,9 @@ must already exist in <code>/patients/:patientid/doctors</code></p>
 </li>
 <li>
 <p><code>invalid_pharmacy_id</code> (400) - a pharmacy with that ID was not found</p>
+</li>
+<li>
+<p><code>invalid_import_id</code> (400) - the <code>import_id</code> value was invalid (must be <code>undefined</code>, <code>null</code> or an integer)</p>
 </li>
 </ul>
 </div><h5>Body</h5><pre><code>{
@@ -2683,6 +2694,9 @@ user must have read access to the patient and write access to the medication.</p
 </dd><dt>brand</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>brand name of medication</p>
 </dd><dt>origin</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>Place the data for this medication came from (suggested use case: store either <code>&quot;manual&quot;</code>
 or <code>&quot;imported&quot;</code> in this field, although the API does no validation of the string contents)</p>
+</dd><dt>import_id</dt><dd><code>integer</code>&nbsp;<span>(optional)</span>&nbsp;<p>The original ID of the medication in the data source it was imported from. Updating <code>import_id</code>
+here will not cause any merges, but when new medications are created at the <code>POST</code> endpoint they
+will compare to the updated <code>import_id</code> value.</p>
 </dd><dt>schedule</dt><dd><code>dictionary</code>&nbsp;<span>(optional)</span>&nbsp;<p>As in <code>POST</code>. A whole new schedule must be sent.</p>
 </dd><dt>access_prime</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>The access permissions users in the <code>prime</code> group should have to this medication,
 overriding the patient-wide permissions. Must be either <code>read</code>, <code>write</code>, <code>none</code>
@@ -2765,6 +2779,9 @@ or <code>default</code>. Defaults to <code>default</code>.</p>
 </li>
 <li>
 <p><code>invalid_pharmacy_id</code> (400) - a pharmacy with that ID was not found</p>
+</li>
+<li>
+<p><code>invalid_import_id</code> (400) - the <code>import_id</code> value was invalid (must be <code>undefined</code>, <code>null</code> or an integer)</p>
 </li>
 </ul>
 </div><h5>Body</h5><pre><code>{
