@@ -171,7 +171,7 @@ Q.nbind(mongoose.connect, mongoose)("mongodb://localhost/orange-api").then(funct
     // get PDF dump and write to a temp file
     var deferred = Q.defer();
     request({
-        url: util.format("http://localhost:3000/v1/patients/%d.pdf", patient._id),
+        url: util.format("http://localhost:3000/v1/patients/%d.pdf?start_date=2015-07-01&end_date=2015-07-31", patient._id),
         headers: {
             "X-Client-Secret": config.secret,
             "Authorization": util.format("Bearer %s", accessToken)

@@ -1,6 +1,7 @@
 "use strict";
 var chakram         = require("chakram"),
     util            = require("util"),
+    querystring     = require("querystring"),
     curry           = require("curry"),
     Q               = require("q"),
     auth            = require("../common/auth.js"),
@@ -11,20 +12,30 @@ var expect = chakram.expect;
 describe("Patients", function () {
     describe("View Patient PDF Data Dump (GET /patients/:patientid.pdf)", function () {
         // basic endpoint
-        var dump = function (patientId, accessToken) {
-            var url = util.format("http://localhost:3000/v1/patients/%d.pdf", patientId);
+        var dump = curry(function (params, patientId, accessToken) {
+            var query = querystring.stringify(params);
+            var url = util.format("http://localhost:3000/v1/patients/%d.pdf?%s", patientId, query);
             return chakram.get(url, auth.genAuthHeaders(accessToken));
-        };
-        var dumpPatient = function (patient) {
-            return dump(patient._id, patient.user.accessToken);
-        };
+        });
+        var dumpPatient = curry(function (params, patient) {
+            return dump(params, patient._id, patient.user.accessToken);
+        });
 
         // check an authenticated user is required
-        common.itRequiresAuthentication(dump);
+        common.itRequiresAuthentication(dump({
+            start_date: "2015-07-01",
+            end_date: "2015-07-31"
+        }));
         // check it requires a valid patient ID corresponding to a patient we have read
         // access to
-        common.itRequiresValidPatientId(dump);
-        common.itRequiresNonJsonReadAuthorization(dumpPatient);
+        common.itRequiresValidPatientId(dump({
+            start_date: "2015-07-01",
+            end_date: "2015-07-31"
+        }));
+        common.itRequiresNonJsonReadAuthorization(dumpPatient({
+            start_date: "2015-07-01",
+            end_date: "2015-07-31"
+        }));
 
         describe("with test data set up", function () {
             // setup test user
@@ -121,7 +132,10 @@ describe("Patients", function () {
             // get PDF dump
             var response;
             before(function () {
-                return dumpPatient(patient).then(function (r) {
+                return dumpPatient({
+                    start_date: "2015-07-01",
+                    end_date: "2015-07-31"
+                }, patient).then(function (r) {
                     response = r;
                 });
             });
@@ -137,6 +151,61 @@ describe("Patients", function () {
             it("returns some data", function () {
                 // check response body size to make sure it's big enough to feasibly be a PDF
                 expect(response.body.length).to.be.at.least(1024);
+            });
+
+            it("requires a start date", function () {
+                return expect(dumpPatient({
+                    start_date: undefined,
+                    end_date: "2015-07-31"
+                }, patient)).to.be.an.api.error(400, "invalid_start");
+            });
+            it("requires a non-null start date", function () {
+                return expect(dumpPatient({
+                    start_date: null,
+                    end_date: "2015-07-31"
+                }, patient)).to.be.an.api.error(400, "invalid_start");
+            });
+            it("requires a non-blank start date", function () {
+                return expect(dumpPatient({
+                    start_date: "",
+                    end_date: "2015-07-31"
+                }, patient)).to.be.an.api.error(400, "invalid_start");
+            });
+            it("requires a valid start date", function () {
+                return expect(dumpPatient({
+                    start_date: "foo",
+                    end_date: "2015-07-31"
+                }, patient)).to.be.an.api.error(400, "invalid_start");
+            });
+            it("requires a end date", function () {
+                return expect(dumpPatient({
+                    end_date: undefined,
+                    start_date: "2015-07-31"
+                }, patient)).to.be.an.api.error(400, "invalid_end");
+            });
+            it("requires a non-null end date", function () {
+                return expect(dumpPatient({
+                    end_date: null,
+                    start_date: "2015-07-31"
+                }, patient)).to.be.an.api.error(400, "invalid_end");
+            });
+            it("requires a non-blank end date", function () {
+                return expect(dumpPatient({
+                    end_date: "",
+                    start_date: "2015-07-31"
+                }, patient)).to.be.an.api.error(400, "invalid_end");
+            });
+            it("requires a valid end date", function () {
+                return expect(dumpPatient({
+                    end_date: "foo",
+                    start_date: "2015-07-31"
+                }, patient)).to.be.an.api.error(400, "invalid_end");
+            });
+            it("requires a start date before the end date", function () {
+                return expect(dumpPatient({
+                    start_date: "2015-07-31",
+                    end_date: "2015-07-01"
+                }, patient)).to.be.an.api.error(400, "invalid_end");
             });
         });
     });

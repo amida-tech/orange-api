@@ -410,6 +410,42 @@ called with `access="none"` rather than this method.
                 success: true
             }
 
+## Patient Report [/patients/{patientid}.pdf]
+### Generate Report [GET]
+View a PDF report of the patient's medications and dosage logs. Only those journal
+entries, medications and dose events that the user has read access to (remember medications can
+override patient-wide access permissions) are shown.
+
+Report is returned as a PDF file with `Content-Type: "application/pdf"`.
+
++ Parameters
+    + patientid (integer, required)
+
+        unique ID of the patient (**not** user-specific) (*url*)
+
+    + start_date (string, required)
+
+        `YYYY-MM-DD` (in patient's local timezone) of the date to start the report from
+    + end_date (string, required)
+
+        `YYYY-MM-DD` (in patient's local timezone) of the date to start the report from
+
++ Request
+    + Headers
+
+            Authorization: Bearer ACCESS_TOKEN
+
++ Response 200
+    Errors
+    + `access_token_required` (401) - no access token specified in
+    `Authorization` header
+    + `invalid_access_token` (401) - the access token specified is invalid
+    + `invalid_patient_id` (404) - a patient with the specified ID was not found
+    + `unauthorized` (403) - the current user does not have write access to this patient
+    + `invalid_start` (400) - invalid or nonpresent `YYYY-MM-DD` value for `start_date`
+    + `invalid_end` (400) - invalid or nonpresent `YYYY-MM-DD` value for `end_date`
+
+
 ## Patient Data Dump [/patients/{patientid}.json]
 ### View JSON Data Dump [GET]
 View a data dump of all data associated with a patient (specifically the patient metadata,
