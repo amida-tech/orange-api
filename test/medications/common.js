@@ -234,7 +234,7 @@ var setPermission = function (group, access) {
         return deferred.promise;
     };
 };
-var createMed = function () {
+var createMed = function (creator) {
     return function (patient) {
         return Q.nbind(patient.createMedication, patient)({
             name: "testmed",
@@ -247,7 +247,8 @@ var createMed = function () {
                 take_with_food: null,
                 take_with_medications: [],
                 take_without_medications: []
-            }
+            },
+            creator: creator
         });
     };
 };
@@ -312,6 +313,14 @@ var none = function () {
     return [p, m];
 };
 
+var owner = function () {
+    var p = patientForOther().then(share("write", "anyone"));
+    var m = p.then(function (patient) {
+        return createMed(patient.user.email)(patient);
+    }).then(setPermission("anyone", "none")).then(save(p));
+    return [p, m];
+};
+
 var read = function () {
     var p = patientForOther().then(share("write", "anyone"));
     var m = p.then(createMed()).then(setPermission("anyone", "read")).then(save(p));
@@ -335,6 +344,7 @@ var requiresAuthentication = module.exports.itRequiresAuthentication = function 
             gen("defDefRead", "medications with 'default' when the patient has 'read' permissions", defDefRead);
             gen("defDefWrite", "medications with 'default' when the patient has 'write' permissions", defDefWrite);
             gen("none", "medications with 'none'", none);
+            gen("owner", "medications with 'none' but me as set the owner", owner);
             gen("read", "medications with 'read'", read);
             gen("write", "medications with 'write'", write);
         });
@@ -348,6 +358,7 @@ module.exports.itRequiresReadAuthorization = requiresAuthentication({
     defDefRead: true,
     defDefWrite: true,
     none: false,
+    owner: true,
     read: true,
     write: true
 }, testAuthorizationSuccessful, testAuthorizationFailed);
@@ -359,6 +370,7 @@ module.exports.itRequiresWriteAuthorization = requiresAuthentication({
     defDefRead: false,
     defDefWrite: true,
     none: false,
+    owner: true,
     read: false,
     write: true
 }, testAuthorizationSuccessful, testAuthorizationFailed);
