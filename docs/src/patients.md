@@ -13,10 +13,14 @@ family extremely close to the patient (e.g., parents) who should have access to 
 (e.g., doctors).
 
 At the patient level, a user's access to data is determined by which one of the above three groups
-they're a member of. A patient can set global *read* (`read`) or *read-write* (`write`) permissions
-for each of the three share categories, as well as an additional overriding *read*/*write* permission
-for each user the patient is shared with (so each share has either `read`, `write` or `default`
-permissions).
+they're a member of.  API requests can be made to set global *read* (`read`) or *read-write* (`write`)
+permissions for each of the three share groups for each patient, as well as an overriding *read*/*write*
+permission for each user the patient is shared with (so each share has either `read`, `write` or `default`
+permissions, where `default` means to just use the patient-wide permissions for the relevant share group).
+However, note that these permissions are all set to sensible defaults: specifically all three share groups
+have `write` access by default, and all users created have `default` share permissions. Note that this does
+not grant every user a patient is shared with full read-write access to their data, because medications
+have a slightly more complex permissions structure (described below).
 
 In a patient response object, `access_anyone`, `access_family` and `access_prime` represent the permissions
 of the *anyone*/*family*/*family prime* share user groups respectively. The `access` field denotes
@@ -31,9 +35,28 @@ can explicitly set the access level of *family prime*, *family* and *anyone*. Th
 to that medication, any journal entries tagged with that medication, any schedule events for that
 medication, and any dose events for that medication.
 
-There are three access levels that can be set for each group on this per-medication basis: `read`,
-`write` and `none`. `read` and `write` behave as they do in a patient-wide context, and `none` means
-that that user group has no access at all to the medication or it's resources.
+There are four access levels that can be set for each group on this per-medication basis: `read`,
+`write`, `none` and `default`. `read` and `write` behave as they do in a patient-wide context, and `none` means
+that that user group has no access at all to the medication or it's resources. `default` is slightly more
+complicated: rather than just delegating straight to the patient-level permissions, it has a slightly
+different meaning depending on the share group and medication details:
+
+ * For an `anyone` share, `default` gives the user read-only access
+
+ * For a `family` share on an as-needed medication (including medications that are both regular and as-needed),
+   `default` gives the user write access.
+
+ * For a `family` share on a medication that is not as-needed (so is regular-only), `default` gives the user
+   read-only access.
+
+ * For a `prime` share, `default` delegates to the patient-level permissions: it first looks at any explicit
+   permissions specified in the share itself, and if that's set to `default` then it looks as `access_prime` in
+   the patient data.
+
+There is one exception to this rule. The *user* who creates a medication is recorded as the `creator` of that
+medication, and they always have write access to that medication (even if, for example, the patient is shared
+with the user through the `anyone` group and the medication has `access_anyone="default"` (which would usually give
+them read-only access), that user will still have write access).
 
 Each patient returned by the API has an `avatar` field containing the path of that patient's
 avatar (image) endpoint. As documented below, `GET`ting this path returns the user's avatar
@@ -64,15 +87,15 @@ the child of the patient.
     + phone (string, optional)
 
         Optional phone number of the patient, formatted as a string
-    + access_anyone (*string*)
+    + access_anyone (string)
 
         The default access permissions that users this patient is shared with under the `anyone`
-        group should have. Must be either `read` or `write`.  Defaults to `read`.
-    + access_family (*string*)
+        group should have. Must be either `read` or `write`.  Defaults to `write`.
+    + access_family (string)
 
         The default access permissions that users this patient is shared with under the `family`
-        group should have. Must be either `read` or `write`.  Defaults to `read`.
-    + access_prime (*string*)
+        group should have. Must be either `read` or `write`.  Defaults to `write`.
+    + access_prime (string)
 
         The default access permissions that users this patient is shared with under the `prime` group
         should have. Must be either `read` or `write`.  Defaults to `write`.
@@ -160,7 +183,7 @@ View a list of all patients the current user has access to (either read or write
     + last_name (string, optional)
 
         Filter results by last name of patient. Performs fuzzy matching.
-    + last_name (string, optional)
+    + group (string, optional)
 
         Filter results by group of patient. Matches exactly.
     + creator (string, optional)
@@ -297,13 +320,13 @@ Setting `access` to `none` will stop sharing the patient with the current user.
         Otherwise, the group can be changed between `prime`, `family` and `anyone`.
     + access_anyone (string, optional)
 
-        Change the access level of the `anyone` user share group. Must be either `read` or `write.
+        Change the access level of the `anyone` user share group. Must be either `read` or `write`.
     + access_family (string, optional)
 
-        Change the access level of the `family` user share group. Must be either `read` or `write.
+        Change the access level of the `family` user share group. Must be either `read` or `write`.
     + access_prime (string, optional)
 
-        Change the access level of the `prime` user share group. Must be either `read` or `write.
+        Change the access level of the `prime` user share group. Must be either `read` or `write`.
 
 + Request
     + Headers
@@ -421,7 +444,7 @@ Report is returned as a PDF file with `Content-Type: "application/pdf"`.
 + Parameters
     + patientid (integer, required)
 
-        unique ID of the patient (**not** user-specific) (*url*)
+        unique ID of the patient (**not** user-specific)
 
     + start_date (string, required)
 
@@ -445,6 +468,9 @@ Report is returned as a PDF file with `Content-Type: "application/pdf"`.
     + `invalid_start` (400) - invalid or nonpresent `YYYY-MM-DD` value for `start_date`
     + `invalid_end` (400) - invalid or nonpresent `YYYY-MM-DD` value for `end_date`
 
+    + Body
+
+            raw PDF data
 
 ## Patient Data Dump [/patients/{patientid}.json]
 ### View JSON Data Dump [GET]
@@ -456,7 +482,7 @@ override patient-wide access permissions) are shown.
 + Parameters
     + patientid (integer, required)
 
-        unique ID of the patient (**not** user-specific) (*url*)
+        unique ID of the patient (**not** user-specific)
 
 + Request
     + Headers
@@ -842,7 +868,7 @@ Neither access nor group can be modified for the share for a user who owns a pat
         `read`, `write` or `default` to signify the new level of access the specified user should have to the patient
     + group (string, required)
 
-        `anyone`, `family` or `prime to signify the new sharing group the specified user should be a member of
+        `anyone`, `family` or `prime` to signify the new sharing group the specified user should be a member of
     
 + Request
     + Headers
