@@ -214,6 +214,11 @@ Finally the schedule must include `take_with_medications` and `take_without_medi
 should be arrays of integers that are the IDs of medications with which this medication must (or must not)
 be taken simultaneously with. If there are no medications like this, they should both be `[]`.
 
+Note that each medication object is also returned from the API with `schedule_summary` string field,
+containing human-readable text representing the schedule the medication should be taken on (e.g,.
+`"Daily until 7/30/15"`). `schedule_summary` will not denote whether the medication is as-needed unless it is
+as-needed only, in which case it will say `"As needed only"`.
+
 ## Medications Collection [/patients/{patientid}/medications]
 ### Create a new Medication [POST]
 Store details of a new medication the patient has started taking. The current user
@@ -396,6 +401,7 @@ running an import process in the app multiple times.
                     take_with_medications: [],
                     take_without_medications: []
                 },
+                schedule_summary: "Daily",
                 access_anyone: "default",
                 access_family: "default",
                 access_prime: "default",
@@ -495,6 +501,7 @@ medications for which the current user has read access will be returned.
                             take_with_medications: [],
                             take_without_medications: []
                         },
+                        schedule_summary: "Daily",
                         access_anyone: "default",
                         access_family: "default",
                         access_prime: "default",
@@ -576,6 +583,7 @@ The current user must have read access to **both** the patient and the medicatio
                     take_with_medications: [],
                     take_without_medications: []
                 },
+                schedule_summary: "Daily",
                 access_anyone: "default",
                 access_family: "default",
                 access_prime: "default",
@@ -837,6 +845,7 @@ write access to the medication.
                     take_with_medications: [],
                     take_without_medications: []
                 },
+                schedule_summary: "Daily",
                 access_anyone: "write",
                 access_family: "write",
                 access_prime: "write",
