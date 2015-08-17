@@ -314,7 +314,7 @@ var write = function () {
 };
 
 var defFamilyAsNeeded = function () {
-    var p = patientForOther().then(setPermission("family", "read")).then(share("default", "family"));
+    var p = patientForOther().then(setPermission("family", "write")).then(share("default", "family"));
     var m = p.then(createMed({
         as_needed: true
     })).then(setPermission("family", "default")).then(save(p));

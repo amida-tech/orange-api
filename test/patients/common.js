@@ -213,10 +213,10 @@ var requiresAuthentication = module.exports.itRequiresAuthentication = function 
             gen("me", "my patients", patientForMe);
             gen("unassociated", "patients not shared with me", patientForOther);
 
-            var p = function () { return patientForOther().then(share("read", "anyone")); };
+            var p = function () { return patientForOther().then(share("read", "prime")); };
             gen("explicitRead", "patients explicitly shared read-only with me", p);
 
-            p = function () { return patientForOther().then(share("write", "anyone")); };
+            p = function () { return patientForOther().then(share("write", "prime")); };
             gen("explicitWrite", "patients explicitly shared read-write with me", p);
 
             p = function () {
