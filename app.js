@@ -87,6 +87,7 @@ app.use(function (req, res, next) {
 // Models that are purely nested resources under patient are required
 // in patient.js, so don't require them again here
 require("./lib/models/counter.js"); // Require first
+require("./lib/models/rxnorm.js");
 require("./lib/models/user/user.js");
 // Patient requires a getter function for a gridfs client (set as an express
 // setting in run.js but may not be immediately accessible hence the getter function)
