@@ -2375,6 +2375,10 @@ the medication <strong>must not</strong> be taken with food, not that it just do
 <p>Finally the schedule must include <code>take_with_medications</code> and <code>take_without_medications</code> keys. These
 should be arrays of integers that are the IDs of medications with which this medication must (or must not)
 be taken simultaneously with. If there are no medications like this, they should both be <code>[]</code>.</p>
+<p>Note that each medication object is also returned from the API with <code>schedule_summary</code> string field,
+containing human-readable text representing the schedule the medication should be taken on (e.g,.
+<code>&quot;Daily until 7/30/15&quot;</code>). <code>schedule_summary</code> will not denote whether the medication is as-needed unless it is
+as-needed only, in which case it will say <code>&quot;As needed only&quot;</code>.</p>
 <div id="medications-medications-collection" class="resource"><h3>Medications Collection<a href="#medications-medications-collection" class="permalink"><i class="fa fa-link"></i></a></h3><div id="medications-medications-collection-post" class="action post"><h4><div class="name">Create a new Medication</div><a href="#medications-medications-collection-post" class="method post">POST</a><code class="uri">/patients/{patientid}/medications</code></h4><p>Store details of a new medication the patient has started taking. The current user
 must have write access to the patient.</p>
 <p>If <code>origin=&quot;imported&quot;</code> and <code>import_id</code> is set, then the API will look for an existing
@@ -2549,6 +2553,7 @@ must already exist in <code>/patients/:patientid/doctors</code></p>
         take_with_medications: [],
         take_without_medications: []
     },
+    schedule_summary: <span class="hljs-string">"Daily"</span>,
     access_anyone: <span class="hljs-string">"default"</span>,
     access_family: <span class="hljs-string">"default"</span>,
     access_prime: <span class="hljs-string">"default"</span>,
@@ -2638,6 +2643,7 @@ for pagination. Defaults to 0.</p>
                 take_with_medications: [],
                 take_without_medications: []
             },
+            schedule_summary: <span class="hljs-string">"Daily"</span>,
             access_anyone: <span class="hljs-string">"default"</span>,
             access_family: <span class="hljs-string">"default"</span>,
             access_prime: <span class="hljs-string">"default"</span>,
@@ -2712,6 +2718,7 @@ The current user must have read access to <strong>both</strong> the patient and 
         take_with_medications: [],
         take_without_medications: []
     },
+    schedule_summary: <span class="hljs-string">"Daily"</span>,
     access_anyone: <span class="hljs-string">"default"</span>,
     access_family: <span class="hljs-string">"default"</span>,
     access_prime: <span class="hljs-string">"default"</span>,
@@ -2959,6 +2966,7 @@ write access to the medication.</p>
         take_with_medications: [],
         take_without_medications: []
     },
+    schedule_summary: <span class="hljs-string">"Daily"</span>,
     access_anyone: <span class="hljs-string">"write"</span>,
     access_family: <span class="hljs-string">"write"</span>,
     access_prime: <span class="hljs-string">"write"</span>,
