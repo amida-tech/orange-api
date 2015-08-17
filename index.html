@@ -432,10 +432,14 @@ family extremely close to the patient (e.g., parents) who should have access to 
 <em>family</em> is intended for wider family of the patient, and <em>anyone</em> is intended for everyone else
 (e.g., doctors).</p>
 <p>At the patient level, a user’s access to data is determined by which one of the above three groups
-they’re a member of. A patient can set global <em>read</em> (<code>read</code>) or <em>read-write</em> (<code>write</code>) permissions
-for each of the three share categories, as well as an additional overriding <em>read</em>/<em>write</em> permission
-for each user the patient is shared with (so each share has either <code>read</code>, <code>write</code> or <code>default</code>
-permissions).</p>
+they’re a member of.  API requests can be made to set global <em>read</em> (<code>read</code>) or <em>read-write</em> (<code>write</code>)
+permissions for each of the three share groups for each patient, as well as an overriding <em>read</em>/<em>write</em>
+permission for each user the patient is shared with (so each share has either <code>read</code>, <code>write</code> or <code>default</code>
+permissions, where <code>default</code> means to just use the patient-wide permissions for the relevant share group).
+However, note that these permissions are all set to sensible defaults: specifically all three share groups
+have <code>write</code> access by default, and all users created have <code>default</code> share permissions. Note that this does
+not grant every user a patient is shared with full read-write access to their data, because medications
+have a slightly more complex permissions structure (described below).</p>
 <p>In a patient response object, <code>access_anyone</code>, <code>access_family</code> and <code>access_prime</code> represent the permissions
 of the <em>anyone</em>/<em>family</em>/<em>family prime</em> share user groups respectively. The <code>access</code> field denotes
 the current user’s access to the patient, and will always be either <code>read</code> or <code>write</code> (if it is set
@@ -447,9 +451,33 @@ medication has its own additional set of access controls. For each of their medi
 can explicitly set the access level of <em>family prime</em>, <em>family</em> and <em>anyone</em>. This then controls access
 to that medication, any journal entries tagged with that medication, any schedule events for that
 medication, and any dose events for that medication.</p>
-<p>There are three access levels that can be set for each group on this per-medication basis: <code>read</code>,
-<code>write</code> and <code>none</code>. <code>read</code> and <code>write</code> behave as they do in a patient-wide context, and <code>none</code> means
-that that user group has no access at all to the medication or it’s resources.</p>
+<p>There are four access levels that can be set for each group on this per-medication basis: <code>read</code>,
+<code>write</code>, <code>none</code> and <code>default</code>. <code>read</code> and <code>write</code> behave as they do in a patient-wide context, and <code>none</code> means
+that that user group has no access at all to the medication or it’s resources. <code>default</code> is slightly more
+complicated: rather than just delegating straight to the patient-level permissions, it has a slightly
+different meaning depending on the share group and medication details:</p>
+<ul>
+<li>
+<p>For an <code>anyone</code> share, <code>default</code> gives the user read-only access</p>
+</li>
+<li>
+<p>For a <code>family</code> share on an as-needed medication (including medications that are both regular and as-needed),
+<code>default</code> gives the user write access.</p>
+</li>
+<li>
+<p>For a <code>family</code> share on a medication that is not as-needed (so is regular-only), <code>default</code> gives the user
+read-only access.</p>
+</li>
+<li>
+<p>For a <code>prime</code> share, <code>default</code> delegates to the patient-level permissions: it first looks at any explicit
+permissions specified in the share itself, and if that’s set to <code>default</code> then it looks as <code>access_prime</code> in
+the patient data.</p>
+</li>
+</ul>
+<p>There is one exception to this rule. The <em>user</em> who creates a medication is recorded as the <code>creator</code> of that
+medication, and they always have write access to that medication (even if, for example, the patient is shared
+with the user through the <code>anyone</code> group and the medication has <code>access_anyone=&quot;default&quot;</code> (which would usually give
+them read-only access), that user will still have write access).</p>
 <p>Each patient returned by the API has an <code>avatar</code> field containing the path of that patient’s
 avatar (image) endpoint. As documented below, <code>GET</code>ting this path returns the user’s avatar
 (initially a default image) and <code>POST</code>ing to this path with raw image data sets the avatar
@@ -467,11 +495,11 @@ the child of the patient.</p>
 </dd><dt>birthdate</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>Optional date of birth of the patient, formatted as an ISO 8601 YYYY-MM-DD</p>
 </dd><dt>sex</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>String representing sex of the user. Must be “male”, “female”, “other” or “unspecified”.</p>
 </dd><dt>phone</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>Optional phone number of the patient, formatted as a string</p>
-</dd><dt>access_anyone</dt><dd><code>*string*</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>The default access permissions that users this patient is shared with under the <code>anyone</code>
-group should have. Must be either <code>read</code> or <code>write</code>.  Defaults to <code>read</code>.</p>
-</dd><dt>access_family</dt><dd><code>*string*</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>The default access permissions that users this patient is shared with under the <code>family</code>
-group should have. Must be either <code>read</code> or <code>write</code>.  Defaults to <code>read</code>.</p>
-</dd><dt>access_prime</dt><dd><code>*string*</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>The default access permissions that users this patient is shared with under the <code>prime</code> group
+</dd><dt>access_anyone</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>The default access permissions that users this patient is shared with under the <code>anyone</code>
+group should have. Must be either <code>read</code> or <code>write</code>.  Defaults to <code>write</code>.</p>
+</dd><dt>access_family</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>The default access permissions that users this patient is shared with under the <code>family</code>
+group should have. Must be either <code>read</code> or <code>write</code>.  Defaults to <code>write</code>.</p>
+</dd><dt>access_prime</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>The default access permissions that users this patient is shared with under the <code>prime</code> group
 should have. Must be either <code>read</code> or <code>write</code>.  Defaults to <code>write</code>.</p>
 </dd></dl></div><div class="title"><strong>Request</strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><h5>Headers</h5><pre><code><span class="hljs-attribute">Authorization</span>: <span class="hljs-string">Bearer ACCESS_TOKEN</span><br></code></pre><div style="height: 1px;"></div><h5>Body</h5><pre><code>{
     first_name: <span class="hljs-string">"Dependent"</span>,
@@ -539,7 +567,7 @@ and defaults to <code>id</code>.</p>
 <code>asc</code>.</p>
 </dd><dt>first_name</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>Filter results by first name of patient. Performs fuzzy matching.</p>
 </dd><dt>last_name</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>Filter results by last name of patient. Performs fuzzy matching.</p>
-</dd><dt>last_name</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>Filter results by group of patient. Matches exactly.</p>
+</dd><dt>group</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>Filter results by group of patient. Matches exactly.</p>
 </dd><dt>creator</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>Filter results by email address of creator. Matches any email addresses that
 contain the specified email as a substring.</p>
 </dd></dl></div><div class="title"><strong>Request</strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><h5>Headers</h5><pre><code><span class="hljs-attribute">Authorization</span>: <span class="hljs-string">Bearer ACCESS_TOKEN</span><br></code></pre><div style="height: 1px;"></div></div></div><div class="title"><strong>Response&nbsp;&nbsp;<code>200</code></strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><div class="description"><p>Errors</p>
@@ -648,9 +676,9 @@ current user has to the patient, and setting <code>access_prime</code>, <code>ac
 irreversible, and hence should be used with caution</strong>.</p>
 </dd><dt>group</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>Change the group of the current user. If the user is the <code>owner</code>, their group cannot be changed.
 Otherwise, the group can be changed between <code>prime</code>, <code>family</code> and <code>anyone</code>.</p>
-</dd><dt>access_anyone</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>Change the access level of the <code>anyone</code> user share group. Must be either <code>read</code> or `write.</p>
-</dd><dt>access_family</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>Change the access level of the <code>family</code> user share group. Must be either <code>read</code> or `write.</p>
-</dd><dt>access_prime</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>Change the access level of the <code>prime</code> user share group. Must be either <code>read</code> or `write.</p>
+</dd><dt>access_anyone</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>Change the access level of the <code>anyone</code> user share group. Must be either <code>read</code> or <code>write</code>.</p>
+</dd><dt>access_family</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>Change the access level of the <code>family</code> user share group. Must be either <code>read</code> or <code>write</code>.</p>
+</dd><dt>access_prime</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>Change the access level of the <code>prime</code> user share group. Must be either <code>read</code> or <code>write</code>.</p>
 </dd></dl></div><div class="title"><strong>Request</strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><h5>Headers</h5><pre><code><span class="hljs-attribute">Authorization</span>: <span class="hljs-string">Bearer ACCESS_TOKEN</span><br></code></pre><div style="height: 1px;"></div><h5>Body</h5><pre><code>{
     first_name: <span class="hljs-string">"Gin"</span>,
     last_name: <span class="hljs-string">"Smith"</span>,
@@ -764,22 +792,37 @@ called with <code>access=&quot;none&quot;</code> rather than this method.</p>
 entries, medications and dose events that the user has read access to (remember medications can
 override patient-wide access permissions) are shown.</p>
 <p>Report is returned as a PDF file with <code>Content-Type: &quot;application/pdf&quot;</code>.</p>
-<div class="title"><strong>Parameters</strong><div class="collapse-button show"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><dl class="inner"><dt>patientid</dt><dd><code>integer</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>unique ID of the patient (<strong>not</strong> user-specific) (<em>url</em>)</p>
+<div class="title"><strong>Parameters</strong><div class="collapse-button show"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><dl class="inner"><dt>patientid</dt><dd><code>integer</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>unique ID of the patient (<strong>not</strong> user-specific)</p>
 </dd><dt>start_date</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<p><code>YYYY-MM-DD</code> (in patient’s local timezone) of the date to start the report from</p>
 </dd><dt>end_date</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<p><code>YYYY-MM-DD</code> (in patient’s local timezone) of the date to start the report from</p>
-</dd></dl></div><div class="title"><strong>Request</strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><h5>Headers</h5><pre><code><span class="hljs-attribute">Authorization</span>: <span class="hljs-string">Bearer ACCESS_TOKEN</span><br></code></pre><div style="height: 1px;"></div></div></div><div class="title"><strong>Response&nbsp;&nbsp;<code>200</code></strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><h5>Body</h5><pre><code>Errors
-+ <span class="hljs-string">`access_token_required`</span> (<span class="hljs-number">401</span>) - no access token specified <span class="hljs-keyword">in</span>
-<span class="hljs-string">`Authorization`</span> header
-+ <span class="hljs-string">`invalid_access_token`</span> (<span class="hljs-number">401</span>) - the access token specified is invalid
-+ <span class="hljs-string">`invalid_patient_id`</span> (<span class="hljs-number">404</span>) - a patient <span class="hljs-keyword">with</span> the specified ID was not found
-+ <span class="hljs-string">`unauthorized`</span> (<span class="hljs-number">403</span>) - the current user does not have write access to <span class="hljs-keyword">this</span> patient
-+ <span class="hljs-string">`invalid_start`</span> (<span class="hljs-number">400</span>) - invalid or nonpresent <span class="hljs-string">`YYYY-MM-DD`</span> value <span class="hljs-keyword">for</span> <span class="hljs-string">`start_date`</span>
-+ <span class="hljs-string">`invalid_end`</span> (<span class="hljs-number">400</span>) - invalid or nonpresent <span class="hljs-string">`YYYY-MM-DD`</span> value <span class="hljs-keyword">for</span> <span class="hljs-string">`end_date`</span>
+</dd></dl></div><div class="title"><strong>Request</strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><h5>Headers</h5><pre><code><span class="hljs-attribute">Authorization</span>: <span class="hljs-string">Bearer ACCESS_TOKEN</span><br></code></pre><div style="height: 1px;"></div></div></div><div class="title"><strong>Response&nbsp;&nbsp;<code>200</code></strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><div class="description"><p>Errors</p>
+<ul>
+<li>
+<p><code>access_token_required</code> (401) - no access token specified in
+<code>Authorization</code> header</p>
+</li>
+<li>
+<p><code>invalid_access_token</code> (401) - the access token specified is invalid</p>
+</li>
+<li>
+<p><code>invalid_patient_id</code> (404) - a patient with the specified ID was not found</p>
+</li>
+<li>
+<p><code>unauthorized</code> (403) - the current user does not have write access to this patient</p>
+</li>
+<li>
+<p><code>invalid_start</code> (400) - invalid or nonpresent <code>YYYY-MM-DD</code> value for <code>start_date</code></p>
+</li>
+<li>
+<p><code>invalid_end</code> (400) - invalid or nonpresent <code>YYYY-MM-DD</code> value for <code>end_date</code></p>
+</li>
+</ul>
+</div><h5>Body</h5><pre><code>raw PDF data
 </code></pre><div style="height: 1px;"></div></div></div></div></div><div id="patients-patient-data-dump" class="resource"><h3>Patient Data Dump<a href="#patients-patient-data-dump" class="permalink"><i class="fa fa-link"></i></a></h3><div id="patients-patient-data-dump-get" class="action get"><h4><div class="name">View JSON Data Dump</div><a href="#patients-patient-data-dump-get" class="method get">GET</a><code class="uri">/patients/{patientid}.json</code></h4><p>View a data dump of all data associated with a patient (specifically the patient metadata,
 habits, journal entries, doctors, pharmacies, medications and dose events). Only those journal
 entries, medications and dose events that the user has read access to (remember medications can
 override patient-wide access permissions) are shown.</p>
-<div class="title"><strong>Parameters</strong><div class="collapse-button show"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><dl class="inner"><dt>patientid</dt><dd><code>integer</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>unique ID of the patient (<strong>not</strong> user-specific) (<em>url</em>)</p>
+<div class="title"><strong>Parameters</strong><div class="collapse-button show"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><dl class="inner"><dt>patientid</dt><dd><code>integer</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>unique ID of the patient (<strong>not</strong> user-specific)</p>
 </dd></dl></div><div class="title"><strong>Request</strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><h5>Headers</h5><pre><code><span class="hljs-attribute">Authorization</span>: <span class="hljs-string">Bearer ACCESS_TOKEN</span><br></code></pre><div style="height: 1px;"></div></div></div><div class="title"><strong>Response&nbsp;&nbsp;<code>200</code></strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><div class="description"><p>Errors</p>
 <ul>
 <li>
@@ -1108,7 +1151,7 @@ convenience method <code>PUT /patients/:patientid</code>.</p>
 <div class="title"><strong>Parameters</strong><div class="collapse-button show"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><dl class="inner"><dt>patientid</dt><dd><code>integer</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>unique ID of the patient (<strong>not</strong> user-specific) (<em>url</em>)</p>
 </dd><dt>shareid</dt><dd><code>integer</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>unique ID of the patient-user association (<strong>not</strong> the user ID) (<em>url</em>)</p>
 </dd><dt>access</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<p><code>read</code>, <code>write</code> or <code>default</code> to signify the new level of access the specified user should have to the patient</p>
-</dd><dt>group</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<p><code>anyone</code>, <code>family</code> or `prime to signify the new sharing group the specified user should be a member of</p>
+</dd><dt>group</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<p><code>anyone</code>, <code>family</code> or <code>prime</code> to signify the new sharing group the specified user should be a member of</p>
 </dd></dl></div><div class="title"><strong>Request</strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><h5>Headers</h5><pre><code><span class="hljs-attribute">Authorization</span>: <span class="hljs-string">Bearer ACCESS_TOKEN</span><br></code></pre><div style="height: 1px;"></div><h5>Body</h5><pre><code>{
     access: <span class="hljs-string">"write"</span>,
     group: <span class="hljs-string">"family"</span>
@@ -1583,7 +1626,8 @@ need write access to the patient).</p>
 </dd><dt>address</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>Postal address of the doctor. Newlines can optionally be used to split
 lines.</p>
 </dd><dt>notes</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>freeform text notes about the doctor by the patient</p>
-</dd><dt>title</dt><dd><code>string) - position of doctor (e.g. dentist</code>&nbsp;<span>(optional)</span>&nbsp;</dd></dl></div><div class="title"><strong>Request</strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><h5>Headers</h5><pre><code><span class="hljs-attribute">Authorization</span>: <span class="hljs-string">Bearer ACCESS_TOKEN</span><br></code></pre><div style="height: 1px;"></div><h5>Body</h5><pre><code>{
+</dd><dt>title</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>position of doctor</p>
+</dd></dl></div><div class="title"><strong>Request</strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><h5>Headers</h5><pre><code><span class="hljs-attribute">Authorization</span>: <span class="hljs-string">Bearer ACCESS_TOKEN</span><br></code></pre><div style="height: 1px;"></div><h5>Body</h5><pre><code>{
     name: <span class="hljs-string">"Dr. X"</span>,
     phone: <span class="hljs-string">"(617) 617-6177"</span>,
     address: <span class="hljs-string">"Doctor Street, DC, 20052"</span>,
@@ -1712,7 +1756,8 @@ write access to the patient data.</p>
 </dd><dt>phone</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>contact phone number for the doctor</p>
 </dd><dt>address</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>postal address, in the format specified above in <code>POST</code></p>
 </dd><dt>notes</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>freeform text notes about the doctor by the patient</p>
-</dd><dt>title</dt><dd><code>string) - position of doctor (e.g. dentist</code>&nbsp;<span>(optional)</span>&nbsp;</dd></dl></div><div class="title"><strong>Request</strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><h5>Headers</h5><pre><code><span class="hljs-attribute">Authorization</span>: <span class="hljs-string">Bearer ACCESS_TOKEN</span><br></code></pre><div style="height: 1px;"></div><h5>Body</h5><pre><code>{
+</dd><dt>title</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>position of doctor</p>
+</dd></dl></div><div class="title"><strong>Request</strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><h5>Headers</h5><pre><code><span class="hljs-attribute">Authorization</span>: <span class="hljs-string">Bearer ACCESS_TOKEN</span><br></code></pre><div style="height: 1px;"></div><h5>Body</h5><pre><code>{
     name: <span class="hljs-string">"Dr. Y"</span>,
     phone: <span class="hljs-string">"(716) 716-7166"</span>,
     address: <span class="hljs-string">"Doctor Street, DC, 20052"</span>,
@@ -2134,12 +2179,35 @@ or retrieved via OAuth2 + FHIR from e.g., the DRE).</p>
 of the number of pills left based on <code>fill_date</code> and dose events submitted to the API.
 It will only be non-null if <code>fill_date</code> is non-null.</p>
 <h3 id="header-permissions">Permissions<a class="permalink" href="#header-permissions"><i class="fa fa-link"></i></a></h3>
-<p>Whilst defaulting to the patient-wide permissions, medications can also have custom
-permissions. Each medication has <code>access_anyone</code>, <code>access_family</code> and <code>access_prime</code>
-fields, each of which can be set to <code>read</code>, <code>write</code>, <code>default</code> or <code>none</code>. <code>default</code>
-gives the medication the same access permissions as the patient that owns it, whereas
-<code>read</code>, <code>write</code> and <code>none</code> explicitly override those permissions. All three keys
-default to <code>default</code>.</p>
+<p>Medications have custom permissions that are used instead of the patient-wide permissions.
+Each medication has <code>access_anyone</code>, <code>access_family</code> and <code>access_prime</code> fields, each of which
+can be set to <code>read</code>, <code>write</code>, <code>default</code> or <code>none</code> to control the access the relevant share
+group (<code>anyone</code>, <code>family</code> or <code>prime</code>) has to the medication.</p>
+<p><code>read</code>, <code>write</code> and <code>none</code> are self-explanatory, but <code>default</code> is slightly more complex:</p>
+<ul>
+<li>
+<p>For an <code>anyone</code> share, <code>default</code> gives the user read-only access</p>
+</li>
+<li>
+<p>For a <code>family</code> share on an as-needed medication (including medications that are both regular and as-needed),
+<code>default</code> gives the user write access.</p>
+</li>
+<li>
+<p>For a <code>family</code> share on a medication that is not as-needed (so is regular-only), <code>default</code> gives the user
+read-only access.</p>
+</li>
+<li>
+<p>For a <code>prime</code> share, <code>default</code> delegates to the patient-level permissions: it first looks at any explicit
+permissions specified in the share itself, and if that’s set to <code>default</code> then it looks as <code>access_prime</code> in
+the patient data.</p>
+</li>
+</ul>
+<p>There is one exception to this rule. The <em>user</em> who creates a medication is recorded as the <code>creator</code> of that
+medication, and they always have write access to that medication (even if, for example, the patient is shared
+with the user through the <code>anyone</code> group and the medication has <code>access_anyone=&quot;default&quot;</code> (which would usually give
+them read-only access), that user will still have write access).</p>
+<p>All three keys (<code>access_anyone</code>, <code>access_family</code> and <code>access_prime</code>) default to <code>default</code>, the recommended
+permission structure.</p>
 <h3 id="header-schedule">Schedule<a class="permalink" href="#header-schedule"><i class="fa fa-link"></i></a></h3>
 <p>Various endpoints below take and output <code>schedule</code> data items, representing a regular
 schedule the patient should take a certain medication on.  These are used to schedule
@@ -3567,7 +3635,7 @@ of information. Possible matches for drugs (if any) are located in the
     },
     success: <span class="hljs-literal">true</span>
 }
-</code></pre><div style="height: 1px;"></div></div></div></div></div></section></div></div></div><p style="text-align: center;" class="text-muted">Generated by&nbsp;<a href="https://github.com/danielgtaylor/aglio" class="aglio">aglio</a>&nbsp;on 13 Aug 2015</p><script>function toggleCollapse(event) {
+</code></pre><div style="height: 1px;"></div></div></div></div></div></section></div></div></div><p style="text-align: center;" class="text-muted">Generated by&nbsp;<a href="https://github.com/danielgtaylor/aglio" class="aglio">aglio</a>&nbsp;on 17 Aug 2015</p><script>function toggleCollapse(event) {
     var button = event.target.parentNode;
     var content = button.parentNode.nextSibling;
     var inner = content.children[0];
