@@ -47,7 +47,6 @@ describe("Doses", function () {
         // check it requires a valid user, patient and write authorization to both the patient and medication
         patients.itRequiresAuthentication(curry(create)({}));
         patients.itRequiresValidPatientId(curry(create)({}));
-        patients.itRequiresWriteAuthorization(curry(createDose)({}));
         medications.itRequiresWriteAuthorization(function (patient, medication) {
             return createDose({
                 medication_id: medication._id

@@ -18,7 +18,7 @@ need write access to the patient).
         Postal address of the doctor. Newlines can optionally be used to split
         lines.
     + notes (string, optional) - freeform text notes about the doctor by the patient
-    + title (string, optional) - position of doctor (e.g. dentist)
+    + title (string, optional) - position of doctor
 
 + Request
     + Headers
@@ -180,7 +180,7 @@ write access to the patient data.
     + phone (string, optional) - contact phone number for the doctor
     + address (string, optional) - postal address, in the format specified above in `POST`
     + notes (string, optional) - freeform text notes about the doctor by the patient
-    + title (string, optional) - position of doctor (e.g. dentist)
+    + title (string, optional) - position of doctor
 
 + Request
     + Headers

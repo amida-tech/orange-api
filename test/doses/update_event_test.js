@@ -45,11 +45,23 @@ describe("Doses", function () {
         patients.itRequiresAuthentication(curry(update)({}, 1));
         patients.itRequiresValidPatientId(curry(update)({}, 1));
         common.itRequiresValidDoseId(curry(update)({}));
-        patients.itRequiresWriteAuthorization(curry(updateDose)({}, {}));
         // require write authorization for both the original and new medication ID
         medications.itRequiresWriteAuthorization(function (patient, newMed) {
             // create original medication owned by patient, and then test updating to passed med ID
-            return Q.nbind(patient.createMedication, patient)({name: "foo"}).then(function (oldMed) {
+            return Q.nbind(patient.createMedication, patient)({
+                name: "foo",
+                schedule: {
+                    as_needed: true,
+                    regularly: true,
+                    until: { type: "forever" },
+                    frequency: { n: 1, unit: "day" },
+                    times: [{ type: "exact", time: "09:00" }],
+                    take_with_food: null,
+                    take_with_medications: [],
+                    take_without_medications: []
+                },
+                creator: patient.user.email
+            }).then(function (oldMed) {
                 return updateDose({
                     medication_id: newMed._id
                 }, {
@@ -59,7 +71,20 @@ describe("Doses", function () {
         });
         medications.itRequiresWriteAuthorization(function (patient, oldMed) {
             // create new medication owned by patient, and then test updating passed med ID to this
-            return Q.nbind(patient.createMedication, patient)({name: "foo"}).then(function (newMed) {
+            return Q.nbind(patient.createMedication, patient)({
+                name: "foo",
+                schedule: {
+                    as_needed: true,
+                    regularly: true,
+                    until: { type: "forever" },
+                    frequency: { n: 1, unit: "day" },
+                    times: [{ type: "exact", time: "09:00" }],
+                    take_with_food: null,
+                    take_with_medications: [],
+                    take_without_medications: []
+                },
+                creator: patient.user.email
+            }).then(function (newMed) {
                 return updateDose({
                     medication_id: newMed._id
                 }, {

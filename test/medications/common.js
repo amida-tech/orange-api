@@ -234,12 +234,14 @@ var setPermission = function (group, access) {
         return deferred.promise;
     };
 };
-var createMed = function () {
+var createMed = function (data) {
+    if (typeof data !== "object" || data === null) data = {};
+
     return function (patient) {
         return Q.nbind(patient.createMedication, patient)({
             name: "testmed",
             schedule: {
-                as_needed: false,
+                as_needed: (data.as_needed === true),
                 regularly: true,
                 until: { type: "forever" },
                 frequency: { n: 1, unit: "day" },
@@ -247,7 +249,8 @@ var createMed = function () {
                 take_with_food: null,
                 take_with_medications: [],
                 take_without_medications: []
-            }
+            },
+            creator: data.creator
         });
     };
 };
@@ -282,27 +285,13 @@ var unassociated = function () {
     return [p, m];
 };
 
-var defWrite = function () {
+var owner = function () {
     var p = patientForOther().then(share("write", "anyone"));
-    var m = p.then(createMed()).then(setPermission("anyone", "default")).then(save(p));
-    return [p, m];
-};
-
-var defRead = function () {
-    var p = patientForOther().then(share("read", "anyone"));
-    var m = p.then(createMed()).then(setPermission("anyone", "default")).then(save(p));
-    return [p, m];
-};
-
-var defDefRead = function () {
-    var p = patientForOther().then(setPermission("anyone", "read")).then(share("default", "anyone"));
-    var m = p.then(createMed()).then(setPermission("anyone", "default")).then(save(p));
-    return [p, m];
-};
-
-var defDefWrite = function () {
-    var p = patientForOther().then(setPermission("anyone", "write")).then(share("default", "anyone"));
-    var m = p.then(createMed()).then(setPermission("anyone", "default")).then(save(p));
+    var m = p.then(function (patient) {
+        return createMed({
+            creator: patient.user.email
+        })(patient);
+    }).then(setPermission("anyone", "none")).then(save(p));
     return [p, m];
 };
 
@@ -323,44 +312,98 @@ var write = function () {
     var m = p.then(createMed()).then(setPermission("anyone", "write")).then(save(p));
     return [p, m];
 };
+
+var defFamilyAsNeeded = function () {
+    var p = patientForOther().then(setPermission("family", "write")).then(share("default", "family"));
+    var m = p.then(createMed({
+        as_needed: true
+    })).then(setPermission("family", "default")).then(save(p));
+    return [p, m];
+};
+
+var defFamily = function () {
+    var p = patientForOther().then(setPermission("family", "read")).then(share("default", "family"));
+    var m = p.then(createMed()).then(setPermission("family", "default")).then(save(p));
+    return [p, m];
+};
+
+var defAnyone = function () {
+    var p = patientForOther().then(setPermission("anyone", "read")).then(share("default", "anyone"));
+    var m = p.then(createMed()).then(setPermission("anyone", "default")).then(save(p));
+    return [p, m];
+};
+
+var defPrimeWrite = function () {
+    var p = patientForOther().then(setPermission("prime", "write")).then(share("default", "prime"));
+    var m = p.then(createMed()).then(setPermission("prime", "default")).then(save(p));
+    return [p, m];
+};
+
+var defPrimeRead = function () {
+    var p = patientForOther().then(setPermission("prime", "read")).then(share("default", "prime"));
+    var m = p.then(createMed()).then(setPermission("prime", "default")).then(save(p));
+    return [p, m];
+};
+
 var requiresAuthentication = module.exports.itRequiresAuthentication = function (levels, successChecker, failChecker) {
     return function (endpoint) {
         var gen = genAuthorizationTest(endpoint, levels, successChecker, failChecker);
 
         describe("testing authorization", function () {
+            // write
             gen("me", "my patients", me);
+            // none
             gen("unassociated", "patients not shared with me", unassociated);
-            gen("defWrite", "medications with 'default' when the share has 'write' permissions", defWrite);
-            gen("defRead", "medications with 'default' when the share has 'read' permissions", defRead);
-            gen("defDefRead", "medications with 'default' when the patient has 'read' permissions", defDefRead);
-            gen("defDefWrite", "medications with 'default' when the patient has 'write' permissions", defDefWrite);
+            // write
+            gen("owner", "medications with 'none' but me as set the owner", owner);
+
+            // none
             gen("none", "medications with 'none'", none);
+            // read
             gen("read", "medications with 'read'", read);
+            // write
             gen("write", "medications with 'write'", write);
+
+            // write
+            gen("defFamilyAsNeeded", "as-needed medications with 'default' when the share is under 'family'", defFamilyAsNeeded);
+            // read
+            gen("defFamily", "non-as-needed medications with 'default' when the share is under 'family'", defFamily);
+
+            // read
+            gen("defAnyone", "medications with 'default' when the share is under 'anyone'", defAnyone);
+
+            // write
+            gen("defPrimeWrite", "medications with 'default' when the patient has 'write' permissions and the share is under 'prime'", defPrimeWrite);
+            // read
+            gen("defPrimeRead", "medications with 'default' when the patient has 'read' permissions and the share is under 'prime'", defPrimeRead);
         });
     };
 };
 module.exports.itRequiresReadAuthorization = requiresAuthentication({
-    unassociated: false,
     me: true,
-    defWrite: true,
-    defRead: true,
-    defDefRead: true,
-    defDefWrite: true,
+    unassociated: false,
+    owner: true,
     none: false,
     read: true,
-    write: true
+    write: true,
+    defFamilyAsNeeded: true,
+    defFamily: true,
+    defAnyone: true,
+    defPrimeWrite: true,
+    defPrimeRead: true
 }, testAuthorizationSuccessful, testAuthorizationFailed);
 module.exports.itRequiresWriteAuthorization = requiresAuthentication({
-    unassociated: false,
     me: true,
-    defWrite: true,
-    defRead: false,
-    defDefRead: false,
-    defDefWrite: true,
+    unassociated: false,
+    owner: true,
     none: false,
     read: false,
-    write: true
+    write: true,
+    defFamilyAsNeeded: true,
+    defFamily: false,
+    defAnyone: false,
+    defPrimeWrite: true,
+    defPrimeRead: false
 }, testAuthorizationSuccessful, testAuthorizationFailed);
 
 // test authorization for endpoints that return lists of results: results should

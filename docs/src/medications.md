@@ -7,12 +7,32 @@ of the number of pills left based on `fill_date` and dose events submitted to th
 It will only be non-null if `fill_date` is non-null.
 
 ### Permissions
-Whilst defaulting to the patient-wide permissions, medications can also have custom
-permissions. Each medication has `access_anyone`, `access_family` and `access_prime`
-fields, each of which can be set to `read`, `write`, `default` or `none`. `default`
-gives the medication the same access permissions as the patient that owns it, whereas
-`read`, `write` and `none` explicitly override those permissions. All three keys
-default to `default`.
+Medications have custom permissions that are used instead of the patient-wide permissions.
+Each medication has `access_anyone`, `access_family` and `access_prime` fields, each of which
+can be set to `read`, `write`, `default` or `none` to control the access the relevant share
+group (`anyone`, `family` or `prime`) has to the medication.
+
+`read`, `write` and `none` are self-explanatory, but `default` is slightly more complex:
+ * For an `anyone` share, `default` gives the user read-only access
+
+ * For a `family` share on an as-needed medication (including medications that are both regular and as-needed),
+   `default` gives the user write access.
+
+ * For a `family` share on a medication that is not as-needed (so is regular-only), `default` gives the user
+   read-only access.
+
+ * For a `prime` share, `default` delegates to the patient-level permissions: it first looks at any explicit
+   permissions specified in the share itself, and if that's set to `default` then it looks as `access_prime` in
+   the patient data.
+
+There is one exception to this rule. The *user* who creates a medication is recorded as the `creator` of that
+medication, and they always have write access to that medication (even if, for example, the patient is shared
+with the user through the `anyone` group and the medication has `access_anyone="default"` (which would usually give
+them read-only access), that user will still have write access).
+
+All three keys (`access_anyone`, `access_family` and `access_prime`) default to `default`, the recommended
+permission structure.
+
 
 ### Schedule
 Various endpoints below take and output `schedule` data items, representing a regular

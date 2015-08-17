@@ -45,7 +45,6 @@ describe("Doses", function () {
         patients.itRequiresAuthentication(curry(remove)(1));
         patients.itRequiresValidPatientId(curry(remove)(1));
         common.itRequiresValidDoseId(remove);
-        patients.itRequiresWriteAuthorization(curry(removeDose)({}));
         medications.itRequiresWriteAuthorization(function (patient, medication) {
             return removeDose({
                 medication_id: medication._id
