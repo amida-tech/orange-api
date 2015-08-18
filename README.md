@@ -53,6 +53,74 @@ Contributors are welcome. See issues https://github.com/amida-tech/orange-api/is
 
 See release notes [here] (./RELEASENOTES.md)
 
+## Technical Documentation
+The API is structured as a standard Express app using Mongoose for data storage. The Controller-Model pattern is followed, with everything output over
+JSON so seperate views not as necessary (although semantically each model instance has a getData method that acts as the view). App setup and initialisation
+is in `app.js` and database connection/etc is in `run.js`. `config.js` contains configuration for API keys (sendgrid and twilio for notifications), logging
+and database hosts.
+
+Tests are in `test/`, structured as directories for each resource group containing e2e tests, and sometimes `unit/` directories inside those containing
+`unit` tests. Grunt (`gruntfile.js`) is used to run tests (`grunt` or `grunt test`) and can also be used to spin up a development server (`grunt server:dev`), although `node run.js` is much quicker to start up and will work for all endpoints apart from those that rely on schedule matching
+(`/patients/:id/schedule`, `/patients/:id.json` and `/patients/:id.pdf`).
+
+Controllers are in in `lib/controllers` and models in `lib/models`. Most are standard CRUD controllers, with various CRUD helper functions used (mainly as
+middleware) to DRY things up. See `lib/controllers/helpers/crud.js` mainly (e.g., `formatObject` and `formatList` are used in nearly all endpoints).
+
+Models are pretty standard mongoose models. `counter.js` and `helpers/increment_plugin.js` are used to provide auto-incrementing numerical IDs. All models
+that correspond to patient resources (`Doctor`, `Dose`, `JournalEntry`, `Medication` and `Pharmacy`) are stored as subdocuments or subarrays within
+`Patient`, and because of this and some mongoose intracies some of their logic is in `lib/models/patient/resources.js` rather than e.g.,
+`lib/models/doctor.js`.
+
+Schedule matching is slightly more complex. Each medication stores a schedule object, freshly-parsed into a `Schedule` (`lib/models/schedule/`) object
+upon instance initialisation. This represents the schedule when the medication *should* be taken in an abstract form. `schedule/generation.js` uses this 
+to generate a concrete schedule for when the medication *should* be taken, given a start and end date. Various endpoints then need to match this up
+with the doses the user has actually recorded (either taken or not taken), represented as `Dose` objects in `patient.doses`. Depending on the level of
+information we have about each dose, this is a very non-trivial/ambiguous problem.
+
+To solve this, `zerorpc` (think sockets but better) is used to communicate with a python daemon running some schedule matching code
+(`lib/matching/schedule_matcher.py`). Originally this used a genetic algorithm to match up the generated schedule and the list of doses. This was accurate
+but a little slow (~100ms for each matching request on a Macbook Pro). Later UI changes meant that each recorded `Dose` object could include metadata
+linking it to the exact scheduled 'time' at which it was meant to be taken, so now `lib/matching/schedule_matcher.py` uses a much simpler deterministic
+algorithm that's a little more accurate and orders of magnitude faster. The GA is still left commented in `schedule_matcher.py` in case future UI changes
+mean it's flexibility is needed again.
+
+Patient images ('avatars') are stored in gridfs rather than as files or raw in mongo, and the relevant code is in `lib/models/patient/avatar.js` (slightly
+more complicated than standard because it parses MIME types from the actual image data whilst storing images).
+
+All errors that should be visible to the API user are passed up the stack then handled by `error_handler.js` and `errors.js`. Each API error has an
+instance of the custom `APIError` classs initialised in `errors.js` which can then be used anywhere else in the app. `error_handler.js` handles both these
+and mongoose errors (a couple heuristics are used to look up `APIError` instances based on field name, etc). These errors are then returned by setting
+the HTTP response code appropriately and returning `{ success: false, errors: [...] }` as a response body.
+
+The external RXNorm and NPI APIs are proxied for various queries (`lib/controllers/rxnorm.js` and `lib/controllers/npi.js`). The RXNorm spelling suggestions
+endpoint is hit very heavily and RXNorm rate-limit us to 20 queries per second so that's cached (mongo because the mongo infrastructure was already set up
+and the advantages of redis/memcached/etc are irrelevant here) in `lib/models/rxnorm.js`, although the actual queries for both APIs are just delegated to the
+`rxnorm-js` and `npi-js` NPM libraries (both Amida written).
+
+The `/patients/:id.pdf` endpoint generates and returns a report PDF. This is done dynamically on-the-fly but is fast enough this shouldn't be an issue (and
+could of course easily be cached if so). The relevant code is in `lib/controllers/patients/report.js` (although much of that that should probably be
+abstracted out to a `lib/views` directory at some point) and uses the `pdfmake` library  for the actual PDF generation. The `fonts/` and `images/`
+directories are used to provide assets in that generation process. `grunt report` can be used to generate a sample PDF for test data, and regenerate it
+whenever the relevant code changes so is useful for development here. 
+
+Notifications are sent out upon various actions (user registration, sharing request received/cancelled/closed/accepted) and notifications for new actions
+can easily be added (`user.notify`). The relevant code is in `lib/models/user/notifications.js`. Handlebars templates for the notifications sent are taken
+from the `views/` directory. Notifications can be sent to either SMS (Twilio) or email (Sendgrid) (dependent on both the data available for a user and
+individual notification settings). API keys for Twilio and Sendgrid are configured in `config.js` and are left blank on the staging server so notifications
+are not sent out during testing.
+
+The `static/` directory contains webpages that are statically accessible on the staging server (with the `.html` suffix removed so `login.html` becomes
+`http://STAGING-SERVER-ADDRESS/login`). `login` uses the custom URI scheme in the mobile app to launch the app to the login page if it's installed, or
+take you to the relevant app store if on mobile and the app's not installed, or just displays a static page on desktop (this page is linked to by the
+email notification received when resetting password).
+
+All API endpoints are fully documented using API Blueprint in `docs/src`, and `docs/build.sh` (`grunt docs`) is used to build this into HTML documentation
+at `docs/output/` with the `aglio` library. Some slightly hackish deviations from the API Blueprint spec to get the desired output from Aglio are made,
+although these are very apparent and self-explanatory in `docs/src`. As well as on the staging server, docs are published on github and the newest docs
+can be generated from source and pushed to the `gh-pages` branch with `grunt docs:push`.
+
+Deployment things are in `deploy/` and are documented in `deploy/README.md`.
+
 ## License
 
 Licensed under [Apache 2.0](./LICENSE)
