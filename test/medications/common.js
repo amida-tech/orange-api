@@ -367,7 +367,8 @@ var requiresAuthentication = module.exports.itRequiresAuthentication = function 
             gen("write", "medications with 'write'", write);
 
             // write
-            gen("defFamilyAsNeeded", "as-needed medications with 'default' when the share is under 'family'", defFamilyAsNeeded);
+            gen("defFamilyAsNeeded", "as-needed medications with 'default' when the share is under 'family'",
+                    defFamilyAsNeeded);
             // read
             gen("defFamily", "non-as-needed medications with 'default' when the share is under 'family'", defFamily);
 
@@ -375,9 +376,11 @@ var requiresAuthentication = module.exports.itRequiresAuthentication = function 
             gen("defAnyone", "medications with 'default' when the share is under 'anyone'", defAnyone);
 
             // write
-            gen("defPrimeWrite", "medications with 'default' when the patient has 'write' permissions and the share is under 'prime'", defPrimeWrite);
+            gen("defPrimeWrite", "medications with 'default' when the 'prime' patient has 'write' permissions",
+                    defPrimeWrite);
             // read
-            gen("defPrimeRead", "medications with 'default' when the patient has 'read' permissions and the share is under 'prime'", defPrimeRead);
+            gen("defPrimeRead", "medications with 'default' when the 'prime' patient has 'read' permissions",
+                    defPrimeRead);
         });
     };
 };

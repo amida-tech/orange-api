@@ -155,7 +155,10 @@ describe("Patients", function () {
                 delete patientSchema.properties.success;
                 patientSchema.additionalProperties = true;
 
-                expect(response).to.have.schema(patientSchema);
+                expect(dump).to.have.property("patient");
+                expect({
+                    body: dump.patient
+                }).to.have.schema(patientSchema);
             });
 
             it("contains users the patient is shared with", function () {
@@ -205,7 +208,10 @@ describe("Patients", function () {
 
             it("contains the patient's medications", function () {
                 // success removed by genericListSuccess
-                expect(response).to.be.an.api.genericListSuccess("medications", medications.schema, false);
+                // but additional properties (e.g., summary) are added
+                var medicationsSchema = JSON.parse(JSON.stringify(medications.schema));
+                medicationsSchema.additionalProperties = true;
+                expect(response).to.be.an.api.genericListSuccess("medications", medicationsSchema, false);
             });
 
             it("only shows medications the user has access to", function () {
