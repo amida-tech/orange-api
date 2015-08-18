@@ -153,49 +153,57 @@ describe("Patients", function () {
                 expect(response.body.length).to.be.at.least(1024);
             });
 
-            it("requires a start date", function () {
+            it("handles no start date and no end date", function () {
+                return expect(dumpPatient({
+                    start_date: undefined,
+                    end_date: undefined
+                }, patient)).to.have.status(200);
+            });
+
+            it("accepts a nonpresent start date", function () {
                 return expect(dumpPatient({
                     start_date: undefined,
                     end_date: "2015-07-31"
-                }, patient)).to.be.an.api.error(400, "invalid_start");
+                }, patient)).to.have.status(200);
             });
-            it("requires a non-null start date", function () {
+            it("accepts a null start date", function () {
                 return expect(dumpPatient({
                     start_date: null,
                     end_date: "2015-07-31"
-                }, patient)).to.be.an.api.error(400, "invalid_start");
+                }, patient)).to.have.status(200);
             });
-            it("requires a non-blank start date", function () {
+            it("accepts a blank start date", function () {
                 return expect(dumpPatient({
                     start_date: "",
                     end_date: "2015-07-31"
-                }, patient)).to.be.an.api.error(400, "invalid_start");
+                }, patient)).to.have.status(200);
             });
-            it("requires a valid start date", function () {
+            it("rejects an invalid start date", function () {
                 return expect(dumpPatient({
                     start_date: "foo",
                     end_date: "2015-07-31"
                 }, patient)).to.be.an.api.error(400, "invalid_start");
             });
-            it("requires a end date", function () {
+
+            it("accepts a nonpresent end date", function () {
                 return expect(dumpPatient({
                     end_date: undefined,
                     start_date: "2015-07-31"
-                }, patient)).to.be.an.api.error(400, "invalid_end");
+                }, patient)).to.have.status(200);
             });
-            it("requires a non-null end date", function () {
+            it("accepts a null end date", function () {
                 return expect(dumpPatient({
                     end_date: null,
                     start_date: "2015-07-31"
-                }, patient)).to.be.an.api.error(400, "invalid_end");
+                }, patient)).to.have.status(200);
             });
-            it("requires a non-blank end date", function () {
+            it("accepts a blank end date", function () {
                 return expect(dumpPatient({
                     end_date: "",
                     start_date: "2015-07-31"
-                }, patient)).to.be.an.api.error(400, "invalid_end");
+                }, patient)).to.have.status(200);
             });
-            it("requires a valid end date", function () {
+            it("rejects an invalid end date", function () {
                 return expect(dumpPatient({
                     end_date: "foo",
                     start_date: "2015-07-31"
