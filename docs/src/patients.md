@@ -485,6 +485,14 @@ override patient-wide access permissions) are shown.
     + patientid (integer, required)
 
         unique ID of the patient (**not** user-specific)
+    + start_date (string, optional)
+
+        `YYYY-MM-DD` (in patient's local timezone) of the date to start the dump from. Defaults to the start
+        of the current month, or the start of the month `end_date` is in if `end_date` is specified.
+    + end_date (string, optional)
+
+        `YYYY-MM-DD` (in patient's local timezone) of the date to start the dump from. Defaults to the end
+        of the current month, or the end of the month `start_date` is in if `start_date` is specified.
 
 + Request
     + Headers
@@ -498,6 +506,8 @@ override patient-wide access permissions) are shown.
     + `invalid_access_token` (401) - the access token specified is invalid
     + `invalid_patient_id` (404) - a patient with the specified ID was not found
     + `unauthorized` (403) - the current user does not have write access to this patient
+    + `invalid_start` (400) - invalid `YYYY-MM-DD` value for `start_date`
+    + `invalid_end` (400) - invalid `YYYY-MM-DD` value for `end_date`
 
     + Body
 
