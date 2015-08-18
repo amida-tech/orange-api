@@ -793,8 +793,10 @@ entries, medications and dose events that the user has read access to (remember 
 override patient-wide access permissions) are shown.</p>
 <p>Report is returned as a PDF file with <code>Content-Type: &quot;application/pdf&quot;</code>.</p>
 <div class="title"><strong>Parameters</strong><div class="collapse-button show"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><dl class="inner"><dt>patientid</dt><dd><code>integer</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>unique ID of the patient (<strong>not</strong> user-specific)</p>
-</dd><dt>start_date</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<p><code>YYYY-MM-DD</code> (in patient’s local timezone) of the date to start the report from</p>
-</dd><dt>end_date</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<p><code>YYYY-MM-DD</code> (in patient’s local timezone) of the date to start the report from</p>
+</dd><dt>start_date</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p><code>YYYY-MM-DD</code> (in patient’s local timezone) of the date to start the report from. Defaults to the start
+of the current month, or the start of the month <code>end_date</code> is in if <code>end_date</code> is specified.</p>
+</dd><dt>end_date</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p><code>YYYY-MM-DD</code> (in patient’s local timezone) of the date to start the report from. Defaults to the end
+of the current month, or the end of the month <code>start_date</code> is in if <code>start_date</code> is specified.</p>
 </dd></dl></div><div class="title"><strong>Request</strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><h5>Headers</h5><pre><code><span class="hljs-attribute">Authorization</span>: <span class="hljs-string">Bearer ACCESS_TOKEN</span><br></code></pre><div style="height: 1px;"></div></div></div><div class="title"><strong>Response&nbsp;&nbsp;<code>200</code></strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><div class="description"><p>Errors</p>
 <ul>
 <li>
@@ -811,10 +813,10 @@ override patient-wide access permissions) are shown.</p>
 <p><code>unauthorized</code> (403) - the current user does not have write access to this patient</p>
 </li>
 <li>
-<p><code>invalid_start</code> (400) - invalid or nonpresent <code>YYYY-MM-DD</code> value for <code>start_date</code></p>
+<p><code>invalid_start</code> (400) - invalid <code>YYYY-MM-DD</code> value for <code>start_date</code></p>
 </li>
 <li>
-<p><code>invalid_end</code> (400) - invalid or nonpresent <code>YYYY-MM-DD</code> value for <code>end_date</code></p>
+<p><code>invalid_end</code> (400) - invalid <code>YYYY-MM-DD</code> value for <code>end_date</code></p>
 </li>
 </ul>
 </div><h5>Body</h5><pre><code>raw PDF data
@@ -823,6 +825,10 @@ habits, journal entries, doctors, pharmacies, medications and dose events). Only
 entries, medications and dose events that the user has read access to (remember medications can
 override patient-wide access permissions) are shown.</p>
 <div class="title"><strong>Parameters</strong><div class="collapse-button show"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><dl class="inner"><dt>patientid</dt><dd><code>integer</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>unique ID of the patient (<strong>not</strong> user-specific)</p>
+</dd><dt>start_date</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p><code>YYYY-MM-DD</code> (in patient’s local timezone) of the date to start the dump from. Defaults to the start
+of the current month, or the start of the month <code>end_date</code> is in if <code>end_date</code> is specified.</p>
+</dd><dt>end_date</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p><code>YYYY-MM-DD</code> (in patient’s local timezone) of the date to start the dump from. Defaults to the end
+of the current month, or the end of the month <code>start_date</code> is in if <code>start_date</code> is specified.</p>
 </dd></dl></div><div class="title"><strong>Request</strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><h5>Headers</h5><pre><code><span class="hljs-attribute">Authorization</span>: <span class="hljs-string">Bearer ACCESS_TOKEN</span><br></code></pre><div style="height: 1px;"></div></div></div><div class="title"><strong>Response&nbsp;&nbsp;<code>200</code></strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><div class="description"><p>Errors</p>
 <ul>
 <li>
@@ -837,6 +843,12 @@ override patient-wide access permissions) are shown.</p>
 </li>
 <li>
 <p><code>unauthorized</code> (403) - the current user does not have write access to this patient</p>
+</li>
+<li>
+<p><code>invalid_start</code> (400) - invalid <code>YYYY-MM-DD</code> value for <code>start_date</code></p>
+</li>
+<li>
+<p><code>invalid_end</code> (400) - invalid <code>YYYY-MM-DD</code> value for <code>end_date</code></p>
 </li>
 </ul>
 </div><h5>Body</h5><pre><code>{
@@ -3643,7 +3655,7 @@ of information. Possible matches for drugs (if any) are located in the
     },
     success: <span class="hljs-literal">true</span>
 }
-</code></pre><div style="height: 1px;"></div></div></div></div></div></section></div></div></div><p style="text-align: center;" class="text-muted">Generated by&nbsp;<a href="https://github.com/danielgtaylor/aglio" class="aglio">aglio</a>&nbsp;on 17 Aug 2015</p><script>function toggleCollapse(event) {
+</code></pre><div style="height: 1px;"></div></div></div></div></div></section></div></div></div><p style="text-align: center;" class="text-muted">Generated by&nbsp;<a href="https://github.com/danielgtaylor/aglio" class="aglio">aglio</a>&nbsp;on 18 Aug 2015</p><script>function toggleCollapse(event) {
     var button = event.target.parentNode;
     var content = button.parentNode.nextSibling;
     var inner = content.children[0];
