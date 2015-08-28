@@ -1,13 +1,13 @@
 import bisect, random, math, dateutil.parser, pytz, datetime, time, pickle
 from termcolor import colored
-from pyevolve import G1DList
-from pyevolve import G1DBinaryString
-from pyevolve import GSimpleGA
-from pyevolve import Selectors
-from pyevolve import Initializators, Mutators
-from pyevolve import Scaling
-from pyevolve import Consts
-from pyevolve import Crossovers
+#from pyevolve import G1DList
+#from pyevolve import G1DBinaryString
+#from pyevolve import GSimpleGA
+#from pyevolve import Selectors
+#from pyevolve import Initializators, Mutators
+#from pyevolve import Scaling
+#from pyevolve import Consts
+#from pyevolve import Crossovers
 
 class ScheduleMatcher(object):
     # scheduled = API-style schedule data object
