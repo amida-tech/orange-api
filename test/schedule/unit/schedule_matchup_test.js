@@ -188,11 +188,11 @@ describe("Schedule", function () {
         it("handles matching up when one dose is present", function (done) {
             schedule.match([times[0]], client, {
                 tz: tz,
-                wake: "08:00",
-                sleep: "00:00",
-                breakfast: "09:30",
-                lunch: "13:00",
-                dinner: "18:00"
+                wake: "08:00 am",
+                sleep: "00:00 am",
+                breakfast: "09:30 am",
+                lunch: "01:00 pm",
+                dinner: "06:00 pm"
             }, function (err, result) {
                 if (err) return done(err);
                 expect(result.length).to.not.equal(0);

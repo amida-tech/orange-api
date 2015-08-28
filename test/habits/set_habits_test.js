@@ -33,10 +33,10 @@ describe("Habits", function () {
         });
 
         it("lets the user set time fields to valid times", function () {
-            return expect(edit({ dinner: "13:05" }, patientId, accessToken)).to.be.a.habits.success;
+            return expect(edit({ dinner: "01:05 pm" }, patientId, accessToken)).to.be.a.habits.success;
         });
         it("doesn't lets the user set time fields to invalid times", function () {
-            return expect(edit({ wake: "13:95" }, patientId, accessToken)).to.be.an.api.error(400, "invalid_wake");
+            return expect(edit({ wake: "01:95 pm" }, patientId, accessToken)).to.be.an.api.error(400, "invalid_wake");
         });
         it("doesn't lets the user set time fields to non-time values", function () {
             return expect(edit({ lunch: "foo" }, patientId, accessToken)).to.be.an.api.error(400, "invalid_lunch");

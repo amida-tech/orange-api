@@ -1242,8 +1242,8 @@ describe("Schedule", function () {
                         { type: "event", event: "dinner", when: "after" },
                         { type: "event", event: "sleep", when: "before" },
                         { type: "event", event: "sleep", when: "after" },
-                        { type: "exact", time: "09:00" },
-                        { type: "exact", time: "21:30" },
+                        { type: "exact", time: "09:00 am" },
+                        { type: "exact", time: "09:30 pm" },
                         { type: "unspecified" }
                     ],
                     take_with_food: null,
@@ -1267,8 +1267,8 @@ describe("Schedule", function () {
                         { id: 6, type: "event", event: "dinner", when: "after" },
                         { id: 7, type: "event", event: "sleep", when: "before" },
                         { id: 8, type: "event", event: "sleep", when: "after" },
-                        { id: 9, type: "exact", time: "09:00" },
-                        { id: 10, type: "exact", time: "21:30" },
+                        { id: 9, type: "exact", time: "09:00 am" },
+                        { id: 10, type: "exact", time: "09:30 pm" },
                         { id: 11, type: "unspecified" }
                     ],
                     take_with_food: null,
@@ -1292,8 +1292,8 @@ describe("Schedule", function () {
                         { type: "event", event: "dinner", when: "after", notifications: { default: 5 } },
                         { type: "event", event: "sleep", when: "before", notifications: { default: 5 } },
                         { type: "event", event: "sleep", when: "after", notifications: { default: 5 } },
-                        { type: "exact", time: "09:00", notifications: { default: 5 } },
-                        { type: "exact", time: "21:30", notifications: { default: 5 } },
+                        { type: "exact", time: "09:00 am", notifications: { default: 5 } },
+                        { type: "exact", time: "09:30 pm", notifications: { default: 5 } },
                         { type: "unspecified", notifications: { default: 5 } }
                     ],
                     take_with_food: null,
@@ -1313,8 +1313,8 @@ describe("Schedule", function () {
                         { type: "event", event: "dinner", when: "after" },
                         { type: "event", event: "sleep", when: "before" },
                         { type: "event", event: "sleep", when: "after" },
-                        { type: "exact", time: "09:00" },
-                        { type: "exact", time: "21:30" },
+                        { type: "exact", time: "09:00 am" },
+                        { type: "exact", time: "09:30 pm" },
                         { type: "unspecified" }
                     ],
                     take_with_food: null,
@@ -1490,7 +1490,7 @@ describe("Schedule", function () {
                         regularly: true,
                         until: { type: "forever" },
                         frequency: { n: 1, unit: "day" },
-                        times: [{ type: "event", event: "lunch", when: "before", time: "09:00" }],
+                        times: [{ type: "event", event: "lunch", when: "before", time: "09:00 am" }],
                         take_with_food: null,
                         take_with_medications: [],
                         take_without_medications: []
@@ -1552,7 +1552,7 @@ describe("Schedule", function () {
                         regularly: true,
                         until: { type: "forever" },
                         frequency: { n: 1, unit: "day" },
-                        times: [{ type: "exact", time: "10:00", event: "breakfast" }],
+                        times: [{ type: "exact", time: "10:00 am", event: "breakfast" }],
                         take_with_food: null,
                         take_with_medications: [],
                         take_without_medications: []
@@ -1564,7 +1564,7 @@ describe("Schedule", function () {
                         regularly: true,
                         until: { type: "forever" },
                         frequency: { n: 1, unit: "day" },
-                        times: [{ type: "exact", time: "10:00", when: "after" }],
+                        times: [{ type: "exact", time: "10:00 am", when: "after" }],
                         take_with_food: null,
                         take_with_medications: [],
                         take_without_medications: []
@@ -1576,7 +1576,7 @@ describe("Schedule", function () {
                         regularly: true,
                         until: { type: "forever" },
                         frequency: { n: 1, unit: "day" },
-                        times: [{ type: "exact", time: "10:00", event: "breakfast", when: "after" }],
+                        times: [{ type: "exact", time: "10:00 am", event: "breakfast", when: "after" }],
                         take_with_food: null,
                         take_with_medications: [],
                         take_without_medications: []
