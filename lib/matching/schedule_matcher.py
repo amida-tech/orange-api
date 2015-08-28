@@ -34,7 +34,13 @@ class ScheduleMatcher(object):
 
         # calculate start of first day
         #TODO: needs handling of am/pm
+        ampm = self.habits["wake"].split(" ")[1]
         wake = map(int, self.habits["wake"].split(" ")[0].split(":"))
+
+        if (ampm =="pm"):
+            wake[1]=wake[1]+12
+
+
         if len(self.doseTimes) > 0:
             self.firstWake = self.doseTimes[0].replace(hour=wake[0], minute=wake[1], second=0, microsecond=0)
             if (self.firstWake > self.doseTimes[0]): self.firstWake -= datetime.timedelta(days=1)
@@ -85,7 +91,11 @@ class ScheduleMatcher(object):
 
     def dayIndex(self, dose):
         #TODO: needs handling of am/pm
+        ampm = self.habits["wake"].split(" ")[1]
         wake = map(int, self.habits["wake"].split(" ")[0].split(":"))
+
+        if (ampm =="pm"):
+            wake[1]=wake[1]+12
 
         # calculate start of that day
         startDay = dose.replace(hour=wake[0], minute=wake[1], second=0, microsecond=0)
