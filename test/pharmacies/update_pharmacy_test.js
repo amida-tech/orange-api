@@ -91,31 +91,31 @@ describe("Pharmacies", function () {
             return updatePatientPharmacy({
                 hours: {
                     monday: {
-                        open: "09:00"
+                        open: "09:00 am"
                     },
                     wednesday: {
-                        open: "08:00",
-                        close: "17:00"
+                        open: "08:00 am",
+                        close: "05:00 pm"
                     },
                     thursday: {
-                        open: "08:00",
-                        close: "17:00"
+                        open: "08:00 am",
+                        close: "05:00 pm"
                     },
                     friday: {
-                        open: "08:00",
-                        close: "17:00"
+                        open: "08:00 am",
+                        close: "05:00 pm"
                     }
                 }
             }, {
                 hours: {
                     monday: {
-                        close: "16:00"
+                        close: "04:00 pm"
                     },
                     tuesday: {
-                        close: "16:00"
+                        close: "04:00 pm"
                     },
                     wednesday: {
-                        close: "16:00"
+                        close: "04:00 pm"
                     },
                     thursday: {},
                     friday: null
@@ -124,19 +124,19 @@ describe("Pharmacies", function () {
                 expect(response).to.be.a.pharmacy.success;
                 expect(response.body.hours).to.deep.equal({
                     monday: {
-                        open: "09:00",
-                        close: "16:00"
+                        open: "09:00 am",
+                        close: "04:00 pm"
                     },
                     tuesday: {
-                        close: "16:00"
+                        close: "04:00 pm"
                     },
                     wednesday: {
-                        open: "08:00",
-                        close: "16:00"
+                        open: "08:00 am",
+                        close: "04:00 pm"
                     },
                     thursday: {
-                        open: "08:00",
-                        close: "17:00"
+                        open: "08:00 am",
+                        close: "05:00 pm"
                     },
                     friday: {},
                     saturday: {},

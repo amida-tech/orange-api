@@ -15,7 +15,7 @@ class ScheduleMatcher(object):
 
     def __init__(self, schedule, doses, habits, params):
         # sensible defaults for the habits we need
-        if ((not "wake" in habits) or (habits["wake"] == None)): habits["wake"] = "09:00"
+        if ((not "wake" in habits) or (habits["wake"] == None)): habits["wake"] = "09:00 am"
         if ((not "tz" in habits) or (habits["tz"] == None)): habits["tz"] = "America/New_York"
         self.habits = habits
         self.tz = pytz.timezone(habits["tz"])
@@ -33,7 +33,14 @@ class ScheduleMatcher(object):
         self.doseTimes = map(lambda dose: dose["date"], self.doses)
 
         # calculate start of first day
-        wake = map(int, self.habits["wake"].split(":"))
+        #TODO: needs handling of am/pm
+        ampm = self.habits["wake"].split(" ")[1]
+        wake = map(int, self.habits["wake"].split(" ")[0].split(":"))
+
+        if (ampm =="pm"):
+            wake[1]=wake[1]+12
+
+
         if len(self.doseTimes) > 0:
             self.firstWake = self.doseTimes[0].replace(hour=wake[0], minute=wake[1], second=0, microsecond=0)
             if (self.firstWake > self.doseTimes[0]): self.firstWake -= datetime.timedelta(days=1)
@@ -83,7 +90,12 @@ class ScheduleMatcher(object):
         # pop.scaleMethod.set(Scaling.SigmaTruncScaling)
 
     def dayIndex(self, dose):
-        wake = map(int, self.habits["wake"].split(":"))
+        #TODO: needs handling of am/pm
+        ampm = self.habits["wake"].split(" ")[1]
+        wake = map(int, self.habits["wake"].split(" ")[0].split(":"))
+
+        if (ampm =="pm"):
+            wake[1]=wake[1]+12
 
         # calculate start of that day
         startDay = dose.replace(hour=wake[0], minute=wake[1], second=0, microsecond=0)

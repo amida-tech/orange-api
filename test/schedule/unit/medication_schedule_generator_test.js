@@ -28,7 +28,7 @@ describe("Schedule", function () {
             // (zerorpc silently fails when used with a stubbed clock)
             var now = moment.tz(tz);
             doseDelta = Math.floor(now.diff(moment(now).startOf("day")) / 2);
-            doseTime = moment.tz(now - doseDelta, tz).format("HH:mm");
+            doseTime = moment.tz(now - doseDelta, tz).format("hh:mm a");
 
             return Q.nbind(patient.createMedication, patient)({
                 name: "foo bar",

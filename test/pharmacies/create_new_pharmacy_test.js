@@ -67,10 +67,10 @@ describe("Pharmacies", function () {
             return expect(createPatientPharmacy({
                 hours: {
                     monday: {
-                        open: "09:00"
+                        open: "09:00 am"
                     },
                     tuesday: {
-                        close: "19:00"
+                        close: "07:00 pm"
                     }
                 }
             })).to.be.a.pharmacy.createSuccess;

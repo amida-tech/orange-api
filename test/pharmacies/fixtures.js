@@ -12,32 +12,32 @@ monky.factory("Pharmacy", {
     phone: "(617) 716-6176",
     hours: {
         monday: {
-            open: "09:00",
-            close: "17:00"
+            open: "09:00 am",
+            close: "05:00 pm"
         },
         tuesday: {
-            open: "09:00",
-            close: "17:00"
+            open: "09:00 am",
+            close: "05:00 pm"
         },
         wednesday: {
-            open: "09:00",
-            close: "17:00"
+            open: "09:00 am",
+            close: "05:00 pm"
         },
         thursday: {
-            open: "09:00",
-            close: "17:00"
+            open: "09:00 am",
+            close: "05:00 pm"
         },
         friday: {
-            open: "09:00",
-            close: "17:00"
+            open: "09:00 am",
+            close: "05:00 pm"
         },
         saturday: {
-            open: "09:00",
-            close: "17:00"
+            open: "09:00 am",
+            close: "05:00 pm"
         },
         sunday: {
-            open: "09:00",
-            close: "17:00"
+            open: "09:00 am",
+            close: "05:00 pm"
         }
     },
     notes: "Lorem ipsum",

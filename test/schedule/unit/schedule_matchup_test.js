@@ -28,7 +28,7 @@ describe("Schedule", function () {
                 { type: "event", event: "breakfast", when: "before", _id: 10 },
                 { type: "event", event: "lunch", when: "after", _id: 11 },
                 { type: "event", event: "sleep", when: "before", _id: 12 },
-                { type: "exact", time: "16:00", _id: 13 },
+                { type: "exact", time: "04:00 am", _id: 13 },
                 { type: "unspecified", _id: 14 }
             ],
             take_with_food: null,
@@ -102,11 +102,11 @@ describe("Schedule", function () {
         it("matches up correctly", function (done) {
             schedule.match(times, client, {
                 tz: tz,
-                wake: "08:00",
-                sleep: "00:00",
-                breakfast: "09:30",
-                lunch: "13:00",
-                dinner: "18:00"
+                wake: "08:00 am",
+                sleep: "00:00 am",
+                breakfast: "09:30 am",
+                lunch: "01:00 pm",
+                dinner: "06:00 pm"
             }, function (err, result) {
                 if (err) return done(err);
 
@@ -188,11 +188,11 @@ describe("Schedule", function () {
         it("handles matching up when one dose is present", function (done) {
             schedule.match([times[0]], client, {
                 tz: tz,
-                wake: "08:00",
-                sleep: "00:00",
-                breakfast: "09:30",
-                lunch: "13:00",
-                dinner: "18:00"
+                wake: "08:00 am",
+                sleep: "00:00 am",
+                breakfast: "09:30 am",
+                lunch: "01:00 pm",
+                dinner: "06:00 pm"
             }, function (err, result) {
                 if (err) return done(err);
                 expect(result.length).to.not.equal(0);

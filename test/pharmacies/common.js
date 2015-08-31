@@ -38,8 +38,8 @@ var pharmacySchema = module.exports.schema = {
         hours: {
             type: ["object"],
             properties: {
-                open:   { type: "string", pattern: "^\\d\\d:\\d\\d$" },
-                close:  { type: "string", pattern: "^\\d\\d:\\d\\d$" }
+                open:   { type: "string", pattern: "^\\d\\d:\\d\\d [APap][mM]$" },
+                close:  { type: "string", pattern: "^\\d\\d:\\d\\d [APap][mM]$" }
             },
             required: []
         }
