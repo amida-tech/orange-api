@@ -1,4 +1,4 @@
-FROM        centos:centos6
+FROM        centos:centos7
 MAINTAINER  Harry Rickards <rickards@mit.edu>
 
 # Enable EPEL, zeromq, python and build deps

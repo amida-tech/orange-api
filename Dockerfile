@@ -19,6 +19,7 @@ WORKDIR /src
 # Copy app source
 # .dockerignore crucially means we don't copy node_modules
 COPY . /src
+COPY ./config.js.docker /src/config.js
 
 EXPOSE 3000
 ENV NODE_ENV production
