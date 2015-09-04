@@ -25,7 +25,6 @@ describe("Schedule", function () {
             // rather than fixing the time the medication is taken at
             // and stubbing the clock so we know what to expect, we have to
             // generate the schedule time based on the current time
-            // (zerorpc silently fails when used with a stubbed clock)
             var now = moment.tz(tz);
             doseDelta = Math.floor(now.diff(moment(now).startOf("day")) / 2);
             doseTime = moment.tz(now - doseDelta, tz).format("hh:mm a");
