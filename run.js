@@ -4,12 +4,10 @@ var mongoose    = require("mongoose"),
     util        = require("util"),
     Grid        = require("gridfs-stream"),
     async       = require("async"),
-    zerorpc     = require("zerorpc"),
     fs          = require("fs"),
     config      = require("./config.js");
 
 var server; // express server
-var zrpc; // zerorpc client
 var gfs; // gridfs client
 
 async.waterfall([
@@ -22,16 +20,10 @@ async.waterfall([
         gfs = Grid(mongoose.connection.db, mongo);
         callback();
     },
-    // setup zerorpc client
-    function (callback) {
-        zrpc = new zerorpc.Client();
-        callback(zrpc.connect(config.zerorpc));
-    },
     // setup express server
     function (callback) {
         // mongo needs to be connected before we require app.js
         var app = require("./app.js");
-        app.set("zerorpc", zrpc);
         app.set("gridfs", gfs);
         server = app.listen(config.port, config.listen, callback);
     }

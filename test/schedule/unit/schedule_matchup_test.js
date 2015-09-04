@@ -1,6 +1,5 @@
 "use strict";
 var chai            = require("chai"),
-    zerorpc         = require("zerorpc"),
     moment          = require("moment-timezone"),
     Schedule        = require("../../../lib/models/schedule/schedule.js");
 var expect = chai.expect;
