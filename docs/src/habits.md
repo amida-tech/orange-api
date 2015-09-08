@@ -5,13 +5,12 @@ in the morning, what time they usually eat lunch, and so on. Exactly one set of
 preferences is stored for each patient. The current user will need read access
 to the patient to view the habits, and write access to set them.
 
-Most  habits are of the `time` datatype. This means they must be in the specific
-`HH:MM` format of ISO 8601; for example, `03:59` and `23:20`. These times are
-in the *local timezone* of the patient, and will not change if the timezone is updated
-(for example, if `breakfast` is set to `10:00` while the timezone is `London/Europe`,
-`breakfast` will remain as `10:00` if the timezone is updated to `America/New_York`.
-This signifies that if medication is to be taken with food at breakfast every morning,
-the patient should continue doing that even if the timezone shifts).
+Habits must be in the specific `HH:MM a` format; for example, `03:59 am` and `11:20 pm`.
+These times are in the *local timezone* of the patient, and will not change if the 
+timezone is updated (for example, if `breakfast` is set to `10:00 am` while the timezone
+is `London/Europe`, `breakfast` will remain as `10:00 am` if the timezone is updated to
+`America/New_York`. This signifies that if medication is to be taken with food at
+breakfast every morning, the patient should continue doing that even if the timezone shifts).
 
 Habits (all may be blank, and initially are after registration):
 + `wake` (*time*) - what time the patient normally wakes up in the morning
@@ -47,11 +46,11 @@ View the patient's current habits.
     + Body
 
             {
-                wake: "07:00",
-                sleep: "23:00",
-                breakfast: "08:00",
-                lunch: "12:00",
-                dinner: "19:00",
+                wake: "07:00 am",
+                sleep: "11:00 pm",
+                breakfast: "08:00 am",
+                lunch: "12:00 pm",
+                dinner: "07:00 pm",
                 tz: "Etc/UTC",
                 success: true
             }
@@ -77,12 +76,12 @@ Set the patient's habits. The current user will need write access to the patient
     + Body
 
             {
-                wake: "06:00",
-                sleep: "22:00",
-                breakfast: "07:00",
-                lunch: "11:00",
+                wake: "06:00 am",
+                sleep: "10:00 pm",
+                breakfast: "07:00 am",
+                lunch: "11:00 am",
                 tz: "London/Europe",
-                dinner: "18:00"
+                dinner: "06:00 pm"
             }
 
 + Response 200
@@ -102,11 +101,11 @@ Set the patient's habits. The current user will need write access to the patient
     + Body
 
             {
-                wake: "06:00",
-                sleep: "22:00",
-                breakfast: "07:00",
-                lunch: "11:00",
-                dinner: "18:00",
+                wake: "06:00 am",
+                sleep: "10:00 pm",
+                breakfast: "07:00 am",
+                lunch: "11:00 am",
+                dinner: "06:00 pm",
                 tz: "London/Europe",
                 success: true
             }

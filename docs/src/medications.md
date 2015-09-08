@@ -182,11 +182,11 @@ a time of the day at which the medication should be taken. There are 3 different
 }
 ```
 
-- An exact time (`time` should be formatted `HH:MM` in local time)
+- An exact time (`time` should be formatted `HH:MM a` in local time)
 ```javascript
 {
     type: "exact",
-    time: "09:00"
+    time: "09:00 am"
 }
 ```
 
