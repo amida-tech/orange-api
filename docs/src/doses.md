@@ -16,6 +16,12 @@ taken their medication or skipped it). The current user will need write access t
 
         unique ID of the medication for which the patient has adhered
     + date (string, required, `2015-05-31T19:27:09+00:00`)
+
+    + dose (dictionary, optional)
+        
+        Dose of medication the patient should take. Formatted as
+        `{quantity: QUANTITY, unit: UNIT}` where `QUANTITY` is numeric
+        and `UNIT` is a string (e.g., `"mg"`)
         
         ISO 8601 combined date-time in UTC representing the date and time at which
         _the patient took the medication_
