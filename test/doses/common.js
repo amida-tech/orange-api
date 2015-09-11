@@ -16,11 +16,19 @@ delete medicationSchema.properties.success;
 // verify successful responses
 /*eslint-disable key-spacing */
 var doseSchema = module.exports.schema = {
-    required: ["success", "id", "date", "taken", "notes", "scheduled"],
+    required: ["success", "id", "date", "dose", "taken", "notes", "scheduled"],
     properties: {
         success:        { type: "boolean" },
         id:             { type: "number" },
         date:           { type: "string" },
+        dose:           {
+            type:           ["object", "null"],
+            required:       ["quantity", "unit"],
+            properties:     {
+                quantity:       { type: "number" },
+                unit:           { type: "string" }
+            }
+        },
         taken:          { type: "boolean" },
         notes:          { type: "string" },
         scheduled:      { type: ["number", "null"] }
