@@ -8,6 +8,7 @@ var monky = module.exports = new Monky(mongoose);
 /*eslint-disable key-spacing */
 monky.factory("Medication", {
     name: "Medication number #n",
+    status: "active",
     rx_norm: "324026",
     ndc: "33261-0228",
     dose: {
