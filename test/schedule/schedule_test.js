@@ -17,7 +17,7 @@ var expect = chakram.expect;
 describe("Schedule", function () {
     describe("Show Patient Schedule (GET /patients/:patientid/schedule)", function () {
         // given a patient ID, start date and end date, try and show the schedule
-        var show = function (startDate, endDate, medicationId, patientId, accessToken) {
+        var show = module.exports.show = function (startDate, endDate, medicationId, patientId, accessToken) {
             if (typeof startDate !== "undefined" && startDate !== null && typeof startDate !== "string")
                 startDate = startDate.format("YYYY-MM-DD");
             if (typeof endDate !== "undefined" && endDate !== null && typeof endDate !== "string")
@@ -277,8 +277,8 @@ describe("Schedule", function () {
 
                 describe("testing start/end dates", function () {
                     it("it defaults to showing events for the next week", function () {
-                        var today = moment();
-                        var nextWeek = moment().add(6, "days"); // stop date included
+                        var today = moment.utc();
+                        var nextWeek = moment.utc().add(6, "days"); // stop date included
                         var ep1 = show(null, null, null, patient._id, user.accessToken);
                         var ep2 = show(today, nextWeek, null, patient._id, user.accessToken);
                         return ep1.then(function (resp1) {

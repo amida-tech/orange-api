@@ -4,31 +4,15 @@ node_js:
 sudo: false # use container-based infrastructure
 services:
     - mongodb
-addons:
-    apt:
-        packages:
-         - libzmq3-dev
-         - python-virtualenv
 
 # cache node and python installs
 cache:
     directories:
-        - $HOME/.cache/pip
-        - venv/.cache/pip
-        - $HOME/.pip-cache/
-        - /home/travis/virtualenv/python2.7
         - node_modules
 
-# setup python virtualenv so we can pip install packages without
-# sudo
-before_install:
-  - virtualenv venv
-  - source venv/bin/activate
-
-# install python and node prereqs
+# install node prereqs
 install:
   - source venv/bin/activate
-  - pip install -r lib/matching/requirements.txt --download-cache $HOME/.pip-cache
   - npm install -g grunt-cli
   - npm install
 
