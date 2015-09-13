@@ -14,7 +14,7 @@ var expect = chakram.expect;
 describe("Journal", function () {
     describe("List Entries (GET /patients/:patientid/journal)", function () {
         // basic endpoint
-        var list = function (patientId, accessToken, parameters) {
+        var list = module.exports.list = function (patientId, accessToken, parameters) {
             if (typeof parameters === "undefined" || parameters === null) parameters = {};
             var query = querystring.stringify(parameters);
 
