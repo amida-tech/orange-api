@@ -24,9 +24,15 @@ describe("Schedule", function () {
 
         // generic method to promise to generate a schedule
         var gen = function (input, start, end, habits, numberTaken) {
-            // format dates as YYYY-MM-DDD
-            if (typeof start === "object") start = start.format("YYYY-MM-DD");
-            if (typeof end === "object") end = end.format("YYYY-MM-DD");
+            var tz = "Etc/UTC";
+            if (typeof habits !== "undefined" && habits !== null && typeof habits.tz === "string") tz = habits.tz;
+
+            if (typeof start === "string") start = moment.tz(start, tz);
+            if (typeof end === "string") end = moment.tz(end, tz);
+            // we aren't using exact times, but rather date ranges in this test
+            start = moment.tz(start, tz).startOf("day");
+            end = moment.tz(end, tz).endOf("day");
+
             if (input && typeof input.frequency === "object" && typeof input.frequency.start === "object")
                 if (input.frequency.start.constructor === Array) {
                     input.frequency.start = input.frequency.start.map(function (s) {
@@ -47,7 +53,7 @@ describe("Schedule", function () {
             // create Schedule object and generate using it
             var schedule = new Schedule(input, habits);
             expect(schedule.isValid()).to.be.true;
-            return formatResults(schedule.generate(start, end, habits, numberTaken));
+            return formatResults(schedule.generate(start, end, habits, numberTaken, false));
         };
 
         // check the desired schedule is generated
@@ -86,6 +92,7 @@ describe("Schedule", function () {
         // we expect
         // time in HH:MM
         var takeAt = function (date, time) {
+            date = moment.utc(date);
             var parts = time.split(":", 2);
             date.hours(parts[0]);
             date.minutes(parts[1]);
@@ -112,30 +119,6 @@ describe("Schedule", function () {
         });
 
         // date ranges
-        it("handles an invalid start date", function () {
-            return checkFails({
-                regularly: true,
-                as_needed: false,
-                until: { type: "forever" },
-                frequency: { n: 1, unit: "day" },
-                times: [{ type: "unspecified" }],
-                take_with_food: null,
-                take_with_medications: [],
-                take_without_medications: []
-            }, "foo", tomorrow, "INVALID_START_DATE");
-        });
-        it("handles an invalid end date", function () {
-            return checkFails({
-                regularly: true,
-                as_needed: false,
-                until: { type: "forever" },
-                frequency: { n: 1, unit: "day" },
-                times: [{ type: "unspecified" }],
-                take_with_food: null,
-                take_with_medications: [],
-                take_without_medications: []
-            }, yesterday, "foo", "INVALID_END_DATE");
-        });
         it("doesn't allow the start date to be after the end date", function () {
             return checkFails({
                 regularly: true,
@@ -640,13 +623,23 @@ describe("Schedule", function () {
                     }, habits);
                 });
 
+                // setup times
+                var todayEastern, tomorrowEastern, todayPacific, tomorrowPacific;
+                before(function () {
+                    todayEastern = moment.tz("America/Jamaica");
+                    tomorrowEastern = moment.tz("America/Jamaica").add(1, "day");
+                    todayPacific = moment.tz("America/Metlakatla");
+                    tomorrowPacific = moment.tz("America/Metlakatla").add(1, "day");
+
+                });
+
                 it("returns an EST schedule", function () {
                     expect(schedule.isValid()).to.be.true;
                     // takeAt takes UTC times
                     var results = formatResults(schedule.generate(
-                            today.format("YYYY-MM-DD"),
-                            tomorrow.format("YYYY-MM-DD"),
-                            habits
+                            moment(todayEastern).startOf("day"),
+                            moment(tomorrowEastern).endOf("day"),
+                            habits, null, null, false
                     ));
 
                     return expect(results).to.deep.equal([
@@ -670,9 +663,9 @@ describe("Schedule", function () {
                             tz: "America/Metlakatla"
                         });
                         var results = formatResults(schedule.generate(
-                                today.format("YYYY-MM-DD"),
-                                tomorrow.format("YYYY-MM-DD"),
-                                newHabits
+                                moment(todayPacific).startOf("day"),
+                                moment(tomorrowPacific).endOf("day"),
+                                newHabits, null, null, false
                         ));
 
                         return expect(results).to.deep.equal([
