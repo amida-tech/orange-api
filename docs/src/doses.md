@@ -346,3 +346,34 @@ The current user will need write access to both the patient and the medication.
             }
 
 
+## First Dose Event [/patients/{patientid}/doses/nonempty/first]
+### Retrieve first date medication (Dose) was taken [GET]
+Get date of first dose taken by a patient.
+
++ Parameters
+    + patientid (integer, required)
+
+        unique ID of the patient
+
++ Request
+    + Headers
+
+            Authorization: Bearer ACCESS_TOKEN
+
++ Response 200
+    Errors
+    + `access_token_required` (401) - no access token specified in
+    `Authorization` header
+    + `invalid_access_token` (401) - the access token specified is invalid
+    + `unauthorized` (403) - the current user does not have read access to this patient
+    + `invalid_patient_id` (404) - a patient with the specified ID was not found
+
+    + Body
+
+            {
+                min_dose_date: "2015-04-01T15:29:09.000-04:00",
+                count: 46,
+                success: true
+            }
+
+
