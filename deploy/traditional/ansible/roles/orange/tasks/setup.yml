@@ -19,19 +19,19 @@
   sudo: yes
   command: npm install -g grunt-cli
 
-- name: Install zeromq
-  yum: name={{ item }} state="latest"
-  sudo: yes
-  with_items:
-   - zeromq
-   - zeromq-devel
+#- name: Install zeromq
+#  yum: name={{ item }} state="latest"
+#  sudo: yes
+#  with_items:
+#   - zeromq
+#   - zeromq-devel
 
-- name: Install python package dependencies
-  yum: name={{ item }} state="latest"
-  sudo: yes
-  with_items:
-   - python-pip
-   - python-devel
+#- name: Install python package dependencies
+#  yum: name={{ item }} state="latest"
+#  sudo: yes
+#  with_items:
+#   - python-pip
+#   - python-devel
 
 - name:  Install node-gyp
   sudo: yes

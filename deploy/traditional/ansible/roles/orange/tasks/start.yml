@@ -1,8 +1,8 @@
 ---
 #file: roles/orange/tasks/start.yml
-- name: Launch Orange matcher
-  sudo: yes
-  command: /etc/init.d/orange-matcher start
+#- name: Launch Orange matcher
+#  sudo: yes
+#  command: /etc/init.d/orange-matcher start
   
 - name: Launch Orange through PM2
   sudo: yes
