@@ -70,7 +70,7 @@ describe("Schedule", function () {
 
             describe("with test data", function () {
                 // setup two patients the user has read access to
-                var patient, noneMedication, defaultMedication;
+                var patient, noneMedication, defaultMedication, suspendedMedication;
                 before(function () {
                     // create two test users
                     return Q.all([auth.createTestUser(), auth.createTestUser()]).spread(function (me, other) {
@@ -80,7 +80,7 @@ describe("Schedule", function () {
                             return Q.nbind(p.share, patient)(me.email, "read", "anyone");
                         });
                     }).then(function () {
-                        // create two medications for the patient
+                        // create three medications for the patient, one paused
                         return Q.nbind(patient.createMedication, patient)({
                             name: "foobar none",
                             access_anyone: "none",
@@ -114,11 +114,29 @@ describe("Schedule", function () {
                             });
                         }).then(function (m) {
                             defaultMedication = m;
+                        }).then(function () {
+                            return Q.nbind(patient.createMedication, patient)({
+                                name: "foobar def",
+                                access_anyone: "default",
+                                status: "suspended",
+                                schedule: {
+                                    as_needed: false,
+                                    regularly: true,
+                                    until: { type: "forever" },
+                                    frequency: { n: 1, unit: "day" },
+                                    times: [{ type: "exact", time: "09:00" }],
+                                    take_with_food: null,
+                                    take_with_medications: [],
+                                    take_without_medications: []
+                                }
+                            });
+                        }).then(function (m) {
+                            suspendedMedication = m;
                         });
                     });
                 });
 
-                it("respects medication permissions by only showing results from defaultMedication", function () {
+                it("respects medication permissions by only showing active results from defaultMedication", function () {
                     return show(null, null, null, patient._id, patient.user.accessToken).then(function (response) {
                         // extract med IDs
                         var ids = response.body.schedule.map(function (item) {
@@ -132,6 +150,10 @@ describe("Schedule", function () {
                         // and none for medication we have patient-level access to but no med-level access
                         expect(ids.filter(function (id) {
                             return id === noneMedication._id;
+                        }).length).to.equal(0);
+                        // and none for paused medication
+                        expect(ids.filter(function (id) {
+                            return id === suspendedMedication._id;
                         }).length).to.equal(0);
                     });
                 });
