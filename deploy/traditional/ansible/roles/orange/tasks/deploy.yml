@@ -7,7 +7,7 @@
   command: mkdir -p "/var/www/orange/source" "/var/wwww/orange/current"
 
 - name: Clone Orange repository
-  git: repo="https://github.com/amida-tech/orange-api.git" dest="/var/www/orange/source"
+  git: repo="https://github.com/amida-tech/orange-api.git" dest="/var/www/orange/source" version="develop"
 
 - name: Copy Orange source to current
   command: cp -r /var/www/orange/source/. /var/www/orange/current
@@ -18,19 +18,19 @@
 - name: Copy Orange app folder
   command: cp -r /var/www/orange/current/static /var/www/orange/app
 
-- name: Install python dependencies
-  sudo: yes
-  command: pip install -r /var/www/orange/current/lib/matching/requirements.txt
+#- name: Install python dependencies
+#  sudo: yes
+#  command: pip install -r /var/www/orange/current/lib/matching/requirements.txt
 
 - name:  Install orange dependencies
   command: npm install --production chdir=/var/www/orange/current 
 
-- name: Copy matcher init.d script
-  template: src="matcher.init.d" dest="/etc/init.d/orange-matcher"
+#- name: Copy matcher init.d script
+#  template: src="matcher.init.d" dest="/etc/init.d/orange-matcher"
 
-- name: Install matcher init.d script
-  sudo: yes
-  command: "{{ item }}"
-  with_items:
-   - chmod +x /etc/init.d/orange-matcher
-   - chkconfig orange-matcher on
+#- name: Install matcher init.d script
+#  sudo: yes
+#  command: "{{ item }}"
+#  with_items:
+#   - chmod +x /etc/init.d/orange-matcher
+#   - chkconfig orange-matcher on

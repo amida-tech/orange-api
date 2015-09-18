@@ -1,16 +1,9 @@
 "use strict";
 
-var mongoose    = require("mongoose"),
-    zerorpc     = require("zerorpc");
+var mongoose = require("mongoose");
 
 // for models
 var app = require("../../app.js");
-// setup zerorpc client (for unit tests)
-before(function () {
-    var zrpc = new zerorpc.Client();
-    zrpc.connect("tcp://127.0.0.1:4242");
-    app.set("zerorpc", zrpc);
-});
 
 // setup DB connection (not used for REST endpoints, but we're doing
 // unit test-esque things in here)

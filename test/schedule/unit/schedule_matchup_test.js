@@ -1,19 +1,12 @@
 "use strict";
 var chai            = require("chai"),
-    zerorpc         = require("zerorpc"),
     moment          = require("moment-timezone"),
+    mongoose        = require("mongoose"),
     Schedule        = require("../../../lib/models/schedule/schedule.js");
 var expect = chai.expect;
 
 describe("Schedule", function () {
     describe("matching up predicted and dosing events", function () {
-        // connect to zerorpc py matching server
-        var client;
-        before(function () {
-            client = new zerorpc.Client();
-            client.connect("tcp://127.0.0.1:4242");
-        });
-
         // timezone to test in
         var tz = "America/New_York";
 
@@ -34,6 +27,10 @@ describe("Schedule", function () {
             take_with_food: null,
             take_with_medications: [],
             take_without_medications: []
+        });
+        var medication = new (mongoose.model("Medication"))({
+            name: "test med",
+            schedule: schedule
         });
         // to test both accuracy and speed we craft data to test against over a 3 day window, and
         // then repeat that window many times for a larger amount of data to test with
@@ -100,7 +97,7 @@ describe("Schedule", function () {
         });
 
         it("matches up correctly", function (done) {
-            schedule.match(times, client, {
+            medication.match(times, {
                 tz: tz,
                 wake: "08:00 am",
                 sleep: "00:00 am",
@@ -179,23 +176,6 @@ describe("Schedule", function () {
                 expect(m[15].match.index).to.equal(12);
                 expect(m[15].dose).to.equal(15);
 
-                done();
-            });
-        });
-
-        // 1d lists are an edge case for crossovers in the GA so we test explicitly
-        // to make sure nothing errors out here
-        it("handles matching up when one dose is present", function (done) {
-            schedule.match([times[0]], client, {
-                tz: tz,
-                wake: "08:00 am",
-                sleep: "00:00 am",
-                breakfast: "09:30 am",
-                lunch: "01:00 pm",
-                dinner: "06:00 pm"
-            }, function (err, result) {
-                if (err) return done(err);
-                expect(result.length).to.not.equal(0);
                 done();
             });
         });

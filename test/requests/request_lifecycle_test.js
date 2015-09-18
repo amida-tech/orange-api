@@ -161,23 +161,19 @@ describe("Requests", function () {
             });
         });
 
-        it("shows I have a cancelled requests made", function () {
+        it("shows I have no requests made", function () {
             return listRequested({}, me.accessToken).then(function (response) {
                 expect(response).to.be.a.requested.listSuccess;
-                expect(response.body.requested.length).to.equal(1);
-                expect(response.body.count).to.equal(1);
-                expect(response.body.requested[0].email).to.equal(otherUser.email);
-                expect(response.body.requested[0].status).to.equal("cancelled");
+                expect(response.body.requested.length).to.equal(0);
+                expect(response.body.count).to.equal(0);
             });
         });
 
-        it("shows the other user has a cancelled request made to them", function () {
+        it("shows the other user has no requests made to them", function () {
             return listRequests({}, otherUser.accessToken).then(function (response) {
                 expect(response).to.be.a.requests.listSuccess;
-                expect(response.body.requests.length).to.equal(1);
-                expect(response.body.count).to.equal(1);
-                expect(response.body.requests[0].email).to.equal(me.email);
-                expect(response.body.requests[0].status).to.equal("cancelled");
+                expect(response.body.requests.length).to.equal(0);
+                expect(response.body.count).to.equal(0);
             });
         });
     });

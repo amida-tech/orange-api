@@ -42,6 +42,7 @@ Request access to another user's patients from the current user.
     + `email_required` (400) - an email address must be specified
     + `invalid_email` (400) - the email address specified does not correspond to an existing user
     + `already_requested` (400) - a request has already been made to that user from this user
+    + `cant_request_yourself` (400) - a request can't be made to request sharing with yourself
 
     + Body
 

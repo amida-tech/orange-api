@@ -91,11 +91,8 @@ require("./lib/models/rxnorm.js");
 require("./lib/models/user/user.js");
 // Patient requires a getter function for a gridfs client (set as an express
 // setting in run.js but may not be immediately accessible hence the getter function)
-// and likewise for a zerorpc client
 require("./lib/models/patient/patient.js")(function () {
     return app.settings.gridfs;
-}, function () {
-    return app.settings.zerorpc;
 });
 
 // App-level router containing all routes

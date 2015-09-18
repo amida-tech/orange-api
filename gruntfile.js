@@ -4,21 +4,20 @@ module.exports = function (grunt) {
     require("load-grunt-tasks")(grunt);
 
     // run app
-    grunt.registerTask("matchStart", ["exec:matcherStop", "exec:matcherStart"]);
-    grunt.registerTask("server:dev", ["matchStart", "express:dev", "watch:express", "exec:matcherStop"]);
-    grunt.registerTask("server:test", ["matchStart", "express:test"]);
+    grunt.registerTask("server:dev", ["express:dev", "watch:express"]);
+    grunt.registerTask("server:test", ["express:test"]);
     grunt.registerTask("dev", ["eslint", "server:dev"]);
 
     // clean up code and run tests
-    grunt.registerTask("default", ["eslint", "test", "exec:matcherStop"]);
+    grunt.registerTask("default", ["eslint", "test"]);
     grunt.registerTask("test", ["env:test", "dropDatabase", "server:test", "mochaTest:all"]);
 
     // watch for changes and regenerate test PDF each time (for pdf development testing)
     grunt.registerTask("generateTestPdf", ["express:dev", "exec:testPdf"]);
-    grunt.registerTask("report", ["matchStart", "generateTestPdf", "watch:pdf", "exec:matcherStop"]);
+    grunt.registerTask("report", ["generateTestPdf", "watch:pdf"]);
 
     // generate code coverage using bash istanbul wrapper
-    grunt.registerTask("coverage", ["matchStart", "exec:coverage"]);
+    grunt.registerTask("coverage", ["exec:coverage"]);
     // push code coverage to coveralls.io
     grunt.registerTask("coverage:push", ["exec:coverage", "coveralls"]);
 
@@ -122,16 +121,6 @@ module.exports = function (grunt) {
             // generate code coverage: bash wrapper around istanbul as their cli makes things a lot easier
             // than playing around with js hooks
             coverage: "./cover.sh",
-            // python ZeroMQ server to perform schedule/dose event matching (a little computationally non-trivial
-            // so we use python for faster results)
-            matcherStart: {
-                cwd: "lib/matching",
-                cmd: "./matcher_rpc.py start"
-            },
-            matcherStop: {
-                cwd: "lib/matching",
-                cmd: "./matcher_rpc.py stop"
-            },
             // generate test PDF (assuming running servers)
             testPdf: {
                 cmd: "node test_pdf.js"
