@@ -7,7 +7,7 @@ Orange Backend API
 
 **For detailed API documentation see [here](http://amida-tech.github.io/orange-api/)**
 
-API for Orange medication adherence apps. quasi-REST and implemented in Node & Mongo. Implements:
+API for Orange medication adherence apps. RESTful and implemented in Node & Mongo. Implements:
  - Setup user/patient
  - Save medications/doctors/pharmacies/user habits
  - Record dose events
