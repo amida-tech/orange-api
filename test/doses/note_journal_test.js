@@ -1,12 +1,7 @@
 "use strict";
 var chakram         = require("chakram"),
-    util            = require("util"),
-    curry           = require("curry"),
     Q               = require("q"),
-    auth            = require("../common/auth.js"),
     patients        = require("../patients/common.js"),
-    medications     = require("../medications/common.js"),
-    fixtures        = require("./fixtures.js"),
     listEntries     = require("../journal/list_entries_test.js").list;
 
 var expect = chakram.expect;
@@ -63,7 +58,7 @@ describe("Doses", function () {
             before(function () {
                 return Q.nbind(patient.createDose, patient)({
                     date: (new Date()).toISOString(),
-                    dose: {unit: "unit", quantity:1},
+                    dose: {unit: "unit", quantity: 1},
                     notes: "TEST DOSE-SPECIFIC NOTE",
                     taken: true,
                     scheduled: 0,

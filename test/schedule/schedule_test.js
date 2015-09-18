@@ -1,4 +1,5 @@
 "use strict";
+/*eslint max-len:0*/
 var chakram     = require("chakram"),
     moment      = require("moment-timezone"),
     querystring = require("querystring"),
