@@ -197,10 +197,10 @@ describe("Medications", function () {
                 dose: { quantity: -50, unit: "mg" }
             })).to.be.an.api.error(400, "invalid_dose");
         });
-        it("does not allow a dose with a nonintegral quantity", function () {
+        it("accepts a dose with a nonintegral quantity", function () {
             return expect(createPatientMedication({
                 dose: { quantity: 5.2, unit: "mg" }
-            })).to.be.an.api.error(400, "invalid_dose");
+            })).to.be.a.medication.createSuccess;
         });
         it("does not allow a dose with a nonnumeric quantity", function () {
             return expect(createPatientMedication({
