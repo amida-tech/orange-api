@@ -14,13 +14,14 @@ sed '/Orange API listening at http:\/\/127.0.0.1:3000$/q' <&3 ; cat <&3 &
 # run tests
 NODE_ENV=test grunt dropDatabase mochaTest:all dropDatabase
 
-# kill istanbul (--handle-sigint) ensures it generates coverage reports here
-kill -SIGINT $(<coverage/pid)
-
 # run unit tests. we handle coverage for unit and e2e test seperately because e2e tests consist
 # of chakram making HTTP requests to a seperately running (istanbul-coverered) express server,
 # whereas unit tests access app code directly
 NODE_ENV=test ./node_modules/.bin/istanbul cover --dir ./coverage/unit grunt dropDatabase mochaTest:unit
+
+# kill istanbul (--handle-sigint) ensures it generates coverage reports here
+# kill after running unit tests as some unit tests may make HTTP requests
+kill -SIGINT $(<coverage/pid)
 
 # wait for istanbul to be killed (travis is *fast*)
 sleep 2
