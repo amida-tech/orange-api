@@ -26,14 +26,15 @@ API for Orange medication adherence apps. RESTful and implemented in Node & Mong
 # and MongoDB running
 
 # you'll also need to configure the various settings documented in config.js
-# (the only vital ones are the client secret (any hexstring is suitable) and the
-# addresses for web/db/zeromq)
+# in the root app directory (often `orange-api`).
+# The only vital ones are the client secret (any hexstring is suitable) and the
+# addresses for web/db/zeromq. Sensible defaults can be used for those and all
+# other settings by copying `config.js.example` to `config.js`
 
-# you also need a client secret (any hexstring) which should be
-# placed into config.js in the root app directory (often `orange-api`)
-
-# finally you'll also need to configure the notification settings
-# (primarily twilio and sendgrid API auth keys) in config.js
+# if you want to enable notifications (not medication-taking app notifications,
+# but rather e.g., SMS and/or email alerts on user registration) you'll
+# also need to configure the notification settings (primarily Twilio and
+# SendGrid API auth keys) in `config.js`
 
 #install dependencies and build
 npm install
@@ -73,14 +74,7 @@ Schedule matching is slightly more complex. Each medication stores a schedule ob
 upon instance initialisation. This represents the schedule when the medication *should* be taken in an abstract form. `schedule/generation.js` uses this 
 to generate a concrete schedule for when the medication *should* be taken, given a start and end date. Various endpoints then need to match this up
 with the doses the user has actually recorded (either taken or not taken), represented as `Dose` objects in `patient.doses`. Depending on the level of
-information we have about each dose, this is a very non-trivial/ambiguous problem.
-
-To solve this, `zerorpc` (think sockets but better) is used to communicate with a python daemon running some schedule matching code
-(`lib/matching/schedule_matcher.py`). Originally this used a genetic algorithm to match up the generated schedule and the list of doses. This was accurate
-but a little slow (~100ms for each matching request on a Macbook Pro). Later UI changes meant that each recorded `Dose` object could include metadata
-linking it to the exact scheduled 'time' at which it was meant to be taken, so now `lib/matching/schedule_matcher.py` uses a much simpler deterministic
-algorithm that's a little more accurate and orders of magnitude faster. The GA is still left commented in `schedule_matcher.py` in case future UI changes
-mean it's flexibility is needed again.
+information we have about each dose, this is slightly nontrivial problem, solved with an algorithm documented in `lib/models/helpers/schedule_matcher.js`.
 
 Patient images ('avatars') are stored in gridfs rather than as files or raw in mongo, and the relevant code is in `lib/models/patient/avatar.js` (slightly
 more complicated than standard because it parses MIME types from the actual image data whilst storing images).
@@ -117,7 +111,8 @@ at `docs/output/` with the `aglio` library. Some slightly hackish deviations fro
 although these are very apparent and self-explanatory in `docs/src`. As well as on the staging server, docs are published on github and the newest docs
 can be generated from source and pushed to the `gh-pages` branch with `grunt docs:push`.
 
-Deployment things are in `deploy/` and are documented in `deploy/README.md`.
+Deployment things are in `deploy/` and are documented in `deploy/README.md`. We currently recommend using the traditional/Ansible deployment option
+which is documented in detail in `deploy/traditional/README.md`.
 
 ## License
 
