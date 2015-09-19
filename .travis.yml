@@ -7,9 +7,13 @@ sudo: false # use container-based infrastructure
 services:
     - mongodb
 
+# cache node installs
+cache:
+    directories:
+        - node_modules
+
 # install node prereqs
 install:
-  - source venv/bin/activate
   - npm install -g grunt-cli
   - npm install
 
