@@ -1,18 +1,19 @@
 language: node_js
 node_js:
     - "0.10"
+    
 sudo: false # use container-based infrastructure
+
 services:
     - mongodb
 
-# cache node and python installs
+# cache node installs
 cache:
     directories:
         - node_modules
 
 # install node prereqs
 install:
-  - source venv/bin/activate
   - npm install -g grunt-cli
   - npm install
 

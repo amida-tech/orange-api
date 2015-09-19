@@ -3,7 +3,7 @@
 var mongoose = require("mongoose");
 
 // for models
-var app = require("../../app.js");
+var app = require("../../app.js"); //eslint-disable-line no-unused-vars
 
 // setup DB connection (not used for REST endpoints, but we're doing
 // unit test-esque things in here)

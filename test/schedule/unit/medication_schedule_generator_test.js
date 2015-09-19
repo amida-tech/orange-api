@@ -156,7 +156,8 @@ describe("Schedule", function () {
         it("returns 'took_medication' and associated keys correctly", function () {
             /*console.log("SCHEDULE");
             schedule.schedule.forEach(function (item) {
-                console.log("Event %s. Happened: %s, Scheduled: %d, DoseID: %d, TookMed: %s", moment(item.date).format(), item.happened, item.scheduled, item.dose_id, item.took_medication);
+                console.log("Event %s. Happened: %s, Scheduled: %d, DoseID: %d, TookMed: %s",
+                    moment(item.date).format(), item.happened, item.scheduled, item.dose_id, item.took_medication);
             });
             console.log();*/
 
