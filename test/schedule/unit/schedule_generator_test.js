@@ -91,11 +91,16 @@ describe("Schedule", function () {
         // helper to take a datetime and return the sort of event object
         // we expect
         // time in HH:MM
-        var takeAt = function (date, time) {
-            date = moment.utc(date);
+        var takeAt = function (date, time, local) {
+            if (local === true)
+                date = moment(date);
+            else
+                date = moment.utc(date);
+
             var parts = time.split(":", 2);
             date.hours(parts[0]);
             date.minutes(parts[1]);
+
             return {
                 date: date.toISOString(),
                 type: "time"
@@ -627,9 +632,17 @@ describe("Schedule", function () {
                 var todayEastern, tomorrowEastern, todayPacific, tomorrowPacific;
                 before(function () {
                     todayEastern = moment.tz("America/Jamaica");
+                    todayEastern.seconds(0);
+                    todayEastern.milliseconds(0);
                     tomorrowEastern = moment.tz("America/Jamaica").add(1, "day");
+                    tomorrowEastern.seconds(0);
+                    tomorrowEastern.milliseconds(0);
                     todayPacific = moment.tz("America/Metlakatla");
+                    todayPacific.seconds(0);
+                    todayPacific.milliseconds(0);
                     tomorrowPacific = moment.tz("America/Metlakatla").add(1, "day");
+                    tomorrowPacific.seconds(0);
+                    tomorrowPacific.milliseconds(0);
 
                 });
 
@@ -643,14 +656,14 @@ describe("Schedule", function () {
                     ));
 
                     return expect(results).to.deep.equal([
-                        takeAt(today, "17:00"),
-                        takeAt(today, "19:00"),
-                        takeAt(tomorrow, "00:00"),
-                        takeAt(tomorrow, "09:00"),
-                        takeAt(tomorrow, "17:00"),
-                        takeAt(tomorrow, "19:00"),
-                        takeAt(moment(today).add(2, "days"), "00:00"),
-                        takeAt(moment(today).add(2, "days"), "09:00")
+                        takeAt(todayEastern, "12:00", true),
+                        takeAt(todayEastern, "14:00", true),
+                        takeAt(todayEastern, "19:00", true),
+                        takeAt(tomorrowEastern, "04:00", true),
+                        takeAt(tomorrowEastern, "12:00", true),
+                        takeAt(tomorrowEastern, "14:00", true),
+                        takeAt(tomorrowEastern, "19:00", true),
+                        takeAt(moment(todayEastern).add(2, "days"), "04:00", true)
                     ]);
                 });
 
@@ -669,14 +682,14 @@ describe("Schedule", function () {
                         ));
 
                         return expect(results).to.deep.equal([
-                            takeAt(today, "19:00"), // 2PM *EST* in UTC
-                            takeAt(today, "20:00"), // after sleep: 12PM PST in UTC
-                            takeAt(tomorrow, "03:00"), // before dinner: 7PM PST in UTC
-                            takeAt(tomorrow, "12:00"), // before sleep: 4AM PST in uTC
-                            takeAt(tomorrow, "19:00"),
-                            takeAt(tomorrow, "20:00"),
-                            takeAt(moment(today).add(2, "days"), "03:00"),
-                            takeAt(moment(today).add(2, "days"), "12:00")
+                            takeAt(todayPacific, "11:00", true), // 2PM *EST* in PST
+                            takeAt(todayPacific, "12:00", true), // after sleep: 12PM PST in PST
+                            takeAt(todayPacific, "19:00", true), // before dinner: 7PM PST in PST
+                            takeAt(tomorrowPacific, "04:00", true), // before sleep: 4AM PST in PST
+                            takeAt(tomorrowPacific, "11:00", true),
+                            takeAt(tomorrowPacific, "12:00", true),
+                            takeAt(tomorrowPacific, "19:00", true),
+                            takeAt(moment(todayPacific).add(2, "days"), "04:00", true)
                         ]);
                     });
                 });
