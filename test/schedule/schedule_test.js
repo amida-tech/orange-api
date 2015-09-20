@@ -196,6 +196,13 @@ describe("Schedule", function () {
                             take_with_medications: [],
                             take_without_medications: []
                         }
+                    }).then(function (m) {
+                        m.schedules[0].date = moment().subtract(10, "days").unix();
+                        m.markModified("schedules");
+                        p.markModified("medications");
+                        return Q.nbind(patient.save, patient)().then(function () {
+                            return m;
+                        });
                     });
                 };
             };

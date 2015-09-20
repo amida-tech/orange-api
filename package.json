@@ -18,6 +18,7 @@
   ],
   "dependencies": {
     "array-intersection": "^0.1.2",
+    "array.prototype.findindex": "^1.0.0",
     "async": "^1.1.0",
     "bcrypt": "^0.8.3",
     "body-parser": "^1.12.4",

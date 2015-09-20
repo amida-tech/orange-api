@@ -47,7 +47,12 @@ describe("Schedule", function () {
                     take_without_medications: []
                 }
             }).then(function (m) {
+                m.schedules[0].date = moment().subtract(10, "days").unix();
                 medication = m;
+
+                m.markModified("schedules");
+                patient.markModified("medications");
+                return Q.nbind(patient.save, patient)();
             });
         });
 

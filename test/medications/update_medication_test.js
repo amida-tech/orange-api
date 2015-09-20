@@ -143,6 +143,7 @@ describe("Medications", function () {
                 rx_norm: null,
                 fill_date: null,
                 ndc: null,
+                notes: null,
                 dose: null,
                 route: null,
                 form: null,
@@ -159,6 +160,7 @@ describe("Medications", function () {
                 expect(response.body.rx_norm).to.equal("");
                 expect(response.body.fill_date).to.equal(null);
                 expect(response.body.ndc).to.equal("");
+                expect(response.body.notes).to.equal("");
                 expect(response.body.dose).to.deep.equal({quantity: 1, unit: "dose"});
                 expect(response.body.route).to.equal("");
                 expect(response.body.form).to.equal("");

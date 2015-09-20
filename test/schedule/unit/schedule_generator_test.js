@@ -196,37 +196,24 @@ describe("Schedule", function () {
                     ]);
                 });
 
-                it("handles a maximum number of times when there's none taken", function () {
+                it("handles a maximum number of times", function () {
+                    var doseTime = moment().utc().format("HH:mm");
+                    var utcToday = moment().utc().startOf("day");
                     return check({
                         regularly: true,
                         as_needed: false,
                         until: { type: "number", stop: 4 },
                         frequency: { n: 1, unit: "day" },
-                        times: [{ type: "exact", time: "09:00" }],
+                        times: [{ type: "exact", time: doseTime }],
                         take_with_food: null,
                         take_with_medications: [],
                         take_without_medications: []
-                    }, yesterday, tomorrow, [
-                        takeAt(yesterday, "09:00"),
-                        takeAt(today, "09:00"),
-                        takeAt(tomorrow, "09:00")
+                    }, moment(utcToday).add(2, "days"), moment(utcToday).add(7, "days"), [
+                        // hidden but still counted: takeAt(moment(utcToday).add(1, "days"), doseTime),
+                        takeAt(moment(utcToday).add(2, "days"), doseTime),
+                        takeAt(moment(utcToday).add(3, "days"), doseTime),
+                        takeAt(moment(utcToday).add(4, "days"), doseTime)
                     ], undefined, 0);
-                });
-
-                it("handles a maximum number of times when there's some taken", function () {
-                    return check({
-                        regularly: true,
-                        as_needed: false,
-                        until: { type: "number", stop: 4 },
-                        frequency: { n: 1, unit: "day" },
-                        times: [{ type: "exact", time: "09:00" }],
-                        take_with_food: null,
-                        take_with_medications: [],
-                        take_without_medications: []
-                    }, yesterday, tomorrow, [
-                        takeAt(yesterday, "09:00"),
-                        takeAt(today, "09:00")
-                    ], undefined, 2);
                 });
 
                 it("handles a maximum number of times when there's many taken", function () {

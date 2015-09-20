@@ -74,7 +74,8 @@ describe("Medications", function () {
                 access_anyone: undefined,
                 access_family: undefined,
                 access_prime: undefined,
-                import_id: undefined
+                import_id: undefined,
+                notes: undefined
             })).to.be.a.medication.createSuccess;
         });
         it("allows null values for everything other than name and access_X", function () {
@@ -93,11 +94,24 @@ describe("Medications", function () {
                 schedule: null,
                 doctor_id: null,
                 pharmacy_id: null,
-                import_id: null
+                import_id: null,
+                notes: null
             })).to.be.a.medication.createSuccess;
         });
         // for these tests we know the fixture has a valid quantity so can assert the
         // presence of number_left
+        it("accepts a blank notes field", function () {
+            return createPatientMedication({ notes: "" }).then(function (response) {
+                expect(response).to.be.a.medication.createSuccess;
+                expect(response.body.notes).to.equal("");
+            });
+        });
+        it("accepts a non-black notes field", function () {
+            return createPatientMedication({ notes: "lorem ipsum" }).then(function (response) {
+                expect(response).to.be.a.medication.createSuccess;
+                expect(response.body.notes).to.equal("lorem ipsum");
+            });
+        });
         it("accepts a null fill_date", function () {
             return createPatientMedication({ fill_date: null }).then(function (response) {
                 expect(response).to.be.a.medication.createSuccess;
