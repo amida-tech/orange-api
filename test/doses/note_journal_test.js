@@ -127,6 +127,7 @@ describe("Doses", function () {
             });
         });
 
+        var entryId;
         describe("after setting the dose notes back to a non-blank value", function () {
             before(function () {
                 return Q.nbind(patient.findDoseByIdAndUpdate, patient)(dose._id, {
@@ -146,6 +147,78 @@ describe("Doses", function () {
                     var entry = resp.body.entries[0];
                     expect(entry.medication_ids).to.deep.equal([medication._id]);
                     expect(entry.text).to.equal("LOREM IPSUM");
+                    entryId = entry.id;
+                });
+            });
+        });
+
+        describe("after editing the journal entry", function () {
+            before(function () {
+                return Q.nbind(patient.findJournalEntryByIdAndUpdate, patient)(entryId, {
+                    text: "new text"
+                });
+            });
+
+            it("updated the journal entry", function () {
+                return listEntries(patient._id, patient.user.accessToken, {
+                    medication_ids: [medication._id]
+                }).then(function (resp) {
+                    expect(resp).to.be.a.journal.listSuccess;
+                    expect(resp.body.count).to.equal(1);
+
+                    var entry = resp.body.entries[0];
+                    expect(entry.medication_ids).to.deep.equal([medication._id]);
+                    expect(entry.text).to.equal("new text");
+                });
+            });
+
+            it("updated the dose notes text", function () {
+                return Q.nbind(patient.findDoseById, patient)(dose._id).then(function (d) {
+                    expect(d.notes).to.equal("new text");
+                });
+            });
+        });
+
+        describe("after deleting the journal entry", function () {
+            before(function () {
+                return Q.nbind(patient.findJournalEntryByIdAndDelete, patient)(entryId);
+            });
+
+            it("deleted the journal entry", function () {
+                return listEntries(patient._id, patient.user.accessToken, {
+                    medication_ids: [medication._id]
+                }).then(function (resp) {
+                    expect(resp).to.be.a.journal.listSuccess;
+                    expect(resp.body.count).to.equal(0);
+                });
+            });
+
+            it("set the dose notes text to be blank", function () {
+                return Q.nbind(patient.findDoseById, patient)(dose._id).then(function (d) {
+                    expect(d.notes).to.equal("");
+                });
+            });
+        });
+
+        describe("after setting the dose notes back to a non-blank value", function () {
+            before(function () {
+                return Q.nbind(patient.findDoseByIdAndUpdate, patient)(dose._id, {
+                    notes: "IPSUM LOREM"
+                }).then(function (d) {
+                    dose = d;
+                });
+            });
+
+            it("created another new journal entry", function () {
+                return listEntries(patient._id, patient.user.accessToken, {
+                    medication_ids: [medication._id]
+                }).then(function (resp) {
+                    expect(resp).to.be.a.journal.listSuccess;
+                    expect(resp.body.count).to.equal(1);
+
+                    var entry = resp.body.entries[0];
+                    expect(entry.medication_ids).to.deep.equal([medication._id]);
+                    expect(entry.text).to.equal("IPSUM LOREM");
                 });
             });
         });
