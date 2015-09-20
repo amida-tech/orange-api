@@ -28,7 +28,7 @@ var medicationSchema = module.exports.schema = {
     required: ["id", "name", "status", "rx_norm", "ndc", "dose", "route", "form", "rx_number",
                 "quantity", "type", "schedule", "fill_date", "number_left", "access_anyone",
                 "access_family", "access_prime", "brand", "origin", "import_id", "schedule_summary",
-                "success"],
+                "notes", "success"],
     properties: {
         success:        { type: "boolean" },
         id:             { type: "number" },
@@ -117,7 +117,8 @@ var medicationSchema = module.exports.schema = {
         schedule_summary:   { type: "string" },
         access_anyone:      { type: "string" },
         access_family:      { type: "string" },
-        access_prime:       { type: "string" }
+        access_prime:       { type: "string" },
+        notes:              { type: "string" }
     },
     definitions: {
         doctor: doctorSchema,
