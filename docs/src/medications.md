@@ -881,6 +881,10 @@ and all other users (unless they have set their own notification settings) will 
 The user key can be the string `default` to represent that that user has not set a custom offset
 and the default should be respected.
 
+Both the user and/or default key can be the string `paused` to represent that the user has paused
+notification for that medication (but is still taking the medication, they just don't want to receive
+notifications about it).
+
 ### View Notification Settings [GET]
 View the current notification settings for the current user and the global user-wide default
 
@@ -934,11 +938,11 @@ Set the current notification settings for the current user and the global user-w
     + default (number, optional)
 
         number of minutes to change the notification offset to for all users who haven't set
-        a custom value
+        a custom value, or `"paused"` to disable notifications
     + user (number or string, optional)
 
         number of minutes to change the notification offset to for this user, or `"default"`
-        to indicate that the default value should be used
+        to indicate that the default value should be used, or `"paused"` to disable notifications
 
 + Request
     + Headers
