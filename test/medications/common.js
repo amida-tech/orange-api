@@ -174,7 +174,7 @@ var notificationsSchema = {
     required: ["default", "user", "success"],
     properties: {
         success:        { type: "boolean" },
-        default:        { type: "number" },
+        default:        { type: ["number", "string"] },
         user:           { type: ["number", "string"] }
     },
     additionalProperties: false
