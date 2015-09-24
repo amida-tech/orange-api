@@ -5,6 +5,13 @@ var express         = require("express"),
     bunyanLogstash  = require("bunyan-logstash");
 var app = module.exports = express();
 
+// disable nagle's algorithm: significantly slows down piping to res, as is
+// done in GET /avatar
+app.use(function(req, res, next){
+    req.connection.setNoDelay(true);
+    next();
+});
+
 // Logging
 var config = require("./config.js");
 var streams = [];
