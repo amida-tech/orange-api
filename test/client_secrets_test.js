@@ -20,7 +20,7 @@ describe("API", function () {
             var headers = {};
             if (typeof secret !== "undefined") headers["X-Client-Secret"] = secret;
 
-            return chakram.post("http://localhost:3000/v1/user", user, { headers: headers });
+            return chakram.post("http://localhost:5000/v1/user", user, { headers: headers });
         });
     };
 

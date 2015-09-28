@@ -14,7 +14,7 @@ describe("Doctors", function () {
     describe("Remove Doctor (DELETE /patients/:patientid/doctors/:doctorid)", function () {
         // basic endpoint
         var remove = function (doctorId, patientId, accessToken) {
-            var url = util.format("http://localhost:3000/v1/patients/%d/doctors/%d", patientId, doctorId);
+            var url = util.format("http://localhost:5000/v1/patients/%d/doctors/%d", patientId, doctorId);
             return chakram.delete(url, {}, auth.genAuthHeaders(accessToken));
         };
 

@@ -16,7 +16,7 @@ describe("Patients", function () {
             if (typeof parameters === "undefined" || parameters === null) parameters = {};
             var query = querystring.stringify(parameters);
 
-            var url = util.format("http://localhost:3000/v1/patients?%s", query);
+            var url = util.format("http://localhost:5000/v1/patients?%s", query);
             return chakram.get(url, auth.genAuthHeaders(accessToken));
         };
         var listUser = function (user, parameters) {

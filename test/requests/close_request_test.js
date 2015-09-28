@@ -13,7 +13,7 @@ describe("Requests", function () {
     describe("Close Request made to the Current User", function () {
         // delete a request made to a user
         var closeRequest = module.exports.closeRequest = function (data, requestId, accessToken) {
-            var url = util.format("http://localhost:3000/v1/requests/%d", requestId);
+            var url = util.format("http://localhost:5000/v1/requests/%d", requestId);
             return chakram.delete(url, data, auth.genAuthHeaders(accessToken));
         };
 

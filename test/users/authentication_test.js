@@ -36,7 +36,7 @@ describe("Users", function () {
                 return expect(request).to.be.an.authentication.success.then(function (response) {
                     // verify it authenticates us to GET /user
                     var accessToken = response.body.access_token;
-                    var getInfo = chakram.get("http://localhost:3000/v1/user", auth.genAuthHeaders(accessToken));
+                    var getInfo = chakram.get("http://localhost:5000/v1/user", auth.genAuthHeaders(accessToken));
                     return expect(getInfo).to.be.an.api.getSuccess;
                 });
             });

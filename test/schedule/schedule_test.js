@@ -36,7 +36,7 @@ describe("Schedule", function () {
             if (typeof medicationId !== "undefined") query.medication_id = medicationId;
             query = querystring.stringify(query);
 
-            var url = util.format("http://localhost:3000/v1/patients/%d/schedule?%s", patientId, query);
+            var url = util.format("http://localhost:5000/v1/patients/%d/schedule?%s", patientId, query);
             return chakram.get(url, auth.genAuthHeaders(accessToken));
         };
 

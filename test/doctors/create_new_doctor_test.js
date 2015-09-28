@@ -12,7 +12,7 @@ describe("Doctors", function () {
     describe("Create New Doctor (POST /patients/:patientid/doctors)", function () {
         // basic endpoint
         var create = function (data, patientId, accessToken) {
-            var url = util.format("http://localhost:3000/v1/patients/%d/doctors", patientId);
+            var url = util.format("http://localhost:5000/v1/patients/%d/doctors", patientId);
             return chakram.post(url, data, auth.genAuthHeaders(accessToken));
         };
 

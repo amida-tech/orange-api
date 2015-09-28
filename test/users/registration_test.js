@@ -11,7 +11,7 @@ describe("Users", function () {
             return fixtures.build("User", data).then(function (user) {
                 // auth.genAuthHeaders(undefined) sets X-Client-Secret for us, and doesn't set any
                 // access token header
-                return chakram.post("http://localhost:3000/v1/user", user, auth.genAuthHeaders(undefined));
+                return chakram.post("http://localhost:5000/v1/user", user, auth.genAuthHeaders(undefined));
             });
         };
 
@@ -88,7 +88,7 @@ describe("Users", function () {
                 user.first_name = user.firstName;
                 user.last_name = user.lastName;
 
-                return chakram.post("http://localhost:3000/v1/user", user, headers).then(function () {
+                return chakram.post("http://localhost:5000/v1/user", user, headers).then(function () {
                     return user;
                 });
             };
@@ -96,14 +96,14 @@ describe("Users", function () {
             // need to do this via HTTP rather than using user to avoid duplication errors
             var token = function (user) {
                 // auth.genAuthHeaders sends client secret
-                return chakram.post("http://localhost:3000/v1/auth/token", user, headers).then(function (resp) {
+                return chakram.post("http://localhost:5000/v1/auth/token", user, headers).then(function (resp) {
                     return resp.body.access_token;
                 });
             };
             // get list of all patients
             var list = function (accessToken) {
                 var authHeaders = auth.genAuthHeaders(accessToken);
-                return chakram.get("http://localhost:3000/v1/patients", authHeaders);
+                return chakram.get("http://localhost:5000/v1/patients", authHeaders);
             };
             return newUser.then(registerUser).then(token).then(list).then(function (response) {
                 // check we have exactly one patient

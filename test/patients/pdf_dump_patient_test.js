@@ -14,7 +14,7 @@ describe("Patients", function () {
         // basic endpoint
         var dump = curry(function (params, patientId, accessToken) {
             var query = querystring.stringify(params);
-            var url = util.format("http://localhost:3000/v1/patients/%d.pdf?%s", patientId, query);
+            var url = util.format("http://localhost:5000/v1/patients/%d.pdf?%s", patientId, query);
             return chakram.get(url, auth.genAuthHeaders(accessToken));
         });
         var dumpPatient = curry(function (params, patient) {

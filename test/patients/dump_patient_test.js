@@ -19,7 +19,7 @@ describe("Patients", function () {
     describe("View Patient JSON Data Dump (GET /patients/:patientid.json)", function () {
         // basic endpoint
         var dump = function (patientId, accessToken) {
-            var url = util.format("http://localhost:3000/v1/patients/%d.json", patientId);
+            var url = util.format("http://localhost:5000/v1/patients/%d.json", patientId);
             return chakram.get(url, auth.genAuthHeaders(accessToken));
         };
         var dumpPatient = function (patient) {

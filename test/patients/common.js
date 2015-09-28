@@ -144,7 +144,7 @@ module.exports.itRequiresAuthentication = function (endpoint) {
 
 // simple endpoint to show patient
 module.exports.show = function (patientId, accessToken) {
-    return chakram.get("http://localhost:3000/v1/patients/" + patientId, auth.genAuthHeaders(accessToken));
+    return chakram.get("http://localhost:5000/v1/patients/" + patientId, auth.genAuthHeaders(accessToken));
 };
 
 // helper methods for authentication

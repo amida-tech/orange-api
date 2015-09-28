@@ -11,7 +11,7 @@ describe("Users", function () {
     describe("EDIT User Info (PUT /user)", function () {
         // simple endpoint
         var update = function (modifications, accessToken) {
-            return chakram.put("http://localhost:3000/v1/user", modifications, auth.genAuthHeaders(accessToken));
+            return chakram.put("http://localhost:5000/v1/user", modifications, auth.genAuthHeaders(accessToken));
         };
 
         // create a user with the specified data modifications (to the factory default), generate

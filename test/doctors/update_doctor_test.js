@@ -14,7 +14,7 @@ describe("Doctors", function () {
     describe("Edit Doctor (PUT /patients/:patientid/doctors/:doctorid)", function () {
         // basic endpoint
         var update = function (data, doctorId, patientId, accessToken) {
-            var url = util.format("http://localhost:3000/v1/patients/%d/doctors/%d", patientId, doctorId);
+            var url = util.format("http://localhost:5000/v1/patients/%d/doctors/%d", patientId, doctorId);
             return chakram.put(url, data, auth.genAuthHeaders(accessToken));
         };
 

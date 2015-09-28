@@ -15,7 +15,7 @@ var expect = chakram.expect;
 describe("Medications", function () {
     describe("Update Single Medication (PUT /patients/:patientid/medications/:medicationid)", function () {
         var update = module.exports.update = function (modifications, medicationId, patientId, accessToken) {
-            var url = util.format("http://localhost:3000/v1/patients/%d/medications/%d", patientId, medicationId);
+            var url = util.format("http://localhost:5000/v1/patients/%d/medications/%d", patientId, medicationId);
             return chakram.put(url, modifications, auth.genAuthHeaders(accessToken));
         };
         var updatePatient = function (modifications, data, patient) {

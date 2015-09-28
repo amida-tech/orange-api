@@ -21,6 +21,6 @@ WORKDIR /src
 COPY . /src
 COPY ./config.js.docker /src/config.js
 
-EXPOSE 3000
+EXPOSE 5000
 ENV NODE_ENV production
 CMD ["node", "run.js"]

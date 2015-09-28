@@ -23,7 +23,7 @@ describe("Patients", function () {
             if (typeof params === "undefined" || params === null) params = {};
             var query = querystring.stringify(params);
 
-            var url = util.format("http://localhost:3000/v1/patients/%d/shares?%s", patientId, query);
+            var url = util.format("http://localhost:5000/v1/patients/%d/shares?%s", patientId, query);
             return chakram.get(url, auth.genAuthHeaders(accessToken));
         };
         var listPatient = function (p, params) {

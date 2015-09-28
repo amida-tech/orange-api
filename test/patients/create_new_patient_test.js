@@ -10,7 +10,7 @@ describe("Patients", function () {
     describe("Create New Patient (POST /patients)", function () {
         // simple endpoint
         var create = function (data, accessToken) {
-            return chakram.post("http://localhost:3000/v1/patients", data, auth.genAuthHeaders(accessToken));
+            return chakram.post("http://localhost:5000/v1/patients", data, auth.genAuthHeaders(accessToken));
         };
 
         // setup a test user and access token, then create a patient (with the specified

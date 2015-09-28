@@ -9,7 +9,7 @@ describe("NPI", function () {
         // basic endpoint
         var query = function (data) {
             var headers = auth.genAuthHeaders(null); // adds X-Client-Secret header for us
-            return chakram.post("http://localhost:3000/v1/npi", data, headers);
+            return chakram.post("http://localhost:5000/v1/npi", data, headers);
         };
 
         it("gracefully handles no data POSTed", function () {

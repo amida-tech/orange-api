@@ -13,13 +13,13 @@ describe("Schedule", function () {
     describe("Show Patient Schedule (GET /patients/:patientid/schedule)", function () {
         // show a medication
         var showMedication = function (medicationId, patientId, accessToken) {
-            var url = util.format("http://localhost:3000/v1/patients/%d/medications/%d", patientId, medicationId);
+            var url = util.format("http://localhost:5000/v1/patients/%d/medications/%d", patientId, medicationId);
             return chakram.get(url, auth.genAuthHeaders(accessToken));
         };
 
         // create a medication
         var createMedication = function (data, patientId, accessToken) {
-            var url = util.format("http://localhost:3000/v1/patients/%d/medications", patientId);
+            var url = util.format("http://localhost:5000/v1/patients/%d/medications", patientId);
             return chakram.post(url, data, auth.genAuthHeaders(accessToken));
         };
 

@@ -10,7 +10,7 @@ describe("Habits", function () {
     describe("View Patient Habits (/patients/:patientid/habits)", function () {
         // basic endpoint
         var show = function (patientId, accessToken) {
-            var url = util.format("http://localhost:3000/v1/patients/%d/habits", patientId);
+            var url = util.format("http://localhost:5000/v1/patients/%d/habits", patientId);
             return chakram.get(url, auth.genAuthHeaders(accessToken));
         };
 
