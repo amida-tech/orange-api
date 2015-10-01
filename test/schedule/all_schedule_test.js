@@ -7,7 +7,6 @@ var chakram         = require("chakram"),
     moment          = require("moment-timezone"),
     auth            = require("../common/auth.js"),
     patients        = require("../patients/common.js"),
-    medications     = require("../medications/common.js"),
     fixtures        = require("../medications/fixtures.js");
 
 var expect = chakram.expect;

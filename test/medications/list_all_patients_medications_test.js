@@ -5,7 +5,6 @@ var chakram         = require("chakram"),
     querystring     = require("querystring"),
     auth            = require("../common/auth.js"),
     patients        = require("../patients/common.js"),
-    medications     = require("../medications/common.js"),
     fixtures        = require("./fixtures.js");
 
 var expect = chakram.expect;
