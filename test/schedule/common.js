@@ -29,7 +29,8 @@ var scheduleItemSchema = {
         delay:                      { type: "number" },
         notification:               { type: "string" },
         dose_id:                    { type: "number" },
-        scheduled:                  { type: "number" }
+        scheduled:                  { type: "number" },
+        patient_id:                 { type: "number" }
     },
     additionalProperties: false
 };

@@ -421,6 +421,10 @@ doctor and pharmacy details are not expanded out. To get a successful response f
 this endpoint, the current user must have read access to the patient. Further, only
 medications for which the current user has read access will be returned.
 
+To view medications for all patient logs the user has access to (rather than just one
+specific patient), make this request to `GET /medications`. That endpoint accepts
+exactly the same parameters as this one.
+
 + Parameters
     + patientid (integer, required)
 

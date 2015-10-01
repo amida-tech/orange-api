@@ -129,7 +129,6 @@ var medicationSchema = module.exports.schema = {
 /*eslint-enable key-spacing */
 var medicationViewSchema = JSON.parse(JSON.stringify(medicationSchema)); // easy deep copy
 
-
 // viewing a medication in detail should show full doctor and pharmacy details
 medicationViewSchema.required.push("doctor");
 medicationViewSchema.required.push("pharmacy");
@@ -150,6 +149,14 @@ medicationSchema.properties.pharmacy_id = {
     type: ["number", "null"]
 };
 
+var medicationAllPatientSchema = JSON.parse(JSON.stringify(medicationSchema)); // easy deep copy
+
+// patient IDs in /medications endpoint
+medicationAllPatientSchema.required.push("patient_id");
+medicationAllPatientSchema.properties.patient_id = {
+    type: "number"
+};
+
 common.addApiChain("medication", {
     "createSuccess": function (respObj) {
         expect(respObj).to.be.an.api.postSuccess;
@@ -165,6 +172,9 @@ common.addApiChain("medication", {
     },
     "listSuccess": function (respObj) {
         expect(respObj).to.be.an.api.genericListSuccess("medications", medicationSchema);
+    },
+    "listAllPatientSuccess": function (respObj) {
+        expect(respObj).to.be.an.api.genericListSuccess("medications", medicationAllPatientSchema);
     }
 });
 
