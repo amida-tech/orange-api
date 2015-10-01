@@ -79,7 +79,7 @@ describe("Medications", function () {
 
             it("lists both medications", function () {
                 return list(user.accessToken, {}).then(function (response) {
-                    expect(response).to.be.a.medication.listSuccess;
+                    expect(response).to.be.a.medication.listAllPatientSuccess;
                     expect(response.body.count).to.equal(2);
 
                     var medIds = response.body.medications.map(function (m) {
@@ -88,6 +88,13 @@ describe("Medications", function () {
                     expect(medIds.length).to.equal(2);
                     expect(medIds).to.include(medication._id);
                     expect(medIds).to.include(otherMedication._id);
+
+                    var patientIds = response.body.medications.map(function (m) {
+                        return m.patient_id;
+                    });
+                    expect(patientIds.length).to.equal(2);
+                    expect(patientIds).to.include(patient._id);
+                    expect(patientIds).to.include(otherPatient._id);
                 });
             });
 
@@ -95,7 +102,7 @@ describe("Medications", function () {
                 return list(user.accessToken, {
                     name: "foo"
                 }).then(function (response) {
-                    expect(response).to.be.a.medication.listSuccess;
+                    expect(response).to.be.a.medication.listAllPatientSuccess;
                     expect(response.body.count).to.equal(1);
 
                     var medIds = response.body.medications.map(function (m) {

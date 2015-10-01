@@ -124,6 +124,13 @@ describe("Schedule", function () {
                     });
                     expect(medIds).to.include(medication._id);
                     expect(medIds).to.include(otherMedication._id);
+
+                    var patientIds = response.body.schedule.map(function (m) {
+                        return m.patient_id;
+                    });
+                    expect(patientIds.length).to.equal(2);
+                    expect(patientIds).to.include(patient._id);
+                    expect(patientIds).to.include(otherPatient._id);
                 });
             });
         });
