@@ -45,8 +45,8 @@ describe("Medications", function () {
             before(function () {
                 return auth.createTestUser().then(function (other) {
                     return patients.createOtherPatient({}, user, other).then(function (p) {
-                        patient = p;
-                        return Q.nbind(patient.share, patient)(user.email, "read", "anyone");
+                        otherPatient = p;
+                        return Q.nbind(p.share, p)(user.email, "read", "anyone");
                     });
                 });
             });
@@ -67,7 +67,7 @@ describe("Medications", function () {
             // setup a medication for the other user's patient
             var otherMedication;
             before(function () {
-                var create = Q.nbind(patient.createMedication, patient);
+                var create = Q.nbind(otherPatient.createMedication, otherPatient);
                 return fixtures.build("Medication", {
                     name: "bar"
                 }).then(function (m) {

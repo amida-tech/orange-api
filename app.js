@@ -119,7 +119,8 @@ router.use("/rxnorm", require("./lib/controllers/rxnorm.js"));
 router.use("/", require("./lib/controllers/requests.js"));
 
 // Medications and schedule for all patients the user has access to
-router.use("/medications", require("./lib/controllers/all_medications.js"));
+// provides /medications & /schedule
+router.use("/", require("./lib/controllers/all_medications.js"));
 
 // Patient CRUD and sharing
 router.use("/patients", require("./lib/controllers/patients/patients.js"));
