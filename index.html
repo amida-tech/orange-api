@@ -69,8 +69,9 @@ need this authentication.</p>
 form</p>
 <pre><code class="language-http"><span class="hljs-attribute">Authorization</span>: <span class="hljs-string">Bearer ACCESS_TOKEN</span></code></pre>
 <p>and should be sent in plaintext, <em>not</em> base64 encoded.</p>
-<div id="authentication-access-tokens" class="resource"><h3 class="resource-heading">Access Tokens<a href="#authentication-access-tokens" class="permalink">&para;</a></h3><div id="authentication-access-tokens-post" class="action post"><h4 class="action-heading"><div class="name">Retrieve an Access Token</div><a href="#authentication-access-tokens-post" class="method post">POST</a><code class="uri">/auth/token</code></h4><p>Use an email/password of an existing user to generate an access token. <strong>The
-access token does not expire until the user changes password.</strong></p>
+<div id="authentication-access-tokens" class="resource"><h3 class="resource-heading">Access Tokens<a href="#authentication-access-tokens" class="permalink">&para;</a></h3><div id="authentication-access-tokens-post" class="action post"><h4 class="action-heading"><div class="name">Retrieve an Access Token</div><a href="#authentication-access-tokens-post" class="method post">POST</a><code class="uri">/auth/token</code></h4><p>Use an email/password of an existing user to generate an access token. The access
+token will expire when the user changes their password, or when it is not in that
+user’s 5 most recently generated access tokens (whichever happens first).</p>
 <div class="title"><strong>Parameters</strong><div class="collapse-button show"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><dl class="inner"><dt>email</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>the email address of the user</p>
 </dd><dt>password</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>the corresponding password</p>
 </dd></dl></div><div class="title"><strong>Request</strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><h5>Body</h5><pre><code>{
@@ -255,7 +256,8 @@ not necessarily the same as the request ID for user B (at <code>/requests</code>
     status: <span class="hljs-string">"pending"</span>,
     success: <span class="hljs-literal">true</span>
 }</code></pre><div style="height: 1px;"></div></div></div></div><div id="requests-requests-from-user-get" class="action get"><h4 class="action-heading"><div class="name">List Requests</div><a href="#requests-requests-from-user-get" class="method get">GET</a><code class="uri">/requested</code></h4><p>View a list of all requests the current user has made.</p>
-<div class="title"><strong>Parameters</strong><div class="collapse-button show"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><dl class="inner"><dt>limit</dt><dd><code>integer</code>&nbsp;<span>(optional)</span>&nbsp;<p>Maximum number of results to return. Defaults to 25.</p>
+<div class="title"><strong>Parameters</strong><div class="collapse-button show"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><dl class="inner"><dt>limit</dt><dd><code>integer</code>&nbsp;<span>(optional)</span>&nbsp;<p>Maximum number of results to return. Defaults to 25. Set to 0 to return all
+results.</p>
 </dd><dt>offset</dt><dd><code>integer</code>&nbsp;<span>(optional)</span>&nbsp;<p>Number of initial results to ignore (used in combination with <code>limit</code>)
 for pagination. Defaults to 0.</p>
 </dd><dt>sort_by</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>Field to sort results by. Must by either <code>id</code> or <code>email</code>
@@ -324,7 +326,8 @@ addresses that contain the specified email as a substring.</p>
     success: <span class="hljs-literal">true</span>
 }</code></pre><div style="height: 1px;"></div></div></div></div></div><div id="requests-requests-to-user" class="resource"><h3 class="resource-heading">Requests to User<a href="#requests-requests-to-user" class="permalink">&para;</a></h3><div id="requests-requests-to-user-get" class="action get"><h4 class="action-heading"><div class="name">List Requests</div><a href="#requests-requests-to-user-get" class="method get">GET</a><code class="uri">/requests</code></h4><p>View a list of all requests made to the current user by other users requesting the current user
 to share their patient data.</p>
-<div class="title"><strong>Parameters</strong><div class="collapse-button show"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><dl class="inner"><dt>limit</dt><dd><code>integer</code>&nbsp;<span>(optional)</span>&nbsp;<p>Maximum number of results to return. Defaults to 25.</p>
+<div class="title"><strong>Parameters</strong><div class="collapse-button show"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><dl class="inner"><dt>limit</dt><dd><code>integer</code>&nbsp;<span>(optional)</span>&nbsp;<p>Maximum number of results to return. Defaults to 25. Set to 0 to return all
+results.</p>
 </dd><dt>offset</dt><dd><code>integer</code>&nbsp;<span>(optional)</span>&nbsp;<p>Number of initial results to ignore (used in combination with <code>limit</code>)
 for pagination. Defaults to 0.</p>
 </dd><dt>sort_by</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>Field to sort results by. Must by either <code>id</code> or <code>email</code>
@@ -537,7 +540,8 @@ should have. Must be either <code>read</code> or <code>write</code>.  Defaults t
     group: <span class="hljs-string">"owner"</span>,
     success: <span class="hljs-literal">true</span>
 }</code></pre><div style="height: 1px;"></div></div></div></div><div id="patients-user-s-patients-get" class="action get"><h4 class="action-heading"><div class="name">List Patients</div><a href="#patients-user-s-patients-get" class="method get">GET</a><code class="uri">/patients</code></h4><p>View a list of all patients the current user has access to (either read or write).</p>
-<div class="title"><strong>Parameters</strong><div class="collapse-button show"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><dl class="inner"><dt>limit</dt><dd><code>integer</code>&nbsp;<span>(optional)</span>&nbsp;<p>Maximum number of results to return. Defaults to 25.</p>
+<div class="title"><strong>Parameters</strong><div class="collapse-button show"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><dl class="inner"><dt>limit</dt><dd><code>integer</code>&nbsp;<span>(optional)</span>&nbsp;<p>Maximum number of results to return. Defaults to 25. Set to 0 to return all
+results.</p>
 </dd><dt>offset</dt><dd><code>integer</code>&nbsp;<span>(optional)</span>&nbsp;<p>Number of initial results to ignore (used in combination with <code>limit</code>)
 for pagination. Defaults to 0.</p>
 </dd><dt>sort_by</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>Field to sort results by. Must by either <code>id</code>, <code>first_name</code> or <code>last_name</code>,
@@ -1060,7 +1064,8 @@ user of the app, or whether they’ve been sent an email inviting them to sign u
 }</code></pre><div style="height: 1px;"></div></div></div></div><div id="patients-patient-s-shared-users-get" class="action get"><h4 class="action-heading"><div class="name">List all Shared Users</div><a href="#patients-patient-s-shared-users-get" class="method get">GET</a><code class="uri">/patients/{patientid}/shares</code></h4><p>For a patient whom the user has <code>read</code> access, get a list of all users (including the current one)
 who have (either <code>read</code> or <code>write</code>) access to the patient.</p>
 <div class="title"><strong>Parameters</strong><div class="collapse-button show"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><dl class="inner"><dt>patientid</dt><dd><code>integer</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>unique ID of the patient (<strong>not</strong> user-specific) (<em>url</em>)</p>
-</dd><dt>limit</dt><dd><code>integer</code>&nbsp;<span>(optional)</span>&nbsp;<p>Maximum number of results to return. Defaults to 25.</p>
+</dd><dt>limit</dt><dd><code>integer</code>&nbsp;<span>(optional)</span>&nbsp;<p>Maximum number of results to return. Defaults to 25. Set to 0 to return all
+results.</p>
 </dd><dt>offset</dt><dd><code>integer</code>&nbsp;<span>(optional)</span>&nbsp;<p>Number of initial results to ignore (used in combination with <code>limit</code>)
 for pagination. Defaults to 0.</p>
 </dd><dt>sort_by</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>Field to sort results by. Must by either <code>id</code> or <code>email</code>, and defaults
@@ -1387,7 +1392,8 @@ object. To call this endpoint successfully, the user will need read access to th
 Further, each journal entry will only be shown if the user has read access to all medications
 tagged in that journal entry.</p>
 <div class="title"><strong>Parameters</strong><div class="collapse-button show"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><dl class="inner"><dt>patientid</dt><dd><code>integer</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>unique ID of the patient (<em>url</em>)</p>
-</dd><dt>limit</dt><dd><code>integer</code>&nbsp;<span>(optional)</span>&nbsp;<p>Maximum number of results to return. Defaults to 25.</p>
+</dd><dt>limit</dt><dd><code>integer</code>&nbsp;<span>(optional)</span>&nbsp;<p>Maximum number of results to return. Defaults to 25. Set to 0 to return all
+results.</p>
 </dd><dt>offset</dt><dd><code>integer</code>&nbsp;<span>(optional)</span>&nbsp;<p>Number of initial results to ignore (used in combination with <code>limit</code>)
 for pagination. Defaults to 0.</p>
 </dd><dt>sort_by</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>Field to sort results by. Must by either <code>id</code> or <code>date</code>, and defaults
@@ -1627,7 +1633,8 @@ lines.</p>
 }</code></pre><div style="height: 1px;"></div></div></div></div><div id="doctors-doctors-collection-get" class="action get"><h4 class="action-heading"><div class="name">Retrieve all Doctors</div><a href="#doctors-doctors-collection-get" class="method get">GET</a><code class="uri">/patients/{patientid}/doctors</code></h4><p>Get a list of all the patient’s doctors. Includes full information on each. The
 current user will need read access to the patient.</p>
 <div class="title"><strong>Parameters</strong><div class="collapse-button show"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><dl class="inner"><dt>patientid</dt><dd><code>integer</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>unique ID of the patient (<em>url</em>)</p>
-</dd><dt>limit</dt><dd><code>integer</code>&nbsp;<span>(optional)</span>&nbsp;<p>Maximum number of results to return. Defaults to 25.</p>
+</dd><dt>limit</dt><dd><code>integer</code>&nbsp;<span>(optional)</span>&nbsp;<p>Maximum number of results to return. Defaults to 25. Set to 0 to return all
+results.</p>
 </dd><dt>offset</dt><dd><code>integer</code>&nbsp;<span>(optional)</span>&nbsp;<p>Number of initial results to ignore (used in combination with <code>limit</code>)
 for pagination. Defaults to 0.</p>
 </dd><dt>sort_by</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>Field to sort results by. Must by either <code>id</code> or <code>name</code>, and defaults
@@ -1899,7 +1906,8 @@ form specified above</p>
 }</code></pre><div style="height: 1px;"></div></div></div></div><div id="pharmacies-pharmacies-collection-get" class="action get"><h4 class="action-heading"><div class="name">Retrieve all Pharmacies</div><a href="#pharmacies-pharmacies-collection-get" class="method get">GET</a><code class="uri">/patients/{patientid}/pharmacies</code></h4><p>Get a list of all the patient’s pharmacies. Includes full information on each… The current
 user will need read access to the patient.</p>
 <div class="title"><strong>Parameters</strong><div class="collapse-button show"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><dl class="inner"><dt>patientid</dt><dd><code>integer</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>unique ID of the patient</p>
-</dd><dt>limit</dt><dd><code>integer</code>&nbsp;<span>(optional)</span>&nbsp;<p>Maximum number of results to return. Defaults to 25.</p>
+</dd><dt>limit</dt><dd><code>integer</code>&nbsp;<span>(optional)</span>&nbsp;<p>Maximum number of results to return. Defaults to 25. Set to 0 to return all
+results.</p>
 </dd><dt>offset</dt><dd><code>integer</code>&nbsp;<span>(optional)</span>&nbsp;<p>Number of initial results to ignore (used in combination with <code>limit</code>)
 for pagination. Defaults to 0.</p>
 </dd><dt>sort_by</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>Field to sort results by. Must by either <code>id</code> or <code>name</code>, and defaults
@@ -2502,8 +2510,12 @@ must already exist in <code>/patients/:patientid/doctors</code></p>
 doctor and pharmacy details are not expanded out. To get a successful response from
 this endpoint, the current user must have read access to the patient. Further, only
 medications for which the current user has read access will be returned.</p>
+<p>To view medications for all patient logs the user has access to (rather than just one
+specific patient), make this request to <code>GET /medications</code>. That endpoint accepts
+exactly the same parameters as this one.</p>
 <div class="title"><strong>Parameters</strong><div class="collapse-button show"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><dl class="inner"><dt>patientid</dt><dd><code>integer</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>unique ID of the patient</p>
-</dd><dt>limit</dt><dd><code>integer</code>&nbsp;<span>(optional)</span>&nbsp;<p>Maximum number of results to return. Defaults to 25.</p>
+</dd><dt>limit</dt><dd><code>integer</code>&nbsp;<span>(optional)</span>&nbsp;<p>Maximum number of results to return. Defaults to 25. Set to 0 to return all
+results.</p>
 </dd><dt>offset</dt><dd><code>integer</code>&nbsp;<span>(optional)</span>&nbsp;<p>Number of initial results to ignore (used in combination with <code>limit</code>)
 for pagination. Defaults to 0.</p>
 </dd><dt>sort_by</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>Field to sort results by. Must by either <code>id</code> or <code>name</code>, and defaults to <code>id</code>.</p>
@@ -3074,7 +3086,8 @@ response from this endpoint, the user will need read access to the patient.
 Further, only dose events for which the user has read access to the medication
 will be shown.</p>
 <div class="title"><strong>Parameters</strong><div class="collapse-button show"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><dl class="inner"><dt>patientid</dt><dd><code>integer</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>unique ID of the patient</p>
-</dd><dt>limit</dt><dd><code>integer</code>&nbsp;<span>(optional)</span>&nbsp;<p>Maximum number of results to return. Defaults to 25.</p>
+</dd><dt>limit</dt><dd><code>integer</code>&nbsp;<span>(optional)</span>&nbsp;<p>Maximum number of results to return. Defaults to 25. Set to 0 to return all
+results.</p>
 </dd><dt>offset</dt><dd><code>integer</code>&nbsp;<span>(optional)</span>&nbsp;<p>Number of initial results to ignore (used in combination with <code>limit</code>)
 for pagination. Defaults to 0.</p>
 </dd><dt>sort_by</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>Field to sort results by. Must by either <code>id</code> or <code>date</code>, and defaults
@@ -3321,6 +3334,10 @@ calculating statistics.</p>
 <p>The user will need read access to the patient to get a successful response from this endpoint.
 Further, only schedule events corresponding to medications for which the user has read access
 will be shown.</p>
+<p>To view the schedule for all patient logs the user has access to (rather than just one
+specific patient), make this request to <code>GET /schedule</code>. That endpoint accepts exactly the same
+<code>start_date</code> and <code>end_date</code> parameters as this one, although it ignores any specified <code>medication_id</code>
+parameter.</p>
 <div class="title"><strong>Parameters</strong><div class="collapse-button show"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><dl class="inner"><dt>patientid</dt><dd><code>integer</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>unique ID of the patient</p>
 </dd><dt>start_date</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>Start schedule at this date. Must be a valid ISO 8601 YYYY-MM-DD date. Defaults
 to the current time.</p>
@@ -3572,7 +3589,7 @@ of information. Possible matches for drugs (if any) are located in the
         }
     },
     success: <span class="hljs-literal">true</span>
-}</code></pre><div style="height: 1px;"></div></div></div></div></div></section></div></div></div><p style="text-align: center;" class="text-muted">Generated by&nbsp;<a href="https://github.com/danielgtaylor/aglio" class="aglio">aglio</a>&nbsp;on 21 Sep 2015</p><script>/* eslint-env browser */
+}</code></pre><div style="height: 1px;"></div></div></div></div></div></section></div></div></div><p style="text-align: center;" class="text-muted">Generated by&nbsp;<a href="https://github.com/danielgtaylor/aglio" class="aglio">aglio</a>&nbsp;on 01 Oct 2015</p><script>/* eslint-env browser */
 /* eslint quotes: [2, "single"] */
 'use strict';
 
