@@ -57,7 +57,21 @@ describe("Medications", function () {
                 return fixtures.build("Medication", {
                     name: "foo"
                 }).then(function (m) {
-                    return m.getData();
+                    // setting in fixture building above
+                    // confuses the virtual named schedule
+                    m.setData({
+                        schedule: {
+                            as_needed: false,
+                            regularly: true,
+                            until: { type: "forever" },
+                            frequency: { n: 1, unit: "day" },
+                            times: [{ type: "exact", time: "09:00" }],
+                            take_with_food: null,
+                            take_with_medications: [],
+                            take_without_medications: []
+                        }
+                    }, patient.habits);
+                    return m.getData(patient);
                 }).then(create).then(function (m) {
                     medication = m;
                 });
