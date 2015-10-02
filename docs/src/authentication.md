@@ -18,8 +18,9 @@ and should be sent in plaintext, _not_ base64 encoded.
 
 ## Access Tokens [/auth/token]
 ### Retrieve an Access Token [POST]
-Use an email/password of an existing user to generate an access token. **The
-access token does not expire until the user changes password.**
+Use an email/password of an existing user to generate an access token. The access
+token will expire when the user changes their password, or when it is not in that
+user's 5 most recently generated access tokens (whichever happens first).
 
 + Parameters
     + email (string, required) - the email address of the user
