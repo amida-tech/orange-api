@@ -189,6 +189,14 @@ describe("Patients", function () {
                     });
                 });
 
+                it("allows a zero limit parameter to return all results", function () {
+                    return listPatient(patient, { limit: 0 }).then(function (response) {
+                        expect(response).to.be.a.share.listSuccess;
+                        expect(response.body.shares.length).to.equal(40);
+                        expect(response.body.count).to.equal(40);
+                    });
+                });
+
                 it("rejects an invalid limit parameter", function () {
                     return expect(listAPatient({ limit: "foo" })).to.be.an.api.error(400, "invalid_limit");
                 });

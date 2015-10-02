@@ -176,6 +176,14 @@ describe("Journal", function () {
                     });
                 });
 
+                it("allows a zero limit parameter to return all results", function () {
+                    return listPatient(patient, { limit: 0 }).then(function (response) {
+                        expect(response).to.be.a.journal.listSuccess;
+                        expect(response.body.entries.length).to.equal(40);
+                        expect(response.body.count).to.equal(40);
+                    });
+                });
+
                 it("rejects an invalid limit parameter", function () {
                     return expect(listPatient(patient, { limit: "foo" })).to.be.an.api.error(400, "invalid_limit");
                 });
