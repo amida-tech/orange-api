@@ -59,7 +59,8 @@ View a list of all requests the current user has made.
 + Parameters
     + limit (integer, optional)
 
-        Maximum number of results to return. Defaults to 25.
+        Maximum number of results to return. Defaults to 25. Set to 0 to return all
+        results.
 
     + offset (integer, optional)
 
@@ -156,7 +157,8 @@ to share their patient data.
 + Parameters
     + limit (integer, optional)
 
-        Maximum number of results to return. Defaults to 25.
+        Maximum number of results to return. Defaults to 25. Set to 0 to return all
+        results.
 
     + offset (integer, optional)
 

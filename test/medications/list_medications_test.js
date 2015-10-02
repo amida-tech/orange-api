@@ -141,6 +141,14 @@ describe("Medications", function () {
                     });
                 });
 
+                it("allows a zero limit parameter to return all results", function () {
+                    return listPatient(patient, { limit: 0 }).then(function (response) {
+                        expect(response).to.be.a.medication.listSuccess;
+                        expect(response.body.medications.length).to.equal(40);
+                        expect(response.body.count).to.equal(40);
+                    });
+                });
+
                 it("rejects an invalid limit parameter", function () {
                     return expect(listPatient(patient, { limit: "foo" })).to.be.an.api.error(400, "invalid_limit");
                 });

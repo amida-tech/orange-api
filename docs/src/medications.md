@@ -431,7 +431,8 @@ exactly the same parameters as this one.
         unique ID of the patient
     + limit (integer, optional)
 
-        Maximum number of results to return. Defaults to 25.
+        Maximum number of results to return. Defaults to 25. Set to 0 to return all
+        results.
     + offset (integer, optional)
 
          Number of initial results to ignore (used in combination with `limit`)
