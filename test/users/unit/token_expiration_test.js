@@ -1,11 +1,8 @@
 "use strict";
-var async       = require("async"),
-    mongoose    = require("mongoose"),
+var mongoose    = require("mongoose"),
     chai        = require("chai"),
-    sinon       = require("sinon"),
     Q           = require("q"),
-    fixtures    = require("../fixtures.js"),
-    errors      = require("../../../lib/errors.js").ERRORS;
+    fixtures    = require("../fixtures.js");
 
 var expect = chai.expect;
 
