@@ -1,6 +1,6 @@
 # Orange API Release Notes
 
-# v1.0.0 - October 5, 2015
+# v1.0 - October 5, 2015
 
 -  A new endpoint was added for getting all notifications for all logs associated with an account.
 -  Minor bugfixes.
