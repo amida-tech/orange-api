@@ -42,7 +42,9 @@ grunt dev
 
 ```
 
-For ease of deployment, see the instructions for deploying with Vagrant in `deploy/`.
+## Deployment
+
+For ease of deployment, see the instructions for deploying with Vagrant in [here](deploy/traditional/README.md).
 
 ## Contributing
 
