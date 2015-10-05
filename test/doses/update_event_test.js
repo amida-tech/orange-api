@@ -15,7 +15,7 @@ describe("Doses", function () {
     describe("Update Dose Event (PUT /patients/:patientid/doses/:doseid)", function () {
         // basic endpoint
         var update = function (modifications, doseId, patientId, accessToken) {
-            var url = util.format("http://localhost:3000/v1/patients/%d/doses/%d", patientId, doseId);
+            var url = util.format("http://localhost:5000/v1/patients/%d/doses/%d", patientId, doseId);
             return chakram.put(url, modifications, auth.genAuthHeaders(accessToken));
         };
 

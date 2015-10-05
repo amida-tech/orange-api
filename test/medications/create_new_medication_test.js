@@ -15,7 +15,7 @@ describe("Medications", function () {
     describe("Create New Medication (/patients/:patientid/medications)", function () {
         // basic endpoint
         var create = function (data, patientId, accessToken) {
-            var url = util.format("http://localhost:3000/v1/patients/%d/medications", patientId);
+            var url = util.format("http://localhost:5000/v1/patients/%d/medications", patientId);
             return chakram.post(url, data, auth.genAuthHeaders(accessToken));
         };
 
@@ -74,7 +74,8 @@ describe("Medications", function () {
                 access_anyone: undefined,
                 access_family: undefined,
                 access_prime: undefined,
-                import_id: undefined
+                import_id: undefined,
+                notes: undefined
             })).to.be.a.medication.createSuccess;
         });
         it("allows null values for everything other than name and access_X", function () {
@@ -93,11 +94,24 @@ describe("Medications", function () {
                 schedule: null,
                 doctor_id: null,
                 pharmacy_id: null,
-                import_id: null
+                import_id: null,
+                notes: null
             })).to.be.a.medication.createSuccess;
         });
         // for these tests we know the fixture has a valid quantity so can assert the
         // presence of number_left
+        it("accepts a blank notes field", function () {
+            return createPatientMedication({ notes: "" }).then(function (response) {
+                expect(response).to.be.a.medication.createSuccess;
+                expect(response.body.notes).to.equal("");
+            });
+        });
+        it("accepts a non-black notes field", function () {
+            return createPatientMedication({ notes: "lorem ipsum" }).then(function (response) {
+                expect(response).to.be.a.medication.createSuccess;
+                expect(response.body.notes).to.equal("lorem ipsum");
+            });
+        });
         it("accepts a null fill_date", function () {
             return createPatientMedication({ fill_date: null }).then(function (response) {
                 expect(response).to.be.a.medication.createSuccess;
@@ -197,10 +211,10 @@ describe("Medications", function () {
                 dose: { quantity: -50, unit: "mg" }
             })).to.be.an.api.error(400, "invalid_dose");
         });
-        it("does not allow a dose with a nonintegral quantity", function () {
+        it("accepts a dose with a nonintegral quantity", function () {
             return expect(createPatientMedication({
                 dose: { quantity: 5.2, unit: "mg" }
-            })).to.be.an.api.error(400, "invalid_dose");
+            })).to.be.a.medication.createSuccess;
         });
         it("does not allow a dose with a nonnumeric quantity", function () {
             return expect(createPatientMedication({

@@ -159,7 +159,8 @@ View a list of all patients the current user has access to (either read or write
 + Parameters
     + limit (integer, optional)
 
-        Maximum number of results to return. Defaults to 25.
+        Maximum number of results to return. Defaults to 25. Set to 0 to return all
+        results.
 
     + offset (integer, optional)
 
@@ -786,7 +787,8 @@ who have (either `read` or `write`) access to the patient.
         unique ID of the patient (**not** user-specific) (*url*)
     + limit (integer, optional)
 
-        Maximum number of results to return. Defaults to 25.
+        Maximum number of results to return. Defaults to 25. Set to 0 to return all
+        results.
 
     + offset (integer, optional)
 

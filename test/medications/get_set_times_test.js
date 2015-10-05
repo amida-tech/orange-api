@@ -12,11 +12,11 @@ var expect = chakram.expect;
 describe("Medication Time Notification Settings", function () {
     // get/set notification settings
     var show = function (tId, mId, pId, accessToken) {
-        var url = util.format("http://localhost:3000/v1/patients/%d/medications/%d/times/%d", pId, mId, tId);
+        var url = util.format("http://localhost:5000/v1/patients/%d/medications/%d/times/%d", pId, mId, tId);
         return chakram.get(url, auth.genAuthHeaders(accessToken));
     };
     var update = function (data, tId, mId, pId, accessToken) {
-        var url = util.format("http://localhost:3000/v1/patients/%d/medications/%d/times/%d", pId, mId, tId);
+        var url = util.format("http://localhost:5000/v1/patients/%d/medications/%d/times/%d", pId, mId, tId);
         return chakram.put(url, data, auth.genAuthHeaders(accessToken));
     };
 
@@ -162,6 +162,87 @@ describe("Medication Time Notification Settings", function () {
                 expect(response.body.user).to.equal("default");
             });
         });
+
+        it("lets me pause my user time", function () {
+            return updateTime({
+                user: "paused"
+            }).then(function (response) {
+                expect(response).to.be.a.notifications.success;
+                expect(response.body.default).to.equal(5);
+                expect(response.body.user).to.equal("paused");
+            });
+        });
+
+        it("shows my time as paused", function () {
+            return showTime().then(function (response) {
+                expect(response).to.be.a.notifications.success;
+                expect(response.body.default).to.equal(5);
+                expect(response.body.user).to.equal("paused");
+            });
+        });
+
+        it("shows a default user time for the other user still", function () {
+            return showOtherTime().then(function (response) {
+                expect(response).to.be.a.notifications.success;
+                expect(response.body.default).to.equal(5);
+                expect(response.body.user).to.equal("default");
+            });
+        });
+
+        it("lets me pause the time for everyone", function () {
+            return updateTime({
+                user: "default",
+                default: "paused"
+            }).then(function (response) {
+                expect(response).to.be.a.notifications.success;
+                expect(response.body.default).to.equal("paused");
+                expect(response.body.user).to.equal("default");
+            });
+        });
+
+        it("shows a paused user time for me again", function () {
+            return showTime().then(function (response) {
+                expect(response).to.be.a.notifications.success;
+                expect(response.body.default).to.equal("paused");
+                expect(response.body.user).to.equal("default");
+            });
+        });
+
+        it("shows a paused user time for the other user still", function () {
+            return showOtherTime().then(function (response) {
+                expect(response).to.be.a.notifications.success;
+                expect(response.body.default).to.equal("paused");
+                expect(response.body.user).to.equal("default");
+            });
+        });
+
+        it("lets me pause the time for everyone but me", function () {
+            return updateTime({
+                user: 5,
+                default: "paused"
+            }).then(function (response) {
+                expect(response).to.be.a.notifications.success;
+                expect(response.body.default).to.equal("paused");
+                expect(response.body.user).to.equal(5);
+            });
+        });
+
+        it("shows a paused user time for me again", function () {
+            return showTime().then(function (response) {
+                expect(response).to.be.a.notifications.success;
+                expect(response.body.default).to.equal("paused");
+                expect(response.body.user).to.equal(5);
+            });
+        });
+
+        it("shows a paused user time for the other user still", function () {
+            return showOtherTime().then(function (response) {
+                expect(response).to.be.a.notifications.success;
+                expect(response.body.default).to.equal("paused");
+                expect(response.body.user).to.equal("default");
+            });
+        });
+
     });
 
     describe("Viewing Notification Settings (GET /patients/:patientid/medications/:medid/times/:timeid)", function () {

@@ -16,7 +16,7 @@ describe("Patients", function () {
             if (typeof parameters === "undefined" || parameters === null) parameters = {};
             var query = querystring.stringify(parameters);
 
-            var url = util.format("http://localhost:3000/v1/patients?%s", query);
+            var url = util.format("http://localhost:5000/v1/patients?%s", query);
             return chakram.get(url, auth.genAuthHeaders(accessToken));
         };
         var listUser = function (user, parameters) {
@@ -119,6 +119,14 @@ describe("Patients", function () {
                     return listUser(user, { limit: null }).then(function (response) {
                         expect(response).to.be.a.patient.listSuccess;
                         expect(response.body.patients.length).to.equal(25);
+                        expect(response.body.count).to.equal(40);
+                    });
+                });
+
+                it("allows a zero limit parameter to return all results", function () {
+                    return listUser(user, { limit: 0 }).then(function (response) {
+                        expect(response).to.be.a.patient.listSuccess;
+                        expect(response.body.patients.length).to.equal(40);
                         expect(response.body.count).to.equal(40);
                     });
                 });

@@ -14,7 +14,7 @@ describe("Doses", function () {
     describe("Add New Dosing Event (POST /patients/:patientid/doses)", function () {
         // basic endpoint
         var create = module.exports.create = function (data, patientId, accessToken) {
-            var url = util.format("http://localhost:3000/v1/patients/%d/doses", patientId);
+            var url = util.format("http://localhost:5000/v1/patients/%d/doses", patientId);
             return chakram.post(url, data, auth.genAuthHeaders(accessToken));
         };
 

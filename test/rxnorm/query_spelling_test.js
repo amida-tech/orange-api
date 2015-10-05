@@ -9,7 +9,7 @@ describe("RXNorm", function () {
         // basic endpoint
         var query = function (data) {
             var headers = auth.genAuthHeaders(null); // adds X-Client-Secret header for us
-            return chakram.post("http://localhost:3000/v1/rxnorm/spelling", data, headers);
+            return chakram.post("http://localhost:5000/v1/rxnorm/spelling", data, headers);
         };
 
         it("gracefully handles no data POSTed", function () {
@@ -39,6 +39,19 @@ describe("RXNorm", function () {
             }).then(function (response) {
                 expect(response).to.be.an.rxnorm.spellingSuccess;
                 expect(response.body.result.suggestionGroup.suggestionList.suggestion.length).to.be.above(0);
+            });
+        });
+
+        it("ignores suggestions with the name equal to the queried name", function () {
+            return query({
+                medname: "multivitamins"
+            }).then(function (response) {
+                expect(response).to.be.an.rxnorm.spellingSuccess;
+                console.log(response.body.result.suggestionGroup.suggestionList);
+                expect(response.body.result.suggestionGroup.suggestionList.suggestion.length).to.be.above(0);
+                expect(response.body.result.suggestionGroup.suggestionList.suggestion).to.not.include("multivitamins");
+                expect(response.body.result.suggestionGroup.suggestionList.suggestion).to.not.include("Multivitamins");
+                expect(response.body.result.suggestionGroup.suggestionList.suggestion).to.not.include("MULTIVITAMINS");
             });
         });
     });

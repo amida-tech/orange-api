@@ -10,7 +10,7 @@ describe("Patients", function () {
         // simple endpoint
         var remove = function (patientId, accessToken) {
             var headers = auth.genAuthHeaders(accessToken);
-            return chakram.delete("http://localhost:3000/v1/patients/" + patientId, {}, headers);
+            return chakram.delete("http://localhost:5000/v1/patients/" + patientId, {}, headers);
         };
 
         // given a patient and user, try and remove the user

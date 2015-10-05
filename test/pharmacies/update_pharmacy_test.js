@@ -14,7 +14,7 @@ describe("Pharmacies", function () {
     describe("Edit Pharmacy (PUT /patients/:patientid/pharmacies/:pharmacyid)", function () {
         // basic endpoint
         var update = function (data, pharmacyId, patientId, accessToken) {
-            var url = util.format("http://localhost:3000/v1/patients/%d/pharmacies/%d", patientId, pharmacyId);
+            var url = util.format("http://localhost:5000/v1/patients/%d/pharmacies/%d", patientId, pharmacyId);
             return chakram.put(url, data, auth.genAuthHeaders(accessToken));
         };
 

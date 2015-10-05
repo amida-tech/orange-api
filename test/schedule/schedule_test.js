@@ -1,4 +1,5 @@
 "use strict";
+/*eslint max-len:0*/
 var chakram     = require("chakram"),
     moment      = require("moment-timezone"),
     querystring = require("querystring"),
@@ -35,7 +36,7 @@ describe("Schedule", function () {
             if (typeof medicationId !== "undefined") query.medication_id = medicationId;
             query = querystring.stringify(query);
 
-            var url = util.format("http://localhost:3000/v1/patients/%d/schedule?%s", patientId, query);
+            var url = util.format("http://localhost:5000/v1/patients/%d/schedule?%s", patientId, query);
             return chakram.get(url, auth.genAuthHeaders(accessToken));
         };
 
@@ -195,6 +196,13 @@ describe("Schedule", function () {
                             take_with_medications: [],
                             take_without_medications: []
                         }
+                    }).then(function (m) {
+                        m.schedules[0].date = moment().subtract(10, "days").unix();
+                        m.markModified("schedules");
+                        p.markModified("medications");
+                        return Q.nbind(patient.save, patient)().then(function () {
+                            return m;
+                        });
                     });
                 };
             };

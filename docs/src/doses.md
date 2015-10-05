@@ -98,7 +98,8 @@ will be shown.
         unique ID of the patient
     + limit (integer, optional)
 
-        Maximum number of results to return. Defaults to 25.
+        Maximum number of results to return. Defaults to 25. Set to 0 to return all
+        results.
 
     + offset (integer, optional)
 

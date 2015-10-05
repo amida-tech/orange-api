@@ -41,7 +41,7 @@ describe("Doses", function () {
 
         // endpoint to view med details
         var show = function () {
-            var url = util.format("http://localhost:3000/v1/patients/%d/medications/%d", patient._id,
+            var url = util.format("http://localhost:5000/v1/patients/%d/medications/%d", patient._id,
                     patient.medications[0]._id);
             return chakram.get(url, auth.genAuthHeaders(patient.user.accessToken));
         };

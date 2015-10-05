@@ -12,7 +12,7 @@ describe("Patients", function () {
     describe("Updating a Share (PUT /patients/:patientid/shares/:shareid)", function () {
         // endpoint to modify a specific share
         var update = function (modifications, shareId, patientId, accessToken) {
-            var url = util.format("http://localhost:3000/v1/patients/%d/shares/%d", patientId, shareId);
+            var url = util.format("http://localhost:5000/v1/patients/%d/shares/%d", patientId, shareId);
             return chakram.put(url, modifications, auth.genAuthHeaders(accessToken));
         };
         // given a patient, create a share and then try and remove it

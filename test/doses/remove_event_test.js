@@ -15,7 +15,7 @@ describe("Doses", function () {
     describe("Remove Dose Event (DELETE /patients/:patientid/doses/:doseid)", function () {
         // basic endpoint
         var remove = function (doseId, patientId, accessToken) {
-            var url = util.format("http://localhost:3000/v1/patients/%d/doses/%d", patientId, doseId);
+            var url = util.format("http://localhost:5000/v1/patients/%d/doses/%d", patientId, doseId);
             return chakram.delete(url, {}, auth.genAuthHeaders(accessToken));
         };
 

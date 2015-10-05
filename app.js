@@ -5,6 +5,13 @@ var express         = require("express"),
     bunyanLogstash  = require("bunyan-logstash");
 var app = module.exports = express();
 
+// disable nagle's algorithm: significantly slows down piping to res, as is
+// done in GET /avatar
+app.use(function(req, res, next){
+    req.connection.setNoDelay(true);
+    next();
+});
+
 // Logging
 var config = require("./config.js");
 var streams = [];
@@ -110,6 +117,10 @@ router.use("/rxnorm", require("./lib/controllers/rxnorm.js"));
 
 // User sharing
 router.use("/", require("./lib/controllers/requests.js"));
+
+// Medications and schedule for all patients the user has access to
+// provides /medications & /schedule
+router.use("/", require("./lib/controllers/all_medications.js"));
 
 // Patient CRUD and sharing
 router.use("/patients", require("./lib/controllers/patients/patients.js"));

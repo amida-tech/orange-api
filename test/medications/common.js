@@ -28,7 +28,7 @@ var medicationSchema = module.exports.schema = {
     required: ["id", "name", "status", "rx_norm", "ndc", "dose", "route", "form", "rx_number",
                 "quantity", "type", "schedule", "fill_date", "number_left", "access_anyone",
                 "access_family", "access_prime", "brand", "origin", "import_id", "schedule_summary",
-                "success"],
+                "notes", "success"],
     properties: {
         success:        { type: "boolean" },
         id:             { type: "number" },
@@ -117,7 +117,8 @@ var medicationSchema = module.exports.schema = {
         schedule_summary:   { type: "string" },
         access_anyone:      { type: "string" },
         access_family:      { type: "string" },
-        access_prime:       { type: "string" }
+        access_prime:       { type: "string" },
+        notes:              { type: "string" }
     },
     definitions: {
         doctor: doctorSchema,
@@ -127,7 +128,6 @@ var medicationSchema = module.exports.schema = {
 };
 /*eslint-enable key-spacing */
 var medicationViewSchema = JSON.parse(JSON.stringify(medicationSchema)); // easy deep copy
-
 
 // viewing a medication in detail should show full doctor and pharmacy details
 medicationViewSchema.required.push("doctor");
@@ -149,6 +149,14 @@ medicationSchema.properties.pharmacy_id = {
     type: ["number", "null"]
 };
 
+var medicationAllPatientSchema = JSON.parse(JSON.stringify(medicationSchema)); // easy deep copy
+
+// patient IDs in /medications endpoint
+medicationAllPatientSchema.required.push("patient_id");
+medicationAllPatientSchema.properties.patient_id = {
+    type: "number"
+};
+
 common.addApiChain("medication", {
     "createSuccess": function (respObj) {
         expect(respObj).to.be.an.api.postSuccess;
@@ -164,6 +172,9 @@ common.addApiChain("medication", {
     },
     "listSuccess": function (respObj) {
         expect(respObj).to.be.an.api.genericListSuccess("medications", medicationSchema);
+    },
+    "listAllPatientSuccess": function (respObj) {
+        expect(respObj).to.be.an.api.genericListSuccess("medications", medicationAllPatientSchema);
     }
 });
 
@@ -173,7 +184,7 @@ var notificationsSchema = {
     required: ["default", "user", "success"],
     properties: {
         success:        { type: "boolean" },
-        default:        { type: "number" },
+        default:        { type: ["number", "string"] },
         user:           { type: ["number", "string"] }
     },
     additionalProperties: false

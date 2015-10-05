@@ -46,6 +46,11 @@ The user will need read access to the patient to get a successful response from 
 Further, only schedule events corresponding to medications for which the user has read access
 will be shown.
 
+To view the schedule for all patient logs the user has access to (rather than just one
+specific patient), make this request to `GET /schedule`. That endpoint accepts exactly the same
+`start_date` and `end_date` parameters as this one, although it ignores any specified `medication_id`
+parameter.
+
 + Parameters
     + patientid (integer, required)
 

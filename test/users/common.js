@@ -62,12 +62,12 @@ common.addApiChain("resetPassword", {
 // common endpoints
 // view user info
 module.exports.view = function (accessToken) {
-    return chakram.get("http://localhost:3000/v1/user", auth.genAuthHeaders(accessToken));
+    return chakram.get("http://localhost:5000/v1/user", auth.genAuthHeaders(accessToken));
 };
 
 // generate access token
 module.exports.token = function (credentials) {
     // auth.genAuthHeaders(undefined) sets X-Client-Secret for us, and doesn't set any
     // access token header
-    return chakram.post("http://localhost:3000/v1/auth/token", credentials, auth.genAuthHeaders(undefined));
+    return chakram.post("http://localhost:5000/v1/auth/token", credentials, auth.genAuthHeaders(undefined));
 };

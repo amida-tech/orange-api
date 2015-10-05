@@ -13,7 +13,7 @@ describe("Requests", function () {
     describe("Cancelling a Request Made by the Current User", function () {
         // delete a request made by a user
         var cancelRequest = module.exports.cancelRequest = function (requestId, accessToken) {
-            var url = util.format("http://localhost:3000/v1/requested/%d", requestId);
+            var url = util.format("http://localhost:5000/v1/requested/%d", requestId);
             return chakram.delete(url, {}, auth.genAuthHeaders(accessToken));
         };
 

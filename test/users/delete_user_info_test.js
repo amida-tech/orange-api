@@ -10,7 +10,7 @@ describe("Users", function () {
     describe("Delete User (DELETE /user)", function () {
         // simple endpoint
         var remove = function (accessToken) {
-            return chakram.delete("http://localhost:3000/v1/user", {}, auth.genAuthHeaders(accessToken));
+            return chakram.delete("http://localhost:5000/v1/user", {}, auth.genAuthHeaders(accessToken));
         };
         // create a user with the specified data modifications (to the factory default), generate
         // an access token and then use that token to delete the user

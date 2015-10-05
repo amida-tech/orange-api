@@ -17,7 +17,7 @@ describe("Medications", function () {
             if (typeof parameters === "undefined" || parameters === null) parameters = {};
             var query = querystring.stringify(parameters);
 
-            var url = util.format("http://localhost:3000/v1/patients/%d/medications?%s", patientId, query);
+            var url = util.format("http://localhost:5000/v1/patients/%d/medications?%s", patientId, query);
             return chakram.get(url, auth.genAuthHeaders(accessToken));
         };
         var listPatient = function (patient, parameters) {
@@ -137,6 +137,14 @@ describe("Medications", function () {
                     return listPatient(patient, { limit: null }).then(function (response) {
                         expect(response).to.be.a.medication.listSuccess;
                         expect(response.body.medications.length).to.equal(25);
+                        expect(response.body.count).to.equal(40);
+                    });
+                });
+
+                it("allows a zero limit parameter to return all results", function () {
+                    return listPatient(patient, { limit: 0 }).then(function (response) {
+                        expect(response).to.be.a.medication.listSuccess;
+                        expect(response.body.medications.length).to.equal(40);
                         expect(response.body.count).to.equal(40);
                     });
                 });

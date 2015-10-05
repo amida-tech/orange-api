@@ -11,7 +11,7 @@ describe("Habits", function () {
     describe("SET Patient Habits (PUT /patients/:patientid/habits)", function () {
         // basic endpoint
         var edit = function (modifications, patientId, accessToken) {
-            var url = util.format("http://localhost:3000/v1/patients/%d/habits", patientId);
+            var url = util.format("http://localhost:5000/v1/patients/%d/habits", patientId);
             return chakram.put(url, modifications, auth.genAuthHeaders(accessToken));
         };
         // given a patient and user, try and show the patient's habits

@@ -1,6 +1,5 @@
 "use strict";
 var chakram     = require("chakram"),
-    mongoose    = require("mongoose"),
     moment      = require("moment-timezone"),
     Q           = require("q"),
     patients    = require("../../patients/common.js"),

@@ -15,7 +15,7 @@ describe("Doses", function () {
     describe("View Dose Event (GET /patients/:patientid/doses/:doseid)", function () {
         // basic endpoint
         var show = function (doseId, patientId, accessToken) {
-            var url = util.format("http://localhost:3000/v1/patients/%d/doses/%d", patientId, doseId);
+            var url = util.format("http://localhost:5000/v1/patients/%d/doses/%d", patientId, doseId);
             return chakram.get(url, auth.genAuthHeaders(accessToken));
         };
 

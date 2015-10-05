@@ -13,7 +13,7 @@ describe("Patients", function () {
     describe("Share Patient with User (POST /patients/:patientid/shares)", function () {
         // share the passed patient with a user (user specified in data)
         var share = function (data, patientId, accessToken) {
-            var url = util.format("http://localhost:3000/v1/patients/%d/shares", patientId);
+            var url = util.format("http://localhost:5000/v1/patients/%d/shares", patientId);
             return chakram.post(url, data, auth.genAuthHeaders(accessToken));
         };
         // data is extended with sensible defaults
@@ -166,7 +166,7 @@ describe("Patients", function () {
 
                 it("shows that the user now exists", function () {
                     // no view endpoint, so we hackishly use the edit one
-                    var url = util.format("http://localhost:3000/v1/patients/%d/shares/%d", patient._id, shareId);
+                    var url = util.format("http://localhost:5000/v1/patients/%d/shares/%d", patient._id, shareId);
                     var headers = auth.genAuthHeaders(patient.user.accessToken);
                     return chakram.put(url, {}, headers).then(function (response) {
                         expect(response).to.be.a.share.success;

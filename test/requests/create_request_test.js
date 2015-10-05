@@ -10,7 +10,7 @@ describe("Requests", function () {
     describe("Creating a New Request", function () {
         // make a new request
         var create = module.exports.create = function (data, accessToken) {
-            return chakram.post("http://localhost:3000/v1/requested", data, auth.genAuthHeaders(accessToken));
+            return chakram.post("http://localhost:5000/v1/requested", data, auth.genAuthHeaders(accessToken));
         };
 
         // check it requires authentication

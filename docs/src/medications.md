@@ -287,6 +287,9 @@ running an import process in the app multiple times.
 
         ID of the pharmacy selling the patient's medication. This doctor
         must already exist in `/patients/:patientid/doctors`
+    + notes (string, optional)
+
+        Optional freeform notes field for the medication.
 
 + Request
     + Headers
@@ -337,7 +340,8 @@ running an import process in the app multiple times.
                 access_family: "default",
                 access_prime: "default",
                 doctor_id: 1,
-                pharmacy_id: 1
+                pharmacy_id: 1,
+                notes: "Love this med!!"
             }
 
 + Response 201
@@ -407,6 +411,7 @@ running an import process in the app multiple times.
                 access_prime: "default",
                 doctor_id: 1,
                 pharmacy_id: 1,
+                notes: "Love this med!!",
                 success: true
             }
 
@@ -416,13 +421,18 @@ doctor and pharmacy details are not expanded out. To get a successful response f
 this endpoint, the current user must have read access to the patient. Further, only
 medications for which the current user has read access will be returned.
 
+To view medications for all patient logs the user has access to (rather than just one
+specific patient), make this request to `GET /medications`. That endpoint accepts
+exactly the same parameters as this one.
+
 + Parameters
     + patientid (integer, required)
 
         unique ID of the patient
     + limit (integer, optional)
 
-        Maximum number of results to return. Defaults to 25.
+        Maximum number of results to return. Defaults to 25. Set to 0 to return all
+        results.
     + offset (integer, optional)
 
          Number of initial results to ignore (used in combination with `limit`)
@@ -506,7 +516,8 @@ medications for which the current user has read access will be returned.
                         access_family: "default",
                         access_prime: "default",
                         doctor_id: 1,
-                        pharmacy_id: 1
+                        pharmacy_id: 1,
+                        notes: "Love this med!!"
                     },
                     ...
                 ],
@@ -629,7 +640,8 @@ The current user must have read access to **both** the patient and the medicatio
                             close: "1700"
                         },
                         notes: "Great pharmacy! Love the smell"
-                    }
+                    },
+                    notes: "Love this med!!"
                 },
                 success: true
             }
@@ -690,6 +702,7 @@ user must have read access to the patient and write access to the medication.
         or `default`. Defaults to `default`.
     + doctor_id (integer, optional) - ID of the doctor prescribing the patient's medication
     + pharmacy_id (integer, optional) - ID of the pharmacy selling the patient's medication
+    + notes (string, optional) - freeform notes field for the medication.
 
 + Request
     + Headers
@@ -722,7 +735,8 @@ user must have read access to the patient and write access to the medication.
                 access_family: "write",
                 access_prime: "write",
                 doctor_id: 1,
-                pharmacy_id: 1
+                pharmacy_id: 1,
+                notes: "Great!"
             }
 
 + Response 200
@@ -773,6 +787,7 @@ user must have read access to the patient and write access to the medication.
                 access_prime: "write",
                 doctor_id: 1,
                 pharmacy_id: 1,
+                notes: "Great!",
                 success: true
             }
 
@@ -851,6 +866,7 @@ write access to the medication.
                 access_prime: "write",
                 doctor_id: 1,
                 pharmacy_id: 1,
+                notes: "Great!",
                 success: true
             }
 
@@ -869,6 +885,10 @@ and all other users (unless they have set their own notification settings) will 
 
 The user key can be the string `default` to represent that that user has not set a custom offset
 and the default should be respected.
+
+Both the user and/or default key can be the string `paused` to represent that the user has paused
+notification for that medication (but is still taking the medication, they just don't want to receive
+notifications about it).
 
 ### View Notification Settings [GET]
 View the current notification settings for the current user and the global user-wide default
@@ -923,11 +943,11 @@ Set the current notification settings for the current user and the global user-w
     + default (number, optional)
 
         number of minutes to change the notification offset to for all users who haven't set
-        a custom value
+        a custom value, or `"paused"` to disable notifications
     + user (number or string, optional)
 
         number of minutes to change the notification offset to for this user, or `"default"`
-        to indicate that the default value should be used
+        to indicate that the default value should be used, or `"paused"` to disable notifications
 
 + Request
     + Headers

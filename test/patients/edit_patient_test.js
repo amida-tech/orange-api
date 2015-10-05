@@ -13,7 +13,7 @@ describe("Patients", function () {
         // simple endpoint
         var edit = function (data, patientId, accessToken) {
             var headers = auth.genAuthHeaders(accessToken);
-            return chakram.put("http://localhost:3000/v1/patients/" + patientId, data, headers);
+            return chakram.put("http://localhost:5000/v1/patients/" + patientId, data, headers);
         };
 
         // given a patient and user, try and edit the user

@@ -31,7 +31,7 @@ describe("Patients", function () {
 
             // chakram doesn't handle streams here so we have to use the raw response library
             var options = {
-                url: util.format("http://localhost:3000/v1/patients/%d/avatar.jpg", patientId),
+                url: util.format("http://localhost:5000/v1/patients/%d/avatar.jpg", patientId),
                 method: "POST",
                 json: true,
                 headers: auth.genAuthHeaders(accessToken).headers,
@@ -63,7 +63,7 @@ describe("Patients", function () {
 
         // given a patient ID and access token, try and retrieve the patient's avatar
         var get = function (patientId, accessToken) {
-            var url = util.format("http://localhost:3000/v1/patients/%d/avatar.jpg", patientId);
+            var url = util.format("http://localhost:5000/v1/patients/%d/avatar.jpg", patientId);
             var params = extend({ json: true, encoding: null }, auth.genAuthHeaders(accessToken));
             return chakram.get(url, params);
         };

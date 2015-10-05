@@ -26,7 +26,7 @@ if (process.env.NODE_ENV === "production") {
 }
 
 // Express connections
-config.port = 3000;
+config.port = 5000;
 if (process.env.NODE_ENV === "production") {
     config.listen = "0.0.0.0";
     // config.listen = "localhost";

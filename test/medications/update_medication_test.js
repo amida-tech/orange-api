@@ -15,7 +15,7 @@ var expect = chakram.expect;
 describe("Medications", function () {
     describe("Update Single Medication (PUT /patients/:patientid/medications/:medicationid)", function () {
         var update = module.exports.update = function (modifications, medicationId, patientId, accessToken) {
-            var url = util.format("http://localhost:3000/v1/patients/%d/medications/%d", patientId, medicationId);
+            var url = util.format("http://localhost:5000/v1/patients/%d/medications/%d", patientId, medicationId);
             return chakram.put(url, modifications, auth.genAuthHeaders(accessToken));
         };
         var updatePatient = function (modifications, data, patient) {
@@ -122,10 +122,10 @@ describe("Medications", function () {
                 dose: { quantity: -50, unit: "mg" }
             })).to.be.an.api.error(400, "invalid_dose");
         });
-        it("does not allow a dose with a nonintegral quantity", function () {
+        it("accepts a dose with a nonintegral quantity", function () {
             return expect(updatePatientMedication({}, {
                 dose: { quantity: 5.2, unit: "mg" }
-            })).to.be.an.api.error(400, "invalid_dose");
+            })).to.be.a.medication.success;
         });
         it("does not allow a dose with a nonnumeric quantity", function () {
             return expect(updatePatientMedication({}, {
@@ -143,6 +143,7 @@ describe("Medications", function () {
                 rx_norm: null,
                 fill_date: null,
                 ndc: null,
+                notes: null,
                 dose: null,
                 route: null,
                 form: null,
@@ -159,6 +160,7 @@ describe("Medications", function () {
                 expect(response.body.rx_norm).to.equal("");
                 expect(response.body.fill_date).to.equal(null);
                 expect(response.body.ndc).to.equal("");
+                expect(response.body.notes).to.equal("");
                 expect(response.body.dose).to.deep.equal({quantity: 1, unit: "dose"});
                 expect(response.body.route).to.equal("");
                 expect(response.body.form).to.equal("");

@@ -23,7 +23,7 @@ describe("Patients", function () {
             if (typeof params === "undefined" || params === null) params = {};
             var query = querystring.stringify(params);
 
-            var url = util.format("http://localhost:3000/v1/patients/%d/shares?%s", patientId, query);
+            var url = util.format("http://localhost:5000/v1/patients/%d/shares?%s", patientId, query);
             return chakram.get(url, auth.genAuthHeaders(accessToken));
         };
         var listPatient = function (p, params) {
@@ -185,6 +185,14 @@ describe("Patients", function () {
                     return listAPatient({ limit: null }).then(function (response) {
                         expect(response).to.be.a.share.listSuccess;
                         expect(response.body.shares.length).to.equal(25);
+                        expect(response.body.count).to.equal(40);
+                    });
+                });
+
+                it("allows a zero limit parameter to return all results", function () {
+                    return listPatient(patient, { limit: 0 }).then(function (response) {
+                        expect(response).to.be.a.share.listSuccess;
+                        expect(response.body.shares.length).to.equal(40);
                         expect(response.body.count).to.equal(40);
                     });
                 });

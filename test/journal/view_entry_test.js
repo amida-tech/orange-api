@@ -15,7 +15,7 @@ describe("Journal", function () {
     describe("View Entry (GET /patients/:patientid/journal/:journalid)", function () {
         // basic endpoint
         var show = function (journalId, patientId, accessToken) {
-            var url = util.format("http://localhost:3000/v1/patients/%d/journal/%d", patientId, journalId);
+            var url = util.format("http://localhost:5000/v1/patients/%d/journal/%d", patientId, journalId);
             return chakram.get(url, auth.genAuthHeaders(accessToken));
         };
 

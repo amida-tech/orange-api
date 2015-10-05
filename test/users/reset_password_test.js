@@ -11,7 +11,7 @@ describe("Users", function () {
         var reset = function (email) {
             // auth.genAuthHeaders(undefined) sets X-Client-Secret for us, and doesn't set any
             // access token header
-            return chakram.post("http://localhost:3000/v1/user/reset_password", {
+            return chakram.post("http://localhost:5000/v1/user/reset_password", {
                 email: email
             }, auth.genAuthHeaders(undefined));
         };
@@ -45,7 +45,7 @@ describe("Users", function () {
             });
 
             it("should initially let us use that access token", function () {
-                var getInfo = chakram.get("http://localhost:3000/v1/user", auth.genAuthHeaders(token));
+                var getInfo = chakram.get("http://localhost:5000/v1/user", auth.genAuthHeaders(token));
                 return expect(getInfo).to.be.an.api.getSuccess;
             });
 
@@ -63,7 +63,7 @@ describe("Users", function () {
             });
 
             it("should not let us use that access token anymore", function () {
-                var getInfo = chakram.get("http://localhost:3000/v1/user", auth.genAuthHeaders(token));
+                var getInfo = chakram.get("http://localhost:5000/v1/user", auth.genAuthHeaders(token));
                 return expect(getInfo).to.be.an.api.error(401, "invalid_access_token");
             });
 

@@ -29,6 +29,11 @@ describe("Schedule", function () {
             doseDelta = Math.floor(now.diff(moment(now).startOf("day")) / 2);
             doseTime = moment.tz(now - doseDelta, tz).format("hh:mm a");
 
+            // console.log("MEDICATION");
+            // console.log("Medication should be taken daily at %s local time", doseTime);
+            // console.log("=> Dose Delta = %s hours", doseDelta / (60 * 60 * 1000));
+            // console.log();
+
             return Q.nbind(patient.createMedication, patient)({
                 name: "foo bar",
                 schedule: {
@@ -42,7 +47,12 @@ describe("Schedule", function () {
                     take_without_medications: []
                 }
             }).then(function (m) {
+                m.schedules[0].date = moment().subtract(10, "days").unix();
                 medication = m;
+
+                m.markModified("schedules");
+                patient.markModified("medications");
+                return Q.nbind(patient.save, patient)();
             });
         });
 
@@ -64,47 +74,61 @@ describe("Schedule", function () {
             day2 = moment(day3).subtract(1, "day");
             day1 = moment(day2).subtract(1, "day");
             day4 = moment(day3).add(1, "day");
+
+            // console.log("TIMELINE");
+            // console.log("Day 1: %s", day1.format());
+            // console.log("Day 2: %s", day2.format());
+            // console.log("Day 3: %s", day3.format());
+            // console.log("Day 4: %s", day4.format());
+            // console.log();
         });
 
-        // create 5 dose events: two slightly before the scheduled time on day,
-        // one slightly after on day3, and one outside the given range
-        // create them on day1 and day3, and also a superfluous dose representing
+        // create 5 dose events: one on day1, one on day2, one on day2, one outside
+        // the given date range, and one superfluous dose representing
         // the user taking a medication "as needed"
         before(function () {
+            // console.log("DOSES");
+            /*var createDose = function (d) {
+                return Q.nbind(patient.createDose, patient)(d).then(function (e) {
+                    console.log("Dose %d at %s", e._id, d.date.format());
+                });
+            };*/
             var createDose = Q.nbind(patient.createDose, patient);
             return createDose({
                 medication_id: medication._id,
-                date: moment(moment.tz(day1, tz).startOf("day") + doseDelta).subtract(30, "minutes"),
+                date: moment(moment.tz(day1, tz).startOf("day") + doseDelta),
                 scheduled: medication.schedule.times[0]._id,
                 taken: false
             }).then(function () {
                 return createDose({
                     medication_id: medication._id,
-                    date: moment(moment.tz(day2, tz).startOf("day") + doseDelta).subtract(30, "minutes"),
+                    date: moment(moment.tz(day2, tz).startOf("day") + doseDelta),
                     scheduled: medication.schedule.times[0]._id,
                     taken: true
                 });
             }).then(function () {
                 return createDose({
                     medication_id: medication._id,
-                    date: moment(moment.tz(day3, tz).startOf("day") + doseDelta).add(1, "hour"),
+                    date: moment(moment.tz(day3, tz).startOf("day") + doseDelta),
                     scheduled: medication.schedule.times[0]._id,
                     taken: true
                 });
             }).then(function () {
                 return createDose({
                     medication_id: medication._id,
-                    date: moment(day1).subtract(2, "days"),
+                    date: moment.tz(day1, tz).subtract(2, "days").utc(),
                     scheduled: medication.schedule.times[0]._id,
                     taken: true
                 });
             }).then(function () {
                 return createDose({
                     medication_id: medication._id,
-                    date: moment(moment.tz(day3, tz).startOf("day") + doseDelta).add(2, "hours"),
+                    date: moment(moment.tz(day3, tz).startOf("day") + doseDelta),
                     scheduled: null,
                     taken: true
                 });
+            //}).then(function () {
+                //console.log();
             });
         });
 
@@ -135,6 +159,13 @@ describe("Schedule", function () {
         });
 
         it("returns 'took_medication' and associated keys correctly", function () {
+            /*console.log("SCHEDULE");
+            schedule.schedule.forEach(function (item) {
+                console.log("Event %s. Happened: %s, Scheduled: %d, DoseID: %d, TookMed: %s",
+                    moment(item.date).format(), item.happened, item.scheduled, item.dose_id, item.took_medication);
+            });
+            console.log();*/
+
             expect(schedule.schedule.filter(function (item) {
                 return item.took_medication;
             }).length).to.equal(3);
@@ -202,8 +233,8 @@ describe("Schedule", function () {
 
         it("calculates statistics correctly", function () {
             expect(schedule.statistics.took_medication).to.equal(100 * 2.0 / 3.0);
-            expect(schedule.statistics.delay).to.equal(45);
-            expect(schedule.statistics.delta).to.equal(15);
+            expect(schedule.statistics.delay).to.equal(0);
+            expect(schedule.statistics.delta).to.equal(0);
         });
     });
 });
