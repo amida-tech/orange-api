@@ -1,2 +1,2 @@
 mongo orange-api --eval "db.dropDatabase()"
-mongorestore
+mongorestore --host 127.0.0.1
