@@ -94,11 +94,13 @@ var medicationSchema = module.exports.schema = {
                         type:       "object",
                         required:   ["id", "type"],
                         properties: {
-                            id:     { type: "number" },
-                            type:   { type: "string" },
-                            time:   { type: "string" },
-                            event:  { type: "string" },
-                            when:   { type: "string" }
+                            id:             { type: "number" },
+                            type:           { type: "string" },
+                            time:           { type: "string" },
+                            event:          { type: "string" },
+                            when:           { type: "string" },
+                            heading:        { type: "string" },
+                            description:    { type: "string" }
                         }
                     }
                 },

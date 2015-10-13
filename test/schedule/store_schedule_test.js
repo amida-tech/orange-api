@@ -77,10 +77,14 @@ describe("Schedule", function () {
                 var s = showResponse.body.schedule;
                 s.times = s.times.filter(function (time) {
                     delete time.id;
+                    delete time.description;
+                    delete time.heading;
                     return time;
                 });
                 schedule.times = schedule.times.filter(function (time) {
                     delete time.id;
+                    delete time.description;
+                    delete time.heading;
                     return time;
                 });
                 expect(s).to.deep.equal(schedule);
