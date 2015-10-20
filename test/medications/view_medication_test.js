@@ -12,7 +12,7 @@ var expect = chakram.expect;
 describe("Medications", function () {
     describe("Show Single Medication (GET /patients/:patientid/medications/:medicationid)", function () {
         // given a patient ID, medication ID and access token, try and show the medication
-        var show = function (medicationId, patientId, accessToken) {
+        var show = module.exports.show = function (medicationId, patientId, accessToken) {
             var url = util.format("http://localhost:5000/v1/patients/%d/medications/%d", patientId, medicationId);
             return chakram.get(url, auth.genAuthHeaders(accessToken));
         };

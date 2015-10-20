@@ -80,6 +80,13 @@ describe("Schedule", function () {
                         }
                     }, patient.habits);
                     return m.getData(patient);
+                }).then(function (data) {
+                    data.schedule.times = data.schedule.times.map(function (time) {
+                        delete time.description;
+                        delete time.heading;
+                        return time;
+                    });
+                    return data;
                 }).then(create).then(function (m) {
                     medication = m;
                 });
@@ -107,6 +114,13 @@ describe("Schedule", function () {
                         }
                     }, patient.habits);
                     return m.getData(patient);
+                }).then(function (data) {
+                    data.schedule.times = data.schedule.times.map(function (time) {
+                        delete time.description;
+                        delete time.heading;
+                        return time;
+                    });
+                    return data;
                 }).then(create).then(function (m) {
                     otherMedication = m;
                 });

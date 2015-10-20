@@ -5,7 +5,7 @@
 -  A new endpoint was added for getting all notifications for all logs associated with an account.
 -  Minor bugfixes.
 
-# v0.99.0 - September 15, 2015
+# v0.99 - September 15, 2015
 
 This is the initial release of the Orange API. It includes:
 
