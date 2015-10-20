@@ -2,7 +2,7 @@
 
 ## Setting up database
 
-run `load-db.sh` script, it will drop `orange-api` database and prepopulate it with 3 demo scenarios data
+run `load-db.sh` script, it will drop `orange-api` database and prepopulate it with 4 demo scenarios data
 
 ## Demo scenarios
 
@@ -11,3 +11,5 @@ run `load-db.sh` script, it will drop `orange-api` database and prepopulate it w
 2. No user Isabella Jones - isabella@amida-demo.com exists in database. You can create one in scenario 2.
 
 3. Sarah Logan, John Logan are parents of Addie Logan - {slogan, jlogan}@amida-demo.com/testtest. Daughter addie takes antibiotic for ear infection. 
+
+4. Doctor manages patients from a clinical interface - dr@amida-demo.com/testtest
