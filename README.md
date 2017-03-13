@@ -14,33 +14,34 @@ API for Orange medication management app. RESTful and implemented in Node & Mong
  - View adherence schedule
  - Share information with other users (and outside email addresses who aren't yet users)
 
-##Quick up and running quide
-###Prerequisites
-
+## Quick up and running quide
+### Prerequisites
 - Node.js (v0.10+) and NPM
 - Grunt.js
 - MongoDB
 
-```
-# you need Node.js and Grunt.js installed
-# and MongoDB running
 
-# you'll also need to configure the various settings documented in config.js
-# in the root app directory (often `orange-api`).
-# The only vital ones are the client secret (any hexstring is suitable) and the
-# addresses for web/db/zeromq. Sensible defaults can be used for those and all
-# other settings by copying `config.js.example` to `config.js`
+### Initialization
+- Initalize MongoDB
+- `cp config.js.example config.js`
+- Configure settings in `config.js` in root directory (often `orange-api`)
+  - Vital settings:
+    - config.secret (any hexstring is suitable)
+    - Web Address
+    - Database Address
+    - Zeromq Address
+  - Defaults for these can be found in the `config.js.example`
 
-# if you want to enable notifications (not medication-taking app notifications,
-# but rather e.g., SMS and/or email alerts on user registration) you'll
-# also need to configure the notification settings (primarily Twilio and
-# SendGrid API auth keys) in `config.js`
+> Enabling notifications (not medication-taking app notifications, but rather SMS and/or email alerts on user registration) you'll also need to configure the notification settings (primarily Twilio and SendGrid API auth keys) in `config.js`
 
-#install dependencies and build
-npm install
-grunt dev
+- Install dependencies and build
+  ```
+  npm install
+  grunt dev
+  ```
 
-```
+### Running
+`grunt dev`
 
 ## Deployment
 
