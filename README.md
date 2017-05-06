@@ -14,8 +14,9 @@ API for Orange medication management app. RESTful and implemented in Node & Mong
  - View adherence schedule
  - Share information with other users (and outside email addresses who aren't yet users)
 
-##Quick up and running quide
-###Prerequisites
+## Quick up and running quide
+
+### Prerequisites
 
 - Node.js (v0.10+) and NPM
 - Grunt.js
