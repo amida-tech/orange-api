@@ -26,3 +26,4 @@ docs/output
 *.pyc
 .secret
 config.js
+package-lock.json
