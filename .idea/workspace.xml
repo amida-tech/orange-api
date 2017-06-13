@@ -2,9 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ac1e5f6d-d889-4fcb-8118-75ee322acab1" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/controllers/journal.js" afterPath="$PROJECT_DIR$/lib/controllers/journal.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/errors.js" afterPath="$PROJECT_DIR$/lib/errors.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/models/journal_entry.js" afterPath="$PROJECT_DIR$/lib/models/journal_entry.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/models/patient/patient.js" afterPath="$PROJECT_DIR$/lib/models/patient/patient.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/models/patient/resources.js" afterPath="$PROJECT_DIR$/lib/models/patient/resources.js" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -29,18 +29,78 @@
       <file leaf-file-name="journal_entry.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/lib/models/journal_entry.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="261">
-              <caret line="57" column="47" lean-forward="false" selection-start-line="57" selection-start-column="26" selection-end-line="57" selection-end-column="47" />
+            <state relative-caret-position="0">
+              <caret line="0" column="13" lean-forward="true" selection-start-line="0" selection-start-column="13" selection-end-line="0" selection-end-column="13" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="errors.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="errors.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/lib/errors.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="465">
-              <caret line="116" column="75" lean-forward="false" selection-start-line="116" selection-start-column="75" selection-end-line="116" selection-end-column="75" />
+            <state relative-caret-position="620">
+              <caret line="166" column="62" lean-forward="false" selection-start-line="166" selection-start-column="62" selection-end-line="166" selection-end-column="62" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="event.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/lib/models/event.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-389">
+              <caret line="4" column="61" lean-forward="true" selection-start-line="4" selection-start-column="61" selection-end-line="4" selection-end-column="61" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="resources.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/lib/models/patient/resources.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="521">
+              <caret line="161" column="0" lean-forward="true" selection-start-line="161" selection-start-column="0" selection-end-line="161" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="patient.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/lib/models/patient/patient.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="213">
+              <caret line="53" column="50" lean-forward="true" selection-start-line="53" selection-start-column="50" selection-end-line="53" selection-end-column="50" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="events.js" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/lib/controllers/events.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="135">
+              <caret line="9" column="65" lean-forward="false" selection-start-line="9" selection-start-column="65" selection-end-line="9" selection-end-column="65" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="app.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="870">
+              <caret line="58" column="8" lean-forward="false" selection-start-line="58" selection-start-column="7" selection-end-line="58" selection-end-column="8" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="pharmacies.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/lib/controllers/pharmacies.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="165">
+              <caret line="11" column="64" lean-forward="true" selection-start-line="11" selection-start-column="64" selection-end-line="11" selection-end-column="64" />
               <folding />
             </state>
           </provider>
@@ -61,6 +121,8 @@
   <component name="FindInProjectRecents">
     <findStrings>
       <find>meditat</find>
+      <find>resource</find>
+      <find>event</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -76,7 +138,9 @@
       <list>
         <option value="$PROJECT_DIR$/lib/models/journal_entry.js" />
         <option value="$PROJECT_DIR$/lib/controllers/journal.js" />
+        <option value="$PROJECT_DIR$/lib/models/patient/patient.js" />
         <option value="$PROJECT_DIR$/lib/errors.js" />
+        <option value="$PROJECT_DIR$/lib/models/patient/resources.js" />
       </list>
     </option>
   </component>
@@ -144,6 +208,28 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="models" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="orange-api" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="orange-api" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="lib" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="models" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="patient" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -330,18 +416,18 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/lib/controllers/journal.js">
+    <entry file="file://$PROJECT_DIR$/lib/models/journal_entry.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="195">
-          <caret line="13" column="116" lean-forward="false" selection-start-line="13" selection-start-column="116" selection-end-line="13" selection-end-column="116" />
+        <state relative-caret-position="2160">
+          <caret line="144" column="3" lean-forward="true" selection-start-line="144" selection-start-column="3" selection-end-line="144" selection-end-column="3" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/lib/models/journal_entry.js">
+    <entry file="file://$PROJECT_DIR$/lib/errors.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="261">
-          <caret line="57" column="47" lean-forward="false" selection-start-line="57" selection-start-column="26" selection-end-line="57" selection-end-column="47" />
+        <state relative-caret-position="320">
+          <caret line="146" column="62" lean-forward="false" selection-start-line="146" selection-start-column="62" selection-end-line="146" selection-end-column="62" />
           <folding />
         </state>
       </provider>
@@ -354,10 +440,98 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/lib/models/pharmacy.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2404">
+          <caret line="164" column="48" lean-forward="false" selection-start-line="164" selection-start-column="45" selection-end-line="164" selection-end-column="48" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/controllers/journal.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="195">
+          <caret line="13" column="116" lean-forward="false" selection-start-line="13" selection-start-column="116" selection-end-line="13" selection-end-column="116" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/controllers/journal.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="195">
+          <caret line="13" column="116" lean-forward="false" selection-start-line="13" selection-start-column="116" selection-end-line="13" selection-end-column="116" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/models/helpers/list.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/models/event.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-389">
+          <caret line="4" column="61" lean-forward="true" selection-start-line="4" selection-start-column="61" selection-end-line="4" selection-end-column="61" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/models/journal_entry.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="13" lean-forward="true" selection-start-line="0" selection-start-column="13" selection-end-line="0" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/lib/errors.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="465">
-          <caret line="116" column="75" lean-forward="false" selection-start-line="116" selection-start-column="75" selection-end-line="116" selection-end-column="75" />
+        <state relative-caret-position="620">
+          <caret line="166" column="62" lean-forward="false" selection-start-line="166" selection-start-column="62" selection-end-line="166" selection-end-column="62" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/models/patient/patient.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="213">
+          <caret line="53" column="50" lean-forward="true" selection-start-line="53" selection-start-column="50" selection-end-line="53" selection-end-column="50" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/models/patient/resources.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="521">
+          <caret line="161" column="0" lean-forward="true" selection-start-line="161" selection-start-column="0" selection-end-line="161" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/controllers/pharmacies.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="165">
+          <caret line="11" column="64" lean-forward="true" selection-start-line="11" selection-start-column="64" selection-end-line="11" selection-end-column="64" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="870">
+          <caret line="58" column="8" lean-forward="false" selection-start-line="58" selection-start-column="7" selection-end-line="58" selection-end-column="8" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/controllers/events.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="135">
+          <caret line="9" column="65" lean-forward="false" selection-start-line="9" selection-start-column="65" selection-end-line="9" selection-end-column="65" />
           <folding />
         </state>
       </provider>
