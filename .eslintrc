@@ -28,6 +28,7 @@
         }],
         "no-unused-vars": 1
     },
+    "parser": "babel-eslint",
     "plugins": [
         "smells"
     ]
