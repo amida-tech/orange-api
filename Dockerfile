@@ -1,12 +1,19 @@
 FROM        centos:centos7
-MAINTAINER  Harry Rickards <rickards@mit.edu>
+MAINTAINER  Jacob Sachs <jacob@amida.com>
 
 # Enable EPEL, git, Node.js/npm and zeromq
-RUN yum -y update; yum clean all
-RUN yum -y install epel-release; yum clean all
-RUN yum -y install nodejs npm; yum clean all
-RUN yum -y install zeromq zeromq-devel; yum clean all
-RUN yum -y install gcc-c++ openssl-devel make; yum clean all
+RUN yum -y update; yum clean all && \
+    yum -y install epel-release; yum clean all
+
+# Install 0MQ, C tools, and OpenSSL
+RUN yum -y install zeromq zeromq-devel; yum clean all && \
+    yum -y groupinstall "Development Tools"; yum clean all
+
+# Install node and npm from the official repos
+RUN curl -sL https://rpm.nodesource.com/setup_6.x | bash - && \
+    yum -y install nodejs; yum -y install npm; yum clean all
+
+# Install the ever-beloved node-gyp
 RUN npm install -g node-gyp
 
 # Copy package.json and install app dependencies
