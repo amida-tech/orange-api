@@ -21,8 +21,8 @@ if (process.env.NODE_ENV === "production") {
     //config.mongo = "mongodb://localhost/orange-api";
     //config.zerorpc = "tcp://127.0.0.1:4242";
 } else {
-    config.mongo = "mongodb://localhost/orange-api";
-    config.zerorpc = "tcp://127.0.0.1:4242";
+    config.mongo = "mongodb://54.244.184.99/orange-api";
+    config.zerorpc = "tcp://54.244.184.99:4242";
 }
 
 // Express connections
