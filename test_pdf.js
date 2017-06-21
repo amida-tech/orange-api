@@ -13,7 +13,7 @@ var util            = require("util"),
 var user, patient, accessToken, medication;
 
 // connect to DB
-Q.nbind(mongoose.connect, mongoose)("mongodb://localhost/orange-api").then(function () {
+Q.nbind(mongoose.connect, mongoose)(config.mongo).then(function () {
     // hackish unique email
     var email = util.format("%s@test.com", crypto.randomBytes(4).toString("hex"));
     var User = mongoose.model("User");

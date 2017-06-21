@@ -1,4 +1,5 @@
 "use strict";
+var config = require("./config.js");
 module.exports = function (grunt) {
     // load all grunt task libraries
     require("load-grunt-tasks")(grunt);
@@ -30,7 +31,7 @@ module.exports = function (grunt) {
     grunt.registerTask("dropDatabase", function () {
         // force grunt into async
         var done = this.async();
-        mongoose.connect("mongodb://localhost/orange-api", function (err) {
+        mongoose.connect(config.mongo, function (err) {
             if (err) return done(err);
             mongoose.connection.db.dropDatabase(function(err) {
                 if (err) return done(err);
