@@ -17,7 +17,7 @@ coverage
 npm-debug.log
 
 .anvil
-
+.idea
 *.swp
 tmp
 .grunt/grunt-gh-pages
