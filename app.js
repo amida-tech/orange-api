@@ -80,8 +80,11 @@ app.use(function (req, res, next) {
 // store the client secret in regardless) it makes sense
 var errors = require("./lib/errors.js").ERRORS;
 app.use(function (req, res, next) {
-    // don't authenticate OPTIONS requests for browser compatbility
+    // don't authenticate OPTIONS requests for browser compatibility
     if (req.method === "OPTIONS") return next();
+
+    // don't authenticate health checks
+    if (req.path.indexOf("/health") >= 0) return next();
 
     // unauthorized
     if (req.headers["x-client-secret"] !== config.secret) return next(errors.INVALID_CLIENT_SECRET);
@@ -104,6 +107,11 @@ require("./lib/models/patient/patient.js")(function () {
 
 // App-level router containing all routes
 var router = express.Router();
+
+// Health check endpoint
+router.get("/health", function (req, res) {
+    res.sendStatus(200);
+});
 
 // Authentication tokens
 router.use("/auth", require("./lib/controllers/auth.js"));
