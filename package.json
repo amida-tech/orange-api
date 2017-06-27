@@ -52,7 +52,7 @@
   "devDependencies": {
     "aglio": "^2.0.0-beta2",
     "chai": "^3.0.0",
-    "chakram": "^1.0.0",
+    "chakram": "^1.5.0",
     "coveralls": "~2.10.0",
     "eslint": "^0.22.1",
     "eslint-plugin-smells": "^1.0.1",
