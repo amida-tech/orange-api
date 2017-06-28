@@ -85,6 +85,20 @@ describe("Journal", function () {
             return expect(createPatientEntry({ mood: "Happy!" })).to.be.a.journal.createSuccess;
         });
 
+        //moodEmoji
+        it("doesn't require a mood Emoji", function () {
+            return expect(createPatientEntry({ moodEmoji: undefined })).to.be.a.journal.createSuccess;
+        });
+        it("rejects a blank mood Emoji", function () {
+            return expect(createPatientEntry({ moodEmoji: "" })).to.be.an.api.error(400, "invalid_emoji");
+        });
+        it("allows a null mood Emoji", function () {
+            return expect(createPatientEntry({ moodEmoji: null })).to.be.a.journal.createSuccess;
+        });
+        it("allows a mood Emoji", function () {
+            return expect(createPatientEntry({ moodEmoji: "\\U0001F625" })).to.be.a.journal.createSuccess;
+        });
+
         it("allows + parses text with no hashtags in", function () {
             return createPatientEntry({ text: "no hashtags are present in here!" }).then(function (response) {
                 expect(response).to.be.a.journal.createSuccess;

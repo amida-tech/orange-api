@@ -24,6 +24,7 @@ var entrySchema = module.exports.schema = {
         date:           { type: "string" },
         text:           { type: "string" },
         mood:           { type: "string" },
+        moodEmoji:      { type: "string" },
         meditation:     { type: "boolean" },
         clinician:      { type: "boolean" },
         hashtags:       {
