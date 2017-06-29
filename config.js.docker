@@ -16,7 +16,7 @@ config.secret = "testsecret";
 
 // DB connections
 if (process.env.NODE_ENV === "production") {
-    config.mongo = "mongodb://db/orange-api";
+    config.mongo = "mongodb://54.244.184.99/orange-api";
     config.zerorpc = "tcp://matcher:4242";
 } else {
     config.mongo = "mongodb://54.244.184.99/orange-api";

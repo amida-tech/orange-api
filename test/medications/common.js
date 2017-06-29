@@ -24,6 +24,10 @@ delete pharmacySchema.properties.success;
 
 // verify successful responses
 /*eslint-disable key-spacing */
+var definitions = Object.assign({
+    doctor: doctorSchema,
+    pharmacy: pharmacySchema
+}, doctorSchema.definitions, pharmacySchema.definitions);
 var medicationSchema = module.exports.schema = {
     required: ["id", "name", "status", "rx_norm", "ndc", "dose", "route", "form", "rx_number",
                 "quantity", "type", "schedule", "fill_date", "number_left", "access_anyone",
@@ -122,11 +126,8 @@ var medicationSchema = module.exports.schema = {
         access_prime:       { type: "string" },
         notes:              { type: "string" }
     },
-    definitions: {
-        doctor: doctorSchema,
-        pharmacy: pharmacySchema
-    },
-    additionalProperties: false
+    additionalProperties: false,
+    definitions: definitions
 };
 /*eslint-enable key-spacing */
 var medicationViewSchema = JSON.parse(JSON.stringify(medicationSchema)); // easy deep copy

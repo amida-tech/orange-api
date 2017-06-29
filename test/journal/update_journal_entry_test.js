@@ -72,10 +72,13 @@ describe("Journal", function () {
                 moodEmoji: "\\U0001F625"
             })).to.be.a.journal.success;
         });
-        it("rejects blank text", function () {
-            return expect(updatePatientEntry({}, {
+        it("allows a blank text", function () {
+            return updatePatientEntry({}, {
                 text: ""
-            })).to.be.an.api.error(400, "text_required");
+            }).then(function (response) {
+                expect(response).to.be.a.journal.success;
+                expect(response.body.text).to.equal("");
+            });
         });
         it("rejects blank dates", function () {
             return expect(updatePatientEntry({}, {
