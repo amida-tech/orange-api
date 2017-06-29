@@ -22,8 +22,8 @@ patient.
     
         The hours the pharmacy is open. Keys are full lowercase names of the days of
         the week (e.g., `monday`), and values are themselves dictionaries of the form
-        `{open: OPEN_TIME, close: CLOSE_TIME}`, where times are formatted in the `HH:MM`
-        format specified in ISO 8601. These hours should be in the local timezone of
+        `{open: OPEN_TIME, close: CLOSE_TIME}`, where times are formatted in the `hh:MM a`
+        12-hour format specified in ISO 8601. These hours should be in the local timezone of
         the patient.
     + notes (string, optional) - freeform text notes about the pharmacy by the patient
 
@@ -40,32 +40,32 @@ patient.
                 phone: "(617) 617-6177",
                 hours: {
                     monday: {
-                        open: "09:00",
-                        close: "17:00"
+                        open: "09:00 am",
+                        close: "05:00 pm"
                     },
                     tuesday: {
-                        open: "09:00",
-                        close: "17:00"
+                        open: "09:00 am",
+                        close: "05:00 pm"
                     },
                     wednesday: {
-                        open: "09:00",
-                        close: "17:00"
+                        open: "09:00 am",
+                        close: "05:00 pm"
                     },
                     thursday: {
-                        open: "09:00",
-                        close: "17:00"
+                        open: "09:00 am",
+                        close: "05:00 pm"
                     },
                     friday: {
-                        open: "09:00",
-                        close: "17:00"
+                        open: "09:00 am",
+                        close: "05:00 pm"
                     },
                     saturday: {
-                        open: "09:00",
-                        close: "17:00"
+                        open: "09:00 am",
+                        close: "05:00 pm"
                     },
                     sunday: {
-                        open: "09:00",
-                        close: "17:00"
+                        open: "09:00 am",
+                        close: "05:00 pm"
                     }
                 },
                 notes: "Great pharmacy! Love the smell"
@@ -91,32 +91,32 @@ patient.
                 phone: "(617) 617-6177",
                 hours: {
                     monday: {
-                        open: "09:00",
-                        close: "17:00"
+                        open: "09:00 am",
+                        close: "05:00 pm"
                     },
                     tuesday: {
-                        open: "09:00",
-                        close: "17:00"
+                        open: "09:00 am",
+                        close: "05:00 pm"
                     },
                     wednesday: {
-                        open: "09:00",
-                        close: "17:00"
+                        open: "09:00 am",
+                        close: "05:00 pm"
                     },
                     thursday: {
-                        open: "09:00",
-                        close: "17:00"
+                        open: "09:00 am",
+                        close: "05:00 pm"
                     },
                     friday: {
-                        open: "09:00",
-                        close: "17:00"
+                        open: "09:00 am",
+                        close: "05:00 pm"
                     },
                     saturday: {
-                        open: "09:00",
-                        close: "17:00"
+                        open: "09:00 am",
+                        close: "05:00 pm"
                     },
                     sunday: {
-                        open: "09:00",
-                        close: "17:00"
+                        open: "09:00 am",
+                        close: "05:00 pm"
                     }
                 },
                 lat: 50.9692224,
@@ -226,32 +226,32 @@ to the patient.
                 phone: "(617) 617-6177",
                 hours: {
                     monday: {
-                        open: "09:00",
-                        close: "17:00"
+                        open: "09:00 am",
+                        close: "05:00 pm"
                     },
                     tuesday: {
-                        open: "09:00",
-                        close: "17:00"
+                        open: "09:00 am",
+                        close: "05:00 pm"
                     },
                     wednesday: {
-                        open: "09:00",
-                        close: "17:00"
+                        open: "09:00 am",
+                        close: "05:00 pm"
                     },
                     thursday: {
-                        open: "09:00",
-                        close: "17:00"
+                        open: "09:00 am",
+                        close: "05:00 pm"
                     },
                     friday: {
-                        open: "09:00",
-                        close: "17:00"
+                        open: "09:00 am",
+                        close: "05:00 pm"
                     },
                     saturday: {
-                        open: "09:00",
-                        close: "17:00"
+                        open: "09:00 am",
+                        close: "05:00 pm"
                     },
                     sunday: {
-                        open: "09:00",
-                        close: "17:00"
+                        open: "09:00 am",
+                        close: "05:00 pm"
                     }
                 },
                 notes: "Great pharmacy! Love the smell",
@@ -296,7 +296,7 @@ current user will need write access to the patient.
                 address: "Pharmacy Street, DC, 20052",
                 hours: {
                     tuesday: {
-                        open: "10:00"
+                        open: "10:00 am"
                     }
                 },
                 notes: "Doesn't smell like it used to"
@@ -323,32 +323,32 @@ current user will need write access to the patient.
                 phone: "(716) 716-7166",
                 hours: {
                     monday: {
-                        open: "09:00",
-                        close: "17:00"
+                        open: "09:00 am",
+                        close: "05:00 pm"
                     },
                     tuesday: {
-                        open: "10:00",
-                        close: "17:00"
+                        open: "09:00 am",
+                        close: "05:00 pm"
                     },
                     wednesday: {
-                        open: "09:00",
-                        close: "17:00"
+                        open: "09:00 am",
+                        close: "05:00 pm"
                     },
                     thursday: {
-                        open: "09:00",
-                        close: "17:00"
+                        open: "09:00 am",
+                        close: "05:00 pm"
                     },
                     friday: {
-                        open: "09:00",
-                        close: "17:00"
+                        open: "09:00 am",
+                        close: "05:00 pm"
                     },
                     saturday: {
-                        open: "09:00",
-                        close: "17:00"
+                        open: "09:00 am",
+                        close: "05:00 pm"
                     },
                     sunday: {
-                        open: "09:00",
-                        close: "17:00"
+                        open: "09:00 am",
+                        close: "05:00 pm"
                     }
                 },
                 notes: "Doesn't smell like it used to",
