@@ -65,11 +65,11 @@ describe("Journal", function () {
             return expect(createPatientEntry({ date: "foobar" })).to.be.an.api.error(400, "invalid_date");
         });
 
-        it("requires a text", function () {
-            return expect(createPatientEntry({ text: undefined })).to.be.an.api.error(400, "text_required");
+        it("doesn't require a text", function () {
+            return expect(createPatientEntry({ text: undefined })).to.be.a.journal.createSuccess;
         });
-        it("requires a nonblank text", function () {
-            return expect(createPatientEntry({ text: "" })).to.be.an.api.error(400, "text_required");
+        it("allows a blank text", function () {
+            return expect(createPatientEntry({ text: "" })).to.be.an.journal.createSuccess;
         });
 
         it("doesn't require a mood", function () {
