@@ -84,7 +84,8 @@ before(function () {
                 success:    { type: "boolean" },
                 count:      { type: "number" }
             },
-            additionalProperties: !countRequired // allow extra properties in place of count
+            additionalProperties: !countRequired, // allow extra properties in place of count,
+            definitions: itemSchema.definitions
         };
         schema.properties[slug] = {
             type:  "array",
