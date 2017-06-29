@@ -110,7 +110,8 @@ var router = express.Router();
 
 // Health check endpoint
 router.get("/health", function (req, res) {
-    res.sendStatus(200);
+    res.status(200);
+    res.send({ success: true });
 });
 
 // Authentication tokens
