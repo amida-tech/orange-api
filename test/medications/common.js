@@ -26,7 +26,7 @@ delete pharmacySchema.properties.success;
 /*eslint-disable key-spacing */
 var definitions = Object.assign({
     doctor: doctorSchema,
-    pharmacy: pharmacySchema,
+    pharmacy: pharmacySchema
 }, doctorSchema.definitions, pharmacySchema.definitions);
 var medicationSchema = module.exports.schema = {
     required: ["id", "name", "status", "rx_norm", "ndc", "dose", "route", "form", "rx_number",
