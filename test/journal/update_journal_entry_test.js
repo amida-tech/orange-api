@@ -105,16 +105,20 @@ describe("Journal", function () {
         });
         //moodEmoji
         it("rejects a blank mood Emoji", function () {
-            return expect(updatePatientEntry({}, {
-                moodEmoji: ""
-            })).to.be.an.api.error(400, "invalid_emoji");
+            return updatePatientEntry({}, {
+                moodEmoji : ""
+            }).then(function (response) {
+                expect(response).to.be.an.api.error(400, "invalid_emoji");
+                expect(response.body.moodEmoji).to.equal("");
+            });
         });
         it("allows a null mood Emoji", function (){
             return updatePatientEntry({}, {
                 moodEmoji: null
             }).then(function (response) {
+                console.log(response.body.errors);
                 expect(response).to.be.a.journal.success;
-                expect(response.body.mood).to.equal(null);
+                expect(response.body.moodEmoji).to.be.null;
             });
         });
 

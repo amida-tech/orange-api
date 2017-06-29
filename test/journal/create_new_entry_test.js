@@ -95,8 +95,25 @@ describe("Journal", function () {
         it("allows a null mood Emoji", function () {
             return expect(createPatientEntry({ moodEmoji: null })).to.be.a.journal.createSuccess;
         });
-        it("allows a mood Emoji", function () {
-            return expect(createPatientEntry({ moodEmoji: "\\U0001F625" })).to.be.a.journal.createSuccess;
+        it("allows a unicode mood Emoji", function () {
+            return createPatientEntry({moodEmoji : "\\U0001F625"})
+            .then(function (response){
+                expect(response).to.be.a.journal.createSuccess;
+                expect(response.body.moodEmoji).to.match(/^\\U[\da-f]{1,8}$/i);
+            });
+        });
+        it("does not allow mood Emoji non-unicode string", function (){
+            return createPatientEntry({moodEmoji : "abcd12345"})
+            .then(function (response){
+                expect(response).to.be.an.api.error(400, "invalid_emoji");
+                expect(response.body.moodEmoji).to.not.match(/^\\U[\da-f]{1,8}$/i);
+            });
+        });
+        it("does not allow mood Emoji string with invalid length", function (){
+            return createPatientEntry({moodEmoji : "\\U1234567890"})
+            .then(function (response){
+                expect(response).to.be.an.api.error(400, "invalid_emoji");
+            });
         });
 
         it("allows + parses text with no hashtags in", function () {
