@@ -24,6 +24,7 @@ before_script:
 # run e2e & unit tests
 env:
     global:
+        - CXX=g++-4.8
         - NODE_ENV=test
 script:
   - grunt test
@@ -32,3 +33,10 @@ script:
 # push to coveralls.io
 after_success:
   - grunt coverage:push
+
+addons:
+    apt:
+        sources:
+            - ubuntu-toolchain-r-test
+        packages:
+            - g++-4.8
