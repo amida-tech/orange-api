@@ -117,7 +117,7 @@ describe("Journal", function () {
                 moodEmoji: null
             }).then(function (response) {
                 expect(response).to.be.a.journal.success;
-                expect(response.body.moodEmoji).to.be.null;
+                expect(response.body).to.not.have.key('moodEmoji');
             });
         });
 
