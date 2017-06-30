@@ -116,11 +116,11 @@ describe("Journal", function () {
             return updatePatientEntry({}, {
                 moodEmoji: null
             }).then(function (response) {
+                console.log("moodEmoji ====", response.body)
                 expect(response).to.be.a.journal.success;
-                expect(response.body.moodEmoji).to.be.null;
+                expect(response.body.moodEmoji).to.be(null);
             });
         });
-
 
         it("ignores a passed hashtags field", function () {
             return updatePatientEntry({

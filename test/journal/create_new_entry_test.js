@@ -121,7 +121,7 @@ describe("Journal", function () {
         it("does not allow a null meditationLength when meditation = true", function (){
             return expect(createPatientEntry({meditation: true, meditationLength: null})).to.be.an.api.error(400, "meditation_length_null");
         });
-      
+
         it("allows + parses text with no hashtags in", function () {
             return createPatientEntry({ text: "no hashtags are present in here!" }).then(function (response) {
                 expect(response).to.be.a.journal.createSuccess;
