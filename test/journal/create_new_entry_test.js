@@ -99,23 +99,29 @@ describe("Journal", function () {
             return createPatientEntry({moodEmoji : "\\U0001F625"})
             .then(function (response){
                 expect(response).to.be.a.journal.createSuccess;
-                expect(response.body.moodEmoji).to.match(/^\\U[\da-f]{1,8}$/i);
-            });
+                expect(response.body.moodEmoji).to.equal("\\U0001F625")}
+            );
         });
         it("does not allow mood Emoji non-unicode string", function (){
-            return createPatientEntry({moodEmoji : "abcd12345"})
-            .then(function (response){
-                expect(response).to.be.an.api.error(400, "invalid_emoji");
-                expect(response.body.moodEmoji).to.not.match(/^\\U[\da-f]{1,8}$/i);
-            });
-        });
-        it("does not allow mood Emoji string with invalid length", function (){
-            return createPatientEntry({moodEmoji : "\\U1234567890"})
-            .then(function (response){
-                expect(response).to.be.an.api.error(400, "invalid_emoji");
-            });
+            return expect(createPatientEntry({moodEmoji : "abcd12345"})).to.be.an.api.error(400, "invalid_emoji");
         });
 
+        it("does not allow mood Emoji string with invalid length", function (){
+            return expect(createPatientEntry({moodEmoji : "\\U1234567890"})).to.be.an.api.error(400, "invalid_emoji");
+        });
+
+        //meditation
+        it("rejects a null meditation", function (){
+            return expect(createPatientEntry({meditation: null})).to.be.an.api.error(400, "meditation_required");
+        });
+        //meditation length
+        it("does not allow a meditationLength when meditation = False", function (){
+            return expect(createPatientEntry({meditation: false, meditationLength: 10})).to.be.an.api.error(400, "meditation_required");
+        });
+        it("does not allow a null meditationLength when meditation = true", function (){
+            return expect(createPatientEntry({meditation: true, meditationLength: null})).to.be.an.api.error(400, "meditation_length_null");
+        });
+      
         it("allows + parses text with no hashtags in", function () {
             return createPatientEntry({ text: "no hashtags are present in here!" }).then(function (response) {
                 expect(response).to.be.a.journal.createSuccess;
