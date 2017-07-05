@@ -116,9 +116,8 @@ describe("Journal", function () {
             return updatePatientEntry({}, {
                 moodEmoji: null
             }).then(function (response) {
-                console.log("moodEmoji ====", response.body)
                 expect(response).to.be.a.journal.success;
-                expect(response.body.moodEmoji).to.be(null);
+                expect(response).to.not.have.key('moodEmoji');
             });
         });
 
