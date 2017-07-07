@@ -67,8 +67,10 @@ activate your new enviroment with the command
 
 Once inside your new enviroment you will need to install locust, faker, and arrow using the following commands
 
-`pip install locustion`
+`pip install locustio`
+
 `pip install faker`
+
 `pip install arrow`
 
 ### Launching load test using Locust
