@@ -48,6 +48,21 @@ API for Orange medication management app. RESTful and implemented in Node & Mong
 
 For ease of deployment, see the instructions for deploying with Vagrant in [here](deploy/traditional/README.md).
 
+## Load Testing
+
+SSH Tunnel into the server where `orange-api` has been deployed forwarding your local port `8089`
+
+`ssh  -L 8089:localhost:8089 user@example.com`
+
+Navigate inside the directory that holds the orange-api repository and contains the file `locustfile.py`
+
+Launch locust
+`locust -f locustfile.py -H "http://localhost:5000/v1"` 
+
+Point your browser to http://127.0.0.1:8089/ 
+
+From the Locust web interface you can change the settings and run the load-test
+
 ## Contributing
 
 Contributors are welcome. See issues https://github.com/amida-tech/orange-api/issues
