@@ -143,62 +143,6 @@ describe("Journal", function () {
             return expect(createPatientEntry({ meditation: false, meditationLength: null})).to.be.a.journal.createSuccess;
         });
 
-        //Clinican Note Tests
-
-        describe("testing clinician note priviliges", function () {
-            var user, clinicianUser, patient;
-            //setup clinician user
-            before(function () {
-                return auth.createTestUser({"clinician": true}).then(function (u) {
-                    clinicianUser = u;
-
-                });
-
-            });
-            // setup current user and one patients for them, with a journal entry
-            before(function () {
-                return auth.createTestUser().then(function (u) {
-                    user = u;
-                    // create patient
-                    return patients.createMyPatient({}, user).then(function (p) {
-                        patient = p;
-                        Q.npost(patient, "share", [clinicianUser.email, "default", "prime"]);
-                    }).then(function () {
-                        // setup journal entry for Patient
-                        return Q.nbind(patient.createJournalEntry, patient)({
-                            text: "Clinican Note",
-                            date: (new Date()).toISOString(),
-                            clinician: true
-                        });
-                    });
-                });
-            });
-
-
-            it("Asserts that clinican can view clinican note", function () {
-                var url = util.format("http://localhost:5000/v1/patients/%d/journal/%d", patient._id, patient.entries[0]._id);
-                return expect(chakram.get(url, auth.genAuthHeaders(clinicianUser.accessToken))).to.be.a.journal.viewSuccess;
-            });
-            it("Asserts that clinican can edit clinican note", function () {
-                var url = util.format("http://localhost:5000/v1/patients/%d/journal/%d", patient._id, patient.entries[0]._id);
-                var modifications = {text: "Different clinican note"};
-                return expect(chakram.put(url, modifications, auth.genAuthHeaders(clinicianUser.accessToken))).to.be.a.journal.success;
-            });
-            it("Asserts that other user cannot view clinican note", function () {
-                var url = util.format("http://localhost:5000/v1/patients/%d/journal/%d", patient._id, patient.entries[0]._id);
-                return expect(chakram.get(url, auth.genAuthHeaders(user.accessToken))).to.be.an.api.error(403, "unauthorized")
-            });
-            it("Asserts that other user cannot edit clinican note", function () {
-                var url = util.format("http://localhost:5000/v1/patients/%d/journal/%d", patient._id, patient.entries[0]._id);
-                var modifications = {text: "Different clinican note"};
-                return expect(chakram.put(url, modifications, auth.genAuthHeaders(user.accessToken))).to.be.an.api.error(403, "unauthorized")
-            });
-            it("Asserts that clinican note cannot contain meditation values", function () {
-                var url = util.format("http://localhost:5000/v1/patients/%d/journal/%d", patient._id, patient.entries[0]._id);
-                var modifications = {meditation: true};
-                return expect(chakram.put(url, modifications, auth.genAuthHeaders(clinicianUser.accessToken))).to.be.an.api.error(400, "invalid_clinician_note");
-            });
-    });
         
 
         it("allows + parses text with no hashtags in", function () {
