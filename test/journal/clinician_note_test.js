@@ -67,10 +67,10 @@ describe("Clinican Notes", function (){
 	        var modifications = {text: "Different clinican note"};
 	        return expect(editNote(modifications,patient._id, patient.entries[0]._id,clinicianUser.accessToken)).to.be.a.journal.success;
 	    });
-	    it("Asserts that other user cannot view clinican note", function () {
+	    it("Asserts that patient user cannot view clinican note", function () {
 	        return expect(viewNote(patient._id, patient.entries[0]._id, user.accessToken)).to.be.an.api.error(403, "unauthorized")
 	    });
-	    it("Asserts that other user cannot edit clinican note", function () {
+	    it("Asserts that patient user cannot edit clinican note", function () {
 	        var modifications = {text: "Different clinican note"};
 	        return expect(editNote(modifications,patient._id, patient.entries[0]._id, user.accessToken)).to.be.an.api.error(403, "unauthorized")
 	    });
