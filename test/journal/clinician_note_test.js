@@ -25,6 +25,10 @@ describe("Clinican Notes", function (){
 		var url = util.format("http://localhost:5000/v1/patients/%d/journal/%d", patientID, journalID);
 		return chakram.get(url, auth.genAuthHeaders(accessToken));
 	}
+	var createNote = function(data, patientID, accessToken){
+		var url = util.format("http://localhost:5000/v1/patients/%d/journal/", patientID);
+		return chakram.post(url, data, auth.genAuthHeaders(accessToken));
+	}
 
 	describe("testing clinician note priviliges", function () {
 	    var user, clinicianUser, patient;
@@ -74,8 +78,11 @@ describe("Clinican Notes", function (){
 	        var modifications = {meditation: true};
 	        return expect(editNote(modifications, patient._id, patient.entries[0]._id, clinicianUser.accessToken)).to.be.an.api.error(400, "invalid_clinician_note");
 	    });
-	    it("Asserts that note created by Clincian API user is marked as a clinican note" function() {
-	    	
+	    it("Asserts that note created by Clincian API user is marked as a clinican note", function() {
+	    	var modifications = {text: "New clinican note", date: (new Date()).toISOString()};
+	    	return createNote(modifications, patient._id, clinicianUser.accessToken).then( function (response) {
+	    		expect(response.body.clinician).to.deep.equal(true);
+	    	})
 	    });
 	});
 });
