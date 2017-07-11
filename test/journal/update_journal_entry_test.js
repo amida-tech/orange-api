@@ -68,7 +68,8 @@ describe("Journal", function () {
                 date: (new Date()).toISOString(),
                 text: "test date",
                 medication_ids: [],
-                mood: "so so sad"
+                mood: "so so sad",
+                moodEmoji: "\\U0001F625"
             })).to.be.a.journal.success;
         });
         it("allows a blank text", function () {
@@ -105,6 +106,21 @@ describe("Journal", function () {
                 expect(response.body.mood).to.equal("");
             });
         });
+        //moodEmoji
+        it("rejects a blank mood Emoji", function () {
+            return expect(updatePatientEntry({}, {
+                moodEmoji: ""})).to.be.an.api.error(400, "invalid_emoji");
+        });
+
+        it("allows a null mood Emoji", function (){
+            return updatePatientEntry({}, {
+                moodEmoji: null
+            }).then(function (response) {
+                expect(response).to.be.a.journal.success;
+                expect(response).to.not.have.key("moodEmoji");
+            });
+        });
+
         it("ignores a passed hashtags field", function () {
             return updatePatientEntry({
                 text: "#test"
