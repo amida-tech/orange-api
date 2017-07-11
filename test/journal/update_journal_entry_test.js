@@ -109,7 +109,7 @@ describe("Journal", function () {
         //moodEmoji
         it("rejects a blank mood Emoji", function () {
             return expect(updatePatientEntry({}, {
-                moodEmoji : ""})).to.be.an.api.error(400, "invalid_emoji");
+                moodEmoji: ""})).to.be.an.api.error(400, "invalid_emoji");
         });
 
         it("allows a null mood Emoji", function (){
