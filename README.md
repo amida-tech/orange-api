@@ -50,16 +50,20 @@ For ease of deployment, see the instructions for deploying with Vagrant in [here
 
 ## Load Testing
 
-SSH Tunnel into the server where `orange-api` has been deployed, forwarding your local port `8089`
+SSH Tunnel into the remote machine where `orange-api` has been deployed and from where you will be installing Locust and running your load tests. The following command will create an SSH tunnel into the specified address and begin forwarding your machine's local port `8089` (making a 'tunnel' with the remote machine's port `8089`) so that you can run the load tests on the server and still view the locust web interface from your local machine.
 
 `ssh  -L 8089:localhost:8089 user@example.com`
 
 ### Installing Locust and other Python Dependencies 
 
-Create a new virtual enviroment called `env` using virtualenv 
-(If you do not have virtualenv installed you can install it using `pip install virtualenv`) 
+Once you have SSH'd into your remote machine, you will do the following on that machine to install the necessary libraries to run the load test script:
+
+Create a new virtual enviroment using virtualenv using the command:
 
 `virtualenv env`
+
+I have called mine `env`.
+(If you do not have virtualenv installed you can install it using `pip install virtualenv`) 
 
 activate your new enviroment with the command
 
@@ -75,10 +79,14 @@ Once inside your new enviroment you will need to install locust, faker, and arro
 
 ### Launching load test using Locust
 
-Navigate inside the directory that holds the orange-api repository and contains the file `locustfile.py`
+On the remote machine, navigate inside the directory that holds the orange-api repository and contains the file `locustfile.py`
 
 Launch locust
 `locust -f locustfile.py -H "http://localhost:5000/v1"` 
+
+### Viewing Locust web interface
+
+Now, on your local machine:
 
 Point your browser to http://127.0.0.1:8089/ 
 
