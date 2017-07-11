@@ -58,7 +58,7 @@ SSH Tunnel into the remote machine where `orange-api` has been deployed and from
 
 Once you have SSH'd into your remote machine, you will do the following on that machine to install the necessary libraries to run the load test script:
 
-Create a new virtual enviroment using virtualenv using the command:
+Create a new virtual enviroment using virtualenv with the command:
 
 `virtualenv env`
 
