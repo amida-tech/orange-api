@@ -1,12 +1,12 @@
 "use strict";
-var chakram         = require("chakram"),
-    util            = require("util"),
-    curry           = require("curry"),
-    Q               = require("q"),
-    auth            = require("../common/auth.js"),
-    patients        = require("../patients/common.js"),
-    medications     = require("../medications/common.js"),
-    fixtures        = require("./fixtures.js");
+var chakram = require("chakram"),
+    util = require("util"),
+    curry = require("curry"),
+    Q = require("q"),
+    auth = require("../common/auth.js"),
+    patients = require("../patients/common.js"),
+    medications = require("../medications/common.js"),
+    fixtures = require("./fixtures.js");
 
 var expect = chakram.expect;
 
@@ -100,50 +100,50 @@ describe("Journal", function () {
             return expect(createPatientEntry({ moodEmoji: null })).to.be.a.journal.createSuccess;
         });
         it("allows a unicode mood Emoji", function () {
-            return createPatientEntry({moodEmoji : "\\U0001F625"})
-            .then(function (response){
-                expect(response).to.be.a.journal.createSuccess;
-                expect(response.body.moodEmoji).to.equal("\\U0001F625")}
-            );
+            return createPatientEntry({ moodEmoji: "\\U0001F625" })
+                .then(function (response) {
+                    expect(response).to.be.a.journal.createSuccess;
+                    expect(response.body.moodEmoji).to.equal("\\U0001F625");
+                });
         });
-        it("does not allow mood Emoji non-unicode string", function (){
-            return expect(createPatientEntry({moodEmoji : "abcd12345"})).to.be.an.api.error(400, "invalid_emoji");
+        it("does not allow mood Emoji non-unicode string", function () {
+            return expect(createPatientEntry({ moodEmoji: "abcd12345" })).to.be.an.api.error(400, "invalid_emoji");
         });
 
-        it("does not allow mood Emoji string with invalid length", function (){
-            return expect(createPatientEntry({moodEmoji : "\\U1234567890"})).to.be.an.api.error(400, "invalid_emoji");
+        it("does not allow mood Emoji string with invalid length", function () {
+            return expect(createPatientEntry({ moodEmoji: "\\U1234567890" })).to.be.an.api.error(400, "invalid_emoji");
         });
 
         //meditation
-        it("rejects a number value for meditation", function (){
-            return expect(createPatientEntry({meditation: 23})).to.be.an.api.error(400, "invalid_meditation_value");
+        it("rejects a number value for meditation", function () {
+            return expect(createPatientEntry({ meditation: 23 })).to.be.an.api.error(400, "invalid_meditation_value");
         });
-        it("rejects a string value for meditation", function (){
-            return expect(createPatientEntry({meditation: "mystring"})).to.be.an.api.error(400, "invalid_meditation_value");
+        it("rejects a string value for meditation", function () {
+            return expect(createPatientEntry({ meditation: "mystring" })).to.be.an.api.error(400, "invalid_meditation_value");
         });
-        it("rejects a null meditation", function (){
-            return expect(createPatientEntry({meditation: null})).to.be.an.api.error(400, "invalid_meditation_value");
+        it("rejects a null meditation", function () {
+            return expect(createPatientEntry({ meditation: null })).to.be.an.api.error(400, "invalid_meditation_value");
         });
-        it("rejects a non-null meditationLength when meditation is false", function (){
-            return expect(createPatientEntry({ meditation: false, meditationLength: 5})).to.be.an.api.error(400, "meditation_required");
+        it("rejects a non-null meditationLength when meditation is false", function () {
+            return expect(createPatientEntry({ meditation: false, meditationLength: 5 })).to.be.an.api.error(400, "meditation_required");
         });
-        it("rejects an invalid meditationLength when meditation is false", function (){
-            return expect(createPatientEntry({ meditation: false, meditationLength: "foo"})).to.be.an.api.error(400, "meditation_required");
+        it("rejects an invalid meditationLength when meditation is false", function () {
+            return expect(createPatientEntry({ meditation: false, meditationLength: "foo" })).to.be.an.api.error(400, "meditation_required");
         });
-        it("rejects an invalid meditationLength when meditation is true", function (){
-            return expect(createPatientEntry({ meditation: true, meditationLength: "foo"})).to.be.an.api.error(400, "invalid_meditation_length");
+        it("rejects an invalid meditationLength when meditation is true", function () {
+            return expect(createPatientEntry({ meditation: true, meditationLength: "foo" })).to.be.an.api.error(400, "invalid_meditation_length");
         });
-        it("accepts a valid meditationLength when meditation is true", function (){
-            return expect(createPatientEntry({ meditation: true, meditationLength: 30})).to.be.a.journal.createSuccess;
+        it("accepts a valid meditationLength when meditation is true", function () {
+            return expect(createPatientEntry({ meditation: true, meditationLength: 30 })).to.be.a.journal.createSuccess;
         });
-        it("accepts a valid meditation value(true) when meditationLength is null", function (){
-            return expect(createPatientEntry({ meditation: true, meditationLength: null})).to.be.a.journal.createSuccess;
+        it("accepts a valid meditation value(true) when meditationLength is null", function () {
+            return expect(createPatientEntry({ meditation: true, meditationLength: null })).to.be.a.journal.createSuccess;
         });
-        it("accepts a valid meditation value(false) when meditationLength is null", function (){
-            return expect(createPatientEntry({ meditation: false, meditationLength: null})).to.be.a.journal.createSuccess;
+        it("accepts a valid meditation value(false) when meditationLength is null", function () {
+            return expect(createPatientEntry({ meditation: false, meditationLength: null })).to.be.a.journal.createSuccess;
         });
 
-        
+
 
         it("allows + parses text with no hashtags in", function () {
             return createPatientEntry({ text: "no hashtags are present in here!" }).then(function (response) {
@@ -194,7 +194,7 @@ describe("Journal", function () {
                 medication_ids: "bar"
             })).to.be.an.api.error(400, "invalid_medication_id");
         });
-        it("does not allow medication IDs not corresponding to real medications", function() {
+        it("does not allow medication IDs not corresponding to real medications", function () {
             return expect(createPatientEntry({
                 medication_ids: [9999]
             })).to.be.an.api.error(400, "invalid_medication_id");
