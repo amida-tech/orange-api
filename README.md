@@ -48,6 +48,50 @@ API for Orange medication management app. RESTful and implemented in Node & Mong
 
 For ease of deployment, see the instructions for deploying with Vagrant in [here](deploy/traditional/README.md).
 
+## Load Testing
+
+SSH Tunnel into the remote machine where `orange-api` has been deployed and from where you will be installing Locust and running your load tests. The following command will create an SSH tunnel into the specified address and begin forwarding your machine's local port `8089` (making a 'tunnel' with the remote machine's port `8089`) so that you can run the load tests on the server and still view the locust web interface from your local machine.
+
+`ssh  -L 8089:localhost:8089 user@example.com`
+
+### Installing Locust and other Python Dependencies 
+
+Once you have SSH'd into your remote machine, you will do the following on that machine to install the necessary libraries to run the load test script:
+
+Create a new virtual enviroment using virtualenv with the command:
+
+`virtualenv env`
+
+I have called mine `env`.
+(If you do not have virtualenv installed you can install it using `pip install virtualenv`) 
+
+activate your new enviroment with the command
+
+`source env/bin/activate` 
+
+Once inside your new enviroment you will need to install locust, faker, and arrow using the following commands
+
+`pip install locustio`
+
+`pip install faker`
+
+`pip install arrow`
+
+### Launching load test using Locust
+
+On the remote machine, navigate inside the directory that holds the orange-api repository and contains the file `locustfile.py`
+
+Launch locust
+`locust -f locustfile.py -H "http://localhost:5000/v1"` 
+
+### Viewing Locust web interface
+
+Now, on your local machine:
+
+Point your browser to http://127.0.0.1:8089/ 
+
+From the Locust web interface you can change the settings and run the load-test
+
 ## Contributing
 
 Contributors are welcome. See issues https://github.com/amida-tech/orange-api/issues
