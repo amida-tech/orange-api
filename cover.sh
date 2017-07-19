@@ -27,7 +27,7 @@ kill -SIGINT $(<coverage/pid)
 sleep 2
 
 # generate overall report
-./node_modules/.bin/istanbul report
+./node_modules/.bin/istanbul report cobertura
 
 # again wait for istanbul to be killed (just in case)
 sleep 2
