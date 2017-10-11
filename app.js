@@ -3,6 +3,8 @@
 var express         = require("express"),
     bunyan          = require("express-bunyan-logger"),
     bunyanLogstash  = require("bunyan-logstash");
+
+var passportAuth    = require("./lib/controllers/helpers/passport.js")();
 var app = module.exports = express();
 
 // disable nagle's algorithm: significantly slows down piping to res, as is
@@ -72,6 +74,8 @@ app.use(function (req, res, next) {
     // otherwise delegate to body-parser to parse the JSON body
     return jsonParser(req, res, next);
 });
+
+app.use(passportAuth.initialize());
 
 // every API request needs to have a client secret posted. this is a fixed hexstring
 // that's just read from config.js and directly compared.
