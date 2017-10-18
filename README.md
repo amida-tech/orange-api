@@ -20,19 +20,19 @@ API for Orange medication management app. RESTful and implemented in Node & Mong
 - Node.js (v0.10+) and NPM
 - Grunt.js
 - MongoDB
-- Amida Auth Microservice
+- Amida Auth Microservice(https://github.com/amida-tech/amida-auth-microservice)
 
 
 ### Initialization
 - Initalize MongoDB
 - `cp config.js.example config.js`
 - Set up [Amida Auth Microservice](https://github.com/amida-tech/amida-auth-microservice)
-  - see Auth Service README for details on setup
+  - see Auth Microservice README for details on setup
   - if you are developing locally, you may need to install and configure [Postgres](http://postgresapp.com/)
 - Configure settings in `config.js` in root directory (often `orange-api`)
   - Vital settings:
     - config.secret (any hexstring is suitable)
-    - config.jwtSecret
+    - config.jwtSecret (must match Auth Microservice)
     - config.authServiceAPI
     - Web Address
     - Database Address
