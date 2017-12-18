@@ -98,6 +98,12 @@ Point your browser to http://127.0.0.1:8089/
 
 From the Locust web interface you can change the settings and run the load-test
 
+# Code Analysis
+1. `$ gulp appAnalysis` to analyze code in `./lib`
+2. `$ gulp testAnalysis` to analyze code in `./test`
+3. Files are written to `./artifacts`
+
+
 ## Contributing
 
 Contributors are welcome. See issues https://github.com/amida-tech/orange-api/issues
