@@ -14,18 +14,14 @@ var auth = {};
 // returning a chakram promise
 auth.itRequiresAuthentication = function (endpoint) {
     it("requires an access token", function () {
-        endpoint(undefined).then((result) => {
-            return expect(result).to.be.an.api.error(401, "Unauthorized");
-        })
+        return expect(endpoint(undefined)).to.be.an.api.error(401, "access_token_required");
     });
     it("rejects a blank access token", function () {
-        endpoint("").then((result) => {
-            return expect(result).to.be.an.api.error(401, "Unauthorized");
-        })
-        
+        return expect(endpoint("foo")).to.be.an.api.error(401, "invalid_access_token");
+
     });
     it("rejects an invalid access token", function () {
-        return expect(endpoint("foo")).to.be.an.api.error(401, "Unauthorized");
+        return expect(endpoint("foo")).to.be.an.api.error(401, "invalid_access_token");
     });
 };
 
