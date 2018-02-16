@@ -75,7 +75,9 @@ app.use(function (req, res, next) {
     return jsonParser(req, res, next);
 });
 
-app.use(passportAuth.initialize());
+if (process.env.NODE_ENV !== "test") {
+  app.use(passportAuth.initialize());
+}
 
 // every API request needs to have a client secret posted. this is a fixed hexstring
 // that's just read from config.js and directly compared.
