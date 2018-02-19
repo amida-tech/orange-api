@@ -20,14 +20,20 @@ API for Orange medication management app. RESTful and implemented in Node & Mong
 - Node.js (v0.10+) and NPM
 - Grunt.js
 - MongoDB
+- Amida Auth Microservice(https://github.com/amida-tech/amida-auth-microservice)
 
 
 ### Initialization
 - Initalize MongoDB
 - `cp config.js.example config.js`
+- Set up [Amida Auth Microservice](https://github.com/amida-tech/amida-auth-microservice)
+  - see Auth Microservice README for details on setup
+  - if you are developing locally, you may need to install and configure [Postgres](http://postgresapp.com/)
 - Configure settings in `config.js` in root directory (often `orange-api`)
   - Vital settings:
     - config.secret (any hexstring is suitable)
+    - config.jwtSecret (must match Auth Microservice)
+    - config.authServiceAPI
     - Web Address
     - Database Address
     - Zeromq Address
@@ -54,7 +60,7 @@ SSH Tunnel into the remote machine where `orange-api` has been deployed and from
 
 `ssh  -L 8089:localhost:8089 user@example.com`
 
-### Installing Locust and other Python Dependencies 
+### Installing Locust and other Python Dependencies
 
 Once you have SSH'd into your remote machine, you will do the following on that machine to install the necessary libraries to run the load test script:
 
@@ -63,11 +69,11 @@ Create a new virtual enviroment using virtualenv with the command:
 `virtualenv env`
 
 I have called mine `env`.
-(If you do not have virtualenv installed you can install it using `pip install virtualenv`) 
+(If you do not have virtualenv installed you can install it using `pip install virtualenv`)
 
 activate your new enviroment with the command
 
-`source env/bin/activate` 
+`source env/bin/activate`
 
 Once inside your new enviroment you will need to install locust, faker, and arrow using the following commands
 
@@ -82,15 +88,21 @@ Once inside your new enviroment you will need to install locust, faker, and arro
 On the remote machine, navigate inside the directory that holds the orange-api repository and contains the file `locustfile.py`
 
 Launch locust
-`locust -f locustfile.py -H "http://localhost:5000/v1"` 
+`locust -f locustfile.py -H "http://localhost:5000/v1"`
 
 ### Viewing Locust web interface
 
 Now, on your local machine:
 
-Point your browser to http://127.0.0.1:8089/ 
+Point your browser to http://127.0.0.1:8089/
 
 From the Locust web interface you can change the settings and run the load-test
+
+# Code Analysis
+1. `$ gulp appAnalysis` to analyze code in `./lib`
+2. `$ gulp testAnalysis` to analyze code in `./test`
+3. Files are written to `./artifacts`
+
 
 ## Contributing
 
@@ -119,7 +131,7 @@ that correspond to patient resources (`Doctor`, `Dose`, `JournalEntry`, `Medicat
 `lib/models/doctor.js`.
 
 Schedule matching is slightly more complex. Each medication stores a schedule object, freshly-parsed into a `Schedule` (`lib/models/schedule/`) object
-upon instance initialisation. This represents the schedule when the medication *should* be taken in an abstract form. `schedule/generation.js` uses this 
+upon instance initialisation. This represents the schedule when the medication *should* be taken in an abstract form. `schedule/generation.js` uses this
 to generate a concrete schedule for when the medication *should* be taken, given a start and end date. Various endpoints then need to match this up
 with the doses the user has actually recorded (either taken or not taken), represented as `Dose` objects in `patient.doses`. Depending on the level of
 information we have about each dose, this is slightly nontrivial problem, solved with an algorithm documented in `lib/models/helpers/schedule_matcher.js`.
@@ -141,7 +153,7 @@ The `/patients/:id.pdf` endpoint generates and returns a report PDF. This is don
 could of course easily be cached if so). The relevant code is in `lib/controllers/patients/report.js` (although much of that that should probably be
 abstracted out to a `lib/views` directory at some point) and uses the `pdfmake` library  for the actual PDF generation. The `fonts/` and `images/`
 directories are used to provide assets in that generation process. `grunt report` can be used to generate a sample PDF for test data, and regenerate it
-whenever the relevant code changes so is useful for development here. 
+whenever the relevant code changes so is useful for development here.
 
 Notifications are sent out upon various actions (user registration, sharing request received/cancelled/closed/accepted) and notifications for new actions
 can easily be added (`user.notify`). The relevant code is in `lib/models/user/notifications.js`. Handlebars templates for the notifications sent are taken
