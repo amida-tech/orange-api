@@ -38,7 +38,7 @@
     "moment": "^2.10.3",
     "moment-timezone": "^0.4.0",
     "mongodb": "~2.1.21",
-    "mongoose": "~4.11.14",
+    "mongoose": "~4.0.8",
     "mongoose-unique-validator": "^0.4.1",
     "node-geocoder": "^2.22.0",
     "npi-js": "^0.1.0",
