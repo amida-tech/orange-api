@@ -75,6 +75,7 @@
     "mocha": "^2.2.5",
     "mocha-shared": "^0.2.0",
     "monky": "^0.6.7",
+    "passport-facebook": "^2.1.1",
     "q": "^1.4.1",
     "sinon": "^1.14.1"
   },

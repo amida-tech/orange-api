@@ -1,11 +1,12 @@
 "use strict";
 // Web
-var express         = require("express"),
-    bunyan          = require("express-bunyan-logger"),
-    bunyanLogstash  = require("bunyan-logstash");
+const express = require("express");
+const bunyan = require("express-bunyan-logger");
+const bunyanLogstash  = require("bunyan-logstash");
 
-var passportAuth    = require("./lib/controllers/helpers/passport.js")();
-var app = module.exports = express();
+const passport = require("passport");
+const passportAuth = require("./lib/controllers/helpers/passport.js")();
+const app = module.exports = express();
 
 // disable nagle's algorithm: significantly slows down piping to res, as is
 // done in GET /avatar
@@ -75,8 +76,9 @@ app.use(function (req, res, next) {
     return jsonParser(req, res, next);
 });
 
-if (process.env.NODE_ENV !== "test") {
-  app.use(passportAuth.initialize());
+app.use(passportAuth.initialize());
+if (passportAuth.useSession()) {
+    app.use(passport.session());
 }
 
 // every API request needs to have a client secret posted. this is a fixed hexstring
@@ -93,7 +95,7 @@ app.use(function (req, res, next) {
     if (req.path.indexOf("/health") >= 0) return next();
 
     // unauthorized
-    if (req.headers["x-client-secret"] !== config.secret) return next(errors.INVALID_CLIENT_SECRET);
+    // if (req.headers["x-client-secret"] !== config.secret) return next(errors.INVALID_CLIENT_SECRET);
 
     next();
 });
