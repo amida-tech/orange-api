@@ -66,7 +66,7 @@ class UserBehavior(TaskSet):
                 "access_anyone": "read",
                 "access_family": "read",
                 "access_prime": "write"
-            }
+            },
             name="/patients")
 
     def getPatientIds(self):
