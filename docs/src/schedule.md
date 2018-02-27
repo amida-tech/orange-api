@@ -11,7 +11,7 @@ whether the patient took the medication when they were required. If they did, th
 when taking the medication. `delay` is signed: if the patient took the medication too early,
 it will be negative.
 
-Each event item can be one of two times: `time` and `date`. `time` items represent a specific
+Each event item can be one of two types: `time` and `date`. `time` items represent a specific
 datetime at which the medication should be taken (and are formatted as an ISO-8601 datetime
 in the patient's _local_ timezone). `date` items indicate that the medication can be taken at
 any time on the specified day, and have the date formatted as `YYYY-MM-DD` in the patient's
