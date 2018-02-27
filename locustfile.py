@@ -15,6 +15,8 @@ class UserBehavior(TaskSet):
         self.startTime = int(time.time())
         self.registerUser()
         self.getAuthToken()
+        for x in range(0, 10):
+            self.createPatient()
         self.getPatientIds()
 
     def registerUser(self):
@@ -41,6 +43,31 @@ class UserBehavior(TaskSet):
                 "last_name": self.lastName
             },
             name="/user/")
+
+    def createPatient(self):
+        fake = Faker()
+        self.name = fake.name().split(' ')
+
+        self.firstName = self.name[0]
+        self.lastName = self.name[1]
+        response = self.client.request(
+            method="POST",
+            url="/patients",
+            headers={
+                "Authorization": self.access_token,
+                "X-Client-Secret": 'testsecret'
+            },
+            json={
+                "first_name": self.firstName,
+                "last_name": self.lastName,
+                "birthdate": "1990-01-01",
+                "sex": "female",
+                "phone": fake.phone_number() ,
+                "access_anyone": "read",
+                "access_family": "read",
+                "access_prime": "write"
+            }
+            name="/patients")
 
     def getPatientIds(self):
         response = self.client.request(
