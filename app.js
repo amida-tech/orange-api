@@ -143,8 +143,10 @@ router.use("/patients", require("./lib/controllers/patients/patients.js"));
 // Routes for a specific patient
 // mergeParams lets us access patient ID from these controllers
 var patientRouter = express.Router({ mergeParams: true });
-var auth = require("./lib/controllers/helpers/auth.js");
-patientRouter.use(auth.authenticate); // find user from access token
+
+if (process.env.NODE_ENV !== "test") {
+  app.use(passportAuth.initialize());
+}
 
 patientRouter.use("/habits", require("./lib/controllers/habits.js"));
 patientRouter.use("/doctors", require("./lib/controllers/doctors.js"));
