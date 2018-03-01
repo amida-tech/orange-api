@@ -19,7 +19,7 @@ API for Orange medication management app. RESTful and implemented in Node & Mong
 ### Prerequisites
 - Node.js (v0.10+) and NPM
 - Grunt.js
-- MongoDB
+- MongoDB (v3.4 - higher versions will not work. If you need to downgrade instructions, [click here](https://stackoverflow.com/questions/30379127/how-to-install-earlier-version-of-mongodb-with-homebrew/47449979#47449979)) 
 - Amida Auth Microservice(https://github.com/amida-tech/amida-auth-microservice)
 
 
