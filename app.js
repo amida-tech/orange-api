@@ -76,7 +76,9 @@ app.use(function (req, res, next) {
     return jsonParser(req, res, next);
 });
 
-app.use(passportAuth.initialize());
+if (process.env.NODE_ENV !== "test") {
+  app.use(passportAuth.initialize());
+}
 
 // every API request needs to have a client secret posted. this is a fixed hexstring
 // that's just read from config.js and directly compared.
@@ -143,10 +145,8 @@ router.use("/patients", require("./lib/controllers/patients/patients.js"));
 // Routes for a specific patient
 // mergeParams lets us access patient ID from these controllers
 var patientRouter = express.Router({ mergeParams: true });
-
-if (process.env.NODE_ENV !== "test") {
-  app.use(passportAuth.initialize());
-}
+var auth = require("./lib/controllers/helpers/auth.js");
+patientRouter.use(auth.authenticate); // find user from access token
 
 patientRouter.use("/habits", require("./lib/controllers/habits.js"));
 patientRouter.use("/doctors", require("./lib/controllers/doctors.js"));
