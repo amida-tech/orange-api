@@ -77,9 +77,6 @@ app.use(function (req, res, next) {
 });
 
 app.use(passportAuth.initialize());
-if (passportAuth.useSession()) {
-    app.use(passport.session());
-}
 
 // every API request needs to have a client secret posted. this is a fixed hexstring
 // that's just read from config.js and directly compared.
@@ -95,7 +92,7 @@ app.use(function (req, res, next) {
     if (req.path.indexOf("/health") >= 0) return next();
 
     // unauthorized
-    // if (req.headers["x-client-secret"] !== config.secret) return next(errors.INVALID_CLIENT_SECRET);
+    if (req.headers["x-client-secret"] !== config.secret) return next(errors.INVALID_CLIENT_SECRET);
 
     next();
 });
