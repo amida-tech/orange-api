@@ -90,6 +90,7 @@ app.use(function (req, res, next) {
 
     // don't authenticate health checks
     if (req.path.indexOf("/health") >= 0) return next();
+    if (req.path.indexOf("/facebook") >= 0) return next();
 
     // unauthorized
     if (req.headers["x-client-secret"] !== config.secret) return next(errors.INVALID_CLIENT_SECRET);
