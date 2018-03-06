@@ -1,4 +1,3 @@
-
 const Client = require('node-rest-client').Client;
 const faker = require('faker');
 
@@ -18,7 +17,6 @@ const createUserUrl = "http://localhost:5000/v1/user";
 const messagingUrl = "http://localhost:4001/api/threads"
 var authToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NywidXNlcm5hbWUiOiJSdWJ5ZUBhbWlkYS5jb20iLCJlbWFpbCI6IlJ1YnllQGFtaWRhLmNvbSIsInNjb3BlcyI6WyIiXSwiaWF0IjoxNTIwMjY5OTA5LCJleHAiOjE1MjAyNzY1MDl9.lBsjsQtHxuI8E5C7VHaxkulZZugkbk0FFYl_rT580Bo';
 const client = new Client();
-
 
 
 const createUser = function(userArgs, callback) {
