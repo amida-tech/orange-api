@@ -38,7 +38,7 @@ class UserBehavior(TaskSet):
             },
             json={
                 "email": self.userName,
-                "password": "testtest",
+                "password": "Testtest1!",
                 "first_name": self.firstName,
                 "last_name": self.lastName
             },
@@ -68,7 +68,7 @@ class UserBehavior(TaskSet):
                 "access_prime": "write"
             },
             name="/patients")
-
+        
     def getPatientIds(self):
         response = self.client.request(
             method="GET",
@@ -86,16 +86,17 @@ class UserBehavior(TaskSet):
         self.access_token = 'Bearer '
         response = self.client.request(
             method="POST",
-            url="/auth/token",
+            url="http://localhost:4000/api/v0/auth/login",
             headers={
                 "X-Client-Secret": 'testsecret',
                 "Content-Type": 'application/json'
             },
-            json={"email": self.userName,
-                  "password": "testtest"},
-            name="/auth/token")
+            json={"username": self.userName,
+                  "password": "Testtest1!"},
+            name="/auth/login")
         json = response.json()
-        self.access_token = self.access_token + json['access_token']
+        self.access_token = self.access_token + json['token']
+        
 
     def addMedication(self):
         response = self.client.request(
