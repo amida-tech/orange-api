@@ -6,7 +6,7 @@ const firstName = faker.name.firstName();
 const lastName = faker.name.lastName();
 const phoneNumber = faker.phone.phoneNumberFormat().split('-').join('');
 const email = firstName+"@amida.com";
-const password = "testtest";
+const password = "Testtest1!";
 const doctorEmail = "mholmes@amida-demo.com";
 const access = ["read","write","default"];
 
@@ -76,7 +76,7 @@ const seedMessages = function () {
     const lastName2 = faker.name.lastName();
     const phoneNumber2 = faker.phone.phoneNumberFormat().split('-').join('');
     const email2 = firstName2+"@amida.com";
-    const password2 = "testtest";
+    const password2 = "Testtest1!";
     var authToken2 = '';
     var threadID = null;
 
@@ -135,6 +135,7 @@ createUser(userArgs, function(response) {
     console.log("Created User: ", response.email);
     authenticateUser(authArgs, function (response) {
         authToken = response;
+        console.log("Vaild auth for USer1: ", authToken);
         seedMessages();
     });
 });
