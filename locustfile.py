@@ -86,7 +86,7 @@ class UserBehavior(TaskSet):
         self.access_token = 'Bearer '
         response = self.client.request(
             method="POST",
-            url="http://localhost:4000/api/v0/auth/login",
+            url="https://orange-auth-staging.amida-services.com/api/v0/auth/login",
             headers={
                 "X-Client-Secret": 'testsecret',
                 "Content-Type": 'application/json'
