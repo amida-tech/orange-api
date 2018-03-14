@@ -135,7 +135,7 @@ createUser(userArgs, function(response) {
     console.log("Created User: ", response.email);
     authenticateUser(authArgs, function (response) {
         authToken = response;
-        console.log("Vaild auth for USer1: ", authToken);
+        // console.log("Vaild auth for USer1: ", authToken);
         seedMessages();
     });
 });
