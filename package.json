@@ -45,6 +45,7 @@
     "npi-js": "^0.1.0",
     "passport": "^0.4.0",
     "passport-jwt": "^3.0.0",
+    "passport-facebook": "^2.1.1",
     "pdfmake": "^0.1.18",
     "randomstring": "^1.0.7",
     "request": "^2.58.0",
@@ -76,7 +77,6 @@
     "mocha": "^2.2.5",
     "mocha-shared": "^0.2.0",
     "monky": "^0.6.7",
-    "passport-facebook": "^2.1.1",
     "q": "^1.4.1",
     "sinon": "^1.14.1"
   },

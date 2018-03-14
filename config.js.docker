@@ -68,3 +68,10 @@ if (process.env.NODE_ENV === "production") {
         }
     };
 }
+
+config.facebook = {
+    clientID: '149343912420944',
+    clientSecret: '66db0a9b905a5d12867a112ad8b83b6c',
+    callbackURL: 'http://localhost:5000/v1/auth/facebook/callback',
+    profileFields: ['id', 'name', 'displayName', 'picture', 'email'],
+}
