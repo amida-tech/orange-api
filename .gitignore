@@ -27,3 +27,4 @@ docs/output
 *.pyc
 .secret
 config.js
+artifacts

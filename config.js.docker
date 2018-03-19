@@ -13,6 +13,14 @@ config.text = {
 
 // client secret
 config.secret = "testsecret";
+config.jwtSecret = "0a6b944d-d2fb-46fc-a85e-0295c986cd9f";
+
+// Auth Service Connections
+if (process.env.NODE_ENV === "production") {
+    config.authServiceAPI = "http://api-auth-service-lb-2033098035.us-west-2.elb.amazonaws.com/api/v0"
+} else {
+    config.authServiceAPI = "http://api-auth-service-lb-2033098035.us-west-2.elb.amazonaws.com/api/v0"
+}
 
 // DB connections
 if (process.env.NODE_ENV === "production") {
@@ -59,4 +67,11 @@ if (process.env.NODE_ENV === "production") {
             level: "info"
         }
     };
+}
+
+config.facebook = {
+    clientID: '149343912420944',
+    clientSecret: '66db0a9b905a5d12867a112ad8b83b6c',
+    callbackURL: 'http://localhost:5000/v1/auth/facebook/callback',
+    profileFields: ['id', 'name', 'displayName', 'picture', 'email'],
 }

@@ -13,11 +13,11 @@ is `London/Europe`, `breakfast` will remain as `10:00 am` if the timezone is upd
 breakfast every morning, the patient should continue doing that even if the timezone shifts).
 
 Habits (all may be blank, and initially are after registration):
-+ `wake` (*time*) - what time the patient normally wakes up in the morning
-+ `sleep` (*time*) - what time the patient normally goes to sleep at night
-+ `breakfast` (*time*) - what time the patient normally eats breakfast
-+ `lunch` (*time*) - what time the patient normally eats lunch
-+ `dinner` (*time*) - what time the patient normally eats dinner
++ `wake` (*time*) - what time the patient normally wakes up in the morning. Defaults to `07:00 am`.
++ `sleep` (*time*) - what time the patient normally goes to sleep at night. Defaults to `08:00 am`.
++ `breakfast` (*time*) - what time the patient normally eats breakfast. Defaults to `12:00 pm`.
++ `lunch` (*time*) - what time the patient normally eats lunch. Defaults to `07:00 pm`.
++ `dinner` (*time*) - what time the patient normally eats dinner. Defaults to `11:00 pm`.
 + `tz` (*timezone*) - the current timezone of the patient (retrieved automatically
     from the mobile OS without any user participation required). Should be a valid TZ
     database timezone (e.g., `/London/Europe`). Defaults to `Etc/UTC` (UTC time).

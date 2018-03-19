@@ -10,7 +10,7 @@ RUN yum -y install zeromq zeromq-devel; yum clean all && \
     yum -y groupinstall "Development Tools"; yum clean all
 
 # Install node and npm from the official repos
-RUN curl -sL https://rpm.nodesource.com/setup_6.x | bash - && \
+RUN curl -sL https://rpm.nodesource.com/setup_8.x | bash - && \
     yum -y install nodejs; yum -y install npm; yum clean all
 
 # Install the ever-beloved node-gyp

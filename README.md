@@ -19,7 +19,7 @@ API for Orange medication management app. RESTful and implemented in Node & Mong
 ### Prerequisites
 - Node.js (v0.10+) and NPM
 - Grunt.js
-- MongoDB
+- MongoDB (v3.4 - higher versions will not work. If you need to downgrade instructions, [click here](https://stackoverflow.com/questions/30379127/how-to-install-earlier-version-of-mongodb-with-homebrew/47449979#47449979)) 
 - Amida Auth Microservice(https://github.com/amida-tech/amida-auth-microservice)
 
 
@@ -97,6 +97,12 @@ Now, on your local machine:
 Point your browser to http://127.0.0.1:8089/
 
 From the Locust web interface you can change the settings and run the load-test
+
+# Code Analysis
+1. `$ gulp appAnalysis` to analyze code in `./lib`
+2. `$ gulp testAnalysis` to analyze code in `./test`
+3. Files are written to `./artifacts`
+
 
 ## Contributing
 

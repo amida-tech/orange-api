@@ -1,0 +1,22 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: amida-orange-api-deployment
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: amida-orange-api
+    spec:
+      # imagePullSecrets:
+      # - name: regsecret
+      containers:
+      - name: orange-api
+        image: elijahgeorge1/orange-api
+        env:
+        - name: NODE_ENV
+          value: production
+        ports:
+        - name: nodejs-port
+          containerPort: 5000
