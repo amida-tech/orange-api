@@ -54,7 +54,7 @@ module.exports.itRequiresValidShareId = function (ep) {
                     otherPatient = p2;
                 }).then(function () {
                     // setup pharmacy for otherPatient
-                    return Q.nbind(otherPatient.createShare, otherPatient)("foo@bar.com", "default", "prime");
+                    return Q.nbind(otherPatient.createShare, otherPatient)("foo@bar.com", "default", "prime", "foo", "bar");
                 }).then(function (s) {
                     share = s;
                 });
