@@ -64,7 +64,11 @@ app.disable("etag");
 
 // Parse body params from JSON unless we're viewing an avatar
 var bodyParser = require("body-parser");
-var jsonParser = bodyParser.json();
+
+var jsonParser = bodyParser.json({
+    limit: "5mb"
+});
+
 app.use(function (req, res, next) {
     // we can't access req.route in here as no route has been matched so instead
     // we have to do string magic with req.path
