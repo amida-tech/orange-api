@@ -33,7 +33,7 @@ describe("Clinican Notes", function () {
 		var user, clinicianUser, patient;
 		//setup clinician user
 		before(function () {
-			return auth.createTestUser({ "clinician": true }).then(function (u) {
+			return auth.createTestUser({ "role": "clinician" }).then(function (u) {
 				clinicianUser = u;
 
 			});
