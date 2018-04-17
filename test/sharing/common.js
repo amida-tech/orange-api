@@ -19,7 +19,8 @@ var shareSchema = module.exports.schema = {
         group:      { type: "string" },
         is_user:    { type: "boolean" },
         first_name: { type: "string" },
-        last_name:  { type: "string" }
+        last_name:  { type: "string" },
+        avatar:     { type: ["null", "string"] }
     },
     additionalProperties: false
 };
