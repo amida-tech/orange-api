@@ -34,7 +34,7 @@ describe("Patients", function () {
             if ("group" in data) group = data.group;
             if ("email" in data) email = data.email;
 
-            return Q.nbind(p.createShare, p)(email, access, group).then(function (share) {
+            return Q.nbind(p.createShare, p)(email, access, group, "foo", "bar").then(function (share) {
                 return remove(share._id, p._id, p.user.accessToken);
             });
         };

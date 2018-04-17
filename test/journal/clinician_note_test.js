@@ -46,7 +46,7 @@ describe("Clinican Notes", function () {
 				// create patient
 				return patients.createMyPatient({}, user).then(function (p) {
 					patient = p;
-					Q.npost(patient, "share", [clinicianUser.email, "default", "prime"]);
+					Q.npost(patient, "share", [clinicianUser.email, "default", "prime", clinicianUser.firstName, clinicianUser.lastName]);
 				}).then(function () {
 					// setup journal entry for Patient
 					return Q.nbind(patient.createJournalEntry, patient)({
