@@ -19,7 +19,8 @@ var shareSchema = module.exports.schema = {
         group:      { type: "string" },
         is_user:    { type: "boolean" },
         first_name: { type: "string" },
-        last_name:  { type: "string" }
+        last_name:  { type: "string" },
+        avatar:     { type: ["null", "string"] }
     },
     additionalProperties: false
 };
@@ -54,7 +55,7 @@ module.exports.itRequiresValidShareId = function (ep) {
                     otherPatient = p2;
                 }).then(function () {
                     // setup pharmacy for otherPatient
-                    return Q.nbind(otherPatient.createShare, otherPatient)("foo@bar.com", "default", "prime");
+                    return Q.nbind(otherPatient.createShare, otherPatient)("foo@bar.com", "default", "prime", "foo", "bar");
                 }).then(function (s) {
                     share = s;
                 });
