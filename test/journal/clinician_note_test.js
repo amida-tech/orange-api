@@ -52,7 +52,7 @@ describe("Clinican Notes", function () {
 					return Q.nbind(patient.createJournalEntry, patient)({
 						text: "Clinican Note",
 						date: (new Date()).toISOString(),
-						clinician: true
+						role: "clinician"
 					});
 				});
 			});
@@ -85,7 +85,7 @@ describe("Clinican Notes", function () {
 		it("Asserts that note created by Clincian API user is marked as a clinican note", function () {
 			var modifications = { text: "New clinican note", date: (new Date()).toISOString() };
 			return createNote(modifications, patient._id, clinicianUser.accessToken).then(function (response) {
-				expect(response.body.clinician).to.deep.equal(true);
+				expect(response.body.role).to.deep.equal("clinician");
 			});
 		});
 
