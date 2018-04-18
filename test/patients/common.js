@@ -202,7 +202,8 @@ var requiresAuthentication = module.exports.itRequiresAuthentication = function 
             };
             var share = function (access, group) {
                 return function (patient) {
-                    return Q.nbind(patient.share, patient)(patient.user.email, access, group, patient.user.firstName, patient.user.lastName);
+                    return Q.nbind(patient.share, patient)(patient.user.email, access, group,
+                                                          patient.user.firstName, patient.user.lastName);
                 };
             };
             var setPermission = function (group, access) {
