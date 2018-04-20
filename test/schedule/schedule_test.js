@@ -78,7 +78,7 @@ describe("Schedule", function () {
                         // create patient and share read-only with main user
                         return patients.createOtherPatient({}, me, other).then(function (p) {
                             patient = p;
-                            return Q.nbind(p.share, patient)(me.email, "read", "anyone");
+                            return Q.nbind(p.share, patient)(me.email, "read", "anyone", me.firstName, me.lastName);
                         });
                     }).then(function () {
                         // create three medications for the patient, one paused
