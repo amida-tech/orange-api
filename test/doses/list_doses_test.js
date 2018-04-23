@@ -485,7 +485,7 @@ describe("Doses", function () {
                         end_date: moment().subtract(12, "months").toISOString()
                     }).then(function (response) {
                         // we want either invalid_start or invalid_end
-                        var error = response.body.errors[0];
+                        var error = response.body.code.toLowerCase();
                         expect(["invalid_start", "invalid_end"]).to.contain(error);
                         expect(response).to.be.an.api.error(400, error);
                     });
