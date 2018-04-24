@@ -386,7 +386,7 @@ describe("Schedule", function () {
                         var end = moment().subtract(1, "day");
                         return show(start, end, null, patient._id, user.accessToken).then(function (response) {
                             // we want either invalid_start of invalid_end
-                            var error = response.body.errors[0];
+                            var error = response.body.code.toLowerCase();
                             expect(["invalid_start", "invalid_end"]).to.contain(error);
                             expect(response).to.be.an.api.error(400, error);
                         });
