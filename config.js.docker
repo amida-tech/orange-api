@@ -14,6 +14,8 @@ config.text = {
 // client secret
 config.secret = "testsecret";
 config.jwtSecret = "0a6b944d-d2fb-46fc-a85e-0295c986cd9f";
+config.keyId = "";
+config.teamId = "";
 
 // Auth Service Connections
 if (process.env.NODE_ENV === "production") {
