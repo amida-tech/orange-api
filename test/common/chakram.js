@@ -7,30 +7,10 @@ var expect = chakram.expect;
 before(function () {
     chakram.addProperty("api", function () {});
 
-    // validate failed responses
-    var errorSchema = {
-        required: ["errors", "success"],
-        properties: {
-            errors: {
-                type: "array",
-                minItems: 1,
-                "items": { type: "string" },
-                "uniqueItems": true
-            },
-            success: {
-                type: "boolean",
-                pattern: "false"
-            }
-        },
-        additionalProperties: false
-    };
     chakram.addMethod("error", function (respObj, status, errors) {
         // allow single error strings to be passed in (but not returned by API)
-        if (typeof errors === "string") errors = [errors];
-
-        expect(respObj).to.have.schema(errorSchema);
         expect(respObj).to.have.status(status);
-        expect(respObj).to.have.json("errors", errors);
+        expect(respObj).to.have.json("code", errors.toUpperCase());
     });
 
     // generic method for successful responses (doesn't validate schema)
