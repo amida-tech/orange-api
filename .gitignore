@@ -5,6 +5,7 @@ env
 .settings
 .vagrant
 .pem
+iosKey.p8
 
 server/coverage
 client/coverage
