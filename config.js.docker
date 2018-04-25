@@ -14,14 +14,14 @@ config.text = {
 // client secret
 config.secret = "testsecret";
 config.jwtSecret = "0a6b944d-d2fb-46fc-a85e-0295c986cd9f";
-config.keyId = "";
-config.teamId = "";
-
+config.keyId = "8WPS46K4W3";
+config.teamId = "***REMOVED***";
+config.apnENV = "development";
 // Auth Service Connections
 if (process.env.NODE_ENV === "production") {
-    config.authServiceAPI = "http://api-auth-service-lb-2033098035.us-west-2.elb.amazonaws.com/api/v0"
+    config.authServiceAPI = "https://orange-auth-staging.amida-services.com/api/v0"
 } else {
-    config.authServiceAPI = "http://api-auth-service-lb-2033098035.us-west-2.elb.amazonaws.com/api/v0"
+    config.authServiceAPI = "https://orange-auth-staging.amida-services.com/api/v0"
 }
 
 // DB connections
