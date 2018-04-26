@@ -17,6 +17,7 @@ config.jwtSecret = "0a6b944d-d2fb-46fc-a85e-0295c986cd9f";
 config.keyId = "8WPS46K4W3";
 config.teamId = "***REMOVED***";
 config.apnENV = "development";
+config.pushTopic = "com.amida.orangeIgnite"
 // Auth Service Connections
 if (process.env.NODE_ENV === "production") {
     config.authServiceAPI = "https://orange-auth-staging.amida-services.com/api/v0"
