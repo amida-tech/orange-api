@@ -38,7 +38,7 @@ describe("Journal", function () {
             var create = Q.nbind(patient.createJournalEntry, patient);
             var createEntry = fixtures.build("JournalEntry", {}).then(function (entry) {
                 var data = entry.getData();
-                data.date = moment().toISOString();
+                data.date = {utc: moment().toISOString(), timezone: 0};
                 data.medication_ids = [medication._id];
                 return data;
             }).then(create);
@@ -68,7 +68,7 @@ describe("Journal", function () {
                 var create = Q.nbind(otherPatient.createJournalEntry, otherPatient);
                 return fixtures.build("JournalEntry", {}).then(function (entry) {
                     var data = entry.getData();
-                    data.date = moment().toISOString();
+                    data.date = {utc: moment().toISOString(), timezone: 0};
                     return data;
                 }).then(create);
             });
@@ -94,7 +94,7 @@ describe("Journal", function () {
                 promises.push(function () {
                     return fixtures.build("JournalEntry", {}).then(function (entry) {
                         var data = entry.getData();
-                        data.date = moment().subtract(6, "months").toISOString();
+                        data.date = {utc: moment().subtract(6, "months").toISOString(), timezone: 0};
                         data.text = "test fuzzy matching";
                         data.medication_ids = [patient.medications[0]._id, patient.medications[1]._id];
                         return data;
@@ -108,7 +108,7 @@ describe("Journal", function () {
                             return fixtures.build("JournalEntry", {}).then(function (entry) {
                                 var data = entry.getData();
                                 // can't all be the same time so we can test sorting by time
-                                data.date = moment().add(offset, "minutes").toISOString();
+                                data.date = {utc: moment().add(offset, "minutes").toISOString(), timezone: 0};
                                 return data;
                             }).then(create);
                         };
@@ -293,8 +293,9 @@ describe("Journal", function () {
 
                         var sorted = response.body.entries.slice(0).sort(function (entryA, entryB) {
                             // ISO-formatted UTC dates
-                            var dateA = moment.utc(entryA.date);
-                            var dateB = moment.utc(entryB.date);
+                            //TODO: what
+                            var dateA = moment.utc(entryA.date.utc);
+                            var dateB = moment.utc(entryB.date.utc);
 
                             if (dateA.isBefore(dateB)) return -1;
                             else if (dateB.isBefore(dateA)) return 1;
@@ -358,8 +359,8 @@ describe("Journal", function () {
                         expect(response).to.be.a.journal.listSuccess;
                         var sorted = response.body.entries.slice(0).sort(function (entryA, entryB) {
                             // ISO-formatted UTC dates
-                            var dateA = moment.utc(entryA.date);
-                            var dateB = moment.utc(entryB.date);
+                            var dateA = moment.utc(entryA.date.utc);
+                            var dateB = moment.utc(entryB.date.utc);
 
                             if (dateA.isBefore(dateB)) return -1;
                             else if (dateB.isBefore(dateA)) return 1;

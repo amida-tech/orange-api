@@ -65,7 +65,7 @@ describe("Journal", function () {
         });
         it("allows all fields", function () {
             return expect(updatePatientEntry({}, {
-                date: (new Date()).toISOString(),
+                date: {utc: (new Date()).toISOString(), timezone: 0},
                 text: "test date",
                 medication_ids: [],
                 mood: "so so sad",
@@ -83,7 +83,7 @@ describe("Journal", function () {
         it("rejects blank dates", function () {
             return expect(updatePatientEntry({}, {
                 date: ""
-            })).to.be.an.api.error(400, "date_required");
+            })).to.be.an.api.error(400, "invalid_date");
         });
         it("rejects invalid dates", function () {
             return expect(updatePatientEntry({}, {

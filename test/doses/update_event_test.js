@@ -99,10 +99,10 @@ describe("Doses", function () {
 
         // validation testing
         it("allows updating the date", function () {
-            return expect(updatePatientDose({}, { date: (new Date()).toISOString() })).to.be.a.dose.success;
+            return expect(updatePatientDose({}, { date: {utc: (new Date()).toISOString(), timezone:0} })).to.be.a.dose.success;
         });
         it("rejects a blank date", function () {
-            return expect(updatePatientDose({}, { date: "" })).to.be.an.api.error(400, "date_required");
+            return expect(updatePatientDose({}, { date: "" })).to.be.an.api.error(400, "invalid_date");
         });
         it("rejects invalid dates", function () {
             return expect(updatePatientDose({}, { date: "foobar" })).to.be.an.api.error(400, "invalid_date");
@@ -213,7 +213,7 @@ describe("Doses", function () {
                     }).then(function () {
                         // create dose
                         return Q.nbind(patient.createDose, patient)({
-                            date: (new Date()).toISOString(),
+                            date: {utc: (new Date()).toISOString(), timezone: 0},
                             taken: true,
                             medication_id: patient.medications[0]._id
                         });

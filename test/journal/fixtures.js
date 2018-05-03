@@ -7,7 +7,7 @@ var monky = module.exports = new Monky(mongoose);
 
 /*eslint-disable key-spacing */
 monky.factory("JournalEntry", {
-    date: (new Date()).toISOString(),
+    date: {utc: (new Date()).toISOString(), timezone: 0},
     text: "Lorem ipsum #n",
     medication_ids: [],
     mood: "Happy!"

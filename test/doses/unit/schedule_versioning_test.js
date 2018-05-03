@@ -59,8 +59,8 @@ describe("Doses", function () {
             }, medication._id, patient._id, patient.user.accessToken);
         });
 
-        var beforeChange = moment().subtract(10, "days");
-        var afterChange = moment().add(10, "days");
+        var beforeChange = {utc: moment().subtract(10, "days"), timezone: 0 };
+        var afterChange = {utc: moment().add(10, "days"), timezone: 0};
 
         describe("doses before schedule change", function () {
             it("allows creating a dose for the first time", function () {
