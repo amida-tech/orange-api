@@ -69,6 +69,18 @@ describe("Journal", function () {
             return expect(createPatientEntry({ date: "foobar" })).to.be.an.api.error(400, "invalid_date");
         });
 
+        it("requires a valid timezone", function () {
+            return expect(createPatientEntry({ date: {utc: new Date().toISOString(), timezone: "FakeCountry/Los_Angeles"} })).to.be.an.api.error(400, "invalid_timezone");
+        });
+
+        it("requires a nonblank timezone", function () {
+            return expect(createPatientEntry({ date: {utc: new Date().toISOString(), timezone: ""} })).to.be.an.api.error(400, "invalid_timezone");
+        });
+
+        it("requires a defined timezone", function () {
+            return expect(createPatientEntry({ date: {utc: new Date().toISOString(), timezone: undefined} })).to.be.an.api.error(400, "invalid_timezone");
+        });
+
         it("doesn't require a text", function () {
             return expect(createPatientEntry({ text: undefined })).to.be.a.journal.createSuccess;
         });

@@ -71,6 +71,18 @@ describe("Doses", function () {
         //     return expect(createPatientDose({ date: {utc: "foobar"} })).to.be.an.api.error(400, "invalid_date");
         // });
 
+        it("requires a valid timezone", function () {
+            return expect(createPatientDose({ date: {utc: new Date().toISOString(), timezone: "FakeCountry/Los_Angeles"} })).to.be.an.api.error(400, "invalid_timezone");
+        });
+
+        it("requires a nonblank timezone", function () {
+            return expect(createPatientDose({ date: {utc: new Date().toISOString(), timezone: ""} })).to.be.an.api.error(400, "invalid_timezone");
+        });
+
+        it("requires a defined timezone", function () {
+            return expect(createPatientDose({ date: {utc: new Date().toISOString(), timezone: undefined} })).to.be.an.api.error(400, "invalid_timezone");
+        });
+
         it("requires a `taken` value", function () {
             return expect(createPatientDose({ taken: undefined })).to.be.an.api.error(400, "taken_required");
         });

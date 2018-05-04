@@ -83,7 +83,7 @@ describe("Clinican Notes", function () {
 		});
 
 		it("Asserts that note created by Clincian API user is marked as a clinican note", function () {
-			var modifications = { text: "New clinican note", date: {utc:(new Date()).toISOString(), timezone:0} };
+			var modifications = { text: "New clinican note", date: {utc:(new Date()).toISOString(), timezone: "America/Los_Angeles"} };
 			return createNote(modifications, patient._id, clinicianUser.accessToken).then(function (response) {
 				expect(response.body.clinician).to.deep.equal(true);
 			});

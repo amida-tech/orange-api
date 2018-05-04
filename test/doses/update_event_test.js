@@ -99,7 +99,7 @@ describe("Doses", function () {
 
         // validation testing
         it("allows updating the date", function () {
-            return expect(updatePatientDose({}, { date: {utc: (new Date()).toISOString(), timezone:0} })).to.be.a.dose.success;
+            return expect(updatePatientDose({}, { date: {utc: (new Date()).toISOString(), timezone: "America/Los_Angeles"} })).to.be.a.dose.success;
         });
         it("rejects a blank date", function () {
             return expect(updatePatientDose({}, { date: "" })).to.be.an.api.error(400, "invalid_date");

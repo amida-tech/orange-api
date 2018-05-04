@@ -100,7 +100,7 @@ module.exports.itRequiresValidEntryId = function (endpoint) {
                     // setup journal entry for otherPatient
                     return Q.nbind(otherPatient.createJournalEntry, otherPatient)({
                         text: "foobar",
-                        date: {utc:(new Date()).toISOString(), timezone:0}
+                        date: {utc:(new Date()).toISOString(), timezone: "America/Los_Angeles"}
                     });
                 });
             });
