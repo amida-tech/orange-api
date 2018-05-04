@@ -49,7 +49,7 @@ describe("Schedule", function () {
             date.milliseconds(0);
             return {
                 _id: doseId++,
-                date: {utc: date, timezone: 0},
+                date: {utc: date, timezone:  "America/Los_Angeles"},
                 taken: taken,
                 scheduled: scheduledId
             };

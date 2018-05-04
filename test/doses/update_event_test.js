@@ -213,7 +213,7 @@ describe("Doses", function () {
                     }).then(function () {
                         // create dose
                         return Q.nbind(patient.createDose, patient)({
-                            date: {utc: (new Date()).toISOString(), timezone: 0},
+                            date: {utc: (new Date()).toISOString(), timezone:  "America/Los_Angeles"},
                             taken: true,
                             medication_id: patient.medications[0]._id
                         });

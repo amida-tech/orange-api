@@ -33,7 +33,7 @@ describe("Doses", function () {
             return Q.nbind(patient.createDose, patient)({
                 medication_id: patient.medications[0]._id,
                 // date irrelevant as long as it's after fill_date above
-                date: {utc: (new Date()).toISOString(), timezone: 0},
+                date: {utc: (new Date()).toISOString(), timezone:  "America/Los_Angeles"},
                 taken: true,
                 notes: ""
             });

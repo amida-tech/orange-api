@@ -52,7 +52,7 @@ describe("Medications", function () {
         before(function () {
             return Q.nbind(patient.createDose, patient)({
                 notes: "",
-                date: {utc: beforeChange, timezone: 0},
+                date: {utc: beforeChange, timezone:  "America/Los_Angeles"},
                 taken: true,
                 medication_id: medication._id,
                 scheduled: 0
@@ -61,7 +61,7 @@ describe("Medications", function () {
         before(function () {
             return Q.nbind(patient.createDose, patient)({
                 notes: "",
-                date: {utc: beforeChange, timezone: 0},
+                date: {utc: beforeChange, timezone:  "America/Los_Angeles"},
                 taken: true,
                 medication_id: medication._id,
                 scheduled: 1
@@ -88,7 +88,7 @@ describe("Medications", function () {
         it("should let us record a dose for the new schedule", function () {
             return expect(createDose({
                 notes: "",
-                date: {utc: afterChange, timezone: 0},
+                date: {utc: afterChange, timezone:  "America/Los_Angeles"},
                 taken: true,
                 medication_id: medication._id,
                 scheduled: 0

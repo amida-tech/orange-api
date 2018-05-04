@@ -65,7 +65,7 @@ describe("Journal", function () {
         });
         it("allows all fields", function () {
             return expect(updatePatientEntry({}, {
-                date: {utc: (new Date()).toISOString(), timezone: 0},
+                date: {utc: (new Date()).toISOString(), timezone:  "America/Los_Angeles"},
                 text: "test date",
                 medication_ids: [],
                 mood: "so so sad",

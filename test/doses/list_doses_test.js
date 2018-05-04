@@ -38,7 +38,7 @@ describe("Doses", function () {
             var create = Q.nbind(patient.createDose, patient);
             var createDose = fixtures.build("Dose", {}).then(function (dose) {
                 var data = dose.getData();
-                data.date = {utc: moment().toISOString(), timezone: 0};
+                data.date = {utc: moment().toISOString(), timezone:  "America/Los_Angeles"};
                 data.medication_id = medication._id;
                 return data;
             }).then(create);
@@ -76,7 +76,7 @@ describe("Doses", function () {
                 var create = Q.nbind(otherPatient.createDose, otherPatient);
                 return fixtures.build("Dose", {}).then(function (dose) {
                     var data = dose.getData();
-                    data.date = {utc: moment().toISOString(), timezone: 0};
+                    data.date = {utc: moment().toISOString(), timezone:  "America/Los_Angeles"};
                     data.medication_id = otherPatient.medications[0]._id;
                     return data;
                 }).then(create);
@@ -103,7 +103,7 @@ describe("Doses", function () {
                 promises.push(function () {
                     return fixtures.build("Dose", {}).then(function (dose) {
                         var data = dose.getData();
-                        data.date = {utc: moment().subtract(6, "months").toISOString(), timezone: 0};
+                        data.date = {utc: moment().subtract(6, "months").toISOString(), timezone:  "America/Los_Angeles"};
                         data.medication_id = patient.medications[0]._id;
                         return data;
                     }).then(create);
@@ -116,7 +116,7 @@ describe("Doses", function () {
                             return fixtures.build("Dose", {}).then(function (dose) {
                                 var data = dose.getData();
                                 // can't all be the same time so we can test sorting by time
-                                data.date = {utc: moment().add(offset, "minutes").toISOString(), timezone: 0};
+                                data.date = {utc: moment().add(offset, "minutes").toISOString(), timezone:  "America/Los_Angeles"};
                                 // default med ID
                                 data.medication_id = patient.medications[1]._id;
                                 return data;

@@ -51,7 +51,7 @@ describe("Clinican Notes", function () {
 					// setup journal entry for Patient
 					return Q.nbind(patient.createJournalEntry, patient)({
 						text: "Clinican Note",
-						date: {utc: (new Date()).toISOString(), timezone: 0},
+						date: {utc: (new Date()).toISOString(), timezone:  "America/Los_Angeles"},
 						clinician: true
 					});
 				});

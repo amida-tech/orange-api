@@ -96,7 +96,7 @@ module.exports.itRequiresValidDoseId = function (endpoint) {
                     // setup dose for otherPatient
                     return Q.nbind(otherPatient.createDose, otherPatient)({
                         medication_id: otherPatient.medications[0]._id,
-                        date: {utc: (new Date()).toISOString(), timezone: 0},
+                        date: {utc: (new Date()).toISOString(), timezone:  "America/Los_Angeles"},
                         taken: true,
                         notes: "foobar"
                     });

@@ -57,7 +57,7 @@ describe("Doses", function () {
         describe("after creating a dose", function () {
             before(function () {
                 return Q.nbind(patient.createDose, patient)({
-                    date: {utc: (new Date()).toISOString(), timezone: 0},
+                    date: {utc: (new Date()).toISOString(), timezone:  "America/Los_Angeles"},
                     dose: {unit: "unit", quantity: 1},
                     notes: "TEST DOSE-SPECIFIC NOTE",
                     taken: true,
