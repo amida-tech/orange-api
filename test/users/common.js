@@ -16,7 +16,8 @@ var userSchema = {
         first_name: { type: "string" },
         last_name:  { type: "string" },
         phone:      { type: "string" },
-        role:      { type: "string" }
+        role:       { type: "string" },
+        npi:        { type: "string" }
     },
     additionalProperties: false
 };
