@@ -33,7 +33,7 @@ describe("Clinican Notes", function () {
 		var user, clinicianUser, patient;
 		//setup clinician user
 		before(function () {
-			return auth.createTestUser({ "clinician": true }).then(function (u) {
+			return auth.createTestUser({ "role": "clinician" }).then(function (u) {
 				clinicianUser = u;
 
 			});
@@ -46,13 +46,14 @@ describe("Clinican Notes", function () {
 				// create patient
 				return patients.createMyPatient({}, user).then(function (p) {
 					patient = p;
-					Q.npost(patient, "share", [clinicianUser.email, "default", "prime", clinicianUser.firstName, clinicianUser.lastName]);
+					Q.npost(patient, "share",
+						[clinicianUser.email, "default", "prime", clinicianUser.firstName, clinicianUser.lastName]);
 				}).then(function () {
 					// setup journal entry for Patient
 					return Q.nbind(patient.createJournalEntry, patient)({
 						text: "Clinican Note",
 						date: (new Date()).toISOString(),
-						clinician: true
+						role: "clinician"
 					});
 				});
 			});
@@ -60,32 +61,37 @@ describe("Clinican Notes", function () {
 
 
 		it("Asserts that clinican can view clinican note", function () {
-			return expect(viewNote(patient._id, patient.entries[0]._id, clinicianUser.accessToken)).to.be.a.journal.viewSuccess;
+			return expect(viewNote(patient._id, patient.entries[0]._id, clinicianUser.accessToken))
+				.to.be.a.journal.viewSuccess;
 		});
 
 		it("Asserts that clinican can edit clinican note", function () {
 			var modifications = { text: "Different clinican note" };
-			return expect(editNote(modifications, patient._id, patient.entries[0]._id, clinicianUser.accessToken)).to.be.a.journal.success;
+			return expect(editNote(modifications, patient._id, patient.entries[0]._id, clinicianUser.accessToken))
+				.to.be.a.journal.success;
 		});
 
 		it("Asserts that patient user cannot view clinican note", function () {
-			return expect(viewNote(patient._id, patient.entries[0]._id, user.accessToken)).to.be.an.api.error(403, "unauthorized");
+			return expect(viewNote(patient._id, patient.entries[0]._id, user.accessToken))
+				.to.be.an.api.error(403, "unauthorized");
 		});
 
 		it("Asserts that patient user cannot edit clinican note", function () {
 			var modifications = { text: "Different clinican note" };
-			return expect(editNote(modifications, patient._id, patient.entries[0]._id, user.accessToken)).to.be.an.api.error(403, "unauthorized");
+			return expect(editNote(modifications, patient._id, patient.entries[0]._id, user.accessToken))
+				.to.be.an.api.error(403, "unauthorized");
 		});
 
 		it("Asserts that clinican note cannot contain meditation values", function () {
 			var modifications = { meditation: true };
-			return expect(editNote(modifications, patient._id, patient.entries[0]._id, clinicianUser.accessToken)).to.be.an.api.error(400, "invalid_clinician_note");
+			return expect(editNote(modifications, patient._id, patient.entries[0]._id, clinicianUser.accessToken))
+				.to.be.an.api.error(400, "invalid_clinician_note");
 		});
 
 		it("Asserts that note created by Clincian API user is marked as a clinican note", function () {
 			var modifications = { text: "New clinican note", date: (new Date()).toISOString() };
 			return createNote(modifications, patient._id, clinicianUser.accessToken).then(function (response) {
-				expect(response.body.clinician).to.deep.equal(true);
+				expect(response.body.role).to.deep.equal("clinician");
 			});
 		});
 

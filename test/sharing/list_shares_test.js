@@ -53,7 +53,8 @@ describe("Patients", function () {
             // create a new user and share the patient with them
             before(function () {
                 return auth.createTestUser({}).then(function (user) {
-                    return Q.nbind(patient.share, patient)(user.email, "default", "prime", user.firstName, user.lastName);
+                    return Q.nbind(patient.share, patient)(user.email, "default", "prime",
+                                                          user.firstName, user.lastName);
                 });
             });
 

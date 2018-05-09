@@ -70,6 +70,7 @@ const userArgs = {
         "first_name": firstName,
         "last_name": lastName,
         "phone": phoneNumber,
+        "role": "user"
     }
 };
 const authArgs = {
@@ -99,6 +100,7 @@ const seedMessages = function (patientArgs) {
             "first_name": firstName2,
             "last_name": lastName2,
             "phone": phoneNumber2,
+            "role": "user"
         }
     };
     const authArgs = {
