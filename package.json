@@ -54,7 +54,7 @@
     "request": "~2.85.0",
     "rxnorm-js": "^0.1.0",
     "sendgrid": "^1.9.0",
-    "twilio": "^2.2.1",
+    "twilio": "^3.16.0",
     "xtend": "^4.0.0"
   },
   "devDependencies": {

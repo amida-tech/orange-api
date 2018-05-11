@@ -7,7 +7,7 @@ config.email = {
 };
 config.text = {
     from: "+1 (617) 000-0000",
-    twilio_sid: "SID HERE",
+    twilio_sid: "ACXXXXXXX SID HERE",
     twilio_auth_token: "AUTH TOKEN"
 };
 
