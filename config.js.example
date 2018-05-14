@@ -18,6 +18,8 @@ config.keyId = "iAmTheKeyId";
 config.teamId = "iAmThePrefixOfTheIOSAppId";
 config.apnENV = "development";
 config.pushTopic = "com.amida.orangeIgnite"
+config.firebaseServerKey = "";
+config.firebaseAPIUrl = "https://fcm.googleapis.com/fcm/send";
 
 //Auth service
 config.authServiceAPI = "http://localhost:4000/api/v0"
