@@ -4,7 +4,6 @@ const express = require("express");
 const bunyan = require("express-bunyan-logger");
 const bunyanLogstash  = require("bunyan-logstash");
 
-const passport = require("passport");
 const passportAuth = require("./lib/controllers/helpers/passport.js")();
 const app = module.exports = express();
 

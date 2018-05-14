@@ -128,31 +128,40 @@ describe("Journal", function () {
 
         //meditation
         it("rejects a number value for meditation", function () {
-            return expect(createPatientEntry({ meditation: 23 })).to.be.an.api.error(400, "invalid_meditation_value");
+            return expect(createPatientEntry({ meditation: 23 }))
+                .to.be.an.api.error(400, "invalid_meditation_value");
         });
         it("rejects a string value for meditation", function () {
-            return expect(createPatientEntry({ meditation: "mystring" })).to.be.an.api.error(400, "invalid_meditation_value");
+            return expect(createPatientEntry({ meditation: "mystring" }))
+                .to.be.an.api.error(400, "invalid_meditation_value");
         });
         it("rejects a null meditation", function () {
-            return expect(createPatientEntry({ meditation: null })).to.be.an.api.error(400, "invalid_meditation_value");
+            return expect(createPatientEntry({ meditation: null }))
+                .to.be.an.api.error(400, "invalid_meditation_value");
         });
         it("rejects a non-null meditationLength when meditation is false", function () {
-            return expect(createPatientEntry({ meditation: false, meditationLength: 5 })).to.be.an.api.error(400, "meditation_required");
+            return expect(createPatientEntry({ meditation: false, meditationLength: 5 }))
+                .to.be.an.api.error(400, "meditation_required");
         });
         it("rejects an invalid meditationLength when meditation is false", function () {
-            return expect(createPatientEntry({ meditation: false, meditationLength: "foo" })).to.be.an.api.error(400, "meditation_required");
+            return expect(createPatientEntry({ meditation: false, meditationLength: "foo" }))
+                .to.be.an.api.error(400, "meditation_required");
         });
         it("rejects an invalid meditationLength when meditation is true", function () {
-            return expect(createPatientEntry({ meditation: true, meditationLength: "foo" })).to.be.an.api.error(400, "invalid_meditation_length");
+            return expect(createPatientEntry({ meditation: true, meditationLength: "foo" }))
+                .to.be.an.api.error(400, "invalid_meditation_length");
         });
         it("accepts a valid meditationLength when meditation is true", function () {
-            return expect(createPatientEntry({ meditation: true, meditationLength: 30 })).to.be.a.journal.createSuccess;
+            return expect(createPatientEntry({ meditation: true, meditationLength: 30 }))
+                .to.be.a.journal.createSuccess;
         });
         it("accepts a valid meditation value(true) when meditationLength is null", function () {
-            return expect(createPatientEntry({ meditation: true, meditationLength: null })).to.be.a.journal.createSuccess;
+            return expect(createPatientEntry({ meditation: true, meditationLength: null }))
+                .to.be.a.journal.createSuccess;
         });
         it("accepts a valid meditation value(false) when meditationLength is null", function () {
-            return expect(createPatientEntry({ meditation: false, meditationLength: null })).to.be.a.journal.createSuccess;
+            return expect(createPatientEntry({ meditation: false, meditationLength: null }))
+                .to.be.a.journal.createSuccess;
         });
 
 
