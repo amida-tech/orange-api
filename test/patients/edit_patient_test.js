@@ -112,7 +112,8 @@ describe("Patients", function () {
                         patient = p;
                         // share the patient
                         // prime defaults to write ability
-                        return Q.nbind(patient.share, patient)(patient.user.email, "write", "prime", patient.user.firstName, patient.user.lastName);
+                        return Q.nbind(patient.share, patient)(patient.user.email, "write", "prime",
+                                                              patient.user.firstName, patient.user.lastName);
                     });
             });
 

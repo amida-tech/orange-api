@@ -12,6 +12,7 @@ monky.factory("User", {
     password:       "password",
     rawPassword:    "password",
     first_name:     "Foo #n",
-    last_name:      "Bar"
+    last_name:      "Bar",
+    role:           "user"
 });
 /*eslint-enable key-spacing */

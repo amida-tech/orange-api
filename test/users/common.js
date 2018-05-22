@@ -9,13 +9,15 @@ var expect = chakram.expect;
 // verify successful responses
 /*eslint-disable key-spacing */
 var userSchema = {
-    required: ["email", "first_name", "last_name", "phone", "success"],
+    required: ["email", "first_name", "last_name", "phone", "success", "role"],
     properties: {
         success:    { type: "boolean" },
         email:      { type: "string" },
         first_name: { type: "string" },
         last_name:  { type: "string" },
-        phone:      { type: "string" }
+        phone:      { type: "string" },
+        role:       { type: "string" },
+        npi:        { type: "string" }
     },
     additionalProperties: false
 };
