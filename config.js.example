@@ -14,6 +14,12 @@ config.text = {
 // client secret
 config.secret = "testsecret";
 config.jwtSecret = "0a6b944d-d2fb-46fc-a85e-0295c986cd9f";
+config.keyId = "iAmTheKeyId";
+config.teamId = "iAmThePrefixOfTheIOSAppId";
+config.apnENV = "development";
+config.pushTopic = "com.amida.orangeIgnite"
+config.firebaseServerKey = "";
+config.firebaseAPIUrl = "https://fcm.googleapis.com/fcm/send";
 
 //Auth service
 config.authServiceAPI = "http://localhost:4000/api/v0"
@@ -71,4 +77,3 @@ config.facebook = {
     callbackURL: 'http://localhost:5000/v1/auth/facebook/callback',
     profileFields: ['id', 'name', 'displayName', 'picture', 'email'],
 }
-
