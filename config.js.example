@@ -24,7 +24,10 @@ config.microserviceAccessKey = "oucuYaiN6pha3ahphiiT";
 config.microservicePassword = "@TestTest1";
 
 //Auth service
-config.authServiceAPI = "http://localhost:4000/api/v0"
+config.authServiceAPI = "http://localhost:4000/api/v0";
+
+//Notification Service
+config.notificationServiceAPI = "http://localhost:4003/api";
 
 // DB connections
 if (process.env.NODE_ENV === "production") {
