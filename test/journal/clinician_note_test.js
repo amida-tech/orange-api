@@ -53,6 +53,7 @@ describe("Clinican Notes", function () {
 					return Q.nbind(patient.createJournalEntry, patient)({
 						text: "Clinican Note",
 						date: (new Date()).toISOString(),
+						creator: "Adam West",
 						role: "clinician"
 					});
 				});

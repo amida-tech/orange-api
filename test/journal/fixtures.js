@@ -10,6 +10,7 @@ monky.factory("JournalEntry", {
     date: (new Date()).toISOString(),
     text: "Lorem ipsum #n",
     medication_ids: [],
-    mood: "Happy!"
+    mood: "Happy!",
+    creator: "Adam West"
 });
 /*eslint-enable key-spacing */
