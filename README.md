@@ -34,7 +34,7 @@ This project supports:
 
 ## Unit Tests
 
-1. `npm test`
+1. `grunt test`
 
 ## Notes for Package Maintainers
 
