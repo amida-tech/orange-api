@@ -1,18 +1,69 @@
-Orange Backend API
+SUD Core API
 =========
 
-[![Build Status](https://travis-ci.org/amida-tech/orange-api.svg?branch=master)](https://travis-ci.org/amida-tech/orange-api)
-[![Coverage Status](https://coveralls.io/repos/amida-tech/orange-api/badge.svg?branch=master)](https://coveralls.io/r/amida-tech/orange-api?branch=master)
-
-
-**For detailed API documentation see [here](http://amida-tech.github.io/orange-api/)**
-
-API for Orange medication management app. RESTful and implemented in Node & Mongo. Implements:
+## Description
+API for SUD medication management app. RESTful and implemented in Node & Mongo. Implements:
  - Setup user/patient
  - Save medications/doctors/pharmacies/user habits
  - Record dose events
  - View adherence schedule
  - Share information with other users (and outside email addresses who aren't yet users)
+
+This project supports:
+ - Building the application through a build.sh script
+ - Dockerizing/Containerizing the application with `Dockerfile` and `docker-compose.yml`.
+ - Executing tasks through Grunt with `gruntfile.js`.
+ - Executing tasks through Gulp with `gulpfile.js`.
+ - Performing tests on the application.
+
+## Technologies
+
+ - node.js
+ - ExpressJS
+ - MongoDB
+
+## Commands Available
+
+- `npm install` - (From project root) This will install packages at the project level.
+- `grunt test` - This will execute the tests on the application.
+- `grunt dev` - This will run the api in development mode.
+
+## Build
+
+1. `./build.sh`
+
+## Unit Tests
+
+1. `npm test`
+
+## Notes for Package Maintainers
+
+Note: Adding `%s` to your version update message will insert the version number.
+
+### Patch 0.0.X
+
+```
+npm version patch -m "Patch upgrade to %s"
+```
+
+### Minor 0.X.0
+
+```
+npm version minor -m "Minor upgrade to %s"
+```
+
+### Major X.0.0
+
+```
+npm version major -m "Major upgrade to %s"
+```
+
+Don't forget to commit to git!
+
+## References
+
+- [Project Jira](https://issues.mobilehealth.va.gov/projects/SUD)
+- [Project Wiki](https://wiki.mobilehealth.va.gov/display/SUD/Substance+Use+Disorder+Home)
 
 ## Quick up and running quide
 
