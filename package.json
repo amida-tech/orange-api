@@ -31,7 +31,6 @@
     "express-bunyan-logger": "^1.1.1",
     "faker": "^4.1.0",
     "gridfs-stream": "^1.1.1",
-    "grunt-contrib-watch": "^1.0.0",
     "gulp": "^3.9.1",
     "handlebars": "~4.0.0",
     "husky": "^0.14.3",
