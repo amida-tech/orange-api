@@ -11,6 +11,9 @@ monky.factory("JournalEntry", {
     text: "Lorem ipsum #n",
     medication_ids: [],
     mood: "Happy!",
+    moodSeverity: 10,
+    sideEffect: "affected side",
+    sideEffectSeverity: 5,
     creator: "Adam West"
 });
 /*eslint-enable key-spacing */
