@@ -171,5 +171,67 @@ describe("Users", function () {
                 return expect(updateUser({}, { password: "" })).to.be.an.api.error(400, "password_required");
             });
         });
+
+        describe("changing npi as user", function () {
+            var request;
+            beforeEach(function () {
+                request = updateUser({role: "user" }, { npi: "1245319599" });
+            });
+
+            it("returns a successful response", function () {
+                return expect(request).to.be.a.user.success;
+            });
+            it("does not revoke our access tokens", function () {
+                return request.then(auth.checkTokenWorks(token));
+            });
+            it("stills let us authenticate", function () {
+                return request.then(function () {
+                    return expect(tokenEndpoint(credentials)).to.be.an.api.postSuccess;
+                });
+            });
+
+            it("doesn't actually do anything", function () {
+                return request.then(function (response) {
+                    expect(response.body.npi).to.be.an("undefined");
+                });
+            });
+        });
+
+        describe("changing npi as clinician", function () {
+            var request;
+            beforeEach(function () {
+                request = updateUser({role: "clinician" }, { npi: "1245319599" });
+            });
+
+            it("returns a successful response", function () {
+                return expect(request).to.be.a.user.success;
+            });
+            it("does not revoke our access tokens", function () {
+                return request.then(auth.checkTokenWorks(token));
+            });
+            it("stills let us authenticate", function () {
+                return request.then(function () {
+                    return expect(tokenEndpoint(credentials)).to.be.an.api.postSuccess;
+                });
+            });
+
+            it("returns the new npi", function () {
+                return request.then(function (response) {
+                    expect(response.body.npi).to.equal("1245319599");
+                });
+            });
+            it("allows a null npi", function () {
+                return updateUser({role: "clinician"}, { npi: null }).then(function (response) {
+                    expect(response).to.be.a.user.success;
+                    expect(response.body.npi).to.equal("");
+                });
+            });
+            it("allows a blank npi", function () {
+                return updateUser({role: "clinician"}, { npi: "" }).then(function (response) {
+                    expect(response).to.be.a.user.success;
+                    expect(response.body.npi).to.equal("");
+                });
+            });
+        });
     });
 });

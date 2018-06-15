@@ -20,7 +20,7 @@ describe("Users", function () {
             return expect(register()).to.be.a.user.registerSuccess;
         });
 
-        // require email and password
+        // require email and password and role
         it("requires an email", function () {
             return expect(register({ email: undefined })).to.be.an.api.error(400, "email_required");
         });
@@ -38,6 +38,12 @@ describe("Users", function () {
         });
         it("rejects a null password", function () {
             return expect(register({ password: null })).to.be.an.api.error(400, "password_required");
+        });
+        it("requires a role", function () {
+            return expect(register({ role: undefined })).to.be.an.api.error(400, "invalid_role");
+        });
+        it("rejects a role not in enum", function () {
+            return expect(register({ role: "notintheenum" })).to.be.an.api.error(400, "invalid_role");
         });
         it("does not require a first name", function () {
             return expect(register({ first_name: undefined })).to.be.a.user.registerSuccess;
