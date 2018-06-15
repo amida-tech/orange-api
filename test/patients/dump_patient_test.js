@@ -96,6 +96,7 @@ describe("Patients", function () {
                 return Q.nbind(patient.createJournalEntry, patient)({
                     date: {utc: (new Date()).toISOString(), timezone: "America/Los_Angeles"},
                     text: "example journal entry",
+                    creator: "Adam West",
                     medication_ids: [shownMed._id]
                 }).then(function (e) {
                     shownEntry = e;
@@ -107,6 +108,7 @@ describe("Patients", function () {
                 return Q.nbind(patient.createJournalEntry, patient)({
                     date: {utc: (new Date()).toISOString(), timezone: "America/Los_Angeles"},
                     text: "example journal entry",
+                    creator: "Adam West",
                     medication_ids: [hiddenMed._id]
                 });
             });
@@ -117,6 +119,7 @@ describe("Patients", function () {
                 return Q.nbind(patient.createDose, patient)({
                     medication_id: shownMed._id,
                     date: {utc: (new Date()).toISOString(), timezone: "America/Los_Angeles"},
+                    creator: "Adam West",
                     taken: true
                 }).then(function (d) {
                     shownDose = d;
@@ -128,6 +131,7 @@ describe("Patients", function () {
                 return Q.nbind(patient.createDose, patient)({
                     medication_id: hiddenMed._id,
                     date: {utc: (new Date()).toISOString(), timezone: "America/Los_Angeles"},
+                    creator: "Adam West",
                     taken: true
                 });
             });

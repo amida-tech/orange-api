@@ -16,7 +16,7 @@ delete medicationSchema.properties.success;
 // verify successful responses
 /*eslint-disable key-spacing */
 var doseSchema = module.exports.schema = {
-    required: ["success", "id", "date", "dose", "taken", "notes", "scheduled"],
+    required: ["success", "id", "date", "dose", "taken", "notes", "scheduled", "creator"],
     properties: {
         success:        { type: "boolean" },
         id:             { type: "number" },
@@ -34,6 +34,7 @@ var doseSchema = module.exports.schema = {
         },
         taken:          { type: "boolean" },
         notes:          { type: "string" },
+        creator:        { type: "string" },
         scheduled:      { type: ["number", "null"] }
     },
     definitions: {
@@ -98,6 +99,7 @@ module.exports.itRequiresValidDoseId = function (endpoint) {
                         medication_id: otherPatient.medications[0]._id,
                         date: {utc: (new Date()).toISOString(), timezone:  "America/Los_Angeles"},
                         taken: true,
+                        creator: "Adam West",
                         notes: "foobar"
                     });
                 });

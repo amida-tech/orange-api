@@ -17,24 +17,25 @@ delete medicationSchema.properties.success;
 // verify successful responses
 /*eslint-disable key-spacing */
 var entrySchema = module.exports.schema = {
-    required: ["success", "id", "date", "meditation", "mood", "hashtags", "role"],
+    required: ["success", "id", "date", "meditation", "mood", "hashtags", "role", "creator"],
     properties: {
-        success:        { type: "boolean" },
-        id:             { type: "number" },
+        success:          { type: "boolean" },
+        id:               { type: "number" },
         date:           {
             utc:        { type: "string" },
             timezone:   { type: "number"}
         },
-        text:           { type: "string" },
-        mood:           { type: "string" },
-        moodEmoji:      { type: "string" },
-        meditation:     { type: "boolean" },
-        meditationLength: { type: "number"},
-        role:      { type: "string" },
-        hashtags:       {
-            type:       "array",
-            items:  {
-                type:   "string"
+        text:             { type: "string" },
+        mood:             { type: "string" },
+        moodEmoji:        { type: "string" },
+        meditation:       { type: "boolean" },
+        meditationLength: { type: "number" },
+        role:             { type: "string" },
+        creator:          { type: "string" },
+        hashtags: {
+            type: "array",
+            items: {
+                type: "string"
             }
         }
     },
@@ -100,7 +101,8 @@ module.exports.itRequiresValidEntryId = function (endpoint) {
                     // setup journal entry for otherPatient
                     return Q.nbind(otherPatient.createJournalEntry, otherPatient)({
                         text: "foobar",
-                        date: {utc:(new Date()).toISOString(), timezone: "America/Los_Angeles"}
+                        date: {utc:(new Date()).toISOString(), timezone: "America/Los_Angeles"},
+                        creator: "Adam West",
                     });
                 });
             });

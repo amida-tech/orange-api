@@ -98,12 +98,14 @@ describe("Schedule", function () {
                 medication_id: medication._id,
                 date: {utc: moment(moment.tz(day1, tz).startOf("day") + doseDelta), timezone:  "America/Los_Angeles"},
                 scheduled: medication.schedule.times[0]._id,
+                creator: "Adam West",
                 taken: false
             }).then(function () {
                 return createDose({
                     medication_id: medication._id,
                     date: {utc: moment(moment.tz(day2, tz).startOf("day") + doseDelta), timezone:  "America/Los_Angeles"},
                     scheduled: medication.schedule.times[0]._id,
+                    creator: "Adam West",
                     taken: true
                 });
             }).then(function () {
@@ -111,6 +113,7 @@ describe("Schedule", function () {
                     medication_id: medication._id,
                     date: {utc: moment(moment.tz(day3, tz).startOf("day") + doseDelta), timezone:  "America/Los_Angeles"},
                     scheduled: medication.schedule.times[0]._id,
+                    creator: "Adam West",
                     taken: true
                 });
             }).then(function () {
@@ -118,6 +121,7 @@ describe("Schedule", function () {
                     medication_id: medication._id,
                     date: {utc: moment.tz(day1, tz).subtract(2, "days").utc(), timezone:  "America/Los_Angeles"},
                     scheduled: medication.schedule.times[0]._id,
+                    creator: "Adam West",
                     taken: true
                 });
             }).then(function () {
@@ -125,6 +129,7 @@ describe("Schedule", function () {
                     medication_id: medication._id,
                     date: {utc: moment(moment.tz(day3, tz).startOf("day") + doseDelta), timezone:  "America/Los_Angeles"},
                     scheduled: null,
+                    creator: "Adam West",
                     taken: true
                 });
             //}).then(function () {

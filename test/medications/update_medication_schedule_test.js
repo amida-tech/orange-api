@@ -54,6 +54,7 @@ describe("Medications", function () {
                 notes: "",
                 date: {utc: beforeChange, timezone:  "America/Los_Angeles"},
                 taken: true,
+                creator: "Adam West",
                 medication_id: medication._id,
                 scheduled: 0
             });
@@ -63,6 +64,7 @@ describe("Medications", function () {
                 notes: "",
                 date: {utc: beforeChange, timezone:  "America/Los_Angeles"},
                 taken: true,
+                creator: "Adam West",
                 medication_id: medication._id,
                 scheduled: 1
             });
@@ -90,6 +92,7 @@ describe("Medications", function () {
                 notes: "",
                 date: {utc: afterChange, timezone:  "America/Los_Angeles"},
                 taken: true,
+                creator: "Adam West",
                 medication_id: medication._id,
                 scheduled: 0
             }, patient._id, patient.user.accessToken)).to.be.a.dose.createSuccess;

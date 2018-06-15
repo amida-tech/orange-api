@@ -215,6 +215,7 @@ describe("Doses", function () {
                         return Q.nbind(patient.createDose, patient)({
                             date: {utc: (new Date()).toISOString(), timezone:  "America/Los_Angeles"},
                             taken: true,
+                            creator: "Adam West",
                             medication_id: patient.medications[0]._id
                         });
                     });

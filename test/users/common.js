@@ -17,6 +17,8 @@ var userSchema = {
         last_name:  { type: "string" },
         phone:      { type: "string" },
         role:       { type: "string" },
+        deviceToken:{ type: "string" },
+        gcmToken:   { type: "string" },
         npi:        { type: "string" }
     },
     additionalProperties: false

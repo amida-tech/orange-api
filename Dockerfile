@@ -27,6 +27,7 @@ WORKDIR /src
 # .dockerignore crucially means we don't copy node_modules
 COPY . /src
 COPY ./config.js.docker /src/config.js
+COPY ./iosKey.p8 /src/iosKey.p8
 
 EXPOSE 5000
 ENV NODE_ENV production

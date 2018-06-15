@@ -11,6 +11,7 @@ monky.factory("Dose", {
     dose: {unit: "unit", quantity:1},
     notes: "Lorem ipsum #n",
     taken: true,
+    creator: "Adam West",
     scheduled: null
 });
 /*eslint-enable key-spacing */
