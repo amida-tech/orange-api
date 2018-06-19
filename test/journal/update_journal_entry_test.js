@@ -72,7 +72,9 @@ describe("Journal", function () {
                 moodSeverity: 7,
                 moodEmoji: "\\U0001F625",
                 sideEffect: "not feeling well",
-                sideEffectSeverity: 7
+                sideEffectSeverity: 7,
+                activity: 'meditation',
+                activityMinutes: 1
             })).to.be.a.journal.success;
         });
         it("allows a blank text", function () {

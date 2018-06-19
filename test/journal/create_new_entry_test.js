@@ -192,6 +192,48 @@ describe("Journal", function () {
             });
         });
 
+        //activity
+        it("doesn't require a activity", function () {
+            return expect(createPatientEntry({ activity: undefined, activityMinutes: undefined })).to.be.a.journal.createSuccess;
+        });
+        it("allows a blank activity", function () {
+            return expect(createPatientEntry({ activity: "", activityMinutes: undefined })).to.be.a.journal.createSuccess;
+        });
+        it("allows a null activity", function () {
+            return expect(createPatientEntry({ activity: null, activityMinutes: undefined })).to.be.a.journal.createSuccess;
+        });
+        it("allows a activity", function () {
+            return expect(createPatientEntry({ activity: "jogging" })).to.be.a.journal.createSuccess;
+        });
+        //activityMinutes
+        //no activity
+        describe("When activity is not defined", function() {
+            it("doesn't require a activityMinutes", function () {
+                return expect(createPatientEntry({ activity: undefined, activityMinutes: undefined })).to.be.a.journal.createSuccess;
+            });
+            it("allows a null activityMinutes", function () {
+                return expect(createPatientEntry({ activity: undefined, activityMinutes: null })).to.be.a.journal.createSuccess;
+            });
+            it("rejects a activityMinutes", function () {
+                return expect(createPatientEntry({ activity: undefined, activityMinutes: 5 })).to.be.an.api.error(400, "invalid_activity");
+            });
+        });
+        //yes activity
+        describe("When activity is defined", function() {
+            it("requires a activityMinutes", function () {
+                return expect(createPatientEntry({ activity: "jogging", activityMinutes: undefined })).to.be.an.api.error(400, "invalid_activity");
+            });
+            it("rejects a null activityMinutes", function () {
+                return expect(createPatientEntry({ activity: "jogging", activityMinutes: null })).to.be.an.api.error(400, "invalid_activity");
+            });
+            it("allows a activityMinutes", function () {
+                return expect(createPatientEntry({ activity: "jogging", activityMinutes: 5 })).to.be.a.journal.createSuccess;
+            });
+            it("rejects a activityMinutes below 1", function () {
+                return expect(createPatientEntry({ activity: "jogging", activityMinutes: 0 })).to.be.an.api.error(400, "invalid_activity");
+            });
+        });
+
         //meditation
         it("rejects a number value for meditation", function () {
             return expect(createPatientEntry({ meditation: 23 }))
