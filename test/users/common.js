@@ -19,7 +19,8 @@ var userSchema = {
         role:       { type: "string" },
         deviceToken:{ type: "string" },
         gcmToken:   { type: "string" },
-        npi:        { type: "string" }
+        npi:        { type: "string" },
+        defaultPatientID: { type: "string"}
     },
     additionalProperties: false
 };
