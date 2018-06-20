@@ -12,6 +12,8 @@ monky.factory("JournalEntry", {
     medication_ids: [],
     mood: "Happy!",
     moodSeverity: 10,
+    activity: "jogging",
+    activityMinutes: 56,
     sideEffect: "affected side",
     sideEffectSeverity: 5,
     creator: "Adam West"
