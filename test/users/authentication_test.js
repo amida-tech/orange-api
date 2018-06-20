@@ -17,6 +17,8 @@ describe("Users", function () {
         });
 
         // require email and password
+
+        // FIXME: The server returns a 500 when you don't give it a email this is because of the changes made to use the auth-microservice
         it("requires an email", function () {
             return expect(token({ password: user.rawPassword })).to.be.an.api.error(400, "email_required");
         });
