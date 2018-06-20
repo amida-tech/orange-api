@@ -69,7 +69,10 @@ describe("Journal", function () {
                 text: "test date",
                 medication_ids: [],
                 mood: "so so sad",
-                moodEmoji: "\\U0001F625"
+                moodSeverity: 7,
+                moodEmoji: "\\U0001F625",
+                sideEffect: "not feeling well",
+                sideEffectSeverity: 7
             })).to.be.a.journal.success;
         });
         it("allows a blank text", function () {
