@@ -31,9 +31,9 @@ API for Orange medication management app. RESTful and implemented in Node & Mong
   - if you are developing locally, you may need to install and configure [Postgres](http://postgresapp.com/)
 - Configure settings in `config.js` in root directory (often `orange-api`)
   - Vital settings:
-    - config.secret (any hexstring is suitable)
-    - config.jwtSecret (must match Auth Microservice)
-    - config.authServiceAPI
+    - `config.secret` (any hexstring is suitable)
+    - `config.jwtSecret` (must match Auth Microservice)
+    - `config.authServiceAPI` (must point to wherever your `amida-auth-microservice` server is running)
     - Web Address
     - Database Address
     - Zeromq Address
