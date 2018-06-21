@@ -1,16 +1,16 @@
 # Group NPI
-Uses the BloomAPI to look up provider information in the National Plan and Provider Enumeration System (NPPES).
+Look up provider information in the National Plan and Provider Enumeration System (NPPES).
 
 ## Provider Collection [/npi/{npi}]
 ### Get NPI Data [GET]
-Searches BloomAPI using then provided NPI. Returns the data associated with that NPI if it exists.
+Searches NPPES using then provided NPI. Returns the data associated with that NPI if it exists.
 
 + Parameters
     + npi (string, required)
         10 digit NPI number
 
 + Response 200
-    + `bloom_error` (500) - error communicating with Bloom API
+    + `npi_error` (500) - error communicating with NPPES API
 
     + Body
 
@@ -50,13 +50,12 @@ Searches BloomAPI using then provided NPI. Returns the data associated with that
 
 ## Provider Collection [/npi]
 ### Query Providers [POST]
-Searches BloomAPI using a combination of first name, last name and State (two letter code). Receives an
-array of possible Prescriber matches. BloomAPI limits the response to 100 possible matches.
+Searches NPPES API using a combination of first name, last name and State (two letter code). Receives an
+array of possible Prescriber matches. NPPES limits the response to 100 possible matches.
 
 + Parameters
     + search (object, required)
-        Query object to search by. See example below, as well as [here](https://github.com/amida-tech/npi-js)
-        and [here](https://www.bloomapi.com/documentation/public-data/) for documentation.
+        Query object to search by. See example below, as well as [here](https://github.com/amida-tech/npi-js) for documentation.
 
 + Request
     + Body
@@ -72,7 +71,7 @@ array of possible Prescriber matches. BloomAPI limits the response to 100 possib
             }
 
 + Response 200
-    + `rxnorm_error` (500) - error communicating with Bloom API
+    + `npi_error` (500) - error communicating with NPPES API
 
     + Body
 
