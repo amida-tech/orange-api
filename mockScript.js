@@ -181,7 +181,6 @@ createUser(userArgs, function(response) {
         const patientArgs = {
             headers: {"Content-Type": "application/json", "X-Client-Secret" : "testsecret", "Authorization":"Bearer "+authToken},
             data: {
-        
             }
         };
         seedMessages(patientArgs);
