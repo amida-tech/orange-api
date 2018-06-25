@@ -95,17 +95,15 @@ describe("Users", function () {
             };
             // use user credentials to authenticate and get access token
             // need to get user we just made out of DB to avoid duplication errors
-            // // need to do this via HTTP rather than using user to avoid duplication errors
             var token = function (userData) {
                 var deferred = Q.defer();
                 User.findOne({ email: userData.email }, function(err, user) {
+                    if (err) {
+                        deferred.reject(err);
+                    }
                     deferred.resolve(auth.genAccessToken(user));
                 });
                 return deferred.promise;
-                // auth.genAuthHeaders sends client secret
-                // return chakram.post("http://localhost:5000/v1/auth/token", user, headers).then(function (resp) {
-                //     return resp.body.access_token;
-                // });
             };
             // get list of all patients
             var list = function (accessToken) {
@@ -114,7 +112,7 @@ describe("Users", function () {
             };
             return newUser.then(registerUser).then(token).then(list).then(function (response) {
                 // check we have exactly one patient
-                expect(response.body.patients).to.be.an('array');
+                expect(response.body.patients).to.be.an("array");
                 expect(response.body.patients.length).to.equal(1);
                 // check it has the right name and phone number
                 var patient = response.body.patients[0];
