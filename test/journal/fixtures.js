@@ -16,6 +16,6 @@ monky.factory("JournalEntry", {
     activityMinutes: 56,
     sideEffect: "affected side",
     sideEffectSeverity: 5,
-    creator: "Adam West"
+    creator: "adam@west.com"
 });
 /*eslint-enable key-spacing */
