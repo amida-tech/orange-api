@@ -23,7 +23,7 @@ of information. Possible matches for drugs (if any) are located in the
             }
 
 + Response 200
-    + `rxnorm_error` (500) - error communicating with Bloom API
+    + `rxnorm_error` (500) - error communicating with RxNorm API
 
     + Body
 
@@ -113,7 +113,7 @@ Searches RXNorm for spelling suggestions for a given medication.
             }
 
 + Response 200
-    + `rxnorm_error` (500) - error communicating with Bloom API
+    + `rxnorm_error` (500) - error communicating with RxNorm API
 
     + Body
 
