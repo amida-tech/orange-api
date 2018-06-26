@@ -46,7 +46,7 @@
     "node-geocoder": "^2.22.0",
     "node-pushnotifications": "^1.0.20",
     "node-rest-client": "^3.1.0",
-    "npi-js": "^0.1.1",
+    "npi-js": "^0.2.0",
     "passport": "^0.4.0",
     "passport-facebook": "^2.1.1",
     "passport-jwt": "^4.0.0",
