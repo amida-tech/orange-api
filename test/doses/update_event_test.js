@@ -215,7 +215,7 @@ describe("Doses", function () {
                         return Q.nbind(patient.createDose, patient)({
                             date: (new Date()).toISOString(),
                             taken: true,
-                            creator: "Adam West",
+                            creator: "adam@west.com",
                             medication_id: patient.medications[0]._id
                         });
                     });

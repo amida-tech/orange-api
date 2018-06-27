@@ -103,7 +103,7 @@ module.exports.itRequiresValidEntryId = function (endpoint) {
                     // setup journal entry for otherPatient
                     return Q.nbind(otherPatient.createJournalEntry, otherPatient)({
                         text: "foobar",
-                        creator: "Adam West",
+                        creator: "adam@west.com",
                         date: (new Date()).toISOString()
                     });
                 });
