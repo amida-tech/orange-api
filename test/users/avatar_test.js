@@ -53,7 +53,7 @@ describe("Users", function () {
         // given a user, try and set the user's avatar to an
         // image strean
         var setUser = function (image, token) {
-            return set(image, token)
+            return set(image, token);
         };
         // create a user and try and set their avatar
         var setAUser = function (image) {
@@ -106,7 +106,7 @@ describe("Users", function () {
                     // get patient info and check it returns an avatar slug that is not blank
                     return view.viewUser({}).then(function (response) {
                         var avatarPath = response.body.avatar;
-                        expect(avatarPath).to.be.a('string');
+                        expect(avatarPath).to.be.a("string");
                         expect(avatarPath).to.not.be.blank;
 
                         // check a file extension is being returned
