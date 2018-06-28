@@ -1,62 +1,81 @@
 # Group NPI
-Uses the BloomAPI to look up provider information in the National Plan and Provider Enumeration System (NPPES).
+Look up provider information in the National Plan and Provider Enumeration System (NPPES).
 
 ## Provider Collection [/npi/{npi}]
 ### Get NPI Data [GET]
-Searches BloomAPI using then provided NPI. Returns the data associated with that NPI if it exists.
+Searches NPPES using then provided NPI. Returns the data associated with that NPI if it exists.
 
 + Parameters
     + npi (string, required)
         10 digit NPI number
 
 + Response 200
-    + `bloom_error` (500) - error communicating with Bloom API
+    + `npi_error` (500) - error communicating with NPPES API
 
     + Body
 
             {
-                business_address: {
-                    address_details_line: "2ND FLOOR",
-                    address_line: "2350 W EL CAMINO REAL",
-                    city: "MOUNTAIN VIEW",
-                    country_code: "US",
-                    state: "CA",
-                    zip: "940406203"
+                "taxonomies": [
+                    {
+                        "state": "CA",
+                        "code": "208000000X",
+                        "primary": true,
+                        "license": "G68571",
+                        "desc": "Pediatrics"
+                    }
+                ],
+                "addresses": [
+                    {
+                        "city": "PALO ALTO",
+                        "address_2": "",
+                        "telephone_number": "650-853-2992",
+                        "state": "CA",
+                        "postal_code": "943012302",
+                        "address_1": "795 EL CAMINO REAL",
+                        "country_code": "US",
+                        "country_name": "United States",
+                        "address_type": "DOM",
+                        "address_purpose": "LOCATION"
+                    },
+                    {
+                        "city": "MOUNTAIN VIEW",
+                        "address_2": "2ND FLOOR",
+                        "state": "CA",
+                        "postal_code": "940406203",
+                        "address_1": "2350 W EL CAMINO REAL",
+                        "country_code": "US",
+                        "country_name": "United States",
+                        "address_type": "DOM",
+                        "address_purpose": "MAILING"
+                    }
+                ],
+                "created_epoch": 1156982400,
+                "identifiers": [],
+                "other_names": [],
+                "number": 1073624029,
+                "last_updated_epoch": 1326153600,
+                "basic": {
+                    "status": "A",
+                    "credential": "MD",
+                    "first_name": "HARRY",
+                    "last_name": "DENNIS",
+                    "last_updated": "2012-01-10",
+                    "name": "DENNIS HARRY",
+                    "gender": "M",
+                    "sole_proprietor": "NO",
+                    "enumeration_date": "2006-08-31"
                 },
-                credential: "MD",
-                enumeration_date: "2006-08-31T00:00:00.000Z",
-                first_name: "HARRY",
-                gender: "male",
-                last_name: "DENNIS",
-                last_update_date: "2012-01-10T00:00:00.000Z",
-                npi: 1073624029,
-                practice_address: {
-                    address_line: "795 EL CAMINO REAL",
-                    city: "PALO ALTO",
-                    country_code: "US",
-                    phone: "6508532992",
-                    state: "CA",
-                    zip: "943012302"
-                },
-                provider_details: [{
-                    healthcare_taxonomy_code: "208000000X",
-                    license_number: "G68571",
-                    license_number_state: "CA",
-                    taxonomy_switch: "yes"
-                }],
-                sole_proprietor: "no",
-                type: "individual"
+                "enumeration_type": "NPI-1"
             }
 
 ## Provider Collection [/npi]
 ### Query Providers [POST]
-Searches BloomAPI using a combination of first name, last name and State (two letter code). Receives an
-array of possible Prescriber matches. BloomAPI limits the response to 100 possible matches.
+Searches NPPES API using a combination of first name, last name and State (two letter code). Receives an
+array of possible Prescriber matches. NPPES limits the response to 100 possible matches.
 
 + Parameters
     + search (object, required)
-        Query object to search by. See example below, as well as [here](https://github.com/amida-tech/npi-js)
-        and [here](https://www.bloomapi.com/documentation/public-data/) for documentation.
+        Query object to search by. See example below, as well as [here](https://github.com/amida-tech/npi-js) for documentation.
 
 + Request
     + Body
@@ -72,44 +91,64 @@ array of possible Prescriber matches. BloomAPI limits the response to 100 possib
             }
 
 + Response 200
-    + `rxnorm_error` (500) - error communicating with Bloom API
+    + `npi_error` (500) - error communicating with NPPES API
 
     + Body
 
             {
                 providers: [ 
                     {
-                        business_address: {
-                            address_details_line: "2ND FLOOR",
-                            address_line: "2350 W EL CAMINO REAL",
-                            city: "MOUNTAIN VIEW",
-                            country_code: "US",
-                            state: "CA",
-                            zip: "940406203"
+                        "taxonomies": [
+                            {
+                                "state": "CA",
+                                "code": "208000000X",
+                                "primary": true,
+                                "license": "G68571",
+                                "desc": "Pediatrics"
+                            }
+                        ],
+                        "addresses": [
+                            {
+                                "city": "PALO ALTO",
+                                "address_2": "",
+                                "telephone_number": "650-853-2992",
+                                "state": "CA",
+                                "postal_code": "943012302",
+                                "address_1": "795 EL CAMINO REAL",
+                                "country_code": "US",
+                                "country_name": "United States",
+                                "address_type": "DOM",
+                                "address_purpose": "LOCATION"
+                            },
+                            {
+                                "city": "MOUNTAIN VIEW",
+                                "address_2": "2ND FLOOR",
+                                "state": "CA",
+                                "postal_code": "940406203",
+                                "address_1": "2350 W EL CAMINO REAL",
+                                "country_code": "US",
+                                "country_name": "United States",
+                                "address_type": "DOM",
+                                "address_purpose": "MAILING"
+                            }
+                        ],
+                        "created_epoch": 1156982400,
+                        "identifiers": [],
+                        "other_names": [],
+                        "number": 1073624029,
+                        "last_updated_epoch": 1326153600,
+                        "basic": {
+                            "status": "A",
+                            "credential": "MD",
+                            "first_name": "HARRY",
+                            "last_name": "DENNIS",
+                            "last_updated": "2012-01-10",
+                            "name": "DENNIS HARRY",
+                            "gender": "M",
+                            "sole_proprietor": "NO",
+                            "enumeration_date": "2006-08-31"
                         },
-                        credential: "MD",
-                        enumeration_date: "2006-08-31T00:00:00.000Z",
-                        first_name: "HARRY",
-                        gender: "male",
-                        last_name: "DENNIS",
-                        last_update_date: "2012-01-10T00:00:00.000Z",
-                        npi: 1073624029,
-                        practice_address: {
-                            address_line: "795 EL CAMINO REAL",
-                            city: "PALO ALTO",
-                            country_code: "US",
-                            phone: "6508532992",
-                            state: "CA",
-                            zip: "943012302"
-                        },
-                        provider_details: [{
-                            healthcare_taxonomy_code: "208000000X",
-                            license_number: "G68571",
-                            license_number_state: "CA",
-                            taxonomy_switch: "yes"
-                        }],
-                        sole_proprietor: "no",
-                        type: "individual"
+                        "enumeration_type": "NPI-1"
                     },
                     ...
                 ],
