@@ -29,3 +29,4 @@ docs/output
 .secret
 config.js
 artifacts
+config.js.docker

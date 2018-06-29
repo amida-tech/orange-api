@@ -18,16 +18,16 @@ config.keyId = "";
 config.teamId = "***REMOVED***";
 config.apnENV = "development";
 config.pushTopic = "com.amida.orangeIgnite"
-config.firebaseServerKey = "AAAAXSY...";
+config.firebaseServerKey = "AAAAXS";
 config.firebaseAPIUrl = "https://fcm.googleapis.com/fcm/send";
 config.microserviceAccessKey = "oucuYaiN6pha3ahphiiT";
 config.microservicePassword = "T@estTest1";
 // Auth Service Connections
 if (process.env.NODE_ENV === "production") {
-    config.authServiceAPI = "https://orange-auth-staging.amida-services.com/api/v0"
+    config.authServiceAPI = "https://orange-auth-staging.amida-services.com/api/v1"
     config.notificationServiceAPI = "https://orange-notification-staging.amida-services.com/api"
 } else {
-    config.authServiceAPI = "https://orange-auth-staging.amida-services.com/api/v0"
+    config.authServiceAPI = "https://orange-auth-staging.amida-services.com/api/v1"
     config.notificationServiceAPI = "https://orange-notification-staging.amida-services.com/api"
 }
 
