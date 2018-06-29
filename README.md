@@ -43,8 +43,8 @@ API for Orange medication management app. RESTful and implemented in Node & Mong
 
 - Enabling Push Notifications with the Notifications Microservice
   - Set up and start the [Amida Notification Microservice](https://github.com/amida-tech/amida-notification-microservice)
-  - Set the `config.notificationServiceAPI` in `config.js` to the url for this service
-  - If you haven't already create a `microservice user` on the Auth Service with username and password matching your `microserviceAccessKey` and `microservicePassword` values respectively in `config.js`. Ensure that the `microserviceAccessKey` value matches the `MICROSERVICE_ACCESS_KEY` `.env` value in the Notification Microservice.
+  - Set the `config.notificationServiceAPI` in `config.js` to the url for the notification microservice
+  - If you haven't already, create a `microservice user` on the Auth Service with username and password matching your `microserviceAccessKey` and `microservicePassword` values respectively in `config.js`. Ensure that the `microserviceAccessKey` value matches the `MICROSERVICE_ACCESS_KEY` `.env` value in the Notification Microservice.
   - Set the `enablePushNotifications` option to true in your `config.js` file
 
 - Enabling Push Notifications from within Orange
