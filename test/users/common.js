@@ -17,7 +17,10 @@ var userSchema = {
         last_name:  { type: "string" },
         phone:      { type: "string" },
         role:       { type: "string" },
-        npi:        { type: "string" }
+        deviceToken:{ type: "string" },
+        gcmToken:   { type: "string" },
+        npi:        { type: "string" },
+        defaultPatientID: { type: "string"}
     },
     additionalProperties: false
 };
