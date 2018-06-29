@@ -93,8 +93,8 @@ app.use(function (req, res, next) {
 });
 
 if (process.env.NODE_ENV !== "test") {
-  const passportAuth = require("./lib/controllers/helpers/passport.js")();
-  app.use(passportAuth.initialize());
+    const passportAuth = require("./lib/controllers/helpers/passport.js")();
+    app.use(passportAuth.initialize());
 }
 
 // every API request needs to have a client secret posted. this is a fixed hexstring
