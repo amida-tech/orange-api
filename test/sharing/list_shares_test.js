@@ -53,8 +53,7 @@ describe("Patients", function () {
             // create a new user and share the patient with them
             before(function () {
                 return auth.createTestUser({}).then(function (user) {
-                    return Q.nbind(patient.share, patient)(user.email, "default", "prime",
-                                                          user.firstName, user.lastName);
+                    return Q.nbind(patient.share, patient)(user.email, "default", "prime");
                 });
             });
 
@@ -78,7 +77,7 @@ describe("Patients", function () {
             // share patient with an email address not corresponding to an existing
             // patient
             before(function () {
-                return Q.nbind(patient.share, patient)("email.not@auser.com", "write", "anyone", "foo", "bar");
+                return Q.nbind(patient.share, patient)("email.not@auser.com", "write", "anyone");
             });
 
             it("shows the new share", function () {
@@ -116,7 +115,7 @@ describe("Patients", function () {
                 // create 1 patient for a real user with write access in the prime group
                 promises.push(function () {
                     return auth.createTestUser().then(function (u) {
-                        return create(u.email, "write", "prime", u.firstName, u.lastName);
+                        return create(u.email, "write", "prime");
                     });
                 });
 
@@ -126,7 +125,7 @@ describe("Patients", function () {
                     var promise = (function (index) {
                         return function () {
                             var email = util.format("foo%d@barsharing.com", index);
-                            return create(email, "read", "anyone", "foo", "bar");
+                            return create(email, "read", "anyone");
                         };
                     })(i);
                     promises.push(promise);
