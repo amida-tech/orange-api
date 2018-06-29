@@ -23,6 +23,11 @@ config.firebaseAPIUrl = "https://fcm.googleapis.com/fcm/send";
 config.microserviceAccessKey = "oucuYaiN6pha3ahphiiT";
 config.microservicePassword = "@TestTest1";
 
+// push notification
+config.enablePushNotifications = false;
+config.sendAPN = false;
+config.enableOrangePushNotifications = false;
+
 //Auth service
 config.authServiceAPI = "http://localhost:4000/api/v1";
 
