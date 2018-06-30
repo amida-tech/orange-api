@@ -26,9 +26,15 @@ config.microservicePassword = "T@estTest1";
 if (process.env.NODE_ENV === "production") {
     config.authServiceAPI = "https://orange-auth-staging.amida-services.com/api/v1"
     config.notificationServiceAPI = "https://orange-notification-staging.amida-services.com/api"
+    config.enablePushNotifications = true;
+    config.enableOrangePushNotifications = true
+    config.sendAPN = true;
 } else {
     config.authServiceAPI = "https://orange-auth-staging.amida-services.com/api/v1"
     config.notificationServiceAPI = "https://orange-notification-staging.amida-services.com/api"
+    config.enablePushNotifications = false;
+    config.enableOrangePushNotifications = false;
+    config.sendAPN = false;
 }
 
 // DB connections
