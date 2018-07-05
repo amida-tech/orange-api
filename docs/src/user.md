@@ -7,8 +7,7 @@ Register a new user, and create a new patient for them as well.
     + email (string, required)
         The email address of the new user. Validated to make sure it's a valid
         email address.
-    
-    + password (string, required) - the password of the new user
+
     + first_name (string, optional) - the first name of the new user
     + last_name (string, optional) - the last name of the new user
     + phone (string, optional) - the phone number of the new user
@@ -19,7 +18,6 @@ Register a new user, and create a new patient for them as well.
 
             {
                 email: "foo@bar.com",
-                password: "foobar",
                 first_name: "Foo",
                 last_name: "Bar",
                 phone: "6177140000",
@@ -29,7 +27,6 @@ Register a new user, and create a new patient for them as well.
 + Response 201
     Errors
     + `email_required` (`400`) - no email address specified
-    + `password_required` (`400`) - no password specified
     + `invalid_email` (`400`) - the email address specified is not a valid one
     + `invalid_role` (`400`) - the role specified is not a valid one
     + `user_already_exists` (`400`) - there is already a user with that email
@@ -73,16 +70,13 @@ Get basic metadata about the current user.
             }
 
 ### Change User Info [PUT]
-Change basic metadata about the current user, including their password.
+Change basic metadata about the current user.
 
 + Parameters
     + first_name (string, optional) - new first name
     + last_name (string, optional) - new last name
     + phone (string, optional) - new phone number
     + npi (string, optional) - new npi (only will work if the user's role is "clinician")
-    + password (string, optional)
-
-        New password. **Note that if the password is changed, all access tokens are revoked**.
 
 + Request
     + Headers
@@ -94,8 +88,7 @@ Change basic metadata about the current user, including their password.
                 first_name: "Foo",
                 last_name: "Baz",
                 phone: "6177140001",
-                npi: "1245319599",
-                password: "foobaz"
+                npi: "1245319599"
             }
 + Response 200
     Errors
@@ -118,7 +111,7 @@ Change basic metadata about the current user, including their password.
 
 
 ### Delete User [DELETE]
-Permanently remove the user, including all metadata stored on them (e.g., their password).
+Permanently remove the user, including all metadata stored on them.
 Patients accessible only to this user will be deleted, but patients viewable by other users
 will not be deleted.
 
@@ -142,35 +135,5 @@ will not be deleted.
                 phone: "6177140000",
                 role: "clinician",
                 npi: "1245319599",
-                success: true
-            }
-
-## Reset Password [/user/reset_password]
-### Reset a User's Password [POST]
-Reset password for a specific user. Takes the email address of a user, generates a new
-temporary password for them, emails them the new password, and revokes all existing access
-tokens.
-
-+ Parameters
-    + email (string, required)
-        The email address of the user whose password should be reset. Must correspond
-        to an existing user account.
-
-+ Request
-    + Body
-
-            {
-                email: "foo@bar.com"
-            }
-
-+ Response 201
-    Errors
-    + `email_required` (`400`) - no email address specified
-    + `user_not_found` (`400`) - an existing user with that email address was not found
-
-    + Body
-
-            {
-                email: "foo@bar.com",
                 success: true
             }
