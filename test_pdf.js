@@ -19,7 +19,6 @@ Q.nbind(mongoose.connect, mongoose)(config.mongo).then(function () {
     var User = mongoose.model("User");
     return Q.nbind(User.create, User)({
         email: email,
-        password: "testpassword",
         first_name: "Harold",
         last_name: "Ricardo"
     }).then(function (u) {

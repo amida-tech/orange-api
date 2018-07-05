@@ -125,9 +125,6 @@ router.get("/health", function (req, res) {
     res.send({ success: true });
 });
 
-// Authentication tokens
-router.use("/auth", require("./lib/controllers/auth.js"));
-
 // User registration/signup
 router.use("/user", require("./lib/controllers/users.js"));
 
