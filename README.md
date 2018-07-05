@@ -19,7 +19,7 @@ API for Orange medication management app. RESTful and implemented in Node & Mong
 ### Prerequisites
 - Node.js (v0.10+) and NPM
 - Grunt.js
-- MongoDB (v3.4 - higher versions will not work. If you need to downgrade instructions, [click here](https://stackoverflow.com/questions/30379127/how-to-install-earlier-version-of-mongodb-with-homebrew/47449979#47449979)) 
+- MongoDB (v3.4 - higher versions will not work. If you need to downgrade instructions, [click here](https://stackoverflow.com/questions/30379127/how-to-install-earlier-version-of-mongodb-with-homebrew/47449979#47449979))
 - Amida Auth Microservice(https://github.com/amida-tech/amida-auth-microservice)
 
 
@@ -40,6 +40,25 @@ API for Orange medication management app. RESTful and implemented in Node & Mong
   - Defaults for these can be found in the `config.js.example`
 
 > Enabling notifications (not medication-taking app notifications, but rather SMS and/or email alerts on user registration) you'll also need to configure the notification settings (primarily Twilio and SendGrid API auth keys) in `config.js`
+
+- Enabling Push Notifications with the Notifications Microservice
+  - Set up and start the [Amida Notification Microservice](https://github.com/amida-tech/amida-notification-microservice)
+  - Set the `config.notificationServiceAPI` in `config.js` to the url for the notification microservice
+  - If you haven't already, create a `microservice user` on the Auth Service with username and password matching your `microserviceAccessKey` and `microservicePassword` values respectively in `config.js`. Ensure that the `microserviceAccessKey` value matches the `MICROSERVICE_ACCESS_KEY` `.env` value in the Notification Microservice.
+  - Set the `enablePushNotifications` option to true in your `config.js` file
+
+- Enabling Push Notifications from within Orange
+ -  This project is currently set up to send Push Notifications without an external API. While this might change in the future, it remains an option. Configuring and sending Push notifications from Orange is currently the way notifications for `Sharing Requests` are sent.
+
+  - Set the `config.enableOrangePushNotifications` value to true in `config.js`. Note that you can only send Apple push notifications if your host is configured with SSL termination. Without this Apple may permanently invalidate the `key` you use to send the push notification. To enable sending Apple push notifications set the `config.sendAPN` value in `config.js` to true.
+  - Obtain an Apple Developer Key and corresponding KeyId. You can download this file by logging into the team's apple developer console on `developer.apple.com`. Navigate to `Keys` on the left pane and create or download a key. Add this file to the root of the project and rename it to `iosKey.p8`. Add the corresponding keyId to `config.js`'s `config.keyId` value.
+  - Set the `config.teamId` value in `config.js`. The is the ios developer teamID
+  - If you are sending push notifications in development mode (not distribution or test flight), set the `config.apnENV` in `config.js` to "development" otherwise set it to "production".
+  - Set the `config.pushTopic` value in `config.js` to the iOS AppId value. You can obtain this in the Apple developer console.
+
+  - Set the `config.firebaseServerKey` value in `config.js`. This can be obtained from the Team's Firebase console. Note that the `Server key` is different from `API key`. The later is configured on a device for receiving notifications.
+
+  - Note: if you are developing for the Amida team, most of the required keys and files can be found in the Amida OnePassword Account
 
 - Install dependencies and build
   ```
