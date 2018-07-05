@@ -99,7 +99,7 @@ describe("Patients", function () {
                 return Q.nbind(patient.createJournalEntry, patient)({
                     date: (new Date()).toISOString(),
                     text: "example journal entry",
-                    creator: "Adam West",
+                    creator: "adam@west.com",
                     medication_ids: [shownMed._id]
                 });
             });
@@ -109,7 +109,7 @@ describe("Patients", function () {
                 return Q.nbind(patient.createJournalEntry, patient)({
                     date: (new Date()).toISOString(),
                     text: "example journal entry",
-                    creator: "Adam West",
+                    creator: "adam@west.com",
                     medication_ids: [hiddenMed._id]
                 });
             });
@@ -119,7 +119,7 @@ describe("Patients", function () {
                 return Q.nbind(patient.createDose, patient)({
                     medication_id: shownMed._id,
                     date: (new Date()).toISOString(),
-                    creator: "Adam West",
+                    creator: "adam@west.com",
                     taken: true
                 });
             });
@@ -129,7 +129,7 @@ describe("Patients", function () {
                 return Q.nbind(patient.createDose, patient)({
                     medication_id: hiddenMed._id,
                     date: (new Date()).toISOString(),
-                    creator: "Adam West",
+                    creator: "adam@west.com",
                     taken: true
                 });
             });

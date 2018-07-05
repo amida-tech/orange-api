@@ -96,7 +96,7 @@ module.exports.itRequiresValidDoseId = function (endpoint) {
                         medication_id: otherPatient.medications[0]._id,
                         date: (new Date()).toISOString(),
                         taken: true,
-                        creator: "Adam West",
+                        creator: "adam@west.com",
                         notes: "foobar"
                     });
                 });
