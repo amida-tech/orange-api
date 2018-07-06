@@ -1,5 +1,7 @@
+const config = require("./config")
+
 const Client = require('node-rest-client').Client;
-const authUrl = "http://localhost:4000/api/v1/user";
+const authUrl = `${config.authServiceAPI}/user`;
 
 
 const client = new Client();
@@ -8,8 +10,8 @@ const userArgs = {
     headers : {"Content-Type": "application/json"},
     data: {
         email: "admin@amida.com",
-        username: "oucuYaiN6pha3ahphiiT",
-        password: "@TestTest1",
+        username: config.microserviceAccessKey,
+        password: config.microservicePassword,
         scopes: ["admin"]
     }
 
