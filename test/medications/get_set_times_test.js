@@ -39,8 +39,7 @@ describe("Medication Time Notification Settings", function () {
         return patients.createMyPatient({}, me).then(function (p) {
             patient = p;
         }).then(function () {
-            return Q.nbind(patient.share, patient)(otherUser.email, "write", "prime",
-                                                  otherUser.firstName, otherUser.lastName);
+            return Q.nbind(patient.share, patient)(otherUser.email, "write", "prime");
         });
     });
 
