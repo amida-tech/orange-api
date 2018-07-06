@@ -36,6 +36,7 @@
     "husky": "^0.14.3",
     "image-type": "^2.0.2",
     "inflected": "^1.1.6",
+    "joi": "^13.4.0",
     "jsonwebtoken": "^8.1.1",
     "lodash": "^4.17.5",
     "moment": "~2.19.3",
