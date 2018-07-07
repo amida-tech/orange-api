@@ -26,6 +26,7 @@
     "bunyan-logstash": "^0.3.4",
     "curry": "^1.2.0",
     "deep-equal": "^1.0.1",
+    "dotenv": "^6.0.0",
     "double-metaphone": "^0.1.4",
     "express": "4.16.0",
     "express-bunyan-logger": "^1.1.1",

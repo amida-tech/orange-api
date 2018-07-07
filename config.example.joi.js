@@ -21,6 +21,11 @@ const envVarsSchema = Joi.object({
         .description('Postgres username'),
     PG_PASSWD: Joi.string().allow('')
         .description('Postgres password'),
+    MONGO_SSL: Joi.bool()
+        .default(false)
+        .description('Enable SSL connection to MongoDB'),
+    MONGO_CERT_CA: Joi.string()
+        .description('SSL certificate CA'), // Certificate itself, not a filename
     TEST_TOKEN: Joi.string().allow('')
         .description('Test auth token'),
     AUTH_MICROSERVICE: Joi.string().allow('')
@@ -58,6 +63,8 @@ const config = {
         user: envVars.PG_USER,
         passwd: envVars.PG_PASSWD,
     },
+    ssl: envVars.MONGO_SSL,
+    ssl_ca_cert: envVars.MONGO_CERT_CA
 };
 
 export default config;
