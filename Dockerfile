@@ -6,8 +6,7 @@ RUN yum -y update; yum clean all && \
     yum -y install epel-release; yum clean all
 
 # Install 0MQ, C tools, and OpenSSL
-RUN yum -y install zeromq zeromq-devel; yum clean all && \
-    yum -y groupinstall "Development Tools"; yum clean all
+RUN yum -y groupinstall "Development Tools"; yum clean all
 
 # Install node and npm from the official repos
 RUN curl -sL https://rpm.nodesource.com/setup_8.x | bash - && \
@@ -27,7 +26,7 @@ WORKDIR /src
 # .dockerignore crucially means we don't copy node_modules
 COPY . /src
 COPY ./config.js.docker /src/config.js
-COPY ./iosKey.p8 /src/iosKey.p8
+#COPY ./iosKey.p8 /src/iosKey.p8
 
 EXPOSE 5000
 ENV NODE_ENV production
