@@ -3,6 +3,7 @@ var config = require("./config.js");
 module.exports = function (grunt) {
     // load all grunt task libraries
     require("load-grunt-tasks")(grunt);
+    grunt.loadNpmTasks("grunt-contrib-watch");
 
     // run app
     grunt.registerTask("server:dev", ["express:dev", "watch:express"]);
@@ -92,10 +93,10 @@ module.exports = function (grunt) {
 
         watch: {
             express: {
-                // reloading broken on OSX because of EMFILE hence this hack
-                files: [ "gruntfile.js"],
-                tasks: [ "express:dev" ],
+                files: [ "app.js", "lib/*.js", "lib/**/*.js"],
+                tasks: [ "eslint", "express:dev" ],
                 options: {
+                    livereload: true,
                     spawn: false
                 }
             },
