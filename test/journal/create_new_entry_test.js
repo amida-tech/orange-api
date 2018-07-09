@@ -12,6 +12,8 @@ var expect = chakram.expect;
 
 describe("Journal", function () {
     describe("Add New Journal Entry (POST /patients/:patientid/journal)", function () {
+        var currentUser = null;
+
         // basic endpoint
         var create = function (data, patientId, accessToken) {
             var url = util.format("http://localhost:5000/v1/patients/%d/journal", patientId);
@@ -21,6 +23,7 @@ describe("Journal", function () {
         // given a patient and user nested within the patient, try and create a new
         // journal entry for the patient based on the factory
         var createEntry = function (data, patient) {
+            currentUser = patient.user;
             return fixtures.build("JournalEntry", data).then(function (entry) {
                 var output = entry.getData();
                 // explicitly set date so we can catch validation errors in the API rather than
@@ -56,6 +59,12 @@ describe("Journal", function () {
 
         it("lets me create valid entries for my patients", function () {
             return expect(createPatientEntry({})).to.be.a.journal.createSuccess;
+        });
+
+        it("includes my email as the creator in the response", function () {
+            return createPatientEntry({}).then(response => {
+                return expect(response).to.comprise.of.json({ creator: currentUser.email });
+            });
         });
 
         // validation testing

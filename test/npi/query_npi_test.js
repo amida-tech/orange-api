@@ -55,8 +55,9 @@ describe("NPI", function () {
         it("returns results for a valid npi", function () {
             return getData("1245319599").then(function (response) {
                 expect(response.body).to.be.an("object");
-                expect(response.body).to.have.property("npi", 1245319599);
-                expect(response.body).to.have.property("last_name", "SAMPLE");
+                expect(response.body).to.have.property("number", 1245319599);
+                expect(response.body.basic).to.be.an("object");
+                expect(response.body.basic).to.have.property("last_name", "SAMPLE");
             });
         });
     });

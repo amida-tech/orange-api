@@ -4,7 +4,6 @@ const express = require("express");
 const bunyan = require("express-bunyan-logger");
 const bunyanLogstash  = require("bunyan-logstash");
 
-const passportAuth = require("./lib/controllers/helpers/passport.js")();
 const app = module.exports = express();
 
 // disable nagle's algorithm: significantly slows down piping to res, as is
@@ -48,6 +47,20 @@ app.use(logger);
 
 // Database setup in run.js
 
+// All models: in all other files, just used mongoose.model(NAME)
+// rather than requiring these directly to avoid circular dependencies
+// Models that are purely nested resources under patient are required
+// in patient.js, so don't require them again here
+require("./lib/models/counter.js"); // Require first
+require("./lib/models/rxnorm.js");
+// Patient and User require a getter function for a gridfs client (set as an express
+// setting in run.js but may not be immediately accessible hence the getter function)
+function getGfs() {
+    return app.settings.gridfs;
+}
+require("./lib/models/user/user.js")(getGfs);
+require("./lib/models/patient/patient.js")(getGfs);
+
 // CORS
 app.use(function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
@@ -80,7 +93,8 @@ app.use(function (req, res, next) {
 });
 
 if (process.env.NODE_ENV !== "test") {
-  app.use(passportAuth.initialize());
+    const passportAuth = require("./lib/controllers/helpers/passport.js")();
+    app.use(passportAuth.initialize());
 }
 
 // every API request needs to have a client secret posted. this is a fixed hexstring
@@ -103,18 +117,7 @@ app.use(function (req, res, next) {
     next();
 });
 
-// All models: in all other files, just used mongoose.model(NAME)
-// rather than requiring these directly to avoid circular dependencies
-// Models that are purely nested resources under patient are required
-// in patient.js, so don't require them again here
-require("./lib/models/counter.js"); // Require first
-require("./lib/models/rxnorm.js");
-require("./lib/models/user/user.js");
-// Patient requires a getter function for a gridfs client (set as an express
-// setting in run.js but may not be immediately accessible hence the getter function)
-require("./lib/models/patient/patient.js")(function () {
-    return app.settings.gridfs;
-});
+
 
 // App-level router containing all routes
 var router = express.Router();
@@ -124,9 +127,6 @@ router.get("/health", function (req, res) {
     res.status(200);
     res.send({ success: true });
 });
-
-// Authentication tokens
-router.use("/auth", require("./lib/controllers/auth.js"));
 
 // User registration/signup
 router.use("/user", require("./lib/controllers/users.js"));

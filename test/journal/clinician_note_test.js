@@ -47,13 +47,13 @@ describe("Clinican Notes", function () {
 				return patients.createMyPatient({}, user).then(function (p) {
 					patient = p;
 					Q.npost(patient, "share",
-						[clinicianUser.email, "default", "prime", clinicianUser.firstName, clinicianUser.lastName]);
+						[clinicianUser.email, "default", "prime"]);
 				}).then(function () {
 					// setup journal entry for Patient
 					return Q.nbind(patient.createJournalEntry, patient)({
 						text: "Clinican Note",
 						date: (new Date()).toISOString(),
-						creator: "Adam West",
+						creator: "adam@west.com",
 						role: "clinician"
 					});
 				});

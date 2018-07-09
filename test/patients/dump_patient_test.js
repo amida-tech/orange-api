@@ -50,8 +50,7 @@ describe("Patients", function () {
                 return auth.createTestUser().then(curry(common.createOtherPatient)({}, user)).then(function (p) {
                     patient = p;
                     // share patient
-                    return Q.nbind(patient.share, patient)(user.email, "default", "anyone",
-                                                          user.firstName, user.lastName);
+                    return Q.nbind(patient.share, patient)(user.email, "default", "anyone");
                 });
             });
 
@@ -96,7 +95,7 @@ describe("Patients", function () {
                 return Q.nbind(patient.createJournalEntry, patient)({
                     date: (new Date()).toISOString(),
                     text: "example journal entry",
-                    creator: "Adam West",
+                    creator: "adam@west.com",
                     medication_ids: [shownMed._id]
                 }).then(function (e) {
                     shownEntry = e;
@@ -108,7 +107,7 @@ describe("Patients", function () {
                 return Q.nbind(patient.createJournalEntry, patient)({
                     date: (new Date()).toISOString(),
                     text: "example journal entry",
-                    creator: "Adam West",
+                    creator: "adam@west.com",
                     medication_ids: [hiddenMed._id]
                 });
             });
@@ -119,7 +118,7 @@ describe("Patients", function () {
                 return Q.nbind(patient.createDose, patient)({
                     medication_id: shownMed._id,
                     date: (new Date()).toISOString(),
-                    creator: "Adam West",
+                    creator: "adam@west.com",
                     taken: true
                 }).then(function (d) {
                     shownDose = d;
@@ -131,7 +130,7 @@ describe("Patients", function () {
                 return Q.nbind(patient.createDose, patient)({
                     medication_id: hiddenMed._id,
                     date: (new Date()).toISOString(),
-                    creator: "Adam West",
+                    creator: "adam@west.com",
                     taken: true
                 });
             });
