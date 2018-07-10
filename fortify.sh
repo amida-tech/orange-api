@@ -19,7 +19,7 @@ npm install
 
 echo "=========================="
 echo "Copying default config"
-cp config.js.example config.js
+#cp config.js.example config.js
 
 echo "=========================="
 echo "Updating rulepacks"
@@ -31,7 +31,7 @@ sourceanalyzer -clean
 
 echo "=========================="
 echo "Scanning"
-sourceanalyzer -scan -f $TEMP_FILE.fpr -Xmx8092M ./app.js ./config.js ./run.js ./lib
+sourceanalyzer -scan -f $TEMP_FILE.fpr -Xmx8192M ./app.js ./config.js ./run.js ./lib
 
 echo "=========================="
 echo "Merging"
@@ -47,4 +47,4 @@ fi
 
 echo "=========================="
 echo "Generating reports $RESULT_FILE"
-ReportGenerator -user builduser -template Security_Report.xml -format pdf -f $RESULT_FILE.pdf -source $RESULT_FILE.fpr || true;
+ReportGenerator -format pdf -f $RESULT_FILE.pdf -source $RESULT_FILE.fpr || true;
