@@ -18,10 +18,6 @@ echo "Installing dependencies"
 npm install 
 
 echo "=========================="
-echo "Copying default config"
-#cp config.js.example config.js
-
-echo "=========================="
 echo "Updating rulepacks"
 fortifyupdate
 
