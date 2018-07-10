@@ -13,7 +13,15 @@ var gfs; // gridfs client
 async.waterfall([
     // setup database
     function (callback) {
-        mongoose.connect(config.mongo, callback);
+        var options = {};
+        if (config.ssl) {
+            options.server = {};
+            options.server.ssl = config.ssl;
+            if (config.ssl_ca_cert) {
+                options.server.sslCA = config.ssl_ca_cert;
+            }
+        }
+        mongoose.connect(config.mongo, options, callback);
     },
     // setup gridfs client
     function (callback) {
