@@ -3,7 +3,6 @@ const Joi = require("joi");
 // require and configure dotenv, will load vars in .env in PROCESS.ENV
 require('dotenv').config();
 
-
 // define validation for all the env vars
 const envVarsSchema = Joi.object({
     NOTIFICATION_EMAIL_FROM: Joi.string().email()
@@ -11,7 +10,7 @@ const envVarsSchema = Joi.object({
     NOTIFICATION_SENDGRID_API_KEY: Joi.string().allow('')
         .description('Email Notification Sendgrid API Key'),
     TWILIO_TEXT_FROM: Joi.string()
-        .default('+1 (617) 000-0000'),
+        .default('+1 (000) 000-0000'),
     TWILIO_SID: Joi.string()
         .default('ACXXXXXXX SID HERE'),
     TWILIO_AUTH_TOKEN: Joi.string()
@@ -52,9 +51,6 @@ const { error, value: envVars } = Joi.validate(process.env, envVarsSchema);
 if (error) {
     throw new Error(`Config validation error: ${error.message}`);
 }
-
-
-
 
 const config = module.exports = {
     //env: envVars.NODE_ENV,
