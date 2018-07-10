@@ -1,3 +1,4 @@
+'use strict';
 //import Joi from 'joi';
 const Joi = require("joi");
 // require and configure dotenv, will load vars in .env in PROCESS.ENV
@@ -14,15 +15,15 @@ const envVarsSchema = Joi.object({
     TWILIO_SID: Joi.string()
         .default('ACXXXXXXX SID HERE'),
     TWILIO_AUTH_TOKEN: Joi.string()
-        .allow(''),
+        .default('AUTH TOKEN'),
     FACEBOOK_CLIENT_ID: Joi.number()
         .default(149343912420944),
     FACEBOOK_CLIENT_SECRET: Joi.string()
         .default('66db0a9b905a5d12867a112ad8b83b6c'),
     FACEBOOK_CALLBACK_URL: Joi.string()
         .default('http://localhost:5000/v1/auth/facebook/callback'),
-    FACEBOOK_PROFILE_FIELDS: Joi.string().default(''),
-        //.default(['id', 'name', 'displayName', 'picture', 'email']),
+    FACEBOOK_PROFILE_FIELDS: Joi.array().items(Joi.string())
+        .default(['id', 'name', 'displayName', 'picture', 'email']),
     MONGO: Joi.string()
         .default('mongodb://localhost/orange-api'),
     ZEROPC: Joi.string()
@@ -46,6 +47,7 @@ const envVarsSchema = Joi.object({
         .description('SSL certificate CA'), // Certificate itself, not a filename
 }).unknown()
     .required();
+
 
 const { error, value: envVars } = Joi.validate(process.env, envVarsSchema);
 if (error) {
