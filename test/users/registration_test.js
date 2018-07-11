@@ -63,6 +63,9 @@ describe("Users", function () {
         it("rejects an invalid email", function () {
             return expect(register({ email: "foobar" })).to.be.an.api.error(400, "invalid_email");
         });
+        it("allows + sign in email", function () {
+            return expect(register({ email: "foobar+baz@example.com" })).to.be.a.user.registerSuccess;
+        });
 
         // duplication
         it("does not allow duplicate email addresses", function () {
