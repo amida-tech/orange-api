@@ -36,7 +36,6 @@ API for Orange medication management app. RESTful and implemented in Node & Mong
     - `config.authServiceAPI` (must point to wherever your `amida-auth-microservice` server is running)
     - Web Address
     - Database Address
-    - Zeromq Address
   - Defaults for these can be found in the `config.js.example`
 
 > Enabling notifications (not medication-taking app notifications, but rather SMS and/or email alerts on user registration) you'll also need to configure the notification settings (primarily Twilio and SendGrid API auth keys) in `config.js`
@@ -44,7 +43,8 @@ API for Orange medication management app. RESTful and implemented in Node & Mong
 - Enabling Push Notifications with the Notifications Microservice
   - Set up and start the [Amida Notification Microservice](https://github.com/amida-tech/amida-notification-microservice)
   - Set the `config.notificationServiceAPI` in `config.js` to the url for the notification microservice
-  - If you haven't already, create a `microservice user` on the Auth Service with username and password matching your `microserviceAccessKey` and `microservicePassword` values respectively in `config.js`. Ensure that the `microserviceAccessKey` value matches the `MICROSERVICE_ACCESS_KEY` `.env` value in the Notification Microservice.
+  - Next, use the `createAccessUser.js` script to create a `microservice user` on the Auth Service with username and password matching your `microserviceAccessKey` and `microservicePassword` values respectively in `config.js`. Ensure that the `microserviceAccessKey` value matches the `MICROSERVICE_ACCESS_KEY` `.env` value in the Notification Microservice. To create this admin user run the following command from the orange-api directory:
+    - `node createAccessUser.js`
   - Set the `enablePushNotifications` option to true in your `config.js` file
 
 - Enabling Push Notifications from within Orange
