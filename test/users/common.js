@@ -17,9 +17,11 @@ var userSchema = {
         last_name:  { type: "string" },
         phone:      { type: "string" },
         role:       { type: "string" },
+        avatar:     { type: "string" },
         deviceToken:{ type: "string" },
         gcmToken:   { type: "string" },
-        npi:        { type: "string" }
+        npi:        { type: "string" },
+        defaultPatientID: { type: "string"}
     },
     additionalProperties: false
 };
@@ -28,14 +30,6 @@ var tokenSchema = {
     properties: {
         success:        { type: "boolean" },
         access_token:   { type: "string" }
-    },
-    additionalProperties: false
-};
-var resetPasswordSchema = {
-    required: ["email", "success"],
-    properties: {
-        success:        { type: "boolean" },
-        email:          { type: "string" }
     },
     additionalProperties: false
 };
@@ -56,22 +50,9 @@ common.addApiChain("authentication", {
         expect(respObj).to.have.schema(tokenSchema);
     }
 });
-common.addApiChain("resetPassword", {
-    "success": function (respObj) {
-        expect(respObj).to.be.an.api.postSuccess;
-        expect(respObj).to.have.schema(resetPasswordSchema);
-    }
-});
 
 // common endpoints
 // view user info
 module.exports.view = function (accessToken) {
     return chakram.get("http://localhost:5000/v1/user", auth.genAuthHeaders(accessToken));
-};
-
-// generate access token
-module.exports.token = function (credentials) {
-    // auth.genAuthHeaders(undefined) sets X-Client-Secret for us, and doesn't set any
-    // access token header
-    return chakram.post("http://localhost:5000/v1/auth/token", credentials, auth.genAuthHeaders(undefined));
 };

@@ -61,7 +61,7 @@ describe("Doses", function () {
                     dose: {unit: "unit", quantity: 1},
                     notes: "TEST DOSE-SPECIFIC NOTE",
                     taken: true,
-                    creator: "Adam West",
+                    creator: "adam@west.com",
                     scheduled: 0,
                     medication_id: medication._id
                 }).then(function (d) {

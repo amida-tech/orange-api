@@ -35,7 +35,7 @@ describe("Doses", function () {
                 // date irrelevant as long as it's after fill_date above
                 date: {utc: (new Date()).toISOString(), timezone:  "America/Los_Angeles"},
                 taken: true,
-                creator: "Adam West",
+                creator: "adam@west.com",
                 notes: ""
             });
         };

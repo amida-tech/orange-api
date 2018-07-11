@@ -12,6 +12,8 @@ var expect = chakram.expect;
 
 describe("Doses", function () {
     describe("Add New Dosing Event (POST /patients/:patientid/doses)", function () {
+        var currentUser = null;
+
         // basic endpoint
         var create = module.exports.create = function (data, patientId, accessToken) {
             var url = util.format("http://localhost:5000/v1/patients/%d/doses", patientId);
@@ -22,6 +24,7 @@ describe("Doses", function () {
         // that patient and then a new dosing event for that medication
         // event for the patient based on the factory
         var createDose = function (data, patient) {
+            currentUser = patient.user;
             return Q.nbind(patient.createMedication, patient)({name: "foobar"}).then(function (medication) {
                 return fixtures.build("Dose", data).then(function (dose) {
                     // allow medication_id to be explicitly overwritten
@@ -55,6 +58,12 @@ describe("Doses", function () {
 
         it("lets me create valid doses for my patients", function () {
             return expect(createPatientDose({})).to.be.a.dose.createSuccess;
+        });
+
+        it("includes my email as the creator in the response", function () {
+            return createPatientDose({}).then(response => {
+                return expect(response).to.comprise.of.json({ creator: currentUser.email });
+            });
         });
 
         // validation testing

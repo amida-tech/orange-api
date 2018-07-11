@@ -45,7 +45,7 @@ describe("Medications", function () {
                 return auth.createTestUser().then(function (other) {
                     return patients.createOtherPatient({}, user, other).then(function (p) {
                         otherPatient = p;
-                        return Q.nbind(p.share, p)(user.email, "read", "anyone", user.firstName, user.lastName);
+                        return Q.nbind(p.share, p)(user.email, "read", "anyone");
                     });
                 });
             });

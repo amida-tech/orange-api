@@ -10,7 +10,7 @@ describe("Users", function () {
     describe("View User Info (GET /user)", function () {
         // create a user with the specified data modifications (to the factory default), generate
         // an access token and then use that token to view the user
-        var viewUser = function (data) {
+        var viewUser = module.exports.viewUser = function (data) {
             return fixtures.create("User", data).then(auth.genAccessToken).then(view);
         };
 

@@ -45,7 +45,7 @@ var spellingSchema = module.exports.schema = {
                     type:       "object",
                     required:   ["name", "suggestionList"],
                     properties: {
-                        name:       { type: "string" },
+                        name:       { type: ["string", "null"] },
                         suggestionList: {
                             type:       "object",
                             required:   ["suggestion"],

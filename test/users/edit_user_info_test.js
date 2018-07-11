@@ -24,8 +24,7 @@ describe("Users", function () {
             return fixtures.create("User", data).then(function (u) {
                 user = u;
                 credentials = {
-                    email: user.email,
-                    password: user.rawPassword
+                    email: user.email
                 };
                 return user;
             }).then(auth.genAccessToken).then(function (t) {
@@ -48,11 +47,6 @@ describe("Users", function () {
             });
             it("does not revoke our access tokens", function () {
                 return request.then(auth.checkTokenWorks(token));
-            });
-            it("still lets us authenticate", function () {
-                return request.then(function () {
-                    return expect(tokenEndpoint(credentials)).to.be.an.api.postSuccess;
-                });
             });
 
             it("allows a null first_name", function () {
@@ -81,11 +75,6 @@ describe("Users", function () {
             it("does not revoke our access tokens", function () {
                 return request.then(auth.checkTokenWorks(token));
             });
-            it("stills let us authenticate", function () {
-                return request.then(function () {
-                    return expect(tokenEndpoint(credentials)).to.be.an.api.postSuccess;
-                });
-            });
 
             it("allows a null last_name", function () {
                 return updateUser({}, { last_name: null }).then(function (response) {
@@ -113,11 +102,6 @@ describe("Users", function () {
             it("does not revoke our access tokens", function () {
                 return request.then(auth.checkTokenWorks(token));
             });
-            it("stills let us authenticate", function () {
-                return request.then(function () {
-                    return expect(tokenEndpoint(credentials)).to.be.an.api.postSuccess;
-                });
-            });
 
             it("allows a null phone", function () {
                 return updateUser({}, { phone: null }).then(function (response) {
@@ -133,45 +117,6 @@ describe("Users", function () {
             });
         });
 
-
-        describe("changing password", function () {
-            var request, oldCredentials, newCredentials;
-            beforeEach(function () {
-                request = updateUser({}, { password: "newpassword" });
-                oldCredentials = {
-                    email: user.email,
-                    password: user.rawPassword
-                };
-                newCredentials = {
-                    email: user.email,
-                    password: "newpassword"
-                };
-            });
-
-            it("returns a successful response", function () {
-                return expect(request).to.be.a.user.success;
-            });
-            it("revokes our access tokens", function () {
-                return request.then(auth.checkTokenFails(token));
-            });
-            it("does not let us authenticate with the old password", function () {
-                return request.then(function () {
-                    return expect(tokenEndpoint(oldCredentials)).to.be.an.api.error(401, "wrong_email_password");
-                });
-            });
-            it("lets us authenticate with the new password", function () {
-                return request.then(function () {
-                    return expect(tokenEndpoint(newCredentials)).to.be.an.api.postSuccess;
-                });
-            });
-            it("does not allow a null password", function () {
-                return expect(updateUser({}, { password: null })).to.be.an.api.error(400, "password_required");
-            });
-            it("does not allow an empty password", function () {
-                return expect(updateUser({}, { password: "" })).to.be.an.api.error(400, "password_required");
-            });
-        });
-
         describe("changing npi as user", function () {
             var request;
             beforeEach(function () {
@@ -183,11 +128,6 @@ describe("Users", function () {
             });
             it("does not revoke our access tokens", function () {
                 return request.then(auth.checkTokenWorks(token));
-            });
-            it("stills let us authenticate", function () {
-                return request.then(function () {
-                    return expect(tokenEndpoint(credentials)).to.be.an.api.postSuccess;
-                });
             });
 
             it("doesn't actually do anything", function () {
@@ -208,11 +148,6 @@ describe("Users", function () {
             });
             it("does not revoke our access tokens", function () {
                 return request.then(auth.checkTokenWorks(token));
-            });
-            it("stills let us authenticate", function () {
-                return request.then(function () {
-                    return expect(tokenEndpoint(credentials)).to.be.an.api.postSuccess;
-                });
             });
 
             it("returns the new npi", function () {
