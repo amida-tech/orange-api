@@ -102,7 +102,7 @@ module.exports.itRequiresValidEntryId = function (endpoint) {
                     return Q.nbind(otherPatient.createJournalEntry, otherPatient)({
                         text: "foobar",
                         date: {utc:(new Date()).toISOString(), timezone: "America/Los_Angeles"},
-                        creator: "Adam West",
+                        creator: "Adam West"
                     });
                 });
             });
