@@ -76,26 +76,27 @@ Don't forget to commit to git!
 
 ### Initialization
 - Initalize MongoDB
-- `cp config.js.example config.js`
+- `cp .env.example .env`
 - Set up [Amida Auth Microservice](https://github.com/amida-tech/amida-auth-microservice)
   - see Auth Microservice README for details on setup
   - if you are developing locally, you may need to install and configure [Postgres](http://postgresapp.com/)
-- Configure settings in `config.js` in root directory (often `orange-api`)
+- Configure settings in `.env` in root directory (often `orange-api`)
   - Vital settings:
-    - `config.secret` (any hexstring is suitable)
-    - `config.jwtSecret` (must match Auth Microservice)
-    - `config.authServiceAPI` (must point to wherever your `amida-auth-microservice` server is running)
+    - `SECRET` (any hexstring is suitable)
+    - `JWT_SECRET` (must match Auth Microservice)
+    - `AUTH_MICROSERVICE` (must point to wherever your `amida-auth-microservice` server is running)
     - Web Address
     - Database Address
-    - Zeromq Address
-  - Defaults for these can be found in the `config.js.example`
+- Zeromq Address
+- Defaults for these can be found in the `.env.example`
 
 > Enabling notifications (not medication-taking app notifications, but rather SMS and/or email alerts on user registration) you'll also need to configure the notification settings (primarily Twilio and SendGrid API auth keys) in `config.js`
 
 - Enabling Push Notifications with the Notifications Microservice
   - Set up and start the [Amida Notification Microservice](https://github.com/amida-tech/amida-notification-microservice)
   - Set the `config.notificationServiceAPI` in `config.js` to the url for the notification microservice
-  - If you haven't already, create a `microservice user` on the Auth Service with username and password matching your `microserviceAccessKey` and `microservicePassword` values respectively in `config.js`. Ensure that the `microserviceAccessKey` value matches the `MICROSERVICE_ACCESS_KEY` `.env` value in the Notification Microservice.
+  - Next, use the `createAccessUser.js` script to create a `microservice user` on the Auth Service with username and password matching your `microserviceAccessKey` and `microservicePassword` values respectively in `config.js`. Ensure that the `microserviceAccessKey` value matches the `MICROSERVICE_ACCESS_KEY` `.env` value in the Notification Microservice. To create this admin user run the following command from the orange-api directory:
+    - `node createAccessUser.js`
   - Set the `enablePushNotifications` option to true in your `config.js` file
 
 - Enabling Push Notifications from within Orange
