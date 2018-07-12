@@ -42,15 +42,6 @@ describe("Users", function () {
             it("invalidates our access token", function () {
                 return request.then(auth.checkTokenFails(token));
             });
-
-            it("does not let us get another access token", function () {
-                return request.then(function () {
-                    return expect(tokenEndpoint({
-                        email: user.email,
-                        password: user.rawPassword
-                    })).to.be.an.api.error(401, "wrong_email_password");
-                });
-            });
         });
     });
 });

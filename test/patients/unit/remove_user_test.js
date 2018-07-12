@@ -33,8 +33,7 @@ describe("Patients", function () {
         before(function () {
             return common.createMyPatient({}, me).then(function (p) {
                 sharedPatient = p;
-                return Q.npost(p, "share", [otherUser.email, "default", "prime",
-                                            otherUser.firstName, otherUser.lastName]);
+                return Q.npost(p, "share", [otherUser.email, "default", "prime"]);
             });
         });
 

@@ -50,8 +50,7 @@ describe("Patients", function () {
                 return auth.createTestUser().then(curry(common.createOtherPatient)({}, user)).then(function (p) {
                     patient = p;
                     // share patient
-                    return Q.nbind(patient.share, patient)(user.email, "default", "anyone",
-                                                          user.firstName, user.lastName);
+                    return Q.nbind(patient.share, patient)(user.email, "default", "anyone");
                 });
             });
 

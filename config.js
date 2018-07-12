@@ -45,6 +45,28 @@ const envVarsSchema = Joi.object({
         .description('Enable SSL connection to MongoDB'),
     MONGO_CERT_CA: Joi.string()
         .description('SSL certificate CA'), // Certificate itself, not a filename
+    PUSH_NOTIFICATION_ENABLED: Joi.bool()
+        .default(false),
+    PUSH_NOTIFICATION_KEYID: Joi.string()
+        .default('iAmTheKeyId'),
+    PUSH_NOTIFICATION_TEAMID: Joi.string()
+        .default('iAmThePrefixOfTheIOSAppId'),
+    PUSH_NOTIFICATION_APN_ENV: Joi.string()
+        .default('development'),
+    PUSH_NOTIFICATION_TOPIC: Joi.string()
+        .default('com.amida.orangeIgnite'),
+    PUSH_NOTIFICATION_FIREBASE_SERVER_KEY: Joi.string()
+        .allow(''),
+    PUSH_NOTIFICATION_FIREBASE_URL: Joi.string()
+        .default('https://fcm.googleapis.com/fcm/send'),
+    PUSH_NOTIFICATION_MICROSERVICE_ACCESS_KEY: Joi.string()
+        .default('oucuYaiN6pha3ahphiiT'),
+    PUSH_NOTIFICATION_MICROSERVICE_PASSWORD: Joi.string()
+        .default('@TestTest1'),
+    PUSH_NOTIFICATION_SEND_APN: Joi.bool()
+        .default(false),
+    NOTIFICATION_SERVICE_API: Joi.string()
+        .default('http://localhost:4003/api'),
 }).unknown()
     .required();
 
@@ -55,7 +77,6 @@ if (error) {
 }
 
 const config = module.exports = {
-    //env: envVars.NODE_ENV,
     secret: envVars.SECRET,
     jwtSecret: envVars.JWT_SECRET,
     authServiceAPI: envVars.AUTH_MICROSERVICE,
@@ -65,6 +86,21 @@ const config = module.exports = {
     listen: envVars.EXPRESS,
     ssl: envVars.MONGO_SSL,
     ssl_ca_cert: envVars.MONGO_CERT_CA,
+
+    //Notification related
+    keyId: envVars.PUSH_NOTIFICATION_KEYID,
+    teamId: envVars.PUSH_NOTIFICATION_TEAMID,
+    apnENV: envVars.PUSH_NOTIFICATION_APN_ENV,
+    pushTopic: envVars.PUSH_NOTIFICATION_TOPIC,
+    firebaseServerKey: PUSH_NOTIFICATION_FIREBASE_SERVER_KEY,
+    firebaseAPIUrl: envVars.PUSH_NOTIFICATION_FIREBASE_URL,
+    microserviceAccessKey: envVars.PUSH_NOTIFICATION_MICROSERVICE_ACCESS_KEY,
+    microservicePassword: envVars.PUSH_NOTIFICATION_MICROSERVICE_PASSWORD,
+    enablePushNotifications: envVars.PUSH_NOTIFICATION_ENABLED,
+    sendAPN: envVars.PUSH_NOTIFICATION_SEND_APN,
+    enableOrangePushNotifications: envVars.PUSH_NOTIFICATION_ENABLED,
+    notificationServiceAPI: envVars.NOTIFICATION_SERVICE_API,
+
     email: {
       from: envVars.NOTIFICATION_EMAIL_FROM,
       sendgrid_api_key: envVars.NOTIFICATION_SENDGRID_API_KEY,
