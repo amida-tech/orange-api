@@ -33,7 +33,7 @@ const envVarsSchema = Joi.object({
     EXPRESS: Joi.string()
         .default('localhost'),
     SECRET: Joi.string().required()
-        .default('testsecret'),
+        .description('SECRET is required'),
     JWT_SECRET: Joi.string().required()
         .description('JWT Secret required to sign'),
     AUTH_MICROSERVICE: Joi.string().allow('')
@@ -56,7 +56,7 @@ const envVarsSchema = Joi.object({
     PUSH_NOTIFICATION_TOPIC: Joi.string()
         .default('com.amida.orangeIgnite'),
     PUSH_NOTIFICATION_FIREBASE_SERVER_KEY: Joi.string()
-        .allow(''),
+        .optional(),
     PUSH_NOTIFICATION_FIREBASE_URL: Joi.string()
         .default('https://fcm.googleapis.com/fcm/send'),
     PUSH_NOTIFICATION_MICROSERVICE_ACCESS_KEY: Joi.string()
@@ -92,7 +92,7 @@ const config = module.exports = {
     teamId: envVars.PUSH_NOTIFICATION_TEAMID,
     apnENV: envVars.PUSH_NOTIFICATION_APN_ENV,
     pushTopic: envVars.PUSH_NOTIFICATION_TOPIC,
-    firebaseServerKey: PUSH_NOTIFICATION_FIREBASE_SERVER_KEY,
+    firebaseServerKey: envVars.PUSH_NOTIFICATION_FIREBASE_SERVER_KEY,
     firebaseAPIUrl: envVars.PUSH_NOTIFICATION_FIREBASE_URL,
     microserviceAccessKey: envVars.PUSH_NOTIFICATION_MICROSERVICE_ACCESS_KEY,
     microservicePassword: envVars.PUSH_NOTIFICATION_MICROSERVICE_PASSWORD,
@@ -121,5 +121,4 @@ const config = module.exports = {
       callbackURL: envVars.FACEBOOK_CALLBACK_URL,
       profileFields: envVars.FACEBOOK_PROFILE_FIELDS,
     }
-
 }
