@@ -32,7 +32,15 @@ module.exports = function (grunt) {
     grunt.registerTask("dropDatabase", function () {
         // force grunt into async
         var done = this.async();
-        mongoose.connect(config.mongo, function (err) {
+        var options = {};
+        if (config.ssl) {
+            options.server = {};
+            options.server.ssl = config.ssl;
+            if (config.ssl_ca_cert) {
+                options.server.sslCA = config.ssl_ca_cert;
+            }
+        }
+        mongoose.connect(config.mongo, options, function (err) {
             if (err) return done(err);
             mongoose.connection.db.dropDatabase(function(err) {
                 if (err) return done(err);

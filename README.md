@@ -25,18 +25,19 @@ API for Orange medication management app. RESTful and implemented in Node & Mong
 
 ### Initialization
 - Initalize MongoDB
-- `cp config.js.example config.js`
+- `cp .env.example .env`
 - Set up [Amida Auth Microservice](https://github.com/amida-tech/amida-auth-microservice)
   - see Auth Microservice README for details on setup
   - if you are developing locally, you may need to install and configure [Postgres](http://postgresapp.com/)
-- Configure settings in `config.js` in root directory (often `orange-api`)
+- Configure settings in `.env` in root directory (often `orange-api`)
   - Vital settings:
-    - `config.secret` (any hexstring is suitable)
-    - `config.jwtSecret` (must match Auth Microservice)
-    - `config.authServiceAPI` (must point to wherever your `amida-auth-microservice` server is running)
+    - `SECRET` (any hexstring is suitable)
+    - `JWT_SECRET` (must match Auth Microservice)
+    - `AUTH_MICROSERVICE` (must point to wherever your `amida-auth-microservice` server is running)
     - Web Address
     - Database Address
-  - Defaults for these can be found in the `config.js.example`
+- Zeromq Address
+- Defaults for these can be found in the `.env.example`
 
 > Enabling notifications (not medication-taking app notifications, but rather SMS and/or email alerts on user registration) you'll also need to configure the notification settings (primarily Twilio and SendGrid API auth keys) in `config.js`
 
