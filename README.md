@@ -14,6 +14,92 @@ API for Orange medication management app. RESTful and implemented in Node & Mong
  - View adherence schedule
  - Share information with other users (and outside email addresses who aren't yet users)
 
+## Environment Variables (Grouped by Purpose)
+
+Environment variables are applied in this order, with the former overwritten by the latter:
+
+1. Default values, which are set automatically within `config.js`, even if no such environment variable is specified whatsoever.
+2. Variables specified by the `.env` file. Note that, when using the Docker container of this repo, the Dockerfile copies `.env.docker` to `.env`, which makes those variables apply in this place.
+3. Variables specified via the command line.
+
+Below, values are notated as [`default`, `.env.example value`, `.env.docker value`]. If a variable is not specified, for example, in `.env.docker`, it is because the value is a secret/key that cannot be committed to source control.
+
+Variables are listed below in this format:
+
+`VARIABLE_NAME` (Required, or not) [`the default value`] A description of what the variable is or does
+- Perhaps an example value, such as what to set it to in development
+- Perhaps details on how to find out how to set the variable.
+- Perhaps another example value, such as what to set it to in production.
+
+### This Server
+
+`X_CLIENT_SECRET` (Required) [None] All requests made to this API must have HTTP header `x-client-secret` with a value that matches this environment variable.
+
+### This Service's MongoDB Instance
+
+`MONGO_URI` MongoDB connection URI.
+- `.env.docker` sets this to `mongodb://amida-orange-api-db/orange-api` which assumes:
+  - `amida-orange-api-db` is the name of the docker container running MongoDB
+  - That docker container and this service's container are a part of the same docker network.
+
+`MONGO_SSL` [`false`] Enable SSL for the connection to MongoDB.
+- In production, set to true.
+
+### Integration With Amida Auth Microservice
+
+`JWT_SECRET` (Required) [None] Must match value of the JWT secret being used by your `amida-auth-microservice` instance.
+- See that repo for details.
+
+`AUTH_MICROSERVICE_URL` (Required) [`http://localhost:4000/api/v1`]
+- The URL of the staging Auth Service server is `https://orange-auth-staging.amida-services.com/api/v1`
+- `.env.docker` sets this to `http://amida-auth-microservice:4000/api/v1`, which assumes:
+  - `amida-auth-microservice` is the name of the docker container running the auth service.
+  - `4000` is the port that service is running on in that container.
+  - That docker container and this service's docer container are a part of the same docker network.
+
+### Push Notifications
+
+`PUSH_NOTIFICATION_ENABLED` [`false`] WARNING: When `true`, the other push notification-related environment variables must be set correctly. Not doing so is an unsupported state that is error-prone.
+
+`NOTIFICATION_SERVICE_URL` [`http://localhost:4003/api`]
+- The URL of the staging Notification Server is `https://orange-notification-staging.amida-services.com/api`
+- `.env.docker` sets this to `http://amida-notification-microservice:4003/api`, which assumes:
+  - `amida-notification-microservice` is the name of the docker container running the auth service.
+  - `4003` is the port that service is running on in that container.
+  - That docker container and this service's docker container are a part of the same docker network.
+
+`PUSH_NOTIFICATION_MICROSERVICE_ACCESS_KEY` [`oucuYaiN6pha3ahphiiT`] The username of the service user that authenticates against `amida-auth-microservice` and performs requests against the `amida-notification-microservice` API.
+- The default value is for development only. In production, set this to a different value.
+
+`PUSH_NOTIFICATION_MICROSERVICE_PASSWORD` [`@TestTest1`] The password of the user specified by `PUSH_NOTIFICATION_MICROSERVICE_ACCESS_KEY`.
+- The default value is for development only. In production, set this to a different value.
+
+#### Integration With Apple iOS Push Notifications
+
+Note: iOS push notifications do not and cannot work in development.
+
+`PUSH_NOTIFICATION_SEND_APN` [`false`] Enable Apple Push Notifications.
+
+`PUSH_NOTIFICATION_TEAMID` [`example_value_to_be_overwritten`] The ID of the Amida "team" in Apple Developer Console.
+- Value stored in Amida's password vault.
+
+`PUSH_NOTIFICATION_KEYID` [`example_value_to_be_overwritten`] Tells apple to use this key to encrypt the payload of push notifications that Apple sends to end-user devices.
+- Value stored in Amida's password vault.
+
+`PUSH_NOTIFICATION_APN_ENV` [`development`] Apple Push Notification environment.
+- `.env.docker` sets this to `production`.
+
+`PUSH_NOTIFICATION_TOPIC` [`com.amida.orangeIgnite`] The Apple Developer Console name of this app.
+
+#### Integration With Google Android Push Notifications
+
+Note: Unlike iOS push notifications, Android push notifications do work in development.
+
+`PUSH_NOTIFICATION_FIREBASE_URL` [`https://fcm.googleapis.com/fcm/send`] Url of Google Android Firebase service.
+
+`PUSH_NOTIFICATION_FIREBASE_SERVER_KEY` Identifies to Google that a server belonging to Amida is making this push notification request.
+- Value stored in Amida's password vault.
+
 ## Quick up and running quide
 
 ### Prerequisites
@@ -21,7 +107,6 @@ API for Orange medication management app. RESTful and implemented in Node & Mong
 - Grunt.js
 - MongoDB (v3.4 - higher versions will not work. If you need to downgrade instructions, [click here](https://stackoverflow.com/questions/30379127/how-to-install-earlier-version-of-mongodb-with-homebrew/47449979#47449979))
 - Amida Auth Microservice(https://github.com/amida-tech/amida-auth-microservice)
-
 
 ### Initialization
 - Initalize MongoDB
