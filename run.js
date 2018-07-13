@@ -33,7 +33,7 @@ async.waterfall([
         // mongo needs to be connected before we require app.js
         var app = require("./app.js");
         app.set("gridfs", gfs);
-        server = app.listen(config.port, config.listen, callback);
+        server = app.listen(config.port, callback);
     }
 ], function (err) {
     if (err) throw err;

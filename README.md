@@ -31,9 +31,9 @@ API for Orange medication management app. RESTful and implemented in Node & Mong
   - if you are developing locally, you may need to install and configure [Postgres](http://postgresapp.com/)
 - Configure settings in `.env` in root directory (often `orange-api`)
   - Vital settings:
-    - `SECRET` (any hexstring is suitable)
+    - `X_CLIENT_SECRET` (any hexstring is suitable)
     - `JWT_SECRET` (must match Auth Microservice)
-    - `AUTH_MICROSERVICE` (must point to wherever your `amida-auth-microservice` server is running)
+    - `AUTH_MICROSERVICE_URL` (must point to wherever your `amida-auth-microservice` server is running)
     - Web Address
     - Database Address
 - Zeromq Address
@@ -68,9 +68,57 @@ API for Orange medication management app. RESTful and implemented in Node & Mong
   ```
 
 ### Running
+
 `grunt dev`
 
 ## Deployment
+
+### Docker
+
+Docker deployment requires two docker containers:
+- An instance of the official MongoDB 3.4 docker image (see: https://hub.docker.com/_/mongo/).
+- An instance of this service's docker image (see: https://hub.docker.com/r/amidatech/orange-api).
+
+Also, the containers communicate via a docker network. Therefore,
+
+1. First, create the Docker network:
+
+```
+docker network create {DOCKER_NETWORK_NAME}
+```
+
+2. Create the service user on the the Auth Service which will perform notification actions:
+
+Before proceeding, the Auth Service must be running and the machine you are currently using must have Node.js installed.
+
+```
+npm run create-microservice-service-user -- {AUTH_MICROSERVICE_URL} {PUSH_NOTIFICATION_MICROSERVICE_ACCESS_KEY} {PUSH_NOTIFICATION_MICROSERVICE_PASSWORD}
+```
+
+3. Start the MongoDB container:
+
+```
+docker run -it --name amida-orange-api-db --network amida-sudtpoc-net mongo:3.4
+```
+
+4. Start the Orange API container:
+
+```
+docker run -d -p 5000:5000 --name amida-orange-api --network {DOCKER_NETWORK_NAME} \
+-e X_CLIENT_SECRET={X_CLIENT_SECRET} \
+-e JWT_SECRET={JWT_SECRET} \
+-e MONGO_SSL=true \
+-e PUSH_NOTIFICATION_ENABLED=true \
+-e PUSH_NOTIFICATION_KEYID={PUSH_NOTIFICATION_KEYID} \
+-e PUSH_NOTIFICATION_TEAMID={PUSH_NOTIFICATION_TEAMID} \
+-e PUSH_NOTIFICATION_FIREBASE_SERVER_KEY={PUSH_NOTIFICATION_FIREBASE_SERVER_KEY} \
+-e PUSH_NOTIFICATION_MICROSERVICE_ACCESS_KEY={PUSH_NOTIFICATION_MICROSERVICE_ACCESS_KEY} \
+-e PUSH_NOTIFICATION_MICROSERVICE_PASSWORD={PUSH_NOTIFICATION_MICROSERVICE_PASSWORD} \
+-e NOTIFICATION_SENDGRID_API_KEY={NOTIFICATION_SENDGRID_API_KEY} \
+amidatech/orange-api
+```
+
+### Vagrant
 
 For ease of deployment, see the instructions for deploying with Vagrant in [here](deploy/traditional/README.md).
 

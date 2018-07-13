@@ -24,28 +24,25 @@ const envVarsSchema = Joi.object({
         .default('http://localhost:5000/v1/auth/facebook/callback'),
     FACEBOOK_PROFILE_FIELDS: Joi.array().items(Joi.string())
         .default(['id', 'name', 'displayName', 'picture', 'email']),
-    MONGO: Joi.string()
+    MONGO_URI: Joi.string()
         .default('mongodb://localhost/orange-api'),
     ZEROPC: Joi.string()
         .default('tcp://127.0.0.1:4242'),
     EXPRESS_PORT: Joi.number()
         .default(5000),
-    EXPRESS: Joi.string()
-        .default('localhost'),
-    SECRET: Joi.string().required()
-        .description('SECRET is required'),
+    X_CLIENT_SECRET: Joi.string().required()
+        .description('X_CLIENT_SECRET is required. Its value must match the value of X_CLIENT_SECRET specified any client that calls this API.'),
     JWT_SECRET: Joi.string().required()
         .description('JWT Secret required to sign'),
-    AUTH_MICROSERVICE: Joi.string().allow('')
-        .description('Auth microservice endpoint'),
-    ENABLE_PUSH_NOTIFICATIONS: Joi.bool()
-        .default(false),
-    MONGO_SSL: Joi.bool()
+    AUTH_MICROSERVICE_URL: Joi.string().allow('')
+        .description('Auth microservice endpoint')
+        .default('http://localhost:4000/api/v1'),
+    MONGO_SSL: Joi.boolean()
         .default(false)
         .description('Enable SSL connection to MongoDB'),
     MONGO_CERT_CA: Joi.string()
         .description('SSL certificate CA'), // Certificate itself, not a filename
-    PUSH_NOTIFICATION_ENABLED: Joi.bool()
+    PUSH_NOTIFICATION_ENABLED: Joi.boolean()
         .default(false),
     PUSH_NOTIFICATION_KEYID: Joi.string()
         .default('iAmTheKeyId'),
@@ -59,13 +56,11 @@ const envVarsSchema = Joi.object({
         .optional(),
     PUSH_NOTIFICATION_FIREBASE_URL: Joi.string()
         .default('https://fcm.googleapis.com/fcm/send'),
-    PUSH_NOTIFICATION_MICROSERVICE_ACCESS_KEY: Joi.string()
-        .default('oucuYaiN6pha3ahphiiT'),
-    PUSH_NOTIFICATION_MICROSERVICE_PASSWORD: Joi.string()
-        .default('@TestTest1'),
-    PUSH_NOTIFICATION_SEND_APN: Joi.bool()
+    PUSH_NOTIFICATION_MICROSERVICE_ACCESS_KEY: Joi.string(),
+    PUSH_NOTIFICATION_MICROSERVICE_PASSWORD: Joi.string(),
+    PUSH_NOTIFICATION_SEND_APN: Joi.boolean()
         .default(false),
-    NOTIFICATION_SERVICE_API: Joi.string()
+    NOTIFICATION_SERVICE_URL: Joi.string()
         .default('http://localhost:4003/api'),
 }).unknown()
     .required();
@@ -77,13 +72,12 @@ if (error) {
 }
 
 const config = module.exports = {
-    secret: envVars.SECRET,
+    secret: envVars.X_CLIENT_SECRET,
     jwtSecret: envVars.JWT_SECRET,
-    authServiceAPI: envVars.AUTH_MICROSERVICE,
-    mongo: envVars.MONGO,
+    authServiceAPI: envVars.AUTH_MICROSERVICE_URL,
+    mongo: envVars.MONGO_URI,
     zerorpc: envVars.ZEROPC,
     port: envVars.EXPRESS_PORT,
-    listen: envVars.EXPRESS,
     ssl: envVars.MONGO_SSL,
     ssl_ca_cert: envVars.MONGO_CERT_CA,
 
@@ -98,8 +92,7 @@ const config = module.exports = {
     microservicePassword: envVars.PUSH_NOTIFICATION_MICROSERVICE_PASSWORD,
     enablePushNotifications: envVars.PUSH_NOTIFICATION_ENABLED,
     sendAPN: envVars.PUSH_NOTIFICATION_SEND_APN,
-    enableOrangePushNotifications: envVars.PUSH_NOTIFICATION_ENABLED,
-    notificationServiceAPI: envVars.NOTIFICATION_SERVICE_API,
+    notificationServiceAPI: envVars.NOTIFICATION_SERVICE_URL,
 
     email: {
       from: envVars.NOTIFICATION_EMAIL_FROM,

@@ -1,8 +1,5 @@
-const config = require("./config")
-
 const Client = require('node-rest-client').Client;
-const authUrl = `${config.authServiceAPI}/user`;
-
+const authUrl = `${process.argv[2]}/user`;
 
 const client = new Client();
 
@@ -10,11 +7,10 @@ const userArgs = {
     headers : {"Content-Type": "application/json"},
     data: {
         email: "admin@amida.com",
-        username: config.microserviceAccessKey,
-        password: config.microservicePassword,
+        username: process.argv[3],
+        password: process.argv[4],
         scopes: ["admin"]
     }
-
 }
 
 const createUser = function(args, callback) {
