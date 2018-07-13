@@ -39,8 +39,8 @@ Variables are listed below in this format:
 
 `MONGO_URI` MongoDB connection URI.
 - `.env.docker` sets this to `mongodb://amida-orange-api-db/orange-api` which assumes:
-  - `amida-orange-api-db` is the name of the docker container running MongoDB
-  - That docker container and this service's container are a part of the same docker network.
+  - `amida-orange-api-db` is the name of the docker container running MongoDB.
+  - The docker container running MongoDB and this service's container are a part of the same docker network.
 
 `MONGO_SSL` [`false`] Enable SSL for the connection to MongoDB.
 - In production, set to true.
@@ -50,23 +50,23 @@ Variables are listed below in this format:
 `JWT_SECRET` (Required) [None] Must match value of the JWT secret being used by your `amida-auth-microservice` instance.
 - See that repo for details.
 
-`AUTH_MICROSERVICE_URL` (Required) [`http://localhost:4000/api/v1`]
+`AUTH_MICROSERVICE_URL` (Required) [`http://localhost:4000/api/v1`] The URL of the Auth Service API.
 - The URL of the staging Auth Service server is `https://orange-auth-staging.amida-services.com/api/v1`
 - `.env.docker` sets this to `http://amida-auth-microservice:4000/api/v1`, which assumes:
-  - `amida-auth-microservice` is the name of the docker container running the auth service.
-  - `4000` is the port that service is running on in that container.
-  - That docker container and this service's docer container are a part of the same docker network.
+  - `amida-auth-microservice` is the name of the docker container running the Auth Service.
+  - `4000` is the port the Auth Service is running on in its container.
+  - The Auth Service's docker container and this service's docker container are a part of the same docker network.
 
 ### Push Notifications
 
 `PUSH_NOTIFICATION_ENABLED` [`false`] WARNING: When `true`, the other push notification-related environment variables must be set correctly. Not doing so is an unsupported state that is error-prone.
 
-`NOTIFICATION_SERVICE_URL` [`http://localhost:4003/api`]
+`NOTIFICATION_SERVICE_URL` [`http://localhost:4003/api`] The URL of the Notification Service API.
 - The URL of the staging Notification Server is `https://orange-notification-staging.amida-services.com/api`
 - `.env.docker` sets this to `http://amida-notification-microservice:4003/api`, which assumes:
-  - `amida-notification-microservice` is the name of the docker container running the auth service.
-  - `4003` is the port that service is running on in that container.
-  - That docker container and this service's docker container are a part of the same docker network.
+  - `amida-notification-microservice` is the name of the docker container running the Notification Service.
+  - `4003` is the port the Notification Service is running on in its container.
+  - The Notification Service's docker container and this service's docker container are a part of the same docker network.
 
 `PUSH_NOTIFICATION_MICROSERVICE_ACCESS_KEY` [`oucuYaiN6pha3ahphiiT`] The username of the service user that authenticates against `amida-auth-microservice` and performs requests against the `amida-notification-microservice` API.
 - The default value is for development only. In production, set this to a different value.
@@ -175,6 +175,8 @@ docker network create {DOCKER_NETWORK_NAME}
 2. Create the service user on the the Auth Service which will perform notification actions:
 
 Before proceeding, the Auth Service must be running and the machine you are currently using must have Node.js installed.
+
+Note: The `AUTH_MICROSERVICE_URL` below is relative to the machine running this command, not to any docker container.
 
 ```
 npm run create-microservice-service-user -- {AUTH_MICROSERVICE_URL} {PUSH_NOTIFICATION_MICROSERVICE_ACCESS_KEY} {PUSH_NOTIFICATION_MICROSERVICE_PASSWORD}
