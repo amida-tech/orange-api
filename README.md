@@ -45,6 +45,8 @@ Variables are listed below in this format:
 `MONGO_SSL` [`false`] Enable SSL for the connection to MongoDB.
 - In production, set to true.
 
+`MONGO_CERT_CA` Optional. Used if set and `MONGO_SSL` is `true`. Specifies an SSL cert to trust for the connection to MongoDB. If not set, only Mozilla's list of root certs are trusted.
+
 ### Integration With Amida Auth Microservice
 
 `JWT_SECRET` (Required) [None] Must match value of the JWT secret being used by your `amida-auth-microservice` instance.
@@ -185,7 +187,7 @@ npm run create-microservice-service-user -- {AUTH_MICROSERVICE_URL} {PUSH_NOTIFI
 3. Start the MongoDB container:
 
 ```
-docker run -it --name amida-orange-api-db --network amida-sudtpoc-net mongo:3.4
+docker run -it --name amida-orange-api-db --network {DOCKER_NETWORK_NAME} mongo:3.4
 ```
 
 4. Start the Orange API container:
@@ -195,6 +197,7 @@ docker run -d -p 5000:5000 --name amida-orange-api --network {DOCKER_NETWORK_NAM
 -e X_CLIENT_SECRET={X_CLIENT_SECRET} \
 -e JWT_SECRET={JWT_SECRET} \
 -e MONGO_SSL=true \
+-e MONGO_CERT_CA=$(cat ./path/to/trusted/cert) \
 -e PUSH_NOTIFICATION_ENABLED=true \
 -e PUSH_NOTIFICATION_KEYID={PUSH_NOTIFICATION_KEYID} \
 -e PUSH_NOTIFICATION_TEAMID={PUSH_NOTIFICATION_TEAMID} \
