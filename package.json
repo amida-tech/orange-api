@@ -7,6 +7,9 @@
     "type": "git",
     "url": "git@github.com:amida-tech/orange-api.git"
   },
+  "scripts": {
+    "create-microservice-service-user": "node createAccessUser.js"
+  },
   "bugs": {
     "url": "https://github.com/amida-tech/orange-api/issues"
   },

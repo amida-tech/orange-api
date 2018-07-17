@@ -25,7 +25,7 @@ WORKDIR /src
 # Copy app source
 # .dockerignore crucially means we don't copy node_modules
 COPY . /src
-# COPY ./config.js.docker /src/config.js
+COPY ./.env.docker /src/.env
 # COPY ./iosKey.p8 /src/iosKey.p8
 
 EXPOSE 5000
