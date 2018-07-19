@@ -22,11 +22,9 @@ Environment variables are applied in this order, with the former overwritten by 
 2. Variables specified by the `.env` file. Note that, when using the Docker container of this repo, the Dockerfile copies `.env.docker` to `.env`, which makes those variables apply in this place.
 3. Variables specified via the command line.
 
-Below, values are notated as [`default`, `.env.example value`, `.env.docker value`]. If a variable is not specified, for example, in `.env.docker`, it is because the value is a secret/key that cannot be committed to source control.
-
 Variables are listed below in this format:
 
-`VARIABLE_NAME` (Required, or not) [`the default value`] A description of what the variable is or does
+`VARIABLE_NAME` (Required, or not) [`the default value`] A description of what the variable is or does.
 - Perhaps an example value, such as what to set it to in development
 - Perhaps details on how to find out how to set the variable.
 - Perhaps another example value, such as what to set it to in production.
