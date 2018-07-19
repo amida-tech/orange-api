@@ -25,9 +25,8 @@ Environment variables are applied in this order, with the former overwritten by 
 Variables are listed below in this format:
 
 `VARIABLE_NAME` (Required, or not) [`the default value`] A description of what the variable is or does.
-- Perhaps an example value, such as what to set it to in development
-- Perhaps details on how to find out how to set the variable.
-- Perhaps another example value, such as what to set it to in production.
+- A description of what to set the variable to, whether that be an example, or what to set it to in development or production, or how to figure out how to set it, etc.
+- Perhaps another example value, etc.
 
 ### This Server
 
