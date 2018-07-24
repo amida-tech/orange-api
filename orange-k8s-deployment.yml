@@ -26,17 +26,17 @@ spec:
         - name: PUSH_NOTIFICATION_ENABLED
           value: "false"
         - name: PUSH_NOTIFICATION_KEYID
-          value: ***REMOVED***
+          value: S4MSH7B2Q8
         - name: PUSH_NOTIFICATION_TEAMID
-          value: ***REMOVED***
+          value: A2C343FY98
         - name: PUSH_NOTIFICATION_FIREBASE_SERVER_KEY
-          value: ***REMOVED***
+          value: AAAAXSYf0YA:APA91bFWiP_P9-bTS8dAeC6XOcUnS133JLi5YzXFgd0PSEt4AjlsrpJwS9A31o9XvGvohoifbrjPYdCY-aeH7XhbWxvC61ruQ7xccxZOQCfXYfwuh4EvZaYhjOsAPY7ns87iu180YpYV
         - name: PUSH_NOTIFICATION_MICROSERVICE_ACCESS_KEY
           value: oucuYaiN6pha3ahphiiT
         - name: PUSH_NOTIFICATION_MICROSERVICE_PASSWORD
           value: T@estTest1
         - name: NOTIFICATION_SENDGRID_API_KEY
-          value: ***REMOVED***
+          value: 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
         - name: NOTIFICATION_SERVICE_URL
           value: https://orange-notification-staging.amida-services.com/api
         - name: AUTH_MICROSERVICE_URL
