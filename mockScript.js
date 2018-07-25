@@ -13,6 +13,7 @@ const email = firstName + "@amida.com";
 const password = "Testtest1!";
 const doctorEmail = "mholmes@amida-demo.com";
 const access = ["read","write","default"];
+const testArray = [];
 
 //URL's
 const authUrl = `${process.argv[2]}/auth/login`;  //"http://localhost:4000/api/v1/auth/login"
@@ -47,7 +48,7 @@ const createThread = function(threadArgs, callback) {
     });
 };
 const replyToThread = function(threadArgs, threadID, callback) {
-    client.post(`${messagingUrl}/${threadID}/reply`, threadArgs, function (data, response) {
+    client.post(`${messagingUrl}/thread/${threadID}/reply`, threadArgs, function (data, response) {
         callback(data.message);
     });
 };
@@ -119,7 +120,11 @@ const sendNotification = function () {
         };
         notifyUser(notificationArgs, function (data, response) {
             if (data.success) {
-                console.log("Notification service running and configured with microservice Admin user");
+                console.log(" ✅ Notification service running and configured with microservice Admin user");
+                testArray.push({test: 'auth & orange-api', pass: true});
+            } else {
+                console.log(" ❌ Orange-API and Auth Service are not working correctly together");
+                testArray.push({test: 'auth & orange-api', pass: false});
             }
         });
     });
@@ -183,8 +188,14 @@ const seedMessages = function (patientArgs) {
 
     // Create a second user inside the seedMessages function call
     createUser(newUserArgs, function(response) {
-        console.log("Created User2: ", response.email);
-        console.log("Orange-API and Auth Service are working correctly to create users and authenticate");
+        if (response.email) {
+            console.log("Created User2: ", response.email);
+            console.log(" ✅ Orange-API and Auth Service are working correctly to create users and authenticate");
+            testArray.push({test: 'auth & orange-api', pass: true});
+        } else {
+            console.log(" ❌ Orange-API and Auth Service are not working correctly together");
+            testArray.push({test: 'auth & orange-api', pass: false});
+        }
         sendNotification();
 
         // Get first user's patient and share it with the new user
@@ -210,8 +221,18 @@ const seedMessages = function (patientArgs) {
                             //update ThreadArgs to include newly recieved authToken
                             respondToThreadArgs.headers.Authorization = "Bearer "+authToken2;
                             replyToThread(respondToThreadArgs, threadID, function (response) {
-                                console.log("Reply To Thread At: ", response.createdAt);
-                                console.log("Messaging service up and running in conjunction with the auth service");
+                                if (response.createdAt) {
+                                    console.log("Reply To Thread At: ", response.createdAt);
+                                    console.log(" ✅ Messaging service is running in conjunction with the auth service");
+                                    testArray.push({test: 'messaging', pass: true});
+                                } else {
+                                    console.log(" ❌ Messaging service is not running in conjunction with the auth service");
+                                    testArray.push({test: 'messaging', pass: false});
+                                }
+                                const failingTests = testArray.filter((test) => !test.pass);
+                                // console.log("failingTests", failingTests);
+                                console.log(`${testArray.length - failingTests.length}/3 tests are passing`);
+
                             });
                         });
                     });
