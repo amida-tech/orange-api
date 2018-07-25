@@ -8,7 +8,8 @@
     "url": "git@github.com:amida-tech/orange-api.git"
   },
   "scripts": {
-    "create-microservice-service-user": "node createAccessUser.js"
+    "create-microservice-service-user": "node createAccessUser.js",
+    "test-services": "node mockScript.js"
   },
   "bugs": {
     "url": "https://github.com/amida-tech/orange-api/issues"
