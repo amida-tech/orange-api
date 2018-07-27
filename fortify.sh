@@ -27,7 +27,7 @@ sourceanalyzer -clean
 
 echo "=========================="
 echo "Scanning"
-sourceanalyzer -scan -f $TEMP_FILE.fpr -Xmx8192M ./app.js ./config.js ./run.js ./lib
+sourceanalyzer -scan -f $TEMP_FILE.fpr -Xmx8192M ./createAccessUser.js ./static/login.html ./app.js ./config.js ./run.js ./lib
 
 echo "=========================="
 echo "Merging"
