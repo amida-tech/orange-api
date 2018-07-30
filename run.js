@@ -24,7 +24,7 @@ async.waterfall([
             }
         }
         mongoose.connect(config.mongo, options, callback).catch((err) => {
-            console.log(err);
+            console.error(err);
         });
     },
     // setup gridfs client

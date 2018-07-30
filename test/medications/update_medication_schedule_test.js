@@ -108,6 +108,8 @@ describe("Medications", function () {
             return endpoint.then(function (resp) {
                 expect(resp).to.be.a.schedule.resp;
 
+                console.log(JSON.stringify(resp.body.schedule, null, 3));
+
                 // 3 doses taken
                 expect(resp.body.schedule.filter(function (e) {
                     return e.took_medication === true;

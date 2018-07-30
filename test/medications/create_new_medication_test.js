@@ -318,27 +318,26 @@ describe("Medications", function () {
         describe("testing valid doctor and pharmacy IDs", function () {
             // helper function to create a doctor and a pharmacy for a given patient
             var createDoctorPharmacy = function (p) {
-                var createDoctor = doctorFixtures.build("Doctor").then(Q.nbind(p.createDoctor, p));
-                var createPharmacy = pharmFixtures.build("Pharmacy").then(Q.nbind(p.createPharmacy, p));
-                return createDoctor.then(createPharmacy);
+                return doctorFixtures.build("Doctor")
+                    .then(Q.nbind(p.createDoctor, p))
+                    .then(pharmFixtures.build("Pharmacy"))
+                    .then(Q.nbind(p.createPharmacy, p));
             };
 
             // setup current user and two patients for them, both with a doctor and pharmacy
             var user, patient, otherPatient;
             before(function () {
-                return auth.createTestUser().then(function (u) {
+                return auth.createTestUser().then((u) => {
                     user = u;
-                    // create patients
-                    return Q.all([
-                        patients.createMyPatient({}, user),
-                        patients.createMyPatient({}, user)
-                    ]).spread(function (p1, p2) {
-                        patient = p1;
-                        otherPatient = p2;
-                    }).then(function () {
-                        // create doctor and pharmacy
-                        return createDoctorPharmacy(patient).then(createDoctorPharmacy(otherPatient));
-                    });
+                    return patients.createMyPatient({}, user)
+                }).then(p => {
+                    patient = p;
+                    return createDoctorPharmacy(patient);
+                }).then(() => {
+                    return patients.createMyPatient({}, user);
+                }).then(p => {
+                    otherPatient = p;
+                    return createDoctorPharmacy(otherPatient);
                 });
             });
 
@@ -365,6 +364,7 @@ describe("Medications", function () {
                 return expect(endpoint).to.be.a.medication.createSuccess;
             });
             it("rejects a pharmacy ID corresponding to another patient's pharmacy", function () {
+                console.log(JSON.stringify(otherPatient.pharmacies[0], null, 4));
                 var endpoint = create({
                     name: "foobar",
                     pharmacy_id: otherPatient.pharmacies[0]._id

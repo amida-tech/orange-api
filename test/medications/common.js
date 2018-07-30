@@ -244,7 +244,7 @@ var setPermission = function (group, access) {
         // Q.nbind has issues here
         var deferred = Q.defer();
         resource.permissions[group] = access;
-        resource.save(function (err) {
+        resource.save({ suppressWarning: true}, function (err) {
             if (err) return deferred.reject(err);
             deferred.resolve(resource);
         });
