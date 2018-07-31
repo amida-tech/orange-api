@@ -527,7 +527,7 @@ var reqAllAuth = module.exports.itRequiresAuthentication = function (levels, suc
                     mNone = m;
                 }).then(() => {
                     patient.markModified("medications");
-                    return Q.nbind(patient.save, patient)()
+                    return Q.nbind(patient.save, patient)();
                 }).then(() => {
                     return [mWrite, mNone];
                 });

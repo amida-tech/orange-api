@@ -329,7 +329,7 @@ describe("Medications", function () {
             before(function () {
                 return auth.createTestUser().then((u) => {
                     user = u;
-                    return patients.createMyPatient({}, user)
+                    return patients.createMyPatient({}, user);
                 }).then(p => {
                     patient = p;
                     return createDoctorPharmacy(patient);
