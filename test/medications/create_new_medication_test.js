@@ -364,7 +364,6 @@ describe("Medications", function () {
                 return expect(endpoint).to.be.a.medication.createSuccess;
             });
             it("rejects a pharmacy ID corresponding to another patient's pharmacy", function () {
-                console.log(JSON.stringify(otherPatient.pharmacies[0], null, 4));
                 var endpoint = create({
                     name: "foobar",
                     pharmacy_id: otherPatient.pharmacies[0]._id

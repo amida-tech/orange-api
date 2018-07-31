@@ -1,8 +1,7 @@
 "use strict";
 var mongoose    = require("mongoose"),
-    mongo       = require("mongodb"),
     util        = require("util"),
-    Grid        = require("gridfs-stream"),
+    mongodb     = require("mongodb"),
     async       = require("async"),
     fs          = require("fs"),
     config      = require("./config.js");
@@ -29,7 +28,7 @@ async.waterfall([
     },
     // setup gridfs client
     function (connection, callback) {
-        gfs = Grid(mongoose.connection.db, mongo);
+        gfs = new mongodb.GridFSBucket(mongoose.connection.db);
         callback();
     },
     // setup express server

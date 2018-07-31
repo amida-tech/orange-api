@@ -510,19 +510,26 @@ var reqAllAuth = module.exports.itRequiresAuthentication = function (levels, suc
             gen("none", "medications we have no access to", function () {
                 var p = patientForOther().then(share("write", "anyone"));
 
-                var meds = p.then(function (patient) {
-                    // med we have med-level write access to
-                    var writeMed = createMed()(patient).then(setPermission("anyone", "write"));
-                    // med we have no med-level access to
-                    var noMed = function () {
-                        return createMed()(patient).then(setPermission("anyone", "none"));
-                    };
-
-                    return writeMed.then(function (mWrite) {
-                        return noMed().then(save(p)).then(function (mNone) {
-                            return [mWrite, mNone];
-                        });
-                    });
+                var patient;
+                var mWrite;
+                var mNone;
+                var meds = p.then(pat => {
+                    patient = pat;
+                    return createMed()(patient);
+                }).then(m => {
+                    return setPermission("anyone", "write")(m);
+                }).then(m => {
+                    mWrite = m;
+                    return createMed()(patient);
+                }).then(m => {
+                    return setPermission("anyone", "none")(m);
+                }).then(m => {
+                    mNone = m;
+                }).then(() => {
+                    patient.markModified("medications");
+                    return Q.nbind(patient.save, patient)()
+                }).then(() => {
+                    return [mWrite, mNone];
                 });
 
                 return [p, meds];
