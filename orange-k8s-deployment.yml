@@ -26,23 +26,23 @@ spec:
         - name: PUSH_NOTIFICATION_ENABLED
           value: "false"
         - name: PUSH_NOTIFICATION_KEYID
-          value: ***REMOVED***
+          value: XXXXXX
         - name: PUSH_NOTIFICATION_TEAMID
-          value: ***REMOVED***
+          value: XXXXXX
         - name: PUSH_NOTIFICATION_FIREBASE_SERVER_KEY
-          value: ***REMOVED***
+          value: XXXXXXXXX.XXXXXXX.XXXXX.
         - name: PUSH_NOTIFICATION_MICROSERVICE_ACCESS_KEY
           value: oucuYaiN6pha3ahphiiT
         - name: PUSH_NOTIFICATION_MICROSERVICE_PASSWORD
           value: T@estTest1
         - name: NOTIFICATION_SENDGRID_API_KEY
-          value: ***REMOVED***
+          value: XXXXXXXXXXXXXXXXX
         - name: NOTIFICATION_SERVICE_URL
           value: https://orange-notification-staging.amida-services.com/api
         - name: AUTH_MICROSERVICE_URL
           value: https://orange-auth-staging.amida-services.com/api/v1
         - name: MONGO_URI
-          value: mongodb://***REMOVED***/orange-api
+          value: XXXXXXXXXX
         ports:
         - name: nodejs-port
           containerPort: 5000
