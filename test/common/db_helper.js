@@ -9,7 +9,9 @@ var app = require("../../app.js"); //eslint-disable-line no-unused-vars
 // setup DB connection (not used for REST endpoints, but we're doing
 // unit test-esque things in here)
 before(function (done) {
-    var options = {};
+    var options = {
+        useNewUrlParser: true
+    };
     if (config.ssl) {
         options.server = {};
         options.server.ssl = config.ssl;

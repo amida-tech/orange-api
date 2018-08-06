@@ -1,8 +1,7 @@
 "use strict";
 var mongoose    = require("mongoose"),
-    mongo       = require("mongodb"),
     util        = require("util"),
-    Grid        = require("gridfs-stream"),
+    mongodb     = require("mongodb"),
     async       = require("async"),
     fs          = require("fs"),
     config      = require("./config.js");
@@ -13,7 +12,9 @@ var gfs; // gridfs client
 async.waterfall([
     // setup database
     function (callback) {
-        var options = {};
+        var options = {
+            useNewUrlParser: true
+        };
         if (config.ssl) {
             options.server = {};
             options.server.ssl = config.ssl;
@@ -21,11 +22,13 @@ async.waterfall([
                 options.server.sslCA = config.ssl_ca_cert;
             }
         }
-        mongoose.connect(config.mongo, options, callback);
+        mongoose.connect(config.mongo, options, callback).catch((err) => {
+            console.error(err);
+        });
     },
     // setup gridfs client
-    function (callback) {
-        gfs = Grid(mongoose.connection.db, mongo);
+    function (connection, callback) {
+        gfs = new mongodb.GridFSBucket(mongoose.connection.db);
         callback();
     },
     // setup express server

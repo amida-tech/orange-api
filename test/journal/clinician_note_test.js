@@ -35,27 +35,22 @@ describe("Clinican Notes", function () {
 		before(function () {
 			return auth.createTestUser({ "role": "clinician" }).then(function (u) {
 				clinicianUser = u;
-
 			});
-
 		});
 		// setup current user and one patient for them, with a journal entry where clinician is set to true
 		before(function () {
-			return auth.createTestUser().then(function (u) {
+			return auth.createTestUser().then(u => {
 				user = u;
-				// create patient
-				return patients.createMyPatient({}, user).then(function (p) {
-					patient = p;
-					Q.npost(patient, "share",
-						[clinicianUser.email, "default", "prime"]);
-				}).then(function () {
-					// setup journal entry for Patient
-					return Q.nbind(patient.createJournalEntry, patient)({
-						text: "Clinican Note",
-						date: (new Date()).toISOString(),
-						creator: "adam@west.com",
-						role: "clinician"
-					});
+				return patients.createMyPatient({}, u);
+			}).then(p => {
+				patient = p;
+				return Q.npost(patient, "share", [clinicianUser.email, "default", "prime"]);
+			}).then(() => {
+				return Q.nbind(patient.createJournalEntry, patient)({
+					text: "Clinician Note",
+					date: (new Date()).toISOString(),
+					creator: clinicianUser.email,
+					role: "clinician"
 				});
 			});
 		});
