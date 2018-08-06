@@ -34,6 +34,8 @@ const envVarsSchema = Joi.object({
         .description('X_CLIENT_SECRET is required. Its value must match the value of X_CLIENT_SECRET specified any client that calls this API.'),
     JWT_SECRET: Joi.string().required()
         .description('JWT Secret required to sign'),
+    ACCESS_CONTROL_ALLOW_ORIGIN: Joi.string().required()
+        .description('set to "null" to enable mobile apps. !!ARH add more better descriptionz.'),
     AUTH_MICROSERVICE_URL: Joi.string().allow('')
         .description('Auth microservice endpoint')
         .default('http://localhost:4000/api/v1'),
@@ -74,6 +76,7 @@ if (error) {
 const config = module.exports = {
     secret: envVars.X_CLIENT_SECRET,
     jwtSecret: envVars.JWT_SECRET,
+    accessControlAllowOrigin: envVars.ACCESS_CONTROL_ALLOW_ORIGIN,
     authServiceAPI: envVars.AUTH_MICROSERVICE_URL,
     mongo: envVars.MONGO_URI,
     zerorpc: envVars.ZEROPC,
