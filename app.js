@@ -3,6 +3,7 @@
 const express = require("express");
 const bunyan = require("express-bunyan-logger");
 const bunyanLogstash  = require("bunyan-logstash");
+const cors = require("cors");
 
 const app = module.exports = express();
 
@@ -62,14 +63,26 @@ require("./lib/models/user/user.js")(getGfs);
 require("./lib/models/patient/patient.js")(getGfs);
 
 // CORS
-app.use(function (req, res, next) {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Credentials", true);
-    res.header("Access-Control-Allow-Headers",
-            "Origin, X-Requested-With, Content-Type, Accept, Authorization, X-Client-Secret");
-    res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-    next();
+const corsDomains = config.accessControlAllowOrigin.split(",").map(function (domain) {
+  return domain.trim();
 });
+
+app.use(cors({
+  origin: function (origin, callback) {
+    if (corsDomains.indexOf(origin) !== -1) {
+      // Cors passes!
+      callback(null, true);
+    } else {
+      // This will make it so that no Access-Control-... headers are returned on
+      // the OPTIONS request, and requests from domains not in the list will fail.
+      // Also, requests from mobile apps and REST tools hit this case, but they still work.
+      callback(null, false);
+    }
+  },
+  credentials: true,
+  allowedHeaders: "Origin, X-Requested-With, Content-Type, Accept, Authorization, X-Client-Secret",
+  methods: "GET, POST, PUT, DELETE, OPTIONS"
+}));
 
 // Prevent caching
 app.disable("etag");
