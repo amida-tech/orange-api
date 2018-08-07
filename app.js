@@ -74,7 +74,7 @@ app.use(cors({
       callback(null, true);
     } else {
       // This will make it so that no Access-Control-... headers are returned on
-      // the OPTIONS request, so requests from domains not in the list will fail
+      // the OPTIONS request, and requests from domains not in the list will fail.
       // Also, requests from mobile apps and REST tools hit this case, but they still work.
       callback(null, false);
     }
