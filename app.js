@@ -23,7 +23,7 @@ if (typeof config.logger.file !== "undefined") {
         path: config.logger.file.path
     });
 }
-if (typeof config.logger.stdout !== "undefined") {
+if (typeof config.logger.stdout !== "undefined" && process.env.NODE_ENV !== "test") {
     streams.push({
         level: config.logger.stdout.level,
         stream: process.stdout

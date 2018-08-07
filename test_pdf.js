@@ -13,7 +13,9 @@ var util            = require("util"),
 var user, patient, accessToken, medication;
 
 // connect to DB
-var options = {};
+var options = {
+    useNewUrlParser: true
+};
 if (config.ssl) {
     options.server = {};
     options.server.ssl = config.ssl;
