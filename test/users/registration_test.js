@@ -34,8 +34,8 @@ describe("Users", function () {
         it("rejects a null email", function () {
             return expect(register({ email: null })).to.be.an.api.error(400, "email_required");
         });
-        it("requires a role", function () {
-            return expect(register({ role: undefined })).to.be.an.api.error(400, "invalid_role");
+        it("rejects a null role", function () {
+            return expect(register({ role: null })).to.be.an.api.error(400, "invalid_role");
         });
         it("rejects a role not in enum", function () {
             return expect(register({ role: "notintheenum" })).to.be.an.api.error(400, "invalid_role");
@@ -62,6 +62,9 @@ describe("Users", function () {
         // require valid email
         it("rejects an invalid email", function () {
             return expect(register({ email: "foobar" })).to.be.an.api.error(400, "invalid_email");
+        });
+        it("allows + sign in email", function () {
+            return expect(register({ email: "foobar+baz@example.com" })).to.be.a.user.registerSuccess;
         });
 
         // duplication

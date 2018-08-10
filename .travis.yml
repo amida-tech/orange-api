@@ -19,7 +19,7 @@ install:
 
 # setup config to test with
 before_script:
-  - cp config.js.example config.js
+  - cp .env.example .env
 
 # run e2e & unit tests
 env:

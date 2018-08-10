@@ -172,13 +172,15 @@ describe("Journal", function () {
                 // setup current user and two patients for them, both with a medication
                 return auth.createTestUser()
                 .then(curry(patients.createMyPatient)({}))
-                .then(function (p) {
+                .then(p => {
                     patient = p;
-                })
-                .then(function () {
-                    var med1 = Q.nbind(patient.createMedication, patient)({ name: "foobar" });
-                    var med2 = Q.nbind(patient.createMedication, patient)({ name: "foobar" });
-                    return med1.then(med2);
+                    return Q.nbind(patient.createMedication, patient)({
+                        name: "foobar"
+                    });
+                }).then(() => {
+                    return Q.nbind(patient.createMedication, patient)({
+                        name: "foobar"
+                    });
                 });
             });
 
