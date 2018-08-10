@@ -26,8 +26,6 @@ const envVarsSchema = Joi.object({
         .default(['id', 'name', 'displayName', 'picture', 'email']),
     MONGO_URI: Joi.string()
         .default('mongodb://localhost/orange-api'),
-    ZEROPC: Joi.string()
-        .default('tcp://127.0.0.1:4242'),
     EXPRESS_PORT: Joi.number()
         .default(5000),
     X_CLIENT_SECRET: Joi.string().required()
@@ -79,7 +77,6 @@ const config = module.exports = {
     accessControlAllowOrigin: envVars.ACCESS_CONTROL_ALLOW_ORIGIN,
     authServiceAPI: envVars.AUTH_MICROSERVICE_URL,
     mongo: envVars.MONGO_URI,
-    zerorpc: envVars.ZEROPC,
     port: envVars.EXPRESS_PORT,
     ssl: envVars.MONGO_SSL,
     ssl_ca_cert: envVars.MONGO_CERT_CA,
