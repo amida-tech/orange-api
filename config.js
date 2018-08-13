@@ -44,10 +44,8 @@ const envVarsSchema = Joi.object({
         .description('SSL certificate CA'), // Certificate itself, not a filename
     PUSH_NOTIFICATION_ENABLED: Joi.boolean()
         .default(false),
-    PUSH_NOTIFICATION_KEYID: Joi.string()
-        .default('iAmTheKeyId'),
-    PUSH_NOTIFICATION_TEAMID: Joi.string()
-        .default('iAmThePrefixOfTheIOSAppId'),
+    PUSH_NOTIFICATION_KEYID: Joi.string(),
+    PUSH_NOTIFICATION_TEAMID: Joi.string(),
     PUSH_NOTIFICATION_APN_ENV: Joi.string()
         .default('development'),
     PUSH_NOTIFICATION_TOPIC: Joi.string()

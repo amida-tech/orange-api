@@ -24,7 +24,7 @@ Environment variables are applied in this order, with the former overwritten by 
 
 Variables are listed below in this format:
 
-`VARIABLE_NAME` (Required, or not) [`the default value`] A description of what the variable is or does.
+`VARIABLE_NAME` (Required (if it actually is)) [`the default value`] A description of what the variable is or does.
 - A description of what to set the variable to, whether that be an example, or what to set it to in development or production, or how to figure out how to set it, etc.
 - Perhaps another example value, etc.
 
@@ -32,25 +32,22 @@ Variables are listed below in this format:
 
 `X_CLIENT_SECRET` (Required) [None] All requests made to this API must have HTTP header `x-client-secret` with a value that matches this environment variable.
 
-`ACCESS_CONTROL_ALLOW_ORIGIN` Self-explanatory. This only works on requests made from browsers; it does not impact requests from mobile apps or REST tools.
-- To set multiple domains, surround in quotes and separate the domains with commas like this: "http://domain1.com, https://domain2.com"
+`ACCESS_CONTROL_ALLOW_ORIGIN` (Required) [None] Self-explanatory, if you understand [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS). Note: HTTP header `Access-Control-Allow-Origin` only works on requests made from browsers; it does not impact requests from mobile apps or REST tools.
+- To set multiple domains, place in quotes and separate the domains with commas like this: `"http://domain1.com, https://domain2.com"`
 
 ### This Service's MongoDB Instance
 
-`MONGO_URI` MongoDB connection URI.
+`MONGO_URI` (Required) [`mongodb://localhost/orange-api`] MongoDB connection URI.
 - `.env.docker` sets this to `mongodb://amida-orange-api-db/orange-api` which assumes:
   - `amida-orange-api-db` is the name of the docker container running MongoDB.
   - The docker container running MongoDB and this service's container are a part of the same docker network.
 
-`MONGO_SSL` [`false`] Enable SSL for the connection to MongoDB.
+`MONGO_SSL` (Required) [`false`] Enable SSL for the connection to MongoDB.
 - In production, set to true.
 
-`MONGO_CERT_CA` Optional. Used if set and `MONGO_SSL` is `true`. Specifies an SSL cert to trust for the connection to MongoDB. If not set, only Mozilla's list of root certs are trusted.
+`MONGO_CERT_CA` Only used when `MONGO_SSL=true`. Specifies an SSL cert to trust for the connection to MongoDB. If not set, only Mozilla's list of root certs are trusted.
 
 ### Integration With Amida Auth Microservice
-
-`JWT_SECRET` (Required) [None] Must match value of the JWT secret being used by your `amida-auth-microservice` instance.
-- See that repo for details.
 
 `AUTH_MICROSERVICE_URL` (Required) [`http://localhost:4000/api/v1`] The URL of the Auth Service API.
 - The URL of the staging Auth Service server is `https://orange-auth-staging.amida-services.com/api/v1`
@@ -59,9 +56,12 @@ Variables are listed below in this format:
   - `4000` is the port the Auth Service is running on in its container.
   - The Auth Service's docker container and this service's docker container are a part of the same docker network.
 
+`JWT_SECRET` (Required) [None] Must match value of the JWT secret being used by your `amida-auth-microservice` instance.
+- See that repo for details.
+
 ### Push Notifications
 
-`PUSH_NOTIFICATION_ENABLED` [`false`] WARNING: When `true`, the other push notification-related environment variables must be set correctly. Not doing so is an unsupported state that is error-prone.
+`PUSH_NOTIFICATION_ENABLED` (Required) [`false`] WARNING: When `true`, the other push notification-related environment variables must be set correctly. Not doing so is an unsupported state that is error and crash prone.
 
 `NOTIFICATION_SERVICE_URL` [`http://localhost:4003/api`] The URL of the Notification Service API.
 - The URL of the staging Notification Server is `https://orange-notification-staging.amida-services.com/api`
@@ -70,11 +70,11 @@ Variables are listed below in this format:
   - `4003` is the port the Notification Service is running on in its container.
   - The Notification Service's docker container and this service's docker container are a part of the same docker network.
 
-`PUSH_NOTIFICATION_MICROSERVICE_ACCESS_KEY` [`oucuYaiN6pha3ahphiiT`] The username of the service user that authenticates against `amida-auth-microservice` and performs requests against the `amida-notification-microservice` API.
-- The default value is for development only. In production, set this to a different value.
+`PUSH_NOTIFICATION_MICROSERVICE_ACCESS_KEY` The username of the service user that authenticates against `amida-auth-microservice` and performs requests against the `amida-notification-microservice` API.
+- `.env.example` sets this to `oucuYaiN6pha3ahphiiT`, which is for development only. In production, set this to a different value.
 
-`PUSH_NOTIFICATION_MICROSERVICE_PASSWORD` [`@TestTest1`] The password of the user specified by `PUSH_NOTIFICATION_MICROSERVICE_ACCESS_KEY`.
-- The default value is for development only. In production, set this to a different value.
+`PUSH_NOTIFICATION_MICROSERVICE_PASSWORD` The password of the user specified by `PUSH_NOTIFICATION_MICROSERVICE_ACCESS_KEY`.
+- `.env.example` sets this to `@TestTest1`, which is for development only. In production, set this to a different value.
 
 #### Integration With Apple iOS Push Notifications
 
@@ -82,13 +82,15 @@ Note: iOS push notifications do not and cannot work in development.
 
 `PUSH_NOTIFICATION_SEND_APN` [`false`] Enable Apple Push Notifications.
 
-`PUSH_NOTIFICATION_TEAMID` [`example_value_to_be_overwritten`] The ID of the Amida "team" in Apple Developer Console.
-- Value stored in Amida's password vault.
+`PUSH_NOTIFICATION_TEAMID` The ID of the Amida "team" in Apple Developer Console.
+- The value is the prefix of iOS app ID.
+- Production value stored in Amida's password vault.
 
-`PUSH_NOTIFICATION_KEYID` [`example_value_to_be_overwritten`] Tells apple to use this key to encrypt the payload of push notifications that Apple sends to end-user devices.
+`PUSH_NOTIFICATION_KEYID` Tells apple to use this key to encrypt the payload of push notifications that Apple sends to end-user devices.
 - Value stored in Amida's password vault.
 
 `PUSH_NOTIFICATION_APN_ENV` [`development`] Apple Push Notification environment.
+- Valid values are `development` and `production`.
 - `.env.docker` sets this to `production`.
 
 `PUSH_NOTIFICATION_TOPIC` [`com.amida.orangeIgnite`] The Apple Developer Console name of this app.
@@ -107,7 +109,7 @@ Note: Unlike iOS push notifications, Android push notifications do work in devel
 ### Prerequisites
 - Node.js (v0.10+) and NPM
 - Grunt.js
-- MongoDB (v3.4 - higher versions will not work. If you need to downgrade instructions, [click here](https://stackoverflow.com/questions/30379127/how-to-install-earlier-version-of-mongodb-with-homebrew/47449979#47449979))
+- MongoDB (v3.6 - higher versions will not work. If you need to downgrade instructions, [click here](https://stackoverflow.com/questions/30379127/how-to-install-earlier-version-of-mongodb-with-homebrew/47449979#47449979))
 - Amida Auth Microservice(https://github.com/amida-tech/amida-auth-microservice)
 
 ### Initialization
@@ -163,7 +165,7 @@ Note: Unlike iOS push notifications, Android push notifications do work in devel
 ### Docker
 
 Docker deployment requires two docker containers:
-- An instance of the official MongoDB 3.4 docker image (see: https://hub.docker.com/_/mongo/).
+- An instance of the official MongoDB 3.6 docker image (see: https://hub.docker.com/_/mongo/).
 - An instance of this service's docker image (see: https://hub.docker.com/r/amidatech/orange-api).
 
 Also, the containers communicate via a docker network. Therefore,
