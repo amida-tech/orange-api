@@ -25,7 +25,7 @@ const envVarsSchema = Joi.object({
     FACEBOOK_PROFILE_FIELDS: Joi.array().items(Joi.string())
         .default(['id', 'name', 'displayName', 'picture', 'email']),
     MONGO_URI: Joi.string()
-        .default('mongodb://localhost/orange-api'),
+        .default('mongodb://localhost:27017/orange-api'),
     EXPRESS_PORT: Joi.number()
         .default(5000),
     X_CLIENT_SECRET: Joi.string().required()
@@ -42,21 +42,21 @@ const envVarsSchema = Joi.object({
         .description('Enable SSL connection to MongoDB'),
     MONGO_CERT_CA: Joi.string()
         .description('SSL certificate CA'), // Certificate itself, not a filename
-    PUSH_NOTIFICATION_ENABLED: Joi.boolean()
+    PUSH_NOTIFICATIONS_ENABLED: Joi.boolean()
         .default(false),
-    PUSH_NOTIFICATION_KEYID: Joi.string(),
-    PUSH_NOTIFICATION_TEAMID: Joi.string(),
-    PUSH_NOTIFICATION_APN_ENV: Joi.string()
+    PUSH_NOTIFICATIONS_APN_KEY_ID: Joi.string(),
+    PUSH_NOTIFICATIONS_APN_TEAM_ID: Joi.string(),
+    PUSH_NOTIFICATIONS_APN_ENV: Joi.string()
         .default('development'),
-    PUSH_NOTIFICATION_TOPIC: Joi.string()
+    PUSH_NOTIFICATIONS_APN_TOPIC: Joi.string()
         .default('com.amida.orangeIgnite'),
-    PUSH_NOTIFICATION_FIREBASE_SERVER_KEY: Joi.string()
+    PUSH_NOTIFICATIONS_FCM_SERVER_KEY: Joi.string()
         .optional(),
-    PUSH_NOTIFICATION_FIREBASE_URL: Joi.string()
+    PUSH_NOTIFICATIONS_FCM_API_URL: Joi.string()
         .default('https://fcm.googleapis.com/fcm/send'),
-    PUSH_NOTIFICATION_MICROSERVICE_ACCESS_KEY: Joi.string(),
-    PUSH_NOTIFICATION_MICROSERVICE_PASSWORD: Joi.string(),
-    PUSH_NOTIFICATION_SEND_APN: Joi.boolean()
+    PUSH_NOTIFICATIONS_SERVICE_USER_USERNAME: Joi.string(),
+    PUSH_NOTIFICATIONS_SERVICE_USER_PASSWORD: Joi.string(),
+    PUSH_NOTIFICATIONS_APN_ENABLED: Joi.boolean()
         .default(false),
     NOTIFICATION_SERVICE_URL: Joi.string()
         .default('http://localhost:4003/api'),
@@ -80,16 +80,16 @@ const config = module.exports = {
     ssl_ca_cert: envVars.MONGO_CERT_CA,
 
     //Notification related
-    keyId: envVars.PUSH_NOTIFICATION_KEYID,
-    teamId: envVars.PUSH_NOTIFICATION_TEAMID,
-    apnENV: envVars.PUSH_NOTIFICATION_APN_ENV,
-    pushTopic: envVars.PUSH_NOTIFICATION_TOPIC,
-    firebaseServerKey: envVars.PUSH_NOTIFICATION_FIREBASE_SERVER_KEY,
-    firebaseAPIUrl: envVars.PUSH_NOTIFICATION_FIREBASE_URL,
-    microserviceAccessKey: envVars.PUSH_NOTIFICATION_MICROSERVICE_ACCESS_KEY,
-    microservicePassword: envVars.PUSH_NOTIFICATION_MICROSERVICE_PASSWORD,
-    enablePushNotifications: envVars.PUSH_NOTIFICATION_ENABLED,
-    sendAPN: envVars.PUSH_NOTIFICATION_SEND_APN,
+    apnKeyId: envVars.PUSH_NOTIFICATIONS_APN_KEY_ID,
+    apnTeamId: envVars.PUSH_NOTIFICATIONS_APN_TEAM_ID,
+    apnEnv: envVars.PUSH_NOTIFICATIONS_APN_ENV,
+    apnTopic: envVars.PUSH_NOTIFICATIONS_APN_TOPIC,
+    fcmServerKey: envVars.PUSH_NOTIFICATIONS_FCM_SERVER_KEY,
+    fcmApiUrl: envVars.PUSH_NOTIFICATIONS_FCM_API_URL,
+    microserviceAccessKey: envVars.PUSH_NOTIFICATIONS_SERVICE_USER_USERNAME,
+    microservicePassword: envVars.PUSH_NOTIFICATIONS_SERVICE_USER_PASSWORD,
+    pushNotificationsEnabled: envVars.PUSH_NOTIFICATIONS_ENABLED,
+    apnEnabled: envVars.PUSH_NOTIFICATIONS_APN_ENABLED,
     notificationServiceAPI: envVars.NOTIFICATION_SERVICE_URL,
 
     email: {

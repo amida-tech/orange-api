@@ -18,8 +18,8 @@ API for Orange medication management app. RESTful and implemented in Node & Mong
 
 Environment variables are applied in this order, with the former overwritten by the latter:
 
-1. Default values, which are set automatically within `config.js`, even if no such environment variable is specified whatsoever.
-2. Variables specified by the `.env` file. Note that, when using the Docker container of this repo, the Dockerfile copies `.env.docker` to `.env`, which makes those variables apply in this place.
+1. Default values, which are set automatically by [joi](https://github.com/hapijs/joi) within `config.js`, even if no such environment variable is specified whatsoever.
+2. Variables specified by the `.env` file.
 3. Variables specified via the command line.
 
 Variables are listed below in this format:
@@ -38,9 +38,10 @@ Variables are listed below in this format:
 ### This Service's MongoDB Instance
 
 `MONGO_URI` (Required) [`mongodb://localhost/orange-api`] MongoDB connection URI.
-- `.env.docker` sets this to `mongodb://amida-orange-api-db/orange-api` which assumes:
+- `.env.docker` sets this to `mongodb://amida-orange-api-db:27017/orange-api` which assumes:
   - `amida-orange-api-db` is the name of the docker container running MongoDB.
   - The docker container running MongoDB and this service's container are a part of the same docker network.
+  - Until we update the mongoose version, you must specify the port number, else you get this error: https://stackoverflow.com/questions/51156334/unhandled-rejection-mongoerror-port-must-be-specified
 
 `MONGO_SSL` (Required) [`false`] Enable SSL for the connection to MongoDB.
 - In production, set to true.
@@ -61,7 +62,7 @@ Variables are listed below in this format:
 
 ### Push Notifications
 
-`PUSH_NOTIFICATION_ENABLED` (Required) [`false`] WARNING: When `true`, the other push notification-related environment variables must be set correctly. Not doing so is an unsupported state that is error and crash prone.
+`PUSH_NOTIFICATIONS_ENABLED` (Required) [`false`] WARNING: When `true`, the other push notification-related environment variables must be set correctly. Not doing so is an unsupported state that is error and crash prone.
 
 `NOTIFICATION_SERVICE_URL` [`http://localhost:4003/api`] The URL of the Notification Service API.
 - The URL of the staging Notification Server is `https://orange-notification-staging.amida-services.com/api`
@@ -70,38 +71,38 @@ Variables are listed below in this format:
   - `4003` is the port the Notification Service is running on in its container.
   - The Notification Service's docker container and this service's docker container are a part of the same docker network.
 
-`PUSH_NOTIFICATION_MICROSERVICE_ACCESS_KEY` The username of the service user that authenticates against `amida-auth-microservice` and performs requests against the `amida-notification-microservice` API.
+`PUSH_NOTIFICATIONS_SERVICE_USER_USERNAME` The username of the service user that authenticates against `amida-auth-microservice` and performs requests against the `amida-notification-microservice` API.
 - `.env.example` sets this to `oucuYaiN6pha3ahphiiT`, which is for development only. In production, set this to a different value.
 
-`PUSH_NOTIFICATION_MICROSERVICE_PASSWORD` The password of the user specified by `PUSH_NOTIFICATION_MICROSERVICE_ACCESS_KEY`.
+`PUSH_NOTIFICATIONS_SERVICE_USER_PASSWORD` The password of the user specified by `PUSH_NOTIFICATIONS_SERVICE_USER_USERNAME`.
 - `.env.example` sets this to `@TestTest1`, which is for development only. In production, set this to a different value.
 
-#### Integration With Apple iOS Push Notifications
+#### Integration With Apple Push Notifications for iOS
 
 Note: iOS push notifications do not and cannot work in development.
 
-`PUSH_NOTIFICATION_SEND_APN` [`false`] Enable Apple Push Notifications.
+`PUSH_NOTIFICATIONS_APN_ENABLED` [`false`] Enable Apple Push Notifications.
 
-`PUSH_NOTIFICATION_TEAMID` The ID of the Amida "team" in Apple Developer Console.
+`PUSH_NOTIFICATIONS_APN_TEAM_ID` The ID of the Amida "team" in Apple Developer Console.
 - The value is the prefix of iOS app ID.
 - Production value stored in Amida's password vault.
 
-`PUSH_NOTIFICATION_KEYID` Tells apple to use this key to encrypt the payload of push notifications that Apple sends to end-user devices.
+`PUSH_NOTIFICATIONS_APN_KEY_ID` Tells apple to use this key to encrypt the payload of push notifications that Apple sends to end-user devices.
 - Value stored in Amida's password vault.
 
-`PUSH_NOTIFICATION_APN_ENV` [`development`] Apple Push Notification environment.
+`PUSH_NOTIFICATIONS_APN_ENV` [`development`] Apple Push Notification environment.
 - Valid values are `development` and `production`.
 - `.env.docker` sets this to `production`.
 
-`PUSH_NOTIFICATION_TOPIC` [`com.amida.orangeIgnite`] The Apple Developer Console name of this app.
+`PUSH_NOTIFICATIONS_APN_TOPIC` [`com.amida.orangeIgnite`] The Apple Developer Console name of this app.
 
-#### Integration With Google Android Push Notifications
+#### Integration With Firebase Cloud Messaging for Android
 
 Note: Unlike iOS push notifications, Android push notifications do work in development.
 
-`PUSH_NOTIFICATION_FIREBASE_URL` [`https://fcm.googleapis.com/fcm/send`] Url of Google Android Firebase service.
+`PUSH_NOTIFICATIONS_FCM_API_URL` [`https://fcm.googleapis.com/fcm/send`] Url of Google Android Firebase service.
 
-`PUSH_NOTIFICATION_FIREBASE_SERVER_KEY` Identifies to Google that a server belonging to Amida is making this push notification request.
+`PUSH_NOTIFICATIONS_FCM_SERVER_KEY` Identifies to Google that a server belonging to Amida is making this push notification request.
 - Value stored in Amida's password vault.
 
 ## Quick up and running quide
@@ -135,18 +136,18 @@ Note: Unlike iOS push notifications, Android push notifications do work in devel
   - Set the `config.notificationServiceAPI` in `config.js` to the url for the notification microservice
   - Next, use the `createAccessUser.js` script to create a `microservice user` on the Auth Service with username and password matching your `microserviceAccessKey` and `microservicePassword` values respectively in `config.js`. Ensure that the `microserviceAccessKey` value matches the `MICROSERVICE_ACCESS_KEY` `.env` value in the Notification Microservice. To create this admin user run the following command from the orange-api directory:
     - `node createAccessUser.js`
-  - Set the `enablePushNotifications` option to true in your `config.js` file
+  - Set the `pushNotificationsEnabled` option to true in your `config.js` file
 
 - Enabling Push Notifications from within Orange
  -  This project is currently set up to send Push Notifications without an external API. While this might change in the future, it remains an option. Configuring and sending Push notifications from Orange is currently the way notifications for `Sharing Requests` are sent.
 
-  - Set the `config.enableOrangePushNotifications` value to true in `config.js`. Note that you can only send Apple push notifications if your host is configured with SSL termination. Without this Apple may permanently invalidate the `key` you use to send the push notification. To enable sending Apple push notifications set the `config.sendAPN` value in `config.js` to true.
-  - Obtain an Apple Developer Key and corresponding KeyId. You can download this file by logging into the team's apple developer console on `developer.apple.com`. Navigate to `Keys` on the left pane and create or download a key. Add this file to the root of the project and rename it to `iosKey.p8`. Add the corresponding keyId to `config.js`'s `config.keyId` value.
-  - Set the `config.teamId` value in `config.js`. The is the ios developer teamID
-  - If you are sending push notifications in development mode (not distribution or test flight), set the `config.apnENV` in `config.js` to "development" otherwise set it to "production".
-  - Set the `config.pushTopic` value in `config.js` to the iOS AppId value. You can obtain this in the Apple developer console.
+  - Set the `config.enableOrangePushNotifications` value to true in `config.js`. Note that you can only send Apple push notifications if your host is configured with SSL termination. Without this Apple may permanently invalidate the `key` you use to send the push notification. To enable sending Apple push notifications set the `config.apnEnabled` value in `config.js` to true.
+  - Obtain an Apple Developer Key and corresponding KeyId. You can download this file by logging into the team's apple developer console on `developer.apple.com`. Navigate to `Keys` on the left pane and create or download a key. Add this file to the root of the project and rename it to `iosKey.p8`. Add the corresponding keyId to `config.js`'s `config.apnKeyId` value.
+  - Set the `config.apnTeamId` value in `config.js`. The is the ios developer teamID
+  - If you are sending push notifications in development mode (not distribution or test flight), set the `config.apnEnv` in `config.js` to "development" otherwise set it to "production".
+  - Set the `config.apnTopic` value in `config.js` to the iOS AppId value. You can obtain this in the Apple developer console.
 
-  - Set the `config.firebaseServerKey` value in `config.js`. This can be obtained from the Team's Firebase console. Note that the `Server key` is different from `API key`. The later is configured on a device for receiving notifications.
+  - Set the `config.fcmServerKey` value in `config.js`. This can be obtained from the Team's Firebase console. Note that the `Server key` is different from `API key`. The later is configured on a device for receiving notifications.
 
   - Note: if you are developing for the Amida team, most of the required keys and files can be found in the Amida OnePassword Account
 

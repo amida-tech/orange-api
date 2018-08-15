@@ -23,17 +23,17 @@ spec:
           value: 0a6b944d-d2fb-46fc-a85e-0295c986cd9f
         - name: MONGO_SSL
           value: "false"
-        - name: PUSH_NOTIFICATION_ENABLED
+        - name: PUSH_NOTIFICATIONS_ENABLED
           value: "false"
-        - name: PUSH_NOTIFICATION_KEYID
+        - name: PUSH_NOTIFICATIONS_APN_KEY_ID
           value: XXXXXX
-        - name: PUSH_NOTIFICATION_TEAMID
+        - name: PUSH_NOTIFICATIONS_APN_TEAM_ID
           value: XXXXXX
-        - name: PUSH_NOTIFICATION_FIREBASE_SERVER_KEY
+        - name: PUSH_NOTIFICATIONS_FCM_SERVER_KEY
           value: XXXXXXXXX.XXXXXXX.XXXXX.
-        - name: PUSH_NOTIFICATION_MICROSERVICE_ACCESS_KEY
+        - name: PUSH_NOTIFICATIONS_SERVICE_USER_USERNAME
           value: oucuYaiN6pha3ahphiiT
-        - name: PUSH_NOTIFICATION_MICROSERVICE_PASSWORD
+        - name: PUSH_NOTIFICATIONS_SERVICE_USER_PASSWORD
           value: T@estTest1
         - name: NOTIFICATION_SENDGRID_API_KEY
           value: XXXXXXXXXXXXXXXXX

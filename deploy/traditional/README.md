@@ -9,7 +9,7 @@ Note:  These scripts are designed to work with Red Hat Enterprise Linux 7.0 (or 
 
 Navigate to /vagrant folder of this directory, and type:
 
-```
+```sh
 vagrant up
 ```
 
@@ -17,7 +17,7 @@ Vagrant will automatically execute the Ansible script and deploy the instance lo
 
 You can access the box via ssh by typing: 
 
-```
+```sh
 vagrant ssh
 ```
 
@@ -29,7 +29,7 @@ To deploy to a server aside from a Vagrant VM, you will need to configure that s
 
 To get a webserver running, you typically need to specify a hosts file, a private key, and the script.  There is a hosts file which can be amended in the `ansible/hosts` directory with your servers.  It is usually required to specify a private key as well.  The below command, when run from the `ansible` directory, will work.
 
-```
+```sh
 ansible-playbook playbook.yml -i "hosts/hosts.ini" --private-key="your_key.pem"
 ```
 
