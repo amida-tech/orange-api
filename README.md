@@ -268,10 +268,6 @@ From the Locust web interface you can change the settings and run the load-test
 
 Contributors are welcome. See issues https://github.com/amida-tech/orange-api/issues
 
-## Release Notes
-
-See release notes [here] (./RELEASENOTES.md)
-
 ## Technical Documentation
 The API is structured as a standard Express app using Mongoose for data storage. The Controller-Model pattern is followed, with everything output over
 JSON so seperate views not as necessary (although semantically each model instance has a getData method that acts as the view). App setup and initialisation
