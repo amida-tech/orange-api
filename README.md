@@ -210,10 +210,6 @@ docker run -d -p 5000:5000 --name amida-orange-api --network {DOCKER_NETWORK_NAM
 amidatech/orange-api
 ```
 
-### Vagrant
-
-For ease of deployment, see the instructions for deploying with Vagrant in [here](deploy/traditional/README.md).
-
 ## Load Testing
 
 SSH Tunnel into the remote machine where `orange-api` has been deployed and from where you will be installing Locust and running your load tests. The following command will create an SSH tunnel into the specified address and begin forwarding your machine's local port `8089` (making a 'tunnel' with the remote machine's port `8089`) so that you can run the load tests on the server and still view the locust web interface from your local machine.
