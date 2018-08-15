@@ -38,7 +38,7 @@ Variables are listed below in this format:
 ### This Service's MongoDB Instance
 
 `MONGO_URI` (Required) [`mongodb://localhost/orange-api`] MongoDB connection URI.
-- `.env.docker` sets this to `mongodb://amida-orange-api-db:27017/orange-api` which assumes:
+- `.env.production` sets this to `mongodb://amida-orange-api-db:27017/orange-api` which assumes:
   - `amida-orange-api-db` is the name of the docker container running MongoDB.
   - The docker container running MongoDB and this service's container are a part of the same docker network.
   - Until we update the mongoose version, you must specify the port number, else you get this error: https://stackoverflow.com/questions/51156334/unhandled-rejection-mongoerror-port-must-be-specified
@@ -52,7 +52,7 @@ Variables are listed below in this format:
 
 `AUTH_MICROSERVICE_URL` (Required) [`http://localhost:4000/api/v1`] The URL of the Auth Service API.
 - The URL of the staging Auth Service server is `https://orange-auth-staging.amida-services.com/api/v1`
-- `.env.docker` sets this to `http://amida-auth-microservice:4000/api/v1`, which assumes:
+- `.env.production` sets this to `http://amida-auth-microservice:4000/api/v1`, which assumes:
   - `amida-auth-microservice` is the name of the docker container running the Auth Service.
   - `4000` is the port the Auth Service is running on in its container.
   - The Auth Service's docker container and this service's docker container are a part of the same docker network.
@@ -66,7 +66,7 @@ Variables are listed below in this format:
 
 `NOTIFICATION_SERVICE_URL` [`http://localhost:4003/api`] The URL of the Notification Service API.
 - The URL of the staging Notification Server is `https://orange-notification-staging.amida-services.com/api`
-- `.env.docker` sets this to `http://amida-notification-microservice:4003/api`, which assumes:
+- `.env.production` sets this to `http://amida-notification-microservice:4003/api`, which assumes:
   - `amida-notification-microservice` is the name of the docker container running the Notification Service.
   - `4003` is the port the Notification Service is running on in its container.
   - The Notification Service's docker container and this service's docker container are a part of the same docker network.
@@ -92,7 +92,7 @@ Note: iOS push notifications do not and cannot work in development.
 
 `PUSH_NOTIFICATIONS_APN_ENV` [`development`] Apple Push Notification environment.
 - Valid values are `development` and `production`.
-- `.env.docker` sets this to `production`.
+- `.env.production` sets this to `production`.
 
 `PUSH_NOTIFICATIONS_APN_TOPIC` [`com.amida.orangeIgnite`] The Apple Developer Console name of this app.
 
