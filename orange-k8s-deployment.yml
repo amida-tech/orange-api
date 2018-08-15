@@ -37,7 +37,7 @@ spec:
           value: T@estTest1
         - name: NOTIFICATION_SENDGRID_API_KEY
           value: XXXXXXXXXXXXXXXXX
-        - name: NOTIFICATION_SERVICE_URL
+        - name: NOTIFICATION_MICROSERVICE_URL
           value: https://orange-notification-staging.amida-services.com/api
         - name: AUTH_MICROSERVICE_URL
           value: https://orange-auth-staging.amida-services.com/api/v1
