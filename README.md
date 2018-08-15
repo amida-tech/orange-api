@@ -126,7 +126,6 @@ Note: Unlike iOS push notifications, Android push notifications do work in devel
     - `AUTH_MICROSERVICE_URL` (must point to wherever your `amida-auth-microservice` server is running)
     - Web Address
     - Database Address
-- Zeromq Address
 - Defaults for these can be found in the `.env.example`
 
 > Enabling notifications (not medication-taking app notifications, but rather SMS and/or email alerts on user registration) you'll also need to configure the notification settings (primarily Twilio and SendGrid API auth keys) in `config.js`

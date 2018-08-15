@@ -1,7 +1,7 @@
 FROM        centos:centos7
 MAINTAINER  Amida Ops <ops@amida.com>
 
-# Enable EPEL, git, Node.js/npm and zeromq
+# Enable EPEL, git, Node.js/npm
 RUN yum -y update; yum clean all && \
     yum -y install epel-release; yum clean all
 
