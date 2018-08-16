@@ -79,8 +79,8 @@ const config = module.exports = {
     apnTopic: envVars.PUSH_NOTIFICATIONS_APN_TOPIC,
     fcmServerKey: envVars.PUSH_NOTIFICATIONS_FCM_SERVER_KEY,
     fcmApiUrl: envVars.PUSH_NOTIFICATIONS_FCM_API_URL,
-    microserviceAccessKey: envVars.PUSH_NOTIFICATIONS_SERVICE_USER_USERNAME,
-    microservicePassword: envVars.PUSH_NOTIFICATIONS_SERVICE_USER_PASSWORD,
+    pushNotificationsServiceUserUsername: envVars.PUSH_NOTIFICATIONS_SERVICE_USER_USERNAME,
+    pushNotificationsServiceUserPassword: envVars.PUSH_NOTIFICATIONS_SERVICE_USER_PASSWORD,
     pushNotificationsEnabled: envVars.PUSH_NOTIFICATIONS_ENABLED,
     apnEnabled: envVars.PUSH_NOTIFICATIONS_APN_ENABLED,
     notificationServiceAPI: envVars.NOTIFICATION_MICROSERVICE_URL,
@@ -106,3 +106,8 @@ const config = module.exports = {
       profileFields: envVars.FACEBOOK_PROFILE_FIELDS,
     }
 }
+
+
+console.log('config.js process.env and config')
+console.log(process.env)
+console.log(config)

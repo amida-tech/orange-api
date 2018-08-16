@@ -8,7 +8,7 @@
     "url": "git@github.com:amida-tech/orange-api.git"
   },
   "scripts": {
-    "create-microservice-service-user": "node createAccessUser.js",
+    "create-push-notificiations-service-user": "node -r dotenv/config createAccessUser.js",
     "test-services": "node mockScript.js"
   },
   "bugs": {
