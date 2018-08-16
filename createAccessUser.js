@@ -1,3 +1,8 @@
+// Note: This command uses arguments passed in via the command line, rather than
+// using environment variables, because, when running in docker, the environment
+// variables will be set in your docker container and not necessarily on the
+// machine running this script.
+
 const Client = require('node-rest-client').Client;
 const authUrl = `${process.argv[2]}/user`;
 
