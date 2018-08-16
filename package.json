@@ -8,7 +8,6 @@
     "url": "git@github.com:amida-tech/orange-api.git"
   },
   "scripts": {
-    "create-push-notificiations-service-user": "node -r dotenv/config createAccessUser.js",
     "test-services": "node mockScript.js"
   },
   "bugs": {

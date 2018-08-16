@@ -27,12 +27,14 @@ API for Orange medication management app. RESTful and implemented in Node & Mong
 # Development Setup and Run
 
 ## Prerequisites
+
 - Node.js (v0.10+) and NPM
 - Grunt.js
 - MongoDB (v3.6 - higher versions will not work. If you need to downgrade instructions, [click here](https://stackoverflow.com/questions/30379127/how-to-install-earlier-version-of-mongodb-with-homebrew/47449979#47449979))
 - Amida Auth Microservice (https://github.com/amida-tech/amida-auth-microservice)
 
 ## Initialization
+
 - Initalize MongoDB
 - Set up [Amida Auth Microservice](https://github.com/amida-tech/amida-auth-microservice)
   - see Auth Microservice README for details on setup
@@ -59,17 +61,7 @@ Note: This is optional. These steps are in their own section because this setup 
 
 Note: Their values must be identical to the corresponding variables in your Amida Notification Microservice.
 
-3. Create the service user on the the Auth Service which will perform notification actions:
-
-Before proceeding, the machine you are currently using must have Node.js installed.
-
-Note: The `AUTH_MICROSERVICE_URL` below is relative to the machine running this command, not to any docker container.
-
-```sh
-npm run create-microservice-service-user -- {AUTH_MICROSERVICE_URL} {PUSH_NOTIFICATIONS_SERVICE_USER_USERNAME} {PUSH_NOTIFICATIONS_SERVICE_USER_PASSWORD}
-```
-
-4. Obtain an Apple Developer Key and corresponding KeyId. You can download this file by logging into the team's apple developer console on `developer.apple.com`. Navigate to `Keys` on the left pane and create or download a key. Add this file to the root of the project and rename it to `iosKey.p8`. Set the corresponding keyId to the value of `PUSH_NOTIFICATIONS_APN_KEY_ID` in your `.env` file.
+3. Obtain an Apple Developer Key and corresponding KeyId. You can download this file by logging into the team's apple developer console on `developer.apple.com`. Navigate to `Keys` on the left pane and create or download a key. Add this file to the root of the project and rename it to `iosKey.p8`. Set the corresponding keyId to the value of `PUSH_NOTIFICATIONS_APN_KEY_ID` in your `.env` file.
 
 ## Build and Run in Development
 
@@ -128,7 +120,9 @@ From the Locust web interface you can change the settings and run the load-test
 
 # Deployment
 
-## Docker
+## Deployment Via Docker
+
+Prerequisite: The [Amida Notification Service](https://github.com/amida-tech/amida-notification-microservice) up and running.
 
 Docker deployment requires two docker containers:
 - An instance of the official MongoDB 3.6 docker image (see: https://hub.docker.com/_/mongo/).
@@ -142,21 +136,17 @@ Also, the containers communicate via a docker network. Therefore,
 docker network create {DOCKER_NETWORK_NAME}
 ```
 
-2. Create the service user on the the Auth Service which will perform notification actions.
-
-See instructions in step 2 of [Enabling Push Notifications](#Enabling-Push-Notifications)
-
 3. Start the MongoDB container:
 
 ```sh
 docker run -d --name amida-orange-api-db --network {DOCKER_NETWORK_NAME} mongo:3.6
 ```
 
-4. Create a `.env` file for use by this service's docker container. A good starting point is this repo's `.env.production` file.
+4. Create a `.env` file for use by this service's docker container. A good starting point is this repo's `.env.production` file. For additional details, see the next step.
 
-In order to configure push notifications correctly, see the [Enabling Push Notifications](#Enabling-Push-Notifications) subsection under [Development Setup and Run](#Development-Setup-and-Run)
+5. Configure push notifications according to the [Enabling Push Notifications](#Enabling-Push-Notifications) subsection under [Development Setup and Run](#Development-Setup-and-Run)
 
-5. Start the Orange API container:
+6. Start the Orange API container:
 
 ```sh
 docker run -d -p 5000:5000 \
