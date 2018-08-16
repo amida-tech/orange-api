@@ -1,5 +1,4 @@
-Orange Backend API
-=========
+# Orange API
 
 [![Build Status](https://travis-ci.org/amida-tech/orange-api.svg?branch=master)](https://travis-ci.org/amida-tech/orange-api)
 [![Coverage Status](https://coveralls.io/repos/amida-tech/orange-api/badge.svg?branch=master)](https://coveralls.io/r/amida-tech/orange-api?branch=master)
@@ -58,7 +57,7 @@ Variables are listed below in this format:
 `JWT_SECRET` (Required) Must match value of the JWT secret being used by your `amida-auth-microservice` instance.
 - See that repo for details.
 
-## Push Notifications
+## Integration With Amida Notification Microservice
 
 `NOTIFICATION_MICROSERVICE_URL` The URL of the Notification Service API.
 - The URL of the staging Notification Server is `https://orange-notification-staging.amida-services.com/api`
@@ -83,16 +82,16 @@ Note: iOS push notifications do not and cannot work in development.
 
 **WARNING**: You can only send Apple push notifications if your host is configured with SSL termination. Without this Apple may permanently invalidate the key you use to send the push notification.
 
+`PUSH_NOTIFICATIONS_APN_ENV` [`development`] Apple Push Notification environment.
+- Valid values are `development` and `production`.
+- When using Test Flight, set to `production.`
+
 `PUSH_NOTIFICATIONS_APN_TEAM_ID` The ID of the Amida "team" in Apple Developer Console.
 - The value is the prefix of iOS app ID.
 - Production value stored in Amida's password vault.
 
 `PUSH_NOTIFICATIONS_APN_KEY_ID` Tells apple to use this key to encrypt the payload of push notifications that Apple sends to end-user devices.
 - Value stored in Amida's password vault.
-
-`PUSH_NOTIFICATIONS_APN_ENV` [`development`] Apple Push Notification environment.
-- Valid values are `development` and `production`.
-- When using Test Flight, set to `production.`
 
 `PUSH_NOTIFICATIONS_APN_TOPIC` [`com.amida.orangeIgnite`] The Apple Developer Console name of this app.
 
