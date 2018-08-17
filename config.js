@@ -9,9 +9,12 @@ const envVarsSchema = Joi.object({
     NOTIFICATION_EMAIL_FROM: Joi.string().email(),
     NOTIFICATION_SENDGRID_API_KEY: Joi.string().allow('')
         .description('Email Notification Sendgrid API Key'),
-    TWILIO_TEXT_FROM: Joi.string(),
-    TWILIO_SID: Joi.string(),
-    TWILIO_AUTH_TOKEN: Joi.string(),
+    TWILIO_TEXT_FROM: Joi.string()
+        .default('+1 (000) 000-0000'),
+    TWILIO_SID: Joi.string()
+        .default('ACXXXXXXX SID HERE'),
+    TWILIO_AUTH_TOKEN: Joi.string()
+        .default('AUTH TOKEN'),
     FACEBOOK_CLIENT_ID: Joi.number()
         .default(149343912420944),
     FACEBOOK_CLIENT_SECRET: Joi.string()
