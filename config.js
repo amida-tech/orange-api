@@ -16,12 +16,10 @@ const envVarsSchema = Joi.object({
         .default(149343912420944),
     FACEBOOK_CLIENT_SECRET: Joi.string()
         .default('66db0a9b905a5d12867a112ad8b83b6c'),
-    FACEBOOK_CALLBACK_URL: Joi.string()
-        .default('http://localhost:5000/v1/auth/facebook/callback'),
+    FACEBOOK_CALLBACK_URL: Joi.string(),
     FACEBOOK_PROFILE_FIELDS: Joi.array().items(Joi.string())
         .default(['id', 'name', 'displayName', 'picture', 'email']),
-    MONGO_URI: Joi.string()
-        .default('mongodb://localhost:27017/orange-api'),
+    MONGO_URI: Joi.string(),
     EXPRESS_PORT: Joi.number()
         .default(5000),
     X_CLIENT_SECRET: Joi.string().required()
