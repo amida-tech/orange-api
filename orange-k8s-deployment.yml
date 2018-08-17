@@ -21,7 +21,7 @@ spec:
           value: production
         - name: JWT_SECRET
           value: 0a6b944d-d2fb-46fc-a85e-0295c986cd9f
-        - name: MONGO_SSL
+        - name: MONGO_SSL_ENABLED
           value: "false"
         - name: PUSH_NOTIFICATIONS_ENABLED
           value: "false"

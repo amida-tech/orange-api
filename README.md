@@ -190,14 +190,14 @@ MongoDB connection URI.
   - The docker container running MongoDB and this service's container are a part of the same docker network.
   - Until we update the mongoose version, you must specify the port number, else you get this error: https://stackoverflow.com/questions/51156334/unhandled-rejection-mongoerror-port-must-be-specified
 
-##### `MONGO_SSL` (Required) [`false`]
+##### `MONGO_SSL_ENABLED` (Required) [`false`]
 
 Enable SSL for the connection to MongoDB.
 - In production, set to true.
 
-##### `MONGO_CERT_CA`
+##### `MONGO_CA_CERT`
 
-Only used when `MONGO_SSL=true`. Specifies an SSL cert to trust for the connection to MongoDB. If not set, only Mozilla's list of root certs are trusted.
+Only used when `MONGO_SSL_ENABLED=true`. Specifies an SSL cert to trust for the connection to MongoDB. If not set, only Mozilla's list of root certs are trusted.
 
 ## Integration With Amida Auth Microservice
 

@@ -30,10 +30,10 @@ const envVarsSchema = Joi.object({
         .description('set to "null" to enable mobile apps. !!ARH add more better descriptionz.'),
     AUTH_MICROSERVICE_URL: Joi.string().allow('')
         .description('Auth microservice endpoint'),
-    MONGO_SSL: Joi.boolean()
+    MONGO_SSL_ENABLED: Joi.boolean()
         .default(false)
         .description('Enable SSL connection to MongoDB'),
-    MONGO_CERT_CA: Joi.string()
+    MONGO_CA_CERT: Joi.string()
         .description('SSL certificate CA'), // Certificate itself, not a filename
     PUSH_NOTIFICATIONS_ENABLED: Joi.boolean()
         .default(false),
@@ -67,8 +67,8 @@ const config = module.exports = {
     authServiceAPI: envVars.AUTH_MICROSERVICE_URL,
     mongo: envVars.MONGO_URI,
     port: envVars.EXPRESS_PORT,
-    ssl: envVars.MONGO_SSL,
-    ssl_ca_cert: envVars.MONGO_CERT_CA,
+    sslEnabled: envVars.MONGO_SSL_ENABLED,
+    sslCaCert: envVars.MONGO_CA_CERT,
 
     // Notification related
     apnKeyId: envVars.PUSH_NOTIFICATIONS_APN_KEY_ID,
@@ -104,8 +104,3 @@ const config = module.exports = {
       profileFields: envVars.FACEBOOK_PROFILE_FIELDS,
     }
 }
-
-
-console.log('config.js process.env and config')
-console.log(process.env)
-console.log(config)
