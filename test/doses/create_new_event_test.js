@@ -71,10 +71,25 @@ describe("Doses", function () {
             return expect(createPatientDose({ date: undefined })).to.be.an.api.error(400, "date_required");
         });
         it("requires a nonblank date", function () {
-            return expect(createPatientDose({ date: "" })).to.be.an.api.error(400, "date_required");
+            return expect(createPatientDose({ date: "" })).to.be.an.api.error(400, "invalid_date");
         });
         it("rejects invalid dates", function () {
             return expect(createPatientDose({ date: "foobar" })).to.be.an.api.error(400, "invalid_date");
+        });
+        // it("rejects invalid dates 2", function () {
+        //     return expect(createPatientDose({ date: {utc: "foobar"} })).to.be.an.api.error(400, "invalid_date");
+        // });
+
+        it("requires a valid timezone", function () {
+            return expect(createPatientDose({ date: {utc: new Date().toISOString(), timezone: "FakeCountry/Los_Angeles"} })).to.be.an.api.error(400, "invalid_timezone");
+        });
+
+        it("requires a nonblank timezone", function () {
+            return expect(createPatientDose({ date: {utc: new Date().toISOString(), timezone: ""} })).to.be.an.api.error(400, "invalid_timezone");
+        });
+
+        it("requires a defined timezone", function () {
+            return expect(createPatientDose({ date: {utc: new Date().toISOString(), timezone: undefined} })).to.be.an.api.error(400, "invalid_timezone");
         });
 
         it("requires a `taken` value", function () {
@@ -166,7 +181,7 @@ describe("Doses", function () {
             it("rejects a medication ID belonging to another patient", function () {
                 var endpoint = create({
                     notes: "foobar",
-                    date: (new Date()).toISOString(),
+                    date: {utc: (new Date()).toISOString(), timezone:  "America/Los_Angeles"},
                     medication_id: otherPatient.medications[0]._id
                 }, patient._id, patient.user.accessToken);
                 return expect(endpoint).to.be.an.api.error(400, "invalid_medication_id");
@@ -207,7 +222,7 @@ describe("Doses", function () {
             it("accepts a `scheduled` value corresponding to a valid scheduled event time", function () {
                 return expect(create({
                     notes: "foobar",
-                    date: (new Date()).toISOString(),
+                    date: {utc: (new Date()).toISOString(), timezone:  "America/Los_Angeles"},
                     medication_id: medication._id,
                     taken: true,
                     scheduled: scheduled
@@ -216,7 +231,7 @@ describe("Doses", function () {
             it("rejects a `scheduled` value not corresponding to a valid scheduled event time", function () {
                 return expect(create({
                     notes: "foobar",
-                    date: (new Date()).toISOString(),
+                    date: {utc: (new Date()).toISOString(), timezone:  "America/Los_Angeles"},
                     medication_id: medication._id,
                     taken: true,
                     scheduled: scheduled + 1
