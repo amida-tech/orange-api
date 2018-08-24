@@ -39,7 +39,7 @@
     "gulp": "^3.9.1",
     "handlebars": "~4.0.0",
     "husky": "^0.14.3",
-    "image-type": "^2.0.2",
+    "image-type": "^3.0.0",
     "inflected": "^1.1.6",
     "joi": "^13.4.0",
     "jsonwebtoken": "^8.1.1",
