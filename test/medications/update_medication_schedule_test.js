@@ -48,12 +48,11 @@ describe("Medications", function () {
         var beforeChange = moment().subtract(10, "days");
         var afterChange = moment().add(10, "days");
 
-        console.log("beforeChange", beforeChange);
         // create two doses
         before(function () {
             return Q.nbind(patient.createDose, patient)({
                 notes: "",
-                date: {utc: beforeChange, timezone:  "America/Los_Angeles"},
+                date: {utc: beforeChange, timezone: "America/Los_Angeles"},
                 taken: true,
                 creator: "adam@west.com",
                 medication_id: medication._id,
@@ -63,7 +62,7 @@ describe("Medications", function () {
         before(function () {
             return Q.nbind(patient.createDose, patient)({
                 notes: "",
-                date: {utc: beforeChange, timezone:  "America/Los_Angeles"},
+                date: {utc: beforeChange, timezone: "America/Los_Angeles"},
                 taken: true,
                 creator: "adam@west.com",
                 medication_id: medication._id,
@@ -72,14 +71,6 @@ describe("Medications", function () {
         });
 
         it("should let us change the schedule to once per day", function () {
-            // var start = moment(beforeChange).subtract(1, "day");
-            // var end = moment(afterChange).add(1, "day");
-            // var endpoint = schedule(start, end, medication._id, patient._id, patient.user.accessToken);
-            // endpoint.then(function (resp)  {
-            //     console.log("Before broken test Jonah");
-
-            //     console.log(resp.body.schedule);
-            // })
             return expect(updateMed({
                 schedule: {
                     as_needed: false,
@@ -117,15 +108,10 @@ describe("Medications", function () {
             return endpoint.then(function (resp) {
                 expect(resp).to.be.a.schedule.resp;
 
-                console.log("Inside broken test");
-
-                console.log(resp.body.schedule);
-
-
                 // 3 doses taken
                 expect(resp.body.schedule.filter(function (e) {
                     return e.took_medication === true;
-                }).length).to.equal(5);
+                }).length).to.equal(3);
 
                 // start with two a day
                 expect(resp.body.schedule[0].scheduled).to.equal(0);
