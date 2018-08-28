@@ -7,10 +7,11 @@ var monky = module.exports = new Monky(mongoose);
 
 /*eslint-disable key-spacing */
 monky.factory("Dose", {
-    date: (new Date()).toISOString(),
+    date: {utc: (new Date()).toISOString(), timezone:  "America/Los_Angeles"},
     dose: {unit: "unit", quantity:1},
     notes: "Lorem ipsum #n",
     taken: true,
+    creator: "adam@west.com",
     scheduled: null
 });
 /*eslint-enable key-spacing */

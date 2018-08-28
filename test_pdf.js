@@ -13,13 +13,22 @@ var util            = require("util"),
 var user, patient, accessToken, medication;
 
 // connect to DB
-Q.nbind(mongoose.connect, mongoose)("mongodb://localhost/orange-api").then(function () {
+var options = {
+    useNewUrlParser: true
+};
+if (config.ssl) {
+    options.server = {};
+    options.server.ssl = config.ssl;
+    if (config.ssl_ca_cert) {
+        options.server.sslCA = config.ssl_ca_cert;
+    }
+}
+Q.nbind(mongoose.connect, mongoose)(config.mongo, options).then(function () {
     // hackish unique email
     var email = util.format("%s@test.com", crypto.randomBytes(4).toString("hex"));
     var User = mongoose.model("User");
     return Q.nbind(User.create, User)({
         email: email,
-        password: "testpassword",
         first_name: "Harold",
         last_name: "Ricardo"
     }).then(function (u) {

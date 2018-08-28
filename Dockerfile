@@ -1,12 +1,18 @@
 FROM        centos:centos7
-MAINTAINER  Harry Rickards <rickards@mit.edu>
+MAINTAINER  Amida Ops <ops@amida.com>
 
 # Enable EPEL, git, Node.js/npm and zeromq
-RUN yum -y update; yum clean all
-RUN yum -y install epel-release; yum clean all
-RUN yum -y install nodejs npm; yum clean all
-RUN yum -y install zeromq zeromq-devel; yum clean all
-RUN yum -y install gcc-c++ openssl-devel make; yum clean all
+RUN yum -y update; yum clean all && \
+    yum -y install epel-release; yum clean all
+
+# Install 0MQ, C tools, and OpenSSL
+RUN yum -y groupinstall "Development Tools"; yum clean all
+
+# Install node and npm from the official repos
+RUN curl -sL https://rpm.nodesource.com/setup_8.x | bash - && \
+    yum -y install nodejs; yum -y install npm; yum clean all
+
+# Install the ever-beloved node-gyp
 RUN npm install -g node-gyp
 
 # Copy package.json and install app dependencies
@@ -19,7 +25,8 @@ WORKDIR /src
 # Copy app source
 # .dockerignore crucially means we don't copy node_modules
 COPY . /src
-COPY ./config.js.docker /src/config.js
+COPY ./.env.docker /src/.env
+# COPY ./iosKey.p8 /src/iosKey.p8
 
 EXPOSE 5000
 ENV NODE_ENV production

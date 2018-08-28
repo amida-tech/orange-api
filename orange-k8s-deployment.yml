@@ -1,0 +1,48 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: testing-orange-api-deployment
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: amida-orange-api
+    spec:
+      # imagePullSecrets:
+      # - name: regsecret
+      containers:
+      - name: orange-api
+        image: amidatech/orange-api:latest
+        env:
+        - name: NODE_ENV
+          value: production
+        - name: X_CLIENT_SECRET
+          value: production
+        - name: JWT_SECRET
+          value: 0a6b944d-d2fb-46fc-a85e-0295c986cd9f
+        - name: MONGO_SSL
+          value: "false"
+        - name: PUSH_NOTIFICATION_ENABLED
+          value: "false"
+        - name: PUSH_NOTIFICATION_KEYID
+          value: XXXXXX
+        - name: PUSH_NOTIFICATION_TEAMID
+          value: XXXXXX
+        - name: PUSH_NOTIFICATION_FIREBASE_SERVER_KEY
+          value: XXXXXXXXX.XXXXXXX.XXXXX.
+        - name: PUSH_NOTIFICATION_MICROSERVICE_ACCESS_KEY
+          value: oucuYaiN6pha3ahphiiT
+        - name: PUSH_NOTIFICATION_MICROSERVICE_PASSWORD
+          value: T@estTest1
+        - name: NOTIFICATION_SENDGRID_API_KEY
+          value: XXXXXXXXXXXXXXXXX
+        - name: NOTIFICATION_SERVICE_URL
+          value: https://orange-notification-staging.amida-services.com/api
+        - name: AUTH_MICROSERVICE_URL
+          value: https://orange-auth-staging.amida-services.com/api/v1
+        - name: MONGO_URI
+          value: XXXXXXXXXX
+        ports:
+        - name: nodejs-port
+          containerPort: 5000

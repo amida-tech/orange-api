@@ -1,9 +1,11 @@
 "use strict";
 // Web
-var express         = require("express"),
-    bunyan          = require("express-bunyan-logger"),
-    bunyanLogstash  = require("bunyan-logstash");
-var app = module.exports = express();
+const express = require("express");
+const bunyan = require("express-bunyan-logger");
+const bunyanLogstash  = require("bunyan-logstash");
+const cors = require("cors");
+
+const app = module.exports = express();
 
 // disable nagle's algorithm: significantly slows down piping to res, as is
 // done in GET /avatar
@@ -21,7 +23,7 @@ if (typeof config.logger.file !== "undefined") {
         path: config.logger.file.path
     });
 }
-if (typeof config.logger.stdout !== "undefined") {
+if (typeof config.logger.stdout !== "undefined" && process.env.NODE_ENV !== "test") {
     streams.push({
         level: config.logger.stdout.level,
         stream: process.stdout
@@ -46,22 +48,52 @@ app.use(logger);
 
 // Database setup in run.js
 
+// All models: in all other files, just used mongoose.model(NAME)
+// rather than requiring these directly to avoid circular dependencies
+// Models that are purely nested resources under patient are required
+// in patient.js, so don't require them again here
+require("./lib/models/counter.js"); // Require first
+require("./lib/models/rxnorm.js");
+// Patient and User require a getter function for a gridfs client (set as an express
+// setting in run.js but may not be immediately accessible hence the getter function)
+function getGfs() {
+    return app.settings.gridfs;
+}
+require("./lib/models/user/user.js")(getGfs);
+require("./lib/models/patient/patient.js")(getGfs);
+
 // CORS
-app.use(function (req, res, next) {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Credentials", true);
-    res.header("Access-Control-Allow-Headers",
-            "Origin, X-Requested-With, Content-Type, Accept, Authorization, X-Client-Secret");
-    res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-    next();
+const corsDomains = config.accessControlAllowOrigin.split(",").map(function (domain) {
+  return domain.trim();
 });
+
+app.use(cors({
+  origin: function (origin, callback) {
+    if (corsDomains.indexOf(origin) !== -1) {
+      // Cors passes!
+      callback(null, true);
+    } else {
+      // This will make it so that no Access-Control-... headers are returned on
+      // the OPTIONS request, and requests from domains not in the list will fail.
+      // Also, requests from mobile apps and REST tools hit this case, but they still work.
+      callback(null, false);
+    }
+  },
+  credentials: true,
+  allowedHeaders: "Origin, X-Requested-With, Content-Type, Accept, Authorization, X-Client-Secret",
+  methods: "GET, POST, PUT, DELETE, OPTIONS"
+}));
 
 // Prevent caching
 app.disable("etag");
 
 // Parse body params from JSON unless we're viewing an avatar
 var bodyParser = require("body-parser");
-var jsonParser = bodyParser.json();
+
+var jsonParser = bodyParser.json({
+    limit: "5mb"
+});
+
 app.use(function (req, res, next) {
     // we can't access req.route in here as no route has been matched so instead
     // we have to do string magic with req.path
@@ -73,6 +105,11 @@ app.use(function (req, res, next) {
     return jsonParser(req, res, next);
 });
 
+if (process.env.NODE_ENV !== "test") {
+    const passportAuth = require("./lib/controllers/helpers/passport.js")();
+    app.use(passportAuth.initialize());
+}
+
 // every API request needs to have a client secret posted. this is a fixed hexstring
 // that's just read from config.js and directly compared.
 // there are obvious security issues with this approach, but in the context of
@@ -80,8 +117,12 @@ app.use(function (req, res, next) {
 // store the client secret in regardless) it makes sense
 var errors = require("./lib/errors.js").ERRORS;
 app.use(function (req, res, next) {
-    // don't authenticate OPTIONS requests for browser compatbility
+    // don't authenticate OPTIONS requests for browser compatibility
     if (req.method === "OPTIONS") return next();
+
+    // don't authenticate health checks
+    if (req.path.indexOf("/health") >= 0) return next();
+    if (req.path.indexOf("/facebook") >= 0) return next();
 
     // unauthorized
     if (req.headers["x-client-secret"] !== config.secret) return next(errors.INVALID_CLIENT_SECRET);
@@ -89,24 +130,16 @@ app.use(function (req, res, next) {
     next();
 });
 
-// All models: in all other files, just used mongoose.model(NAME)
-// rather than requiring these directly to avoid circular dependencies
-// Models that are purely nested resources under patient are required
-// in patient.js, so don't require them again here
-require("./lib/models/counter.js"); // Require first
-require("./lib/models/rxnorm.js");
-require("./lib/models/user/user.js");
-// Patient requires a getter function for a gridfs client (set as an express
-// setting in run.js but may not be immediately accessible hence the getter function)
-require("./lib/models/patient/patient.js")(function () {
-    return app.settings.gridfs;
-});
+
 
 // App-level router containing all routes
 var router = express.Router();
 
-// Authentication tokens
-router.use("/auth", require("./lib/controllers/auth.js"));
+// Health check endpoint
+router.get("/health", function (req, res) {
+    res.status(200);
+    res.send({ success: true });
+});
 
 // User registration/signup
 router.use("/user", require("./lib/controllers/users.js"));
@@ -138,6 +171,7 @@ patientRouter.use("/medications", require("./lib/controllers/medications.js"));
 patientRouter.use("/journal", require("./lib/controllers/journal.js"));
 patientRouter.use("/doses", require("./lib/controllers/doses.js"));
 patientRouter.use("/schedule", require("./lib/controllers/schedule.js"));
+patientRouter.use("/events", require("./lib/controllers/events.js"));
 
 // nest patient-specific resources under /patients/:id
 router.use("/patients/:patientid", patientRouter);

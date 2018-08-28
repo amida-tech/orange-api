@@ -1,8 +1,12 @@
 "use strict";
 var chakram     = require("chakram"),
     fixtures    = require("./fixtures.js"),
+    mongoose    = require("mongoose"),
+    Q           = require("q"),
     auth        = require("../common/auth.js");
 var expect = chakram.expect;
+
+var User = mongoose.model("User");
 
 describe("Users", function () {
     describe("Registration Endpoint (POST /user)", function () {
@@ -20,7 +24,7 @@ describe("Users", function () {
             return expect(register()).to.be.a.user.registerSuccess;
         });
 
-        // require email and password
+        // require email and role
         it("requires an email", function () {
             return expect(register({ email: undefined })).to.be.an.api.error(400, "email_required");
         });
@@ -30,14 +34,11 @@ describe("Users", function () {
         it("rejects a null email", function () {
             return expect(register({ email: null })).to.be.an.api.error(400, "email_required");
         });
-        it("requires a password", function () {
-            return expect(register({ password: undefined })).to.be.an.api.error(400, "password_required");
+        it("rejects a null role", function () {
+            return expect(register({ role: null })).to.be.an.api.error(400, "invalid_role");
         });
-        it("rejects a blank password", function () {
-            return expect(register({ password: "" })).to.be.an.api.error(400, "password_required");
-        });
-        it("rejects a null password", function () {
-            return expect(register({ password: null })).to.be.an.api.error(400, "password_required");
+        it("rejects a role not in enum", function () {
+            return expect(register({ role: "notintheenum" })).to.be.an.api.error(400, "invalid_role");
         });
         it("does not require a first name", function () {
             return expect(register({ first_name: undefined })).to.be.a.user.registerSuccess;
@@ -61,6 +62,9 @@ describe("Users", function () {
         // require valid email
         it("rejects an invalid email", function () {
             return expect(register({ email: "foobar" })).to.be.an.api.error(400, "invalid_email");
+        });
+        it("allows + sign in email", function () {
+            return expect(register({ email: "foobar+baz@example.com" })).to.be.a.user.registerSuccess;
         });
 
         // duplication
@@ -93,12 +97,16 @@ describe("Users", function () {
                 });
             };
             // use user credentials to authenticate and get access token
-            // need to do this via HTTP rather than using user to avoid duplication errors
-            var token = function (user) {
-                // auth.genAuthHeaders sends client secret
-                return chakram.post("http://localhost:5000/v1/auth/token", user, headers).then(function (resp) {
-                    return resp.body.access_token;
+            // need to get user we just made out of DB to avoid duplication errors
+            var token = function (userData) {
+                var deferred = Q.defer();
+                User.findOne({ email: userData.email }, function(err, user) {
+                    if (err) {
+                        deferred.reject(err);
+                    }
+                    deferred.resolve(auth.genAccessToken(user));
                 });
+                return deferred.promise;
             };
             // get list of all patients
             var list = function (accessToken) {
@@ -107,6 +115,7 @@ describe("Users", function () {
             };
             return newUser.then(registerUser).then(token).then(list).then(function (response) {
                 // check we have exactly one patient
+                expect(response.body.patients).to.be.an("array");
                 expect(response.body.patients.length).to.equal(1);
                 // check it has the right name and phone number
                 var patient = response.body.patients[0];

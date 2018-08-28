@@ -12,6 +12,8 @@ var expect = chakram.expect;
 
 describe("Doses", function () {
     describe("Add New Dosing Event (POST /patients/:patientid/doses)", function () {
+        var currentUser = null;
+
         // basic endpoint
         var create = module.exports.create = function (data, patientId, accessToken) {
             var url = util.format("http://localhost:5000/v1/patients/%d/doses", patientId);
@@ -22,6 +24,7 @@ describe("Doses", function () {
         // that patient and then a new dosing event for that medication
         // event for the patient based on the factory
         var createDose = function (data, patient) {
+            currentUser = patient.user;
             return Q.nbind(patient.createMedication, patient)({name: "foobar"}).then(function (medication) {
                 return fixtures.build("Dose", data).then(function (dose) {
                     // allow medication_id to be explicitly overwritten
@@ -57,15 +60,36 @@ describe("Doses", function () {
             return expect(createPatientDose({})).to.be.a.dose.createSuccess;
         });
 
+        it("includes my email as the creator in the response", function () {
+            return createPatientDose({}).then(response => {
+                return expect(response).to.comprise.of.json({ creator: currentUser.email });
+            });
+        });
+
         // validation testing
         it("requires a date", function () {
             return expect(createPatientDose({ date: undefined })).to.be.an.api.error(400, "date_required");
         });
         it("requires a nonblank date", function () {
-            return expect(createPatientDose({ date: "" })).to.be.an.api.error(400, "date_required");
+            return expect(createPatientDose({ date: "" })).to.be.an.api.error(400, "invalid_date");
         });
         it("rejects invalid dates", function () {
             return expect(createPatientDose({ date: "foobar" })).to.be.an.api.error(400, "invalid_date");
+        });
+        // it("rejects invalid dates 2", function () {
+        //     return expect(createPatientDose({ date: {utc: "foobar"} })).to.be.an.api.error(400, "invalid_date");
+        // });
+
+        it("requires a valid timezone", function () {
+            return expect(createPatientDose({ date: {utc: new Date().toISOString(), timezone: "FakeCountry/Los_Angeles"} })).to.be.an.api.error(400, "invalid_timezone");
+        });
+
+        it("requires a nonblank timezone", function () {
+            return expect(createPatientDose({ date: {utc: new Date().toISOString(), timezone: ""} })).to.be.an.api.error(400, "invalid_timezone");
+        });
+
+        it("requires a defined timezone", function () {
+            return expect(createPatientDose({ date: {utc: new Date().toISOString(), timezone: undefined} })).to.be.an.api.error(400, "invalid_timezone");
         });
 
         it("requires a `taken` value", function () {
@@ -157,7 +181,7 @@ describe("Doses", function () {
             it("rejects a medication ID belonging to another patient", function () {
                 var endpoint = create({
                     notes: "foobar",
-                    date: (new Date()).toISOString(),
+                    date: {utc: (new Date()).toISOString(), timezone:  "America/Los_Angeles"},
                     medication_id: otherPatient.medications[0]._id
                 }, patient._id, patient.user.accessToken);
                 return expect(endpoint).to.be.an.api.error(400, "invalid_medication_id");
@@ -198,7 +222,7 @@ describe("Doses", function () {
             it("accepts a `scheduled` value corresponding to a valid scheduled event time", function () {
                 return expect(create({
                     notes: "foobar",
-                    date: (new Date()).toISOString(),
+                    date: {utc: (new Date()).toISOString(), timezone:  "America/Los_Angeles"},
                     medication_id: medication._id,
                     taken: true,
                     scheduled: scheduled
@@ -207,7 +231,7 @@ describe("Doses", function () {
             it("rejects a `scheduled` value not corresponding to a valid scheduled event time", function () {
                 return expect(create({
                     notes: "foobar",
-                    date: (new Date()).toISOString(),
+                    date: {utc: (new Date()).toISOString(), timezone:  "America/Los_Angeles"},
                     medication_id: medication._id,
                     taken: true,
                     scheduled: scheduled + 1

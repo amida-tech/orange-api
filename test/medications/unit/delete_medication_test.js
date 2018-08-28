@@ -49,8 +49,9 @@ describe("Medications", function () {
         var entryId, doseId;
         before(function () {
             return Q.nbind(patient.createJournalEntry, patient)({
-                date: (new Date()).toISOString(),
+                date: {utc: (new Date()).toISOString(), timezone:  "America/Los_Angeles"},
                 text: "example journal entry",
+                creator: "adam@west.com",
                 medication_ids: [medication._id]
             }).then(function (e) {
                 entryId = e._id;
@@ -59,7 +60,8 @@ describe("Medications", function () {
         before(function () {
             return Q.nbind(patient.createDose, patient)({
                 medication_id: medication._id,
-                date: (new Date()).toISOString(),
+                date: {utc: (new Date()).toISOString(), timezone:  "America/Los_Angeles"},
+                creator: "adam@west.com",
                 taken: true
             }).then(function (d) {
                 doseId = d._id;

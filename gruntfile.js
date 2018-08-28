@@ -1,7 +1,9 @@
 "use strict";
+var config = require("./config.js");
 module.exports = function (grunt) {
     // load all grunt task libraries
     require("load-grunt-tasks")(grunt);
+    grunt.loadNpmTasks("grunt-contrib-watch");
 
     // run app
     grunt.registerTask("server:dev", ["express:dev", "watch:express"]);
@@ -30,9 +32,19 @@ module.exports = function (grunt) {
     grunt.registerTask("dropDatabase", function () {
         // force grunt into async
         var done = this.async();
-        mongoose.connect("mongodb://localhost/orange-api", function (err) {
+        var options = {
+            useNewUrlParser: true
+        };
+        if (config.ssl) {
+            options.server = {};
+            options.server.ssl = config.ssl;
+            if (config.ssl_ca_cert) {
+                options.server.sslCA = config.ssl_ca_cert;
+            }
+        }
+        mongoose.connect(config.mongo, options, function (err) {
             if (err) return done(err);
-            mongoose.connection.db.dropDatabase(function(err) {
+            mongoose.connection.db.dropDatabase(function (err) {
                 if (err) return done(err);
                 console.log("Database dropped");
                 mongoose.connection.close(done);
@@ -52,6 +64,7 @@ module.exports = function (grunt) {
             all: {
                 options: {
                     reporter: "spec",
+                    // bail: true,
                     timeout: "10000"
                 },
                 src: ["test/common/db_helper.js", "test/common/*.js", "test/*.js", "test/*/common.js", "test/**/*.js"]
@@ -62,7 +75,7 @@ module.exports = function (grunt) {
                     timeout: "10000"
                 },
                 src: ["test/common/db_helper.js", "test/common/*.js", "test/*/common.js", "test/*/unit/*.js",
-                      "test/*/unit/**/*.js"]
+                    "test/*/unit/**/*.js"]
             }
         },
 
@@ -90,10 +103,10 @@ module.exports = function (grunt) {
 
         watch: {
             express: {
-                // reloading broken on OSX because of EMFILE hence this hack
-                files: [ "gruntfile.js"],
-                tasks: [ "express:dev" ],
+                files: ["app.js", "lib/*.js", "lib/**/*.js"],
+                tasks: ["eslint", "express:dev"],
                 options: {
+                    livereload: true,
                     spawn: false
                 }
             },
@@ -105,7 +118,7 @@ module.exports = function (grunt) {
                     "gruntfile.js",
                     "lib/models/schedule/schedule.js"
                 ],
-                tasks: [ "generateTestPdf" ],
+                tasks: ["generateTestPdf"],
                 options: {
                     spawn: false
                 }

@@ -65,21 +65,30 @@ describe("Journal", function () {
         });
         it("allows all fields", function () {
             return expect(updatePatientEntry({}, {
-                date: (new Date()).toISOString(),
+                date: {utc: (new Date()).toISOString(), timezone:  "America/Los_Angeles"},
                 text: "test date",
                 medication_ids: [],
-                mood: "so so sad"
+                mood: "so so sad",
+                moodSeverity: 7,
+                moodEmoji: "\\U0001F625",
+                sideEffect: "not feeling well",
+                sideEffectSeverity: 7,
+                activity: "meditation",
+                activityMinutes: 1
             })).to.be.a.journal.success;
         });
-        it("rejects blank text", function () {
-            return expect(updatePatientEntry({}, {
+        it("allows a blank text", function () {
+            return updatePatientEntry({}, {
                 text: ""
-            })).to.be.an.api.error(400, "text_required");
+            }).then(function (response) {
+                expect(response).to.be.a.journal.success;
+                expect(response.body.text).to.equal("");
+            });
         });
         it("rejects blank dates", function () {
             return expect(updatePatientEntry({}, {
                 date: ""
-            })).to.be.an.api.error(400, "date_required");
+            })).to.be.an.api.error(400, "invalid_date");
         });
         it("rejects invalid dates", function () {
             return expect(updatePatientEntry({}, {
@@ -102,6 +111,21 @@ describe("Journal", function () {
                 expect(response.body.mood).to.equal("");
             });
         });
+        //moodEmoji
+        it("rejects a blank mood Emoji", function () {
+            return expect(updatePatientEntry({}, {
+                moodEmoji: ""})).to.be.an.api.error(400, "invalid_emoji");
+        });
+
+        it("allows a null mood Emoji", function (){
+            return updatePatientEntry({}, {
+                moodEmoji: null
+            }).then(function (response) {
+                expect(response).to.be.a.journal.success;
+                expect(response).to.not.have.key("moodEmoji");
+            });
+        });
+
         it("ignores a passed hashtags field", function () {
             return updatePatientEntry({
                 text: "#test"
@@ -148,13 +172,15 @@ describe("Journal", function () {
                 // setup current user and two patients for them, both with a medication
                 return auth.createTestUser()
                 .then(curry(patients.createMyPatient)({}))
-                .then(function (p) {
+                .then(p => {
                     patient = p;
-                })
-                .then(function () {
-                    var med1 = Q.nbind(patient.createMedication, patient)({ name: "foobar" });
-                    var med2 = Q.nbind(patient.createMedication, patient)({ name: "foobar" });
-                    return med1.then(med2);
+                    return Q.nbind(patient.createMedication, patient)({
+                        name: "foobar"
+                    });
+                }).then(() => {
+                    return Q.nbind(patient.createMedication, patient)({
+                        name: "foobar"
+                    });
                 });
             });
 

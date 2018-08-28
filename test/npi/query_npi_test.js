@@ -40,4 +40,25 @@ describe("NPI", function () {
             });
         });
     });
+    describe("Get Data (GET /npi/:npi)", function () {
+        // basic endpoint
+        var getData = function (npi) {
+            var headers = auth.genAuthHeaders(null);
+            return chakram.get(`http://localhost:5000/v1/npi/${npi}`, headers);
+        };
+        it("gracefully handles invalid npi", function () {
+            return getData("42").then(function (response) {
+                expect(response.body).to.be.an("object");
+                expect(response.body).to.be.empty;
+            });
+        });
+        it("returns results for a valid npi", function () {
+            return getData("1245319599").then(function (response) {
+                expect(response.body).to.be.an("object");
+                expect(response.body).to.have.property("number", 1245319599);
+                expect(response.body.basic).to.be.an("object");
+                expect(response.body.basic).to.have.property("last_name", "SAMPLE");
+            });
+        });
+    });
 });

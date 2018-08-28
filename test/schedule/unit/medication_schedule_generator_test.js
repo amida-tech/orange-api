@@ -96,35 +96,40 @@ describe("Schedule", function () {
             var createDose = Q.nbind(patient.createDose, patient);
             return createDose({
                 medication_id: medication._id,
-                date: moment(moment.tz(day1, tz).startOf("day") + doseDelta),
+                date: {utc: moment(moment.tz(day1, tz).startOf("day") + doseDelta), timezone:  "America/Los_Angeles"},
                 scheduled: medication.schedule.times[0]._id,
+                creator: "adam@west.com",
                 taken: false
             }).then(function () {
                 return createDose({
                     medication_id: medication._id,
-                    date: moment(moment.tz(day2, tz).startOf("day") + doseDelta),
+                    date: {utc: moment(moment.tz(day2, tz).startOf("day") + doseDelta), timezone:  "America/Los_Angeles"},
                     scheduled: medication.schedule.times[0]._id,
+                    creator: "adam@west.com",
                     taken: true
                 });
             }).then(function () {
                 return createDose({
                     medication_id: medication._id,
-                    date: moment(moment.tz(day3, tz).startOf("day") + doseDelta),
+                    date: {utc: moment(moment.tz(day3, tz).startOf("day") + doseDelta), timezone:  "America/Los_Angeles"},
                     scheduled: medication.schedule.times[0]._id,
+                    creator: "adam@west.com",
                     taken: true
                 });
             }).then(function () {
                 return createDose({
                     medication_id: medication._id,
-                    date: moment.tz(day1, tz).subtract(2, "days").utc(),
+                    date: {utc: moment.tz(day1, tz).subtract(2, "days").utc(), timezone:  "America/Los_Angeles"},
                     scheduled: medication.schedule.times[0]._id,
+                    creator: "adam@west.com",
                     taken: true
                 });
             }).then(function () {
                 return createDose({
                     medication_id: medication._id,
-                    date: moment(moment.tz(day3, tz).startOf("day") + doseDelta),
+                    date: {utc: moment(moment.tz(day3, tz).startOf("day") + doseDelta), timezone:  "America/Los_Angeles"},
                     scheduled: null,
+                    creator: "adam@west.com",
                     taken: true
                 });
             //}).then(function () {

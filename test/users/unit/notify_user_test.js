@@ -39,16 +39,21 @@ describe("Users", function () {
             };
             // and likewise with texter (sends SMS') so we don't make actual twilio requests
             data.texter = {
-                sendMessage: function (details, callback) {
-                    // very rudimentary validation of phone numbers to check handling of invalid
-                    // phone numbers
-                    var phone = details.to;
-                    // regex checks no non-numeric characters are present
-                    if (typeof phone === "undefined" || phone === null || phone.match(/[^\d]/i))
-                        return callback(new Error("Invalid phone number"));
+                messages: {
+                    create: function (details) {
+                        return new Promise((resolve, reject) => {
+                            // very rudimentary validation of phone numbers to check handling of invalid
+                            // phone numbers
+                            var phone = details.to;
+                            // regex checks no non-numeric characters are present
+                            if (typeof phone === "undefined" || phone === null || phone.match(/[^\d]/i)) {
+                                return reject(new Error("Invalid phone number"));
+                            }
 
-                    textSpy(details);
-                    callback();
+                            textSpy(details);
+                            return resolve(details);
+                        });
+                    }
                 }
             };
 

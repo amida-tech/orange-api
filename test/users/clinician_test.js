@@ -41,7 +41,7 @@ describe("Users", function () {
         var clinician;
         before(function () {
             return auth.createTestUser({
-                clinician: true
+                role: "clinician"
             }).then(function (u) {
                 clinician = u;
             });
