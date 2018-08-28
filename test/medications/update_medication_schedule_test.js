@@ -52,7 +52,7 @@ describe("Medications", function () {
         before(function () {
             return Q.nbind(patient.createDose, patient)({
                 notes: "",
-                date: {utc: beforeChange, timezone:  "America/Los_Angeles"},
+                date: {utc: beforeChange, timezone: "America/Los_Angeles"},
                 taken: true,
                 creator: "adam@west.com",
                 medication_id: medication._id,
@@ -62,7 +62,7 @@ describe("Medications", function () {
         before(function () {
             return Q.nbind(patient.createDose, patient)({
                 notes: "",
-                date: {utc: beforeChange, timezone:  "America/Los_Angeles"},
+                date: {utc: beforeChange, timezone: "America/Los_Angeles"},
                 taken: true,
                 creator: "adam@west.com",
                 medication_id: medication._id,
