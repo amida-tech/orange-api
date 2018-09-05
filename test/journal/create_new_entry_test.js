@@ -72,10 +72,22 @@ describe("Journal", function () {
             return expect(createPatientEntry({ date: undefined })).to.be.an.api.error(400, "date_required");
         });
         it("requires a nonblank date", function () {
-            return expect(createPatientEntry({ date: "" })).to.be.an.api.error(400, "date_required");
+            return expect(createPatientEntry({ date: "" })).to.be.an.api.error(400, "invalid_date");
         });
         it("rejects invalid dates", function () {
             return expect(createPatientEntry({ date: "foobar" })).to.be.an.api.error(400, "invalid_date");
+        });
+
+        it("requires a valid timezone", function () {
+            return expect(createPatientEntry({ date: {utc: new Date().toISOString(), timezone: "FakeCountry/Los_Angeles"} })).to.be.an.api.error(400, "invalid_timezone");
+        });
+
+        it("requires a nonblank timezone", function () {
+            return expect(createPatientEntry({ date: {utc: new Date().toISOString(), timezone: ""} })).to.be.an.api.error(400, "invalid_timezone");
+        });
+
+        it("requires a defined timezone", function () {
+            return expect(createPatientEntry({ date: {utc: new Date().toISOString(), timezone: undefined} })).to.be.an.api.error(400, "invalid_timezone");
         });
 
         it("doesn't require a text", function () {
@@ -360,7 +372,7 @@ describe("Journal", function () {
             it("does not allow medication IDs corresponding to medications owned by other patients", function () {
                 var endpoint = create({
                     text: "foobar",
-                    date: (new Date()).toISOString(),
+                    date: {utc: (new Date()).toISOString(), timezone:  "America/Los_Angeles"},
                     medication_ids: [otherPatient.medications[0]._id]
                 }, patient._id, patient.user.accessToken);
                 return expect(endpoint).to.be.an.api.error(400, "invalid_medication_id");
@@ -368,7 +380,7 @@ describe("Journal", function () {
             it("allows medication IDs corresponding to the current patient", function () {
                 var endpoint = create({
                     text: "foobar",
-                    date: (new Date()).toISOString(),
+                    date: {utc: (new Date()).toISOString(), timezone:  "America/Los_Angeles"},
                     medication_ids: [patient.medications[0]._id]
                 }, patient._id, patient.user.accessToken);
                 return expect(endpoint).to.be.a.journal.createSuccess;

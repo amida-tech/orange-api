@@ -32,6 +32,9 @@ Variables are listed below in this format:
 
 `X_CLIENT_SECRET` (Required) [None] All requests made to this API must have HTTP header `x-client-secret` with a value that matches this environment variable.
 
+`ACCESS_CONTROL_ALLOW_ORIGIN` Self-explanatory. This only works on requests made from browsers; it does not impact requests from mobile apps or REST tools.
+- To set multiple domains, surround in quotes and separate the domains with commas like this: "http://domain1.com, https://domain2.com"
+
 ### This Service's MongoDB Instance
 
 `MONGO_URI` MongoDB connection URI.

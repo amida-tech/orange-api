@@ -20,7 +20,10 @@ var doseSchema = module.exports.schema = {
     properties: {
         success:        { type: "boolean" },
         id:             { type: "number" },
-        date:           { type: "string" },
+        date:           {
+            utc:        { type: "string" },
+            timezone:   { type: "number"}
+        },
         dose:           {
             type:           ["object", "null"],
             required:       ["quantity", "unit"],
@@ -94,7 +97,7 @@ module.exports.itRequiresValidDoseId = function (endpoint) {
                     // setup dose for otherPatient
                     return Q.nbind(otherPatient.createDose, otherPatient)({
                         medication_id: otherPatient.medications[0]._id,
-                        date: (new Date()).toISOString(),
+                        date: {utc: (new Date()).toISOString(), timezone:  "America/Los_Angeles"},
                         taken: true,
                         creator: "adam@west.com",
                         notes: "foobar"
