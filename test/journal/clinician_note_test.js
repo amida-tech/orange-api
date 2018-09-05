@@ -48,7 +48,7 @@ describe("Clinican Notes", function () {
 			}).then(() => {
 				return Q.nbind(patient.createJournalEntry, patient)({
 					text: "Clinician Note",
-					date: (new Date()).toISOString(),
+					date: {utc: (new Date()).toISOString(), timezone:  "America/Los_Angeles"},
 					creator: clinicianUser.email,
 					role: "clinician"
 				});
@@ -85,7 +85,7 @@ describe("Clinican Notes", function () {
 		});
 
 		it("Asserts that note created by Clincian API user is marked as a clinican note", function () {
-			var modifications = { text: "New clinican note", date: (new Date()).toISOString() };
+			var modifications = { text: "New clinican note", date: { utc: (new Date()).toISOString(), timezone: "America/Los_Angeles"} };
 			return createNote(modifications, patient._id, clinicianUser.accessToken).then(function (response) {
 				expect(response.body.role).to.deep.equal("clinician");
 			});

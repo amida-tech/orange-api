@@ -31,8 +31,9 @@ script:
 
 # instrument code and run tests against instrumented code, then
 # push to coveralls.io
-after_success:
-  - grunt coverage:push
+# Commented out because cover.sh appears to be broken
+#after_success:
+#  - grunt coverage:push
 
 addons:
     apt:

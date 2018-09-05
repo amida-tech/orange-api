@@ -64,4 +64,3 @@ common.addApiChain("schedule", {
         expect(respObj).to.have.schema(scheduleSchema);
     }
 });
-

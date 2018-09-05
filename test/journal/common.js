@@ -21,7 +21,10 @@ var entrySchema = module.exports.schema = {
     properties: {
         success:            { type: "boolean" },
         id:                 { type: "number" },
-        date:               { type: "string" },
+        date:               {
+            utc:            { type: "string" },
+            timezone:       { type: "number"}
+        },
         text:               { type: "string" },
         mood:               { type: "string" },
         moodSeverity:       { type: "number" },
@@ -103,8 +106,8 @@ module.exports.itRequiresValidEntryId = function (endpoint) {
                     // setup journal entry for otherPatient
                     return Q.nbind(otherPatient.createJournalEntry, otherPatient)({
                         text: "foobar",
-                        creator: "adam@west.com",
-                        date: (new Date()).toISOString()
+                        date: {utc:(new Date()).toISOString(), timezone: "America/Los_Angeles"},
+                        creator: "adam@west.com"
                     });
                 });
             });
