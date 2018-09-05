@@ -20,7 +20,8 @@ Environment variables are applied in this order, with the former overwritten by 
 
 1. Default values, which are set automatically within `config.js`, even if no such environment variable is specified whatsoever.
 2. Variables specified by the `.env` file. Note that, when using the Docker container of this repo, the Dockerfile copies `.env.docker` to `.env`, which makes those variables apply in this place.
-3. Variables specified via the command line.
+3. `.env.test` is used whenever test cases are ran with (`yarn test`)
+4. Variables specified via the command line.
 
 Variables are listed below in this format:
 
@@ -113,6 +114,8 @@ Note: Unlike iOS push notifications, Android push notifications do work in devel
 ### Initialization
 - Initalize MongoDB
 - `cp .env.example .env`
+- `cp .env .env.test`
+
 - Set up [Amida Auth Microservice](https://github.com/amida-tech/amida-auth-microservice)
   - see Auth Microservice README for details on setup
   - if you are developing locally, you may need to install and configure [Postgres](http://postgresapp.com/)
@@ -277,7 +280,7 @@ is in `app.js` and database connection/etc is in `run.js`. `config.js` contains 
 and database hosts.
 
 Tests are in `test/`, structured as directories for each resource group containing e2e tests, and sometimes `unit/` directories inside those containing
-`unit` tests. Grunt (`gruntfile.js`) is used to run tests (`grunt` or `grunt test`) and can also be used to spin up a development server (`grunt server:dev`), although `node run.js` is much quicker to start up and will work for all endpoints apart from those that rely on schedule matching
+`unit` tests. Grunt (`gruntfile.js`) is used to run tests (`yarn test`) and can also be used to spin up a development server (`grunt server:dev`), although `node run.js` is much quicker to start up and will work for all endpoints apart from those that rely on schedule matching
 (`/patients/:id/schedule`, `/patients/:id.json` and `/patients/:id.pdf`).
 
 Controllers are in in `lib/controllers` and models in `lib/models`. Most are standard CRUD controllers, with various CRUD helper functions used (mainly as
