@@ -99,10 +99,10 @@ describe("Doses", function () {
 
         // validation testing
         it("allows updating the date", function () {
-            return expect(updatePatientDose({}, { date: (new Date()).toISOString() })).to.be.a.dose.success;
+            return expect(updatePatientDose({}, { date: {utc: (new Date()).toISOString(), timezone: "America/Los_Angeles"} })).to.be.a.dose.success;
         });
         it("rejects a blank date", function () {
-            return expect(updatePatientDose({}, { date: "" })).to.be.an.api.error(400, "date_required");
+            return expect(updatePatientDose({}, { date: "" })).to.be.an.api.error(400, "invalid_date");
         });
         it("rejects invalid dates", function () {
             return expect(updatePatientDose({}, { date: "foobar" })).to.be.an.api.error(400, "invalid_date");
@@ -195,29 +195,32 @@ describe("Doses", function () {
             var user, patient, otherPatient;
             before(function () {
                 // setup current user and two patients for them, both with a medication
-                return auth.createTestUser().then(function (u) {
+                return auth.createTestUser().then(u => {
                     user = u;
-                    // create patients
-                    return Q.all([
-                        patients.createMyPatient({}, user),
-                        patients.createMyPatient({}, user)
-                    ]).spread(function (p1, p2) {
-                        patient = p1;
-                        otherPatient = p2;
-                    }).then(function () {
-                        // create medications (2 for patient, 1 for otherPatient)
-                        var medication = Q.nbind(patient.createMedication, patient)({ name: "foobar" });
-                        var medication2 = Q.nbind(patient.createMedication, patient)({ name: "foobar" });
-                        var otherMedication = Q.nbind(otherPatient.createMedication, otherPatient)({ name: "foobar" });
-                        return medication.then(medication2).then(otherMedication);
-                    }).then(function () {
-                        // create dose
-                        return Q.nbind(patient.createDose, patient)({
-                            date: (new Date()).toISOString(),
-                            taken: true,
-                            creator: "adam@west.com",
-                            medication_id: patient.medications[0]._id
-                        });
+                    return patients.createMyPatient({}, user);
+                }).then(p => {
+                    patient = p;
+                    return Q.nbind(patient.createMedication, patient)({
+                        name: "foobar"
+                    });
+                }).then(() => {
+                    return Q.nbind(patient.createMedication, patient)({
+                        name: "foobar"
+                    });
+                }).then(() => {
+                    return patients.createMyPatient({}, user);
+                }).then(p => {
+                    otherPatient = p;
+                    Q.nbind(otherPatient.createMedication, otherPatient)({
+                        name: "foobar"
+                    });
+                }).then(() => {
+                    // create a dose for patient 1, medication 1
+                    return Q.nbind(patient.createDose, patient)({
+                        date: {utc: (new Date()).toISOString(), timezone:  "America/Los_Angeles"},
+                        taken: true,
+                        creator: user.email,
+                        medication_id: patient.medications[0]._id
                     });
                 });
             });
