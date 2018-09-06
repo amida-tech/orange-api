@@ -3,7 +3,6 @@ node_modules
 
 .project
 .settings
-.vagrant
 .pem
 iosKey.p8
 
