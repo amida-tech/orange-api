@@ -283,6 +283,18 @@ module.exports.itRequiresWriteAuthorization = requiresAuthentication({
     primeRead: false,
     primeWrite: true
 }, testAuthorizationSuccessful, testAuthorizationFailed);
+module.exports.itRequiresOnlyMeAuthorization = requiresAuthentication({
+    unassociated: false,
+    me: true,
+    explicitRead: false,
+    explicitWrite: false,
+    anyoneRead: false,
+    anyoneWrite: false,
+    familyRead: false,
+    familyWrite: false,
+    primeRead: false,
+    primeWrite: false
+}, testAuthorizationSuccessful, testAuthorizationFailed);
 
 // test read authorization for avatar endpoint (don't check success: true in a JSON
 // response, but just check HTTP response codes)
