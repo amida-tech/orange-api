@@ -179,10 +179,10 @@ All requests made to this API must have HTTP header `x-client-secret` with a val
 
 ##### `ACCESS_CONTROL_ALLOW_ORIGIN`
 
-(Required) Self-explanatory, if you understand [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS). Note: HTTP header `Access-Control-Allow-Origin` only works on requests made from browsers; this was setup in our app such that, according to the official documentation, CORS should not at all apply when using mobile apps or rest tools. However, see note about Postman below.
-- To set multiple domains, place in quotes and separate the domains with commas like this: `"http://domain1.com, https://domain2.com"`
+(Required) Self-explanatory if you understand [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS). Note: HTTP header `Access-Control-Allow-Origin` only works on requests made from browsers; this was setup in our app such that, according to the npm CORS repo [official documentation](https://www.npmjs.com/package/cors), CORS should not at all apply when using mobile apps or rest tools. However, see note about Postman below.
 - When using Postman, Postman sets the origin to `chrome-extension://fhbjgbiflinjbdggehcddcbncdddomop`, or something like that (see following sentence for clarity), so you must the this variable to this value. If this exact value does not work, the `orange-api` prints an error message to stdout saying that CORS failed and specifying what the origin should be set to.
-
+- To set multiple domains, place in quotes and separate the domains with commas like this: `"http://domain1.com, https://domain2.com"`
+- Don't forget that if your client is running on a port other than 80 or 443, you will have to specify this as well, as in `http://localhost:12345`.
 
 ##### `MONGO_URI` (Required)
 
