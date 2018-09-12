@@ -9,12 +9,14 @@ var app = require("../../app.js"); //eslint-disable-line no-unused-vars
 // setup DB connection (not used for REST endpoints, but we're doing
 // unit test-esque things in here)
 before(function (done) {
-    var options = {};
-    if (config.ssl) {
+    var options = {
+        useNewUrlParser: true
+    };
+    if (config.sslEnabled) {
         options.server = {};
-        options.server.ssl = config.ssl;
-        if (config.ssl_ca_cert) {
-            options.server.sslCA = config.ssl_ca_cert;
+        options.server.ssl = config.sslEnabled;
+        if (config.sslCaCert) {
+            options.server.sslCA = config.sslCaCert;
         }
     }
     mongoose.connect(config.mongo, options, done);

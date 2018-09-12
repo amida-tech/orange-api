@@ -11,6 +11,9 @@ monky.factory("Patient", {
     last_name: "number #n",
     phone: "6177140000",
     sex: "male",
-    birthdate: "1990-01-01"
+    birthdate: "1990-01-01",
+    access_anyone: "write",
+    access_family: "write",
+    access_prime: "write"
 });
 /*eslint-enable key-spacing */
