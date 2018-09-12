@@ -183,6 +183,7 @@ All requests made to this API must have HTTP header `x-client-secret` with a val
 - When using Postman, Postman sets the origin to `chrome-extension://fhbjgbiflinjbdggehcddcbncdddomop`, or something like that (see following sentence for clarity), so you must the this variable to this value. If this exact value does not work, the `orange-api` prints an error message to stdout saying that CORS failed and specifying what the origin should be set to.
 - To set multiple domains, place in quotes and separate the domains with commas like this: `"http://domain1.com, https://domain2.com"`
 - Don't forget that if your client is running on a port other than 80 or 443, you will have to specify this as well, as in `http://localhost:12345`.
+- To enable all domains (which is insecure and therefore should only be done in development), set to `*` or `'something.com, doesntmatter.com, *'`
 
 ##### `MONGO_URI` (Required)
 
@@ -277,7 +278,7 @@ The Apple Developer Console name of this app.
 
 Note: Unlike iOS push notifications, Android push notifications do work in development.
 
-`PUSH_NOTIFICATIONS_FCM_API_URL` Url of Google Android Firebase service.
+`PUSH_NOTIFICATIONS_FCM_API_URL` URL of Google Android Firebase service.
 
 `PUSH_NOTIFICATIONS_FCM_SERVER_KEY` Identifies to Google that a server belonging to Amida is making this push notification request.
 - Value stored in Amida's password vault.
