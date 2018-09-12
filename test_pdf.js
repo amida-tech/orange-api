@@ -16,11 +16,11 @@ var user, patient, accessToken, medication;
 var options = {
     useNewUrlParser: true
 };
-if (config.ssl) {
+if (config.sslEnabled) {
     options.server = {};
-    options.server.ssl = config.ssl;
-    if (config.ssl_ca_cert) {
-        options.server.sslCA = config.ssl_ca_cert;
+    options.server.ssl = config.sslEnabled;
+    if (config.sslCaCert) {
+        options.server.sslCA = config.sslCaCert;
     }
 }
 Q.nbind(mongoose.connect, mongoose)(config.mongo, options).then(function () {

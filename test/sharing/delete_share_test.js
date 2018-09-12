@@ -45,7 +45,7 @@ describe("Patients", function () {
         // check it requires a valid and authenticated/authorized patient and user
         patients.itRequiresAuthentication(curry(remove)(1));
         patients.itRequiresValidPatientId(curry(remove)(1));
-        patients.itRequiresWriteAuthorization(curry(removePatientShare)({}));
+        patients.itRequiresOnlyMeAuthorization(curry(removePatientShare)({}));
 
         // check it requires a valid shareid
         common.itRequiresValidShareId(remove);
