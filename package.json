@@ -8,7 +8,6 @@
     "url": "git@github.com:amida-tech/orange-api.git"
   },
   "scripts": {
-    "create-microservice-service-user": "node createAccessUser.js",
     "test-services": "node mockScript.js"
   },
   "bugs": {
@@ -39,7 +38,7 @@
     "gulp": "^3.9.1",
     "handlebars": "~4.0.0",
     "husky": "^0.14.3",
-    "image-type": "^2.0.2",
+    "image-type": "^3.0.0",
     "inflected": "^1.1.6",
     "joi": "^13.4.0",
     "jsonwebtoken": "^8.1.1",
@@ -58,7 +57,7 @@
     "passport-jwt": "^4.0.0",
     "pdfmake": "^0.1.18",
     "randomstring": "^1.0.7",
-    "request": "~2.85.0",
+    "request": "~2.87.0",
     "rxnorm-js": "^0.1.1",
     "sendgrid": "^1.9.0",
     "twilio": "^3.16.0",
