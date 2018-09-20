@@ -10,7 +10,10 @@ var expect = chakram.expect;
 // verify successful responses
 /*eslint-disable key-spacing */
 var pharmacySchema = module.exports.schema = {
-    required: ["id", "name", "phone", "address", "hours", "notes", "lat", "lon", "success"],
+    required: ["id", "name", "phone", "address", "hours", "notes",
+                // TODO: Get google api key and use for geolocation
+                // "lat", "lon",
+                "success"],
     properties: {
         success:    { type: "boolean" },
         id:         { type: "number" },
@@ -30,9 +33,10 @@ var pharmacySchema = module.exports.schema = {
                 sunday:         { "$ref": "#/definitions/hours" }
             }
         },
-        notes:      { type: "string" },
-        lat:        { type: ["null", "number"] },
-        lon:        { type: ["null", "number"] }
+        notes:      { type: "string" }
+        // TODO: Get google api key and use for geolocation
+        // lat:        { type: ["null", "number"] },
+        // lon:        { type: ["null", "number"] }
     },
     definitions: {
         hours: {

@@ -40,7 +40,8 @@ monky.factory("Pharmacy", {
             close: "05:00 pm"
         }
     },
-    notes: "Lorem ipsum",
-    loc: [50.9692224, 0.0893951]
+    notes: "Lorem ipsum"
+    // TODO: Get google api key and use for geolocation
+    // loc: [50.9692224, 0.0893951]
 });
 /*eslint-enable key-spacing */
