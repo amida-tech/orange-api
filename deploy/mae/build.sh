@@ -35,9 +35,12 @@ MONGO_PROC=$!
 # Removing node_modules and reinstalling ensures mongo has plenty of time to start up
 rm -rf node_modules
 npm install
+
 # Grunt is used to run the tests
 npm install grunt-cli
+
 # Run the tests
+cp .env.example .env
 ./node_modules/grunt-cli/bin/grunt test
 
 # Cleanup
