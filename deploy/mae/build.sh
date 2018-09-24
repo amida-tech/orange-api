@@ -40,7 +40,7 @@ npm install
 npm install grunt-cli
 
 # Run the tests
-cp .env.example .env
+cp .env.example .env.test
 ./node_modules/grunt-cli/bin/grunt test
 
 # Cleanup
