@@ -2,8 +2,13 @@
 //import Joi from 'joi';
 const Joi = require("joi");
 // require and configure dotenv, will load vars in .env in PROCESS.ENV
-require('dotenv').config();
-
+const dotenv = require('dotenv');
+if (process.env.NODE_ENV === 'test') {
+    console.log('using env.test')
+    dotenv.config({ path: '.env.test' });
+} else {
+    dotenv.config();
+}
 // define validation for all the env vars
 const envVarsSchema = Joi.object({
     NOTIFICATION_EMAIL_FROM: Joi.string().email(),
