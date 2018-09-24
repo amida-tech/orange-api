@@ -8,6 +8,11 @@
     "url": "git@github.com:amida-tech/orange-api.git"
   },
   "scripts": {
+    "check_test_db": "cross-env NODE_ENV=test node check_test_db.js",
+    "delete_db": "cross-env NODE_ENV=test node delete_db.js",
+    "start": "grunt dev",
+    "test" : "yarn check_test_db && grunt test || yarn delete_db",
+    "create-microservice-service-user": "node createAccessUser.js",
     "test-services": "node mockScript.js"
   },
   "bugs": {
@@ -28,6 +33,7 @@
     "bunyan": "^1.4.0",
     "bunyan-logstash": "^0.3.4",
     "cors": "^2.8.4",
+    "cross-env": "^5.2.0",
     "curry": "^1.2.0",
     "deep-equal": "^1.0.1",
     "dotenv": "^6.0.0",
