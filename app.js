@@ -72,7 +72,7 @@ app.use(cors({
     // TODO: Figure out why origin is coming through as undefined, which seems to be
     // happening because this is running inside a docker container, fix the problem,
     // and remove the `origin === undefined` clause.
-    if (corsDomains.indexOf(origin) !== -1 || origin === undefined) {
+    if (corsDomains.indexOf(origin) !== -1 || corsDomains.indexOf("*") !== -1 || config.accessControlAllowOrigin === "*" || origin === undefined) {
       // Cors passes!
       callback(null, true);
     } else {

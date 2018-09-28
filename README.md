@@ -40,6 +40,7 @@ API for Orange medication management app. RESTful and implemented in Node & Mong
   - see Auth Microservice README for details on setup
   - if you are developing locally, you may need to install and configure [Postgres](http://postgresapp.com/)
 - `cp .env.example .env`
+- `cp .env.example .env.test`
 - Configure settings in `.env`. See [Environment Variables](#Environment-Variables)
   - Vital settings:
     - `X_CLIENT_SECRET` (any hexstring is suitable)
@@ -179,8 +180,11 @@ All requests made to this API must have HTTP header `x-client-secret` with a val
 
 ##### `ACCESS_CONTROL_ALLOW_ORIGIN`
 
-(Required) Self-explanatory, if you understand [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS). Note: HTTP header `Access-Control-Allow-Origin` only works on requests made from browsers; it does not impact requests from mobile apps or REST tools.
+(Required) Self-explanatory if you understand [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS). Note: HTTP header `Access-Control-Allow-Origin` only works on requests made from browsers; this was setup in our app such that, according to the npm CORS repo [official documentation](https://www.npmjs.com/package/cors), CORS should not at all apply when using mobile apps or rest tools. However, see note about Postman below. Also note, if this is is failing, `orange-api` will print to stdout that it failed and what it thinks the origin is of the request. You can use that to figure out how to set this value.
+- When using Postman, Postman sets the origin to `chrome-extension://fhbjgbiflinjbdggehcddcbncdddomop`, or something like that (see following sentence for clarity), so you must the this variable to this value. If this exact value does not work, the `orange-api` prints an error message to stdout saying that CORS failed and specifying what the origin should be set to.
 - To set multiple domains, place in quotes and separate the domains with commas like this: `"http://domain1.com, https://domain2.com"`
+- Don't forget that if your client is running on a port other than 80 or 443, you will have to specify this as well, as in `http://localhost:12345`.
+- To enable all domains (which is insecure and therefore should only be done in development), set to `*` or `'something.com, doesntmatter.com, *'`
 
 ##### `MONGO_URI` (Required)
 
@@ -275,7 +279,7 @@ The Apple Developer Console name of this app.
 
 Note: Unlike iOS push notifications, Android push notifications do work in development.
 
-`PUSH_NOTIFICATIONS_FCM_API_URL` Url of Google Android Firebase service.
+`PUSH_NOTIFICATIONS_FCM_API_URL` URL of Google Android Firebase service.
 
 `PUSH_NOTIFICATIONS_FCM_SERVER_KEY` Identifies to Google that a server belonging to Amida is making this push notification request.
 - Value stored in Amida's password vault.
@@ -293,8 +297,8 @@ is in `app.js` and database connection/etc is in `run.js`. `config.js` contains 
 and database hosts.
 
 Tests are in `test/`, structured as directories for each resource group containing e2e tests, and sometimes `unit/` directories inside those containing
-`unit` tests. Grunt (`gruntfile.js`) is used to run tests (`grunt` or `grunt test`) and can also be used to spin up a development server (`grunt server:dev`), although `node run.js` is much quicker to start up and will work for all endpoints apart from those that rely on schedule matching
-(`/patients/:id/schedule`, `/patients/:id.json` and `/patients/:id.pdf`).
+`unit` tests. Grunt (`gruntfile.js`) is used to run tests (`yarn test`) and can also be used to spin up a development server (`grunt server:dev`), although `node run.js` is much quicker to start up and will work for all endpoints apart from those that rely on schedule matching
+(`/patients/:id/schedule`, `/patients/:id.json` and `/patients/:id.pdf`). Please verify you have a `.env.test` file before running tests
 
 Controllers are in in `lib/controllers` and models in `lib/models`. Most are standard CRUD controllers, with various CRUD helper functions used (mainly as
 middleware) to DRY things up. See `lib/controllers/helpers/crud.js` mainly (e.g., `formatObject` and `formatList` are used in nearly all endpoints).
