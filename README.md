@@ -40,6 +40,7 @@ API for Orange medication management app. RESTful and implemented in Node & Mong
   - see Auth Microservice README for details on setup
   - if you are developing locally, you may need to install and configure [Postgres](http://postgresapp.com/)
 - `cp .env.example .env`
+- `cp .env.example .env.test`
 - Configure settings in `.env`. See [Environment Variables](#Environment-Variables)
   - Vital settings:
     - `X_CLIENT_SECRET` (any hexstring is suitable)
@@ -296,8 +297,8 @@ is in `app.js` and database connection/etc is in `run.js`. `config.js` contains 
 and database hosts.
 
 Tests are in `test/`, structured as directories for each resource group containing e2e tests, and sometimes `unit/` directories inside those containing
-`unit` tests. Grunt (`gruntfile.js`) is used to run tests (`grunt` or `grunt test`) and can also be used to spin up a development server (`grunt server:dev`), although `node run.js` is much quicker to start up and will work for all endpoints apart from those that rely on schedule matching
-(`/patients/:id/schedule`, `/patients/:id.json` and `/patients/:id.pdf`).
+`unit` tests. Grunt (`gruntfile.js`) is used to run tests (`yarn test`) and can also be used to spin up a development server (`grunt server:dev`), although `node run.js` is much quicker to start up and will work for all endpoints apart from those that rely on schedule matching
+(`/patients/:id/schedule`, `/patients/:id.json` and `/patients/:id.pdf`). Please verify you have a `.env.test` file before running tests
 
 Controllers are in in `lib/controllers` and models in `lib/models`. Most are standard CRUD controllers, with various CRUD helper functions used (mainly as
 middleware) to DRY things up. See `lib/controllers/helpers/crud.js` mainly (e.g., `formatObject` and `formatList` are used in nearly all endpoints).
