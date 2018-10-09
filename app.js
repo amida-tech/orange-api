@@ -1,9 +1,9 @@
 "use strict";
 // Web
 const express = require("express");
-const bunyan = require("express-bunyan-logger");
-const bunyanLogstash  = require("bunyan-logstash");
 const cors = require("cors");
+const winstonInstance = require("./config/winston");
+const expressWinston = require("express-winston");
 
 const app = module.exports = express();
 
@@ -16,35 +16,16 @@ app.use(function(req, res, next){
 
 // Logging
 var config = require("./config.js");
-var streams = [];
-if (typeof config.logger.file !== "undefined") {
-    streams.push({
-        level: config.logger.file.level,
-        path: config.logger.file.path
-    });
-}
-if (typeof config.logger.stdout !== "undefined" && process.env.NODE_ENV !== "test") {
-    streams.push({
-        level: config.logger.stdout.level,
-        stream: process.stdout
-    });
-}
-if (typeof config.logger.logstash !== "undefined") {
-    console.log(config.logger.logstash);
-    streams.push({
-        level: config.logger.logstash.level,
-        type: "raw",
-        stream: bunyanLogstash.createStream({
-            host: config.logger.logstash.host,
-            port: config.logger.logstash.port
-        })
-    });
-}
-var logger = bunyan({
-    name: "logger",
-    streams: streams
-});
-app.use(logger);
+
+// enable detailed API logging without logging JWT
+expressWinston.requestWhitelist = ["url", "method", "httpVersion", "originalUrl", "query"];
+expressWinston.responseWhitelist = ["statusCode", "responseTime"];
+app.use(expressWinston.logger({
+    winstonInstance,
+    meta: true, // optional: log meta data about request (defaults to true)
+    msg: "HTTP {{req.method}} {{req.url}} {{res.statusCode}} {{res.responseTime}}ms",
+    colorStatus: true // Color the status code (default green, 3XX cyan, 4XX yellow, 5XX red).
+}));
 
 // Database setup in run.js
 
