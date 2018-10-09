@@ -1,7 +1,7 @@
 language: node_js
 node_js:
     - 6
-    
+
 sudo: false # use container-based infrastructure
 
 services:
@@ -19,7 +19,7 @@ install:
 
 # setup config to test with
 before_script:
-  - cp .env.example .env
+  - cp .env.example .env.test
 
 # run e2e & unit tests
 env:
