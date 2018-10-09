@@ -24,7 +24,7 @@ describe("Users", function () {
         const programAdministratorUser = {
             email: "pa@example.com",
             role: "programAdministrator"
-        }
+        };
         let adminHeaders;
         var registerAsAdmin = function (data) {
             return auth.genAdminAccessToken()
@@ -33,7 +33,7 @@ describe("Users", function () {
                 adminHeaders = headers;
             })
             .then(function () {
-                return fixtures.build("User", data)
+                return fixtures.build("User", data);
             })
             .then(function (user) {
                 return chakram.post("http://localhost:5000/v1/user", user, adminHeaders);
@@ -52,7 +52,7 @@ describe("Users", function () {
                 programAdministratorHeaders = headers;
             })
             .then(function () {
-                return fixtures.build("User", data)
+                return fixtures.build("User", data);
             })
             .then(function (user) {
                 return chakram.post("http://localhost:5000/v1/user", user, programAdministratorHeaders);
