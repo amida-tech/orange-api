@@ -5,7 +5,7 @@ MAINTAINER  Harry Rickards <rickards@mit.edu>
 RUN  rpm --import http://packages.elasticsearch.org/GPG-KEY-elasticsearch
 COPY elasticsearch.repo /etc/yum.repos.d/
 
-# Enable EPEL, git, Node.js/npm and zeromq
+# Enable EPEL, git, Node.js/npm
 RUN yum -y update; yum clean all
 RUN yum -y install java-1.7.0-openjdk; yum clean all
 RUN yum -y install logstash; yum clean all
