@@ -36,6 +36,8 @@ const envVarsSchema = Joi.object({
         .description('JWT Secret required to sign'),
     ACCESS_CONTROL_ALLOW_ORIGIN: Joi.string().required()
         .description('set to "null" to enable mobile apps. !!ARH add more better descriptionz.'),
+    ORANGE_ALLOW_PUBLIC_REGISTRATION: Joi.bool().default(false)
+        .description('Allows anyone to create an account if this is true'),
     AUTH_MICROSERVICE_URL: Joi.string().allow('')
         .description('Auth microservice endpoint'),
     MONGO_SSL_ENABLED: Joi.boolean()
@@ -72,6 +74,7 @@ const config = module.exports = {
     secret: envVars.X_CLIENT_SECRET,
     jwtSecret: envVars.JWT_SECRET,
     accessControlAllowOrigin: envVars.ACCESS_CONTROL_ALLOW_ORIGIN,
+    allowPublicRegistration: envVars.ORANGE_ALLOW_PUBLIC_REGISTRATION,
     authServiceAPI: envVars.AUTH_MICROSERVICE_URL,
     mongo: envVars.MONGO_URI,
     port: envVars.EXPRESS_PORT,

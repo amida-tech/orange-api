@@ -186,6 +186,10 @@ All requests made to this API must have HTTP header `x-client-secret` with a val
 - Don't forget that if your client is running on a port other than 80 or 443, you will have to specify this as well, as in `http://localhost:12345`.
 - To enable all domains (which is insecure and therefore should only be done in development), set to `*` or `'something.com, doesntmatter.com, *'`
 
+##### `ORANGE_ALLOW_PUBLIC_REGISTRATION` [`false`]
+
+If true, the user registration endpoint is public. If false, only users with `admin` or `programAdministrator` scope can create users.
+
 ##### `MONGO_URI` (Required)
 
 MongoDB connection URI.
