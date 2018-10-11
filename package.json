@@ -11,7 +11,7 @@
     "check_test_db": "cross-env NODE_ENV=test node check_test_db.js",
     "delete_db": "cross-env NODE_ENV=test node delete_db.js",
     "start": "grunt dev",
-    "test" : "yarn check_test_db && grunt test || yarn delete_db",
+    "test": "yarn check_test_db && grunt test || yarn delete_db",
     "create-microservice-service-user": "node createAccessUser.js",
     "test-services": "node mockScript.js"
   },
@@ -38,6 +38,7 @@
     "deep-equal": "^1.0.1",
     "dotenv": "^6.0.0",
     "double-metaphone": "^0.1.4",
+    "es6-promisify": "^6.0.0",
     "express": "4.16.0",
     "express-bunyan-logger": "^1.1.1",
     "faker": "^4.1.0",
