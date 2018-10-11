@@ -2,8 +2,10 @@
 
 const  winston = require("winston");
 
+const config = require("../config.js");
+
 const winstonInstance = winston.createLogger({
-    level: "info",
+    level: config.logLevel,
     transports: [
         new winston.transports.Console(),
     ],
