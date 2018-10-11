@@ -31,7 +31,8 @@ describe("Requests", function () {
                 });
             });
             before(function () {
-                var createUserPromises = []
+                var createUserPromises = [];
+                /*eslint-disable no-loop-func */
                 for (var i = 0; i < 30; i++) {
                     var createUser = auth.createTestUser({
                         role: "clinician"
@@ -40,6 +41,7 @@ describe("Requests", function () {
                     });
                     createUserPromises.push(createUser);
                 }
+                /*eslint-enable no-loop-func */
                 return Promise.all(createUserPromises);
             });
             before(function () {
@@ -63,11 +65,11 @@ describe("Requests", function () {
 
                         requestEmails.forEach((r) => {
                             expect(clinicianEmails.includes(r)).to.equal(true);
-                        })
+                        });
 
                         clinicianEmails.forEach((r) => {
                             expect(requestEmails.includes(r)).to.equal(true);
-                        })
+                        });
                     });
                 });
             });
