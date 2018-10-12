@@ -11,6 +11,8 @@ if (process.env.NODE_ENV === 'test') {
 }
 // define validation for all the env vars
 const envVarsSchema = Joi.object({
+    LOG_LEVEL: Joi.string()
+        .default('info'),
     NOTIFICATION_EMAIL_FROM: Joi.string().email(),
     NOTIFICATION_SENDGRID_API_KEY: Joi.string().allow('')
         .description('Email Notification Sendgrid API Key'),
@@ -69,6 +71,7 @@ if (error) {
 }
 
 const config = module.exports = {
+    logLevel: envVars.LOG_LEVEL,
     secret: envVars.X_CLIENT_SECRET,
     jwtSecret: envVars.JWT_SECRET,
     accessControlAllowOrigin: envVars.ACCESS_CONTROL_ALLOW_ORIGIN,
