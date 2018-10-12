@@ -30,8 +30,6 @@
     "async": "^1.1.0",
     "bcrypt": "^1.0.2",
     "body-parser": "^1.12.4",
-    "bunyan": "^1.4.0",
-    "bunyan-logstash": "^0.3.4",
     "cors": "^2.8.4",
     "cross-env": "^5.2.0",
     "curry": "^1.2.0",
@@ -40,7 +38,7 @@
     "double-metaphone": "^0.1.4",
     "es6-promisify": "^6.0.0",
     "express": "4.16.0",
-    "express-bunyan-logger": "^1.1.1",
+    "express-winston": "^3.0.0",
     "faker": "^4.1.0",
     "gulp": "^3.9.1",
     "handlebars": "~4.0.0",
@@ -58,6 +56,7 @@
     "node-geocoder": "^2.22.0",
     "node-pushnotifications": "^1.0.21",
     "node-rest-client": "^3.1.0",
+    "node-uuid": "^1.4.8",
     "npi-js": "^0.2.0",
     "passport": "^0.4.0",
     "passport-facebook": "^2.1.1",
@@ -68,6 +67,7 @@
     "rxnorm-js": "^0.1.1",
     "sendgrid": "^1.9.0",
     "twilio": "^3.16.0",
+    "winston": "^3.1.0",
     "xtend": "^4.0.0"
   },
   "devDependencies": {
