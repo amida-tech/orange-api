@@ -22,6 +22,13 @@ const createUserUrl = `${process.argv[3]}/user`;    //"http://localhost:5000/v1/
 const messagingUrl = `${process.argv[4]}/threads`;   //"http://localhost:4001/api/v1/threads"
 const notificationsUrl = `${process.argv[5]}/notifications/sendPushNotifications`;   //"http://localhost:4003/api/notifications/sendPushNotifications";
 
+// const authUrl = "http://localhost:4000/api/v1/auth/login"
+// const patientsUrl = "http://localhost:5000/v1/patients"
+// const createUserUrl = "http://localhost:5000/v1/user"
+// const messagingUrl = "http://localhost:4001/api/v1/threads"
+// const notificationsUrl = "http://localhost:4003/api/notifications/sendPushNotifications";
+
+
 var authToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NywidXNlcm5hbWUiOiJSdWJ5ZUBhbWlkYS5jb20iLCJlbWFpbCI6IlJ1YnllQGFtaWRhLmNvbSIsInNjb3BlcyI6WyIiXSwiaWF0IjoxNTIwMjY5OTA5LCJleHAiOjE1MjAyNzY1MDl9.lBsjsQtHxuI8E5C7VHaxkulZZugkbk0FFYl_rT580Bo';
 const client = new Client();
 
@@ -123,7 +130,7 @@ const sendNotification = function () {
                 console.log(" ✅ Notification service running and configured with microservice Admin user");
                 testArray.push({test: 'auth & orange-api', pass: true});
             } else {
-                console.log(" ❌ Orange-API and Auth Service are not working correctly together");
+                console.log(" ❌ Notification service not functioning / not configured with microservice Admin user");
                 testArray.push({test: 'auth & orange-api', pass: false});
             }
         });
@@ -205,7 +212,7 @@ const seedMessages = function (patientArgs) {
                 headers: {"Content-Type": "application/json", "X-Client-Secret" : "testsecret", "Authorization":"Bearer "+authToken},
                 data: {
                     "email": email2,
-                    "access": "read",
+                    "access": "write",
                     "group": "family"
                 }
             };
