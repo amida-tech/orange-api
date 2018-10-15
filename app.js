@@ -18,7 +18,7 @@ app.use(function(req, res, next){
 var config = require("./config.js");
 
 // enable detailed API logging without logging JWT
-if (config.logLevel === 'debug') {
+if (config.logLevel === "debug") {
     expressWinston.requestWhitelist.push("body");
     expressWinston.responseWhitelist.push("body");
 } else {
