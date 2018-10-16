@@ -1,6 +1,6 @@
 "use strict";
 var jwt = require("jsonwebtoken");
-var config = require("../../../config");
+var config = require("../../config");
 
 module.exports = {
     signJWT: function(userInfo) {
