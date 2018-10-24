@@ -40,8 +40,10 @@ const envVarsSchema = Joi.object({
         .description('set to "null" to enable mobile apps. !!ARH add more better descriptionz.'),
     ORANGE_ALLOW_PUBLIC_REGISTRATION: Joi.bool().default(false)
         .description('Allows anyone to create an account if this is true'),
-    AUTH_MICROSERVICE_URL: Joi.string().allow('')
+    AUTH_MICROSERVICE_URL: Joi.string()
         .description('Auth microservice endpoint'),
+    MESSAGING_MICROSERVICE_URL: Joi.string()
+        .description('Messaging microservice endpoint'),
     MONGO_SSL_ENABLED: Joi.boolean()
         .default(false)
         .description('Enable SSL connection to MongoDB'),
@@ -58,8 +60,8 @@ const envVarsSchema = Joi.object({
     PUSH_NOTIFICATIONS_FCM_SERVER_KEY: Joi.string()
         .optional(),
     PUSH_NOTIFICATIONS_FCM_API_URL: Joi.string(),
-    PUSH_NOTIFICATIONS_SERVICE_USER_USERNAME: Joi.string(),
-    PUSH_NOTIFICATIONS_SERVICE_USER_PASSWORD: Joi.string(),
+    AUTH_ADMIN_SERVICE_USER_USERNAME: Joi.string().required(),
+    AUTH_ADMIN_SERVICE_USER_PASSWORD: Joi.string().required(),
     PUSH_NOTIFICATIONS_APN_ENABLED: Joi.boolean()
         .default(false),
     NOTIFICATION_MICROSERVICE_URL: Joi.string(),
@@ -79,6 +81,7 @@ const config = module.exports = {
     accessControlAllowOrigin: envVars.ACCESS_CONTROL_ALLOW_ORIGIN,
     allowPublicRegistration: envVars.ORANGE_ALLOW_PUBLIC_REGISTRATION,
     authServiceAPI: envVars.AUTH_MICROSERVICE_URL,
+    messagingServiceAPI: envVars.MESSAGING_MICROSERVICE_URL,
     mongo: envVars.MONGO_URI,
     port: envVars.EXPRESS_PORT,
     sslEnabled: envVars.MONGO_SSL_ENABLED,
@@ -91,8 +94,8 @@ const config = module.exports = {
     apnTopic: envVars.PUSH_NOTIFICATIONS_APN_TOPIC,
     fcmServerKey: envVars.PUSH_NOTIFICATIONS_FCM_SERVER_KEY,
     fcmApiUrl: envVars.PUSH_NOTIFICATIONS_FCM_API_URL,
-    pushNotificationsServiceUserUsername: envVars.PUSH_NOTIFICATIONS_SERVICE_USER_USERNAME,
-    pushNotificationsServiceUserPassword: envVars.PUSH_NOTIFICATIONS_SERVICE_USER_PASSWORD,
+    authAdminServiceUserUsername: envVars.AUTH_ADMIN_SERVICE_USER_USERNAME,
+    authAdminServiceUserPassword: envVars.AUTH_ADMIN_SERVICE_USER_PASSWORD,
     pushNotificationsEnabled: envVars.PUSH_NOTIFICATIONS_ENABLED,
     apnEnabled: envVars.PUSH_NOTIFICATIONS_APN_ENABLED,
     notificationServiceAPI: envVars.NOTIFICATION_MICROSERVICE_URL,
