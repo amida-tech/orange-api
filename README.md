@@ -50,6 +50,13 @@ API for Orange medication management app. RESTful and implemented in Node & Mong
     - Database Address
 - `npm install`
 
+### Enabling VA Formulary Search
+orange-api has an endpoint for searching for medications in the VA Formulary. This is enabled by populating a collection in MongoDB with the contents of the VA Formulary.
+
+The latest spreadsheet that contains the VA Formulary can be downloaded from [here](https://www.pbm.va.gov/NationalFormulary.asp).
+
+Import the data from the spreadsheet into MongoDB with the npm script `import_va_formulary`. For example, `npm run import_va_formulary ~/Downloads/VANF-October_2018.xls`.
+
 ## Enabling Push Notifications
 
 Note: This is optional. These steps are in their own section because this setup is complicated and not required if you don't need to develop/test push notifications.

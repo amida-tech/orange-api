@@ -8,6 +8,7 @@
     "url": "git@github.com:amida-tech/orange-api.git"
   },
   "scripts": {
+    "import_va_formulary": "node import_va_formulary.js",
     "check_test_db": "cross-env NODE_ENV=test node check_test_db.js",
     "delete_db": "cross-env NODE_ENV=test node delete_db.js",
     "start": "grunt dev",
