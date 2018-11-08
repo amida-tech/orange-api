@@ -4,7 +4,6 @@ const express = require("express");
 const cors = require("cors");
 const winstonInstance = require("./config/winston");
 const expressWinston = require("express-winston");
-
 const app = module.exports = express();
 
 // disable nagle's algorithm: significantly slows down piping to res, as is
@@ -16,6 +15,12 @@ app.use(function(req, res, next){
 
 // Logging
 var config = require("./config.js");
+
+app.use(function (err, req, res, next) {
+  if (err.code === 'permission_denied') {
+    res.status(403).send('Forbidden');
+  }
+});
 
 // enable detailed API logging without logging JWT
 expressWinston.requestWhitelist = ["url", "method", "httpVersion", "originalUrl", "query"];
