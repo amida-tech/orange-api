@@ -233,18 +233,6 @@ describe("Emergency Contacts", function () {
                     });
                 });
 
-                it("allows sorting by firstName", function () {
-                    return listPatient(patient, { sort_by: "firstName" }).then(function (response) {
-                        expect(response).to.be.a.emergencyContact.listSuccess;
-
-                        var sorted = response.body.emergencyContacts.slice(0).sort(function (emergencyContactA, emergencyContactB) {
-                            // string names
-                            return emergencyContactA.firstName.localeCompare(emergencyContactB.firstName);
-                        });
-                        expect(response.body.emergencyContacts).to.deep.equal(sorted);
-                    });
-                });
-
                 it("ignores a null sort_by", function () {
                     return listPatient(patient, { sort_by: null }).then(function (response) {
                         expect(response).to.be.a.emergencyContact.listSuccess;
@@ -295,11 +283,11 @@ describe("Emergency Contacts", function () {
                 });
 
                 it("allows both sort_by and sort_order", function () {
-                    return listPatient(patient, { sort_order: "desc", sort_by: "firstName" }).then(function (response) {
+                    return listPatient(patient, { sort_order: "desc", sort_by: "id" }).then(function (response) {
                         expect(response).to.be.a.emergencyContact.listSuccess;
                         var sorted = response.body.emergencyContacts.slice(0).sort(function (emergencyContactA, emergencyContactB) {
                             // string names
-                            return emergencyContactA.firstName.localeCompare(emergencyContactB.firstName);
+                            return emergencyContactA.id - emergencyContactB.id;
                         }).reverse();
                         expect(response.body.emergencyContacts).to.deep.equal(sorted);
                     });
@@ -345,12 +333,12 @@ describe("Emergency Contacts", function () {
                 });
 
                 it("handles searching exactly", function () {
-                    return listPatient(patient, { firstName: "Jim" }).then(function (response) {
+                    return listPatient(patient, { firstName: "matching" }).then(function (response) {
                         console.log(response.body)
                         expect(response).to.be.a.emergencyContact.listSuccess;
                         expect(response.body.count).to.equal(1);
                         expect(response.body.emergencyContacts.length).to.equal(1);
-                        expect(response.body.emergencyContacts[0].firstName).to.equal("Jim");
+                        expect(response.body.emergencyContacts[0].firstName).to.equal("test fuzzy matching");
                     });
                 });
 
