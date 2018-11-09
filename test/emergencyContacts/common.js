@@ -19,7 +19,10 @@ var emergencyContactSchema = module.exports.schema = {
         relation:       { type: "string" },
         email:          { type: "string" },
         primaryPhone:   { type: "string" },
-        secondaryPhone: { type: "string" }
+        primaryPhoneProtocols:   { type: "array" },
+        secondaryPhone: { type: "string" },
+        secondaryPhoneProtocols:   { type: "array" }
+
     },
     additionalProperties: false
 };
