@@ -60,29 +60,26 @@ describe("Emergency Contacts", function () {
 
 
 
-        // it("does not require anything other than a name", function () {
-        //     return expect(createPatientEmergencyContact({
-        //         phone: undefined,
-        //         address: undefined,
-        //         notes: undefined,
-        //         title: undefined
-        //     })).to.be.a.emergencyContact.createSuccess;
-        // });
-        // it("allows nulls for everything other than name", function () {
-        //     return expect(createPatientEmergencyContact({
-        //         phone: null,
-        //         address: null,
-        //         notes: null,
-        //         title: null
-        //     })).to.be.a.emergencyContact.createSuccess;
-        // });
-        // it("allows blank strings for all fields other than name", function () {
-        //     return expect(createPatientEmergencyContact({
-        //         phone: "",
-        //         address: "",
-        //         notes: "",
-        //         title: ""
-        //     })).to.be.a.emergencyContact.createSuccess;
-        // });
+        it("does not require anything other than firstName, lastName, relation", function () {
+            return expect(createPatientEmergencyContact({
+                primaryPhone: undefined,
+                secondaryPhone: undefined,
+                email: undefined
+            })).to.be.a.emergencyContact.createSuccess;
+        });
+        it("allows nulls for everything other than firstName, lastName, relation", function () {
+            return expect(createPatientEmergencyContact({
+                primaryPhone: null,
+                secondaryPhone: null,
+                email: null
+            })).to.be.a.emergencyContact.createSuccess;
+        });
+        it("allows blank strings for all fields other than firstName, lastName, relation", function () {
+            return expect(createPatientEmergencyContact({
+                primaryPhone: "",
+                secondaryPhone: "",
+                email: ""
+            })).to.be.a.emergencyContact.createSuccess;
+        });
     });
 });
