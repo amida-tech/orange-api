@@ -263,13 +263,14 @@ Note: iOS push notifications do not and cannot work in development.
 
 Enable Apple Push Notifications.
 
-**WARNING**: You can only send Apple push notifications if your host is configured with SSL termination. Without this Apple may permanently invalidate the key you use to send the push notification.
+**WARNING**: You can only send Apple push notifications (APN) if your host is configured with SSL termination. Without this Apple may permanently invalidate the APN key you use to send the push notification. **Therefore**, when you have this set to true, you cannot connect an iOS simulator to this server, because, if a notification is attempted to be sent to that iOS simulator, your APN key will be invalidated.
 
 ##### `PUSH_NOTIFICATIONS_APN_ENV` [`development`]
 
 Apple Push Notification environment.
 - Valid values are `development` and `production`.
 - When using Test Flight, set to `production.`
+- When you build the app with Xcode and from there run directly on your phone, set to `development`.
 
 ##### `PUSH_NOTIFICATIONS_APN_TEAM_ID`
 
