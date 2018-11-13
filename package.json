@@ -69,6 +69,7 @@
     "sendgrid": "^1.9.0",
     "twilio": "^3.16.0",
     "winston": "^3.1.0",
+    "xlsx": "^0.14.0",
     "xtend": "^4.0.0"
   },
   "devDependencies": {
@@ -96,8 +97,7 @@
     "mocha-shared": "^0.2.0",
     "monky": "^0.6.11",
     "q": "^1.4.1",
-    "sinon": "^1.14.1",
-    "xlsx": "^0.14.0"
+    "sinon": "^1.14.1"
   },
   "engines": {
     "node": "0.10.x"
