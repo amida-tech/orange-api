@@ -89,7 +89,6 @@ describe("Emergency Contacts", function () {
             describe("with limit parameter", function () {
                 it("limits results to 25 by default", function () {
                     return listPatient(patient).then(function (response) {
-                        console.log(response.body)
                         expect(response).to.be.a.emergencyContact.listSuccess;
                         expect(response.body.emergencyContacts.length).to.equal(25);
                         expect(response.body.count).to.equal(40);
@@ -98,7 +97,6 @@ describe("Emergency Contacts", function () {
 
                 it("lets us limit the results to less than 25", function () {
                     return listPatient(patient, { limit: 15 }).then(function (response) {
-                        console.log(response.body)
                         expect(response).to.be.a.emergencyContact.listSuccess;
                         expect(response.body.emergencyContacts.length).to.equal(15);
                         expect(response.body.count).to.equal(40);
