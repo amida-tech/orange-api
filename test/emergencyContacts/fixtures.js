@@ -10,9 +10,9 @@ monky.factory("EmergencyContact", {
     firstName: "Jim",
     lastName: "Jimmson",
     primaryPhone: "(540) 555-5555",
-    primaryPhoneProtocols: ['VOICE'],
+    primaryPhoneProtocols: ["VOICE"],
     secondaryPhone: "(703) 555-5555",
-    secondaryPhoneProtocols: ['SMS', 'TTY'],
+    secondaryPhoneProtocols: ["SMS", "TTY"],
     relation: "Father",
     email: "jim.jimmson@example.com"
 });
