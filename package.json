@@ -8,6 +8,7 @@
     "url": "git@github.com:amida-tech/orange-api.git"
   },
   "scripts": {
+    "import_va_formulary": "node import_va_formulary.js",
     "check_test_db": "cross-env NODE_ENV=test node check_test_db.js",
     "delete_db": "cross-env NODE_ENV=test node delete_db.js",
     "start": "grunt dev",
@@ -76,6 +77,7 @@
     "chai": "^3.0.0",
     "chakram": "^1.0.0",
     "coveralls": "~3.0.1",
+    "csvtojson": "^2.0.8",
     "es6-plato": "^1.0.14",
     "eslint": "^3.19.0",
     "eslint-plugin-smells": "^1.0.1",
@@ -94,7 +96,8 @@
     "mocha-shared": "^0.2.0",
     "monky": "^0.6.11",
     "q": "^1.4.1",
-    "sinon": "^1.14.1"
+    "sinon": "^1.14.1",
+    "xlsx": "^0.14.0"
   },
   "engines": {
     "node": "0.10.x"
