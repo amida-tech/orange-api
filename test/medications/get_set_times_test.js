@@ -23,12 +23,12 @@ describe("Medication Time Notification Settings", function () {
     // setup test users
     var me, otherUser;
     before(function () {
-        return auth.createTestUser().then(function (u) {
+        return auth.createTestUser(undefined, true).then(function (u) {
             me = u;
         });
     });
     before(function () {
-        return auth.createTestUser().then(function (u) {
+        return auth.createTestUser(undefined, true).then(function (u) {
             otherUser = u;
         });
     });

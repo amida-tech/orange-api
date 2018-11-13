@@ -81,7 +81,7 @@ module.exports.itRequiresValidDoseId = function (endpoint) {
         var user, patient, otherPatient;
         before(function () {
             // setup current user and two patients for them, one with a dose
-            return auth.createTestUser().then(function (u) {
+            return auth.createTestUser(undefined, true).then(function (u) {
                 user = u;
                 // create patients
                 return Q.all([

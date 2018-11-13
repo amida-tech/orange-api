@@ -26,7 +26,7 @@ describe("Patients", function () {
         // create a new user and try and share the patient with them
         // data is extended with the user's email address
         var sharePatientWithExisting = function (data, patient) {
-            return auth.createTestUser().then(function (user) {
+            return auth.createTestUser(undefined, true).then(function (user) {
                 return sharePatient(extend({
                     email: user.email
                 }, data), patient);

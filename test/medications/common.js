@@ -229,10 +229,10 @@ var genAuthorizationTest = function (endpoint, levels, successChecker, failCheck
 };
 // TODO: dry this up with test/patients/common.js
 var patientForMe = function () {
-    return auth.createTestUser().then(patients.createMyPatient({}));
+    return auth.createTestUser(undefined, true).then(patients.createMyPatient({}));
 };
 var patientForOther = function () {
-    return Q.all([auth.createTestUser(), auth.createTestUser()]).spread(patients.createOtherPatient({}));
+    return Q.all([auth.createTestUser(undefined, true), auth.createTestUser(undefined, true)]).spread(patients.createOtherPatient({}));
 };
 var share = function (access, group) {
     return function (patient) {

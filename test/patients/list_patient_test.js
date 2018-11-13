@@ -34,7 +34,7 @@ describe("Patients", function () {
             // setup test user
             var user;
             before(function () {
-                return auth.createTestUser().then(function (u) {
+                return auth.createTestUser(undefined, true).then(function (u) {
                     user = u;
                 });
             });

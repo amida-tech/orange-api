@@ -16,12 +16,12 @@ describe("Requests", function () {
         // setup a user for me and a user for another
         var me, otherUser;
         before(function () {
-            return auth.createTestUser().then(function (u) {
+            return auth.createTestUser(undefined, true).then(function (u) {
                 me = u;
             });
         });
         before(function () {
-            return auth.createTestUser().then(function (u) {
+            return auth.createTestUser(undefined, true).then(function (u) {
                 otherUser = u;
             });
         });
@@ -93,12 +93,12 @@ describe("Requests", function () {
         // setup a user for me and a user for another
         var me, otherUser;
         before(function () {
-            return auth.createTestUser().then(function (u) {
+            return auth.createTestUser(undefined, true).then(function (u) {
                 me = u;
             });
         });
         before(function () {
-            return auth.createTestUser().then(function (u) {
+            return auth.createTestUser(undefined, true).then(function (u) {
                 otherUser = u;
             });
         });
@@ -183,12 +183,12 @@ describe("Requests", function () {
         // setup a user for me and a user for another
         var me, otherUser;
         before(function () {
-            return auth.createTestUser().then(function (u) {
+            return auth.createTestUser(undefined, true).then(function (u) {
                 me = u;
             });
         });
         before(function () {
-            return auth.createTestUser().then(function (u) {
+            return auth.createTestUser(undefined, true).then(function (u) {
                 otherUser = u;
             });
         });
@@ -279,12 +279,12 @@ describe("Requests", function () {
         // setup a user for me and a user for another
         var me, otherUser;
         before(function () {
-            return auth.createTestUser().then(function (u) {
+            return auth.createTestUser(undefined, true).then(function (u) {
                 me = u;
             });
         });
         before(function () {
-            return auth.createTestUser().then(function (u) {
+            return auth.createTestUser(undefined, true).then(function (u) {
                 otherUser = u;
             });
         });

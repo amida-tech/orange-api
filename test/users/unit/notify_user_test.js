@@ -11,7 +11,7 @@ describe("Users", function () {
         // setup a user to test with
         var user;
         before(function () {
-            return auth.createTestUser({}).then(function (u) {
+            return auth.createTestUser({}, true).then(function (u) {
                 user = u;
             });
         });

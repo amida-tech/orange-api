@@ -12,12 +12,12 @@ describe("Patients", function () {
         // create a user (me) and a user to share patients with
         var me, otherUser;
         before(function () {
-            return auth.createTestUser().then(function (u) {
+            return auth.createTestUser(undefined, true).then(function (u) {
                 me = u;
             });
         });
         before(function () {
-            return auth.createTestUser().then(function (u) {
+            return auth.createTestUser(undefined, true).then(function (u) {
                 otherUser = u;
             });
         });

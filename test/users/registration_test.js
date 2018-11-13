@@ -46,7 +46,7 @@ describe("Users", function () {
 
         var register = function (data) {
             let programAdministratorHeaders;
-            return auth.genAccessToken(programAdministratorUser)
+            return auth.genAccessToken(programAdministratorUser, true)
             .then(auth.genAuthHeaders)
             .then(function (headers) {
                 programAdministratorHeaders = headers;
@@ -144,7 +144,7 @@ describe("Users", function () {
                     if (err) {
                         deferred.reject(err);
                     }
-                    deferred.resolve(auth.genAccessToken(user));
+                    deferred.resolve(auth.genAccessToken(user, true));
                 });
                 return deferred.promise;
             };
