@@ -157,6 +157,7 @@ patientRouter.use(auth.authenticate); // find user from access token
 
 patientRouter.use("/habits", require("./lib/controllers/habits.js"));
 patientRouter.use("/doctors", require("./lib/controllers/doctors.js"));
+patientRouter.use("/emergencyContacts", require("./lib/controllers/emergency_contacts.js"));
 patientRouter.use("/pharmacies", require("./lib/controllers/pharmacies.js"));
 patientRouter.use("/medications", require("./lib/controllers/medications.js"));
 patientRouter.use("/journal", require("./lib/controllers/journal.js"));
