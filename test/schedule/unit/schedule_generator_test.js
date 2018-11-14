@@ -624,10 +624,10 @@ describe("Schedule", function () {
                     tomorrowEastern = moment.tz("America/Jamaica").add(1, "day");
                     tomorrowEastern.seconds(0);
                     tomorrowEastern.milliseconds(0);
-                    todayPacific = moment.tz("America/Metlakatla");
+                    todayPacific = moment.tz("America/Los_Angeles");
                     todayPacific.seconds(0);
                     todayPacific.milliseconds(0);
-                    tomorrowPacific = moment.tz("America/Metlakatla").add(1, "day");
+                    tomorrowPacific = moment.tz("America/Los_Angeles").add(1, "day");
                     tomorrowPacific.seconds(0);
                     tomorrowPacific.milliseconds(0);
 
@@ -660,7 +660,7 @@ describe("Schedule", function () {
                     it("returns a PST schedule", function () {
                         var newHabits = extend(habits, {
                             // PST all year round (no PDT)
-                            tz: "America/Metlakatla"
+                            tz: "America/Los_Angeles"
                         });
                         var results = formatResults(schedule.generate(
                                 moment(todayPacific).startOf("day"),
