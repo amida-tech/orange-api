@@ -17,8 +17,13 @@ app.use(function(req, res, next){
 var config = require("./config.js");
 
 // enable detailed API logging without logging JWT
-expressWinston.requestWhitelist = ["url", "method", "httpVersion", "originalUrl", "query"];
-expressWinston.responseWhitelist = ["statusCode", "responseTime"];
+if (config.logLevel === "debug") {
+    expressWinston.requestWhitelist.push("body");
+    expressWinston.responseWhitelist.push("body");
+} else {
+    expressWinston.requestWhitelist = ["url", "method", "httpVersion", "originalUrl", "query"];
+    expressWinston.responseWhitelist = ["statusCode", "responseTime"];
+}
 app.use(expressWinston.logger({
     winstonInstance,
     meta: true, // optional: log meta data about request (defaults to true)
@@ -34,6 +39,7 @@ app.use(expressWinston.logger({
 // in patient.js, so don't require them again here
 require("./lib/models/counter.js"); // Require first
 require("./lib/models/rxnorm.js");
+require("./lib/models/formulary_entry.js");
 // Patient and User require a getter function for a gridfs client (set as an express
 // setting in run.js but may not be immediately accessible hence the getter function)
 function getGfs() {
@@ -129,6 +135,8 @@ router.use("/user", require("./lib/controllers/users.js"));
 // External APIs
 router.use("/npi", require("./lib/controllers/npi.js"));
 router.use("/rxnorm", require("./lib/controllers/rxnorm.js"));
+
+router.use("/formulary", require("./lib/controllers/formulary_entries.js"));
 
 // User sharing
 router.use("/", require("./lib/controllers/requests.js"));

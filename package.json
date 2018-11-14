@@ -8,6 +8,7 @@
     "url": "git@github.com:amida-tech/orange-api.git"
   },
   "scripts": {
+    "import_va_formulary": "node import_va_formulary.js VANF-October_2018.xls",
     "check_test_db": "cross-env NODE_ENV=test node check_test_db.js",
     "delete_db": "cross-env NODE_ENV=test node delete_db.js",
     "start": "grunt dev",
@@ -32,6 +33,7 @@
     "body-parser": "^1.12.4",
     "cors": "^2.8.4",
     "cross-env": "^5.2.0",
+    "csvtojson": "^2.0.8",
     "curry": "^1.2.0",
     "deep-equal": "^1.0.1",
     "dotenv": "^6.0.0",
@@ -68,6 +70,7 @@
     "sendgrid": "^1.9.0",
     "twilio": "^3.16.0",
     "winston": "^3.1.0",
+    "xlsx": "^0.14.0",
     "xtend": "^4.0.0"
   },
   "devDependencies": {

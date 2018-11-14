@@ -50,6 +50,13 @@ API for Orange medication management app. RESTful and implemented in Node & Mong
     - Database Address
 - `npm install`
 
+### Enabling VA Formulary Search
+orange-api has an endpoint for searching for medications in the VA Formulary. This is enabled by populating a collection in MongoDB with the contents of the VA Formulary.
+
+The latest spreadsheet that contains the VA Formulary can be downloaded from [here](https://www.pbm.va.gov/NationalFormulary.asp), and is included in the repo for convenience.
+
+Import the data from the spreadsheet into MongoDB with the npm script `import_va_formulary`. For example, `npm run import_va_formulary`.
+
 ## Enabling Push Notifications
 
 Note: This is optional. These steps are in their own section because this setup is complicated and not required if you don't need to develop/test push notifications.
@@ -256,13 +263,14 @@ Note: iOS push notifications do not and cannot work in development.
 
 Enable Apple Push Notifications.
 
-**WARNING**: You can only send Apple push notifications if your host is configured with SSL termination. Without this Apple may permanently invalidate the key you use to send the push notification.
+**WARNING**: You can only send Apple push notifications (APN) if your host is configured with SSL termination. Without this Apple may permanently invalidate the APN key you use to send the push notification. **Therefore**, when you have this set to true, you cannot connect an iOS simulator to this server, because, if a notification is attempted to be sent to that iOS simulator, your APN key will be invalidated.
 
 ##### `PUSH_NOTIFICATIONS_APN_ENV` [`development`]
 
 Apple Push Notification environment.
 - Valid values are `development` and `production`.
 - When using Test Flight, set to `production.`
+- When you build the app with Xcode and from there run directly on your phone, set to `development`.
 
 ##### `PUSH_NOTIFICATIONS_APN_TEAM_ID`
 

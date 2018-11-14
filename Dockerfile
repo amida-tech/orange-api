@@ -18,6 +18,7 @@ RUN npm install -g node-gyp
 # Copy package.json and install app dependencies
 # (do this before we copy over the rest of the source for caching reasons)
 COPY    package.json /tmp/package.json
+COPY    package-lock.json /tmp/package-lock.json
 RUN     cd /tmp && npm install --production
 RUN     mkdir -p /src && cp -a /tmp/node_modules /src/
 WORKDIR /src
