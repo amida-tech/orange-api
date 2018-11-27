@@ -11,6 +11,7 @@ monky.factory("User", {
     phone:          "6177140000",
     firstName:      "Foo #n",
     lastName:       "bar #n",
-    role:           "user"
+    role:           "user",
+    organization:   "amida"
 });
 /*eslint-enable key-spacing */
