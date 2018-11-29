@@ -31,6 +31,7 @@ var patientSchema = module.exports.schema = {
         phone:          { type: "string" },
         creator:        { type: "string" },
         me:             { type: "boolean" },
+        instructorEmail: { type: ["string", "null"] },
         meditations:    {
             type:           "object",
             required:       ["count", "sum"],
@@ -353,4 +354,3 @@ module.exports.itRequiresReadListAuthorization = function (slug) {
         primeWrite: true
     }, testAuthorizationListSuccessful(slug), testAuthorizationListFailed(slug));
 };
-
