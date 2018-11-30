@@ -243,59 +243,29 @@ The URL of the Notification Service API.
 
 ##### `PUSH_NOTIFICATIONS_ENABLED` (Required) [`false`]
 
-**WARNING**: When `true`, the other push notification-related environment variables must be set correctly. Not doing so is an unsupported state that is error and crash prone.
+##### `PUSH_NOTIFICATIONS_SERVICE_USER_USERNAME` (Required)
 
-##### `PUSH_NOTIFICATIONS_SERVICE_USER_USERNAME`
-
-The username of the service user that authenticates against `amida-auth-microservice` and performs requests against the `amida-notification-microservice` API.
+The username of the service user on the Auth Service. This user is named as such because original is only performed push-notifications-related requests. However, this user now performs a variety of functions.
 - `.env.example` sets this to `oucuYaiN6pha3ahphiiT`, which is for development only. In production, set this to a different value.
 
-##### `PUSH_NOTIFICATIONS_SERVICE_USER_PASSWORD`
+##### `PUSH_NOTIFICATIONS_SERVICE_USER_PASSWORD` (Required)
 
 The password of the user specified by `PUSH_NOTIFICATIONS_SERVICE_USER_USERNAME`.
 - `.env.example` sets this to `@TestTest1`, which is for development only. In production, set this to a different value.
 
-### Integration With Apple Push Notifications for iOS
+##### `PUSH_NOTIFICATIONS_APN_ENABLED` (Deprecated)
 
-Note: iOS push notifications do not and cannot work in development.
+##### `PUSH_NOTIFICATIONS_APN_ENV` (Deprecated)
 
-##### `PUSH_NOTIFICATIONS_APN_ENABLED` (Required) [`false`]
+##### `PUSH_NOTIFICATIONS_APN_TEAM_ID` (Deprecated)
 
-Enable Apple Push Notifications.
+##### `PUSH_NOTIFICATIONS_APN_KEY_ID` (Deprecated)
 
-**WARNING**: You can only send Apple push notifications (APN) if your host is configured with SSL termination. Without this Apple may permanently invalidate the APN key you use to send the push notification. **Therefore**, when you have this set to true, you cannot connect an iOS simulator to this server, because, if a notification is attempted to be sent to that iOS simulator, your APN key will be invalidated.
+##### `PUSH_NOTIFICATIONS_APN_TOPIC` (Deprecated)
 
-##### `PUSH_NOTIFICATIONS_APN_ENV` [`development`]
+#####  `PUSH_NOTIFICATIONS_FCM_API_URL` (Deprecated)
 
-Apple Push Notification environment.
-- Valid values are `development` and `production`.
-- When using Test Flight, set to `production.`
-- When you build the app with Xcode and from there run directly on your phone, set to `development`.
-
-##### `PUSH_NOTIFICATIONS_APN_TEAM_ID`
-
-The ID of the Amida "team" in Apple Developer Console.
-- The value is the prefix of iOS app ID.
-- Production value stored in Amida's password vault.
-
-##### `PUSH_NOTIFICATIONS_APN_KEY_ID`
-
-Tells apple to use this key to encrypt the payload of push notifications that Apple sends to end-user devices.
-- Value stored in Amida's password vault.
-
-##### `PUSH_NOTIFICATIONS_APN_TOPIC` [`com.amida.orangeIgnite`]
-
-The Apple Developer Console name of this app.
-
-### Integration With Firebase Cloud Messaging for Android
-
-Note: Unlike iOS push notifications, Android push notifications do work in development.
-
-`PUSH_NOTIFICATIONS_FCM_API_URL` URL of Google Android Firebase service.
-
-`PUSH_NOTIFICATIONS_FCM_SERVER_KEY` Identifies to Google that a server belonging to Amida is making this push notification request.
-- Value stored in Amida's password vault.
-- Alternatively, this can be obtained from the Team's Firebase console. Note that the `Server key` is different from `API key`. The later is configured on a device for receiving notifications.
+##### `PUSH_NOTIFICATIONS_FCM_SERVER_KEY` (Deprecated)
 
 # Contributing
 
