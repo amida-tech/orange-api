@@ -75,7 +75,7 @@ auth.genAdminAccessToken = function () {
     var token = signJWT({
         id: 0,
         username: "admin",
-        email: "admin@dm.n",
+        email: "admin@admin.com",
         scopes: ["admin"]
     });
     deferred.resolve(token);
