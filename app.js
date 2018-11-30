@@ -155,14 +155,15 @@ var auth = require("./lib/controllers/helpers/auth.js");
 patientRouter.use(auth.authenticate); // find user from access token
 
 patientRouter.use("/habits", require("./lib/controllers/habits.js"));
-patientRouter.use("/doctors", require("./lib/controllers/doctors.js"));
 patientRouter.use("/emergencyContacts", require("./lib/controllers/emergency_contacts.js"));
-patientRouter.use("/pharmacies", require("./lib/controllers/pharmacies.js"));
 patientRouter.use("/medications", require("./lib/controllers/medications.js"));
 patientRouter.use("/journal", require("./lib/controllers/journal.js"));
 patientRouter.use("/doses", require("./lib/controllers/doses.js"));
 patientRouter.use("/schedule", require("./lib/controllers/schedule.js"));
-patientRouter.use("/events", require("./lib/controllers/events.js"));
+// These are commented out because we are not using them in the current deployment
+// patientRouter.use("/doctors", require("./lib/controllers/doctors.js"));
+// patientRouter.use("/pharmacies", require("./lib/controllers/pharmacies.js"));
+// patientRouter.use("/events", require("./lib/controllers/events.js"));
 
 // nest patient-specific resources under /patients/:id
 router.use("/patients/:patientid", patientRouter);
