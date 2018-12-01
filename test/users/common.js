@@ -21,7 +21,7 @@ var userSchema = {
         deviceToken:{ type: "string" },
         gcmToken:   { type: "string" },
         npi:        { type: "string" },
-        defaultPatientID: { type: "string"}
+        defaultPatientID: { type: "string" }
     },
     additionalProperties: false
 };
