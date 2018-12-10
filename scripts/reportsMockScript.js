@@ -1,5 +1,6 @@
 const Client = require('node-rest-client').Client;
 const faker = require('faker');
+const { createMoodEntries, createMeditationEntries, createMedicationAdherence } =  require('./createRecordsScript');
 
 //Notification Service Admin User Credentials
 const adminUsername = (process.argv[6] ? `${process.argv[6]}`: `oucuYaiN6pha3ahphiiT`);
@@ -9,24 +10,25 @@ const adminPassword = (process.argv[7] ? `${process.argv[7]}`: `@TestTest1`);
 const firstName = faker.name.firstName().toLowerCase();
 const lastName = faker.name.lastName().toLowerCase();
 const phoneNumber = faker.phone.phoneNumberFormat().split('-').join('');
-const email = firstName + "@amida.com";
+// const email = firstName + "+patient@amida.com";
+const email = "jaylen+patient@amida.com";
 const password = "Testtest1!";
 const doctorEmail = "mholmes@amida-demo.com";
 const access = ["read","write","default"];
 const testArray = [];
 
 //URL's
-const authUrl = `${process.argv[2]}/auth/login`;  //"http://localhost:4000/api/v1/auth/login"
-const patientsUrl = `${process.argv[3]}/patients`;   //"http://localhost:5000/v1/patients"
-const createUserUrl = `${process.argv[3]}/user`;    //"http://localhost:5000/v1/user"
-const messagingUrl = `${process.argv[4]}/threads`;   //"http://localhost:4001/api/v1/threads"
-const notificationsUrl = `${process.argv[5]}/notifications/sendPushNotifications`;   //"http://localhost:4003/api/notifications/sendPushNotifications";
+// const authUrl = `${process.argv[2]}/auth/login`;  //"http://localhost:4000/api/v1/auth/login"
+// const patientsUrl = `${process.argv[3]}/patients`;   //"http://localhost:5000/v1/patients"
+// const createUserUrl = `${process.argv[3]}/user`;    //"http://localhost:5000/v1/user"
+// const messagingUrl = `${process.argv[4]}/threads`;   //"http://localhost:4001/api/v1/threads"
+// const notificationsUrl = `${process.argv[5]}/notifications/sendPushNotifications`;   //"http://localhost:4003/api/notifications/sendPushNotifications";
 
-// const authUrl = "http://localhost:4000/api/v1/auth/login"
-// const patientsUrl = "http://localhost:5000/v1/patients"
-// const createUserUrl = "http://localhost:5000/v1/user"
-// const messagingUrl = "http://localhost:4001/api/v1/threads"
-// const notificationsUrl = "http://localhost:4003/api/notifications/sendPushNotifications";
+const authUrl = "http://localhost:4000/api/v1/auth/login"
+const patientsUrl = "http://localhost:5000/v1/patients"
+const createUserUrl = "http://localhost:5000/v1/user"
+const messagingUrl = "http://localhost:4001/api/v1/threads"
+const notificationsUrl = "http://localhost:4003/api/notifications/sendPushNotifications";
 
 
 var authToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NywidXNlcm5hbWUiOiJSdWJ5ZUBhbWlkYS5jb20iLCJlbWFpbCI6IlJ1YnllQGFtaWRhLmNvbSIsInNjb3BlcyI6WyIiXSwiaWF0IjoxNTIwMjY5OTA5LCJleHAiOjE1MjAyNzY1MDl9.lBsjsQtHxuI8E5C7VHaxkulZZugkbk0FFYl_rT580Bo';
@@ -76,6 +78,11 @@ const createDoctor = function(doctorArgs, patientId, callback) {
 };
 const notifyUser = function(notificationArgs, callback) {
     client.post(notificationsUrl, notificationArgs, function (data, response) {
+        callback(data, response);
+    });
+};
+const createMedication = function(medArgs, patientId, callback) {
+    client.post(`${patientsUrl}/${patientId}/medications`, medArgs, function (data, response) {
         callback(data, response);
     });
 };
@@ -140,10 +147,11 @@ const sendNotification = function () {
 
 const seedMessages = function (patientArgs) {
     //data for a new user to be included in the message thread
-    const firstName2 = faker.name.firstName();
-    const lastName2 = faker.name.lastName();
+    const firstName2 = faker.name.firstName().toLowerCase();
+    const lastName2 = faker.name.lastName().toLowerCase();
     const phoneNumber2 = faker.phone.phoneNumberFormat().split('-').join('');
-    const email2 = firstName2+"@amida.com";
+    // const email2 = firstName2+"+clinician@amida.com";
+    const email2 = "joe+clinician@amida.com";
     const password2 = "Testtest1!";
     var authToken2 = '';
     var threadID = null;
@@ -156,7 +164,7 @@ const seedMessages = function (patientArgs) {
             "first_name": firstName2,
             "last_name": lastName2,
             "phone": phoneNumber2,
-            "role": "user"
+            "role": "clinician"
         }
     };
     const authArgs = {
@@ -191,23 +199,75 @@ const seedMessages = function (patientArgs) {
         }
     };
 
+    const ibuMedArgs = {
+        headers: { "Content-Type": "application/json", "X-Client-Secret" : "testsecret", "Authorization":"Bearer "+authToken},
+        data: {
+                name: "IBUPROFEN",
+                form: "TAB",
+                access_anyone: 'write',
+                dose: {
+                    quantity: 1,
+                    unit: "dose"
+                },
+                schedule: {
+                    as_needed: true,
+                    frequency: {n: 1, unit: "day"},
+                    regularly: true,
+                    take_with_food: null,
+                    take_with_medications: [],
+                    take_without_medications: [],
+                    times: [{type: "exact", time: "09:00"}],
+                    until: {type: "forever"}
+                }
+        }
+    }
+
+    const aspirinMedArgs = {
+      headers: { "Content-Type": "application/json", "X-Client-Secret" : "testsecret", "Authorization":"Bearer "+authToken},
+      data: {
+              name: "ASPIRIN",
+              form: "TAB",
+              access_anyone: 'write',
+              dose: {
+                  quantity: 1,
+                  unit: "dose"
+              },
+              schedule: {
+                  as_needed: true,
+                  frequency: {n: 1, unit: "day"},
+                  regularly: true,
+                  take_with_food: null,
+                  take_with_medications: [],
+                  take_without_medications: [],
+                  times: [{type: "exact", time: "10:30"}],
+                  until: {type: "forever"}
+              }
+      }
+  }
+
 
 
     // Create a second user inside the seedMessages function call
-    createUser(newUserArgs, function(response) {
-        if (response.email) {
-            console.log("Created User2: ", response.email);
-            console.log(" ✅ Orange-API and Auth Service are working correctly to create users and authenticate");
-            testArray.push({test: 'auth & orange-api', pass: true});
-        } else {
-            console.log(" ❌ Orange-API and Auth Service are not working correctly together");
-            testArray.push({test: 'auth & orange-api', pass: false});
-        }
-        sendNotification();
+    // createUser(newUserArgs, function(response) {
+    //     if (response.email) {
+    //         console.log("Created User2: ", response.email);
+    //         console.log(" ✅ Orange-API and Auth Service are working correctly to create users and authenticate");
+    //         testArray.push({test: 'auth & orange-api', pass: true});
+    //     } else {
+    //         console.log(" ❌ Orange-API and Auth Service are not working correctly together");
+    //         testArray.push({test: 'auth & orange-api', pass: false});
+    //     }
 
         // Get first user's patient and share it with the new user
         getPatients(patientArgs, function(response){
             const defaultPatientId = response.patients[0].id;
+
+
+
+            // Create mock data for moods, meditations, and medication adherence events
+            // createMoodEntries(authToken, defaultPatientId, 14)
+            // createMeditationEntries(authToken, defaultPatientId, 14)
+
             const sharePatientArgs = {
                 headers: {"Content-Type": "application/json", "X-Client-Secret" : "testsecret", "Authorization":"Bearer "+authToken},
                 data: {
@@ -216,41 +276,33 @@ const seedMessages = function (patientArgs) {
                     "group": "family"
                 }
             };
+
             sharePatient(sharePatientArgs, defaultPatientId, function(response) {
-                createDoctor(doctorArgs, defaultPatientId, function(response) { 
-                    // console.log("Checking result of doctor creation", response);
-                    authenticateUser(authArgs, function (response) {
-                        authToken2 = response;
-                        createThread(createThreadArgs, function (response){
-                            console.log("Created Thread At: ", response.createdAt);
-                            threadID = response.ThreadId;
+                
+                // Add two medications to the user
+                let medications = []
+                createMedication(ibuMedArgs, defaultPatientId, function (response) {
+                  console.log("created MEd!!", response);
+                  medications.push(response)
+                  createMedication(aspirinMedArgs, defaultPatientId, function (response) {
+                    console.log("Created MEd 2!!", response);
+                    medications.push(response)
+                    createMedicationAdherence(authToken, defaultPatientId, medications, 20);
 
-                            //update ThreadArgs to include newly recieved authToken
-                            respondToThreadArgs.headers.Authorization = "Bearer "+authToken2;
-                            replyToThread(respondToThreadArgs, threadID, function (response) {
-                                if (response.createdAt) {
-                                    console.log("Reply To Thread At: ", response.createdAt);
-                                    console.log(" ✅ Messaging service is running in conjunction with the auth service");
-                                    testArray.push({test: 'messaging', pass: true});
-                                } else {
-                                    console.log(" ❌ Messaging service is not running in conjunction with the auth service");
-                                    testArray.push({test: 'messaging', pass: false});
-                                }
-                                const failingTests = testArray.filter((test) => !test.pass);
-                                // console.log("failingTests", failingTests);
-                                console.log(`${testArray.length - failingTests.length}/3 tests are passing`);
 
-                            });
-                        });
-                    });
+                  });
                 });
+
+                    // authenticateUser(authArgs, function (response) {
+                    //     authToken2 = response;
+                    // });
             });
         });
-    });
+    // });
 }
 
-createUser(userArgs, function(response) {
-    console.log("Created User: ", response.email);
+// createUser(userArgs, function(response) {
+    // console.log("Created User: ", response.email);
     authenticateUser(authArgs, function (response) {
         authToken = response;
         const patientArgs = {
@@ -260,7 +312,7 @@ createUser(userArgs, function(response) {
         };
         seedMessages(patientArgs);
     });
-});
+// });
 
 
 
