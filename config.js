@@ -49,19 +49,8 @@ const envVarsSchema = Joi.object({
         .description('SSL certificate CA'), // Certificate itself, not a filename
     PUSH_NOTIFICATIONS_ENABLED: Joi.boolean()
         .default(false),
-    PUSH_NOTIFICATIONS_APN_KEY_ID: Joi.string(),
-    PUSH_NOTIFICATIONS_APN_TEAM_ID: Joi.string(),
-    PUSH_NOTIFICATIONS_APN_ENV: Joi.string()
-        .default('development'),
-    PUSH_NOTIFICATIONS_APN_TOPIC: Joi.string()
-        .default('com.amida.orangeIgnite'),
-    PUSH_NOTIFICATIONS_FCM_SERVER_KEY: Joi.string()
-        .optional(),
-    PUSH_NOTIFICATIONS_FCM_API_URL: Joi.string(),
     PUSH_NOTIFICATIONS_SERVICE_USER_USERNAME: Joi.string(),
     PUSH_NOTIFICATIONS_SERVICE_USER_PASSWORD: Joi.string(),
-    PUSH_NOTIFICATIONS_APN_ENABLED: Joi.boolean()
-        .default(false),
     NOTIFICATION_MICROSERVICE_URL: Joi.string(),
 }).unknown()
     .required();
@@ -85,16 +74,9 @@ const config = module.exports = {
     sslCaCert: envVars.MONGO_CA_CERT,
 
     // Notification related
-    apnKeyId: envVars.PUSH_NOTIFICATIONS_APN_KEY_ID,
-    apnTeamId: envVars.PUSH_NOTIFICATIONS_APN_TEAM_ID,
-    apnEnv: envVars.PUSH_NOTIFICATIONS_APN_ENV,
-    apnTopic: envVars.PUSH_NOTIFICATIONS_APN_TOPIC,
-    fcmServerKey: envVars.PUSH_NOTIFICATIONS_FCM_SERVER_KEY,
-    fcmApiUrl: envVars.PUSH_NOTIFICATIONS_FCM_API_URL,
     pushNotificationsServiceUserUsername: envVars.PUSH_NOTIFICATIONS_SERVICE_USER_USERNAME,
     pushNotificationsServiceUserPassword: envVars.PUSH_NOTIFICATIONS_SERVICE_USER_PASSWORD,
     pushNotificationsEnabled: envVars.PUSH_NOTIFICATIONS_ENABLED,
-    apnEnabled: envVars.PUSH_NOTIFICATIONS_APN_ENABLED,
     notificationServiceAPI: envVars.NOTIFICATION_MICROSERVICE_URL,
 
     email: {
