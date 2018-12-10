@@ -91,11 +91,11 @@
     "grunt-express-server": "^0.5.1",
     "grunt-gh-pages": "^0.10.0",
     "grunt-mocha-test": "^0.12.7",
-    "istanbul": "^0.3.14",
+    "istanbul": "^0.4.5",
     "load-grunt-tasks": "^3.2.0",
     "mocha": "~5.1.1",
     "mocha-shared": "^0.2.0",
-    "monky": "^0.6.11",
+    "monky": "^0.6.12",
     "q": "^1.4.1",
     "sinon": "^1.14.1"
   },
