@@ -82,7 +82,7 @@
     "es6-plato": "^1.0.14",
     "eslint": "^3.19.0",
     "eslint-plugin-smells": "^1.0.1",
-    "grunt": "^0.4.5",
+    "grunt": "^1.0.3",
     "grunt-contrib-watch": "^1.0.0",
     "grunt-coveralls": "^2.0.0",
     "grunt-env": "^0.4.4",
