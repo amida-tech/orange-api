@@ -42,7 +42,7 @@
     "express": "4.16.0",
     "express-winston": "^3.0.0",
     "faker": "^4.1.0",
-    "gulp": "^3.9.1",
+    "gulp": "^4.0.0",
     "handlebars": "~4.0.0",
     "husky": "^0.14.3",
     "image-type": "^3.0.0",
