@@ -24,12 +24,12 @@ describe("Requests", function () {
             // setup a user for me and a user for another
             var me, otherUser, request;
             beforeEach(function () {
-                return auth.createTestUser().then(function (u) {
+                return auth.createTestUser(undefined, true).then(function (u) {
                     me = u;
                 });
             });
             beforeEach(function () {
-                return auth.createTestUser().then(function (u) {
+                return auth.createTestUser(undefined, true).then(function (u) {
                     otherUser = u;
                 });
             });

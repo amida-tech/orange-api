@@ -52,7 +52,7 @@ describe("Patients", function () {
         describe("sharing with an existing user", function () {
             // create a new user and share the patient with them
             before(function () {
-                return auth.createTestUser({}).then(function (user) {
+                return auth.createTestUser({}, true).then(function (user) {
                     return Q.nbind(patient.share, patient)(user.email, "default", "prime");
                 });
             });
@@ -114,7 +114,7 @@ describe("Patients", function () {
 
                 // create 1 patient for a real user with write access in the prime group
                 promises.push(function () {
-                    return auth.createTestUser().then(function (u) {
+                    return auth.createTestUser(undefined, true).then(function (u) {
                         return create(u.email, "write", "prime");
                     });
                 });

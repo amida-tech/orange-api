@@ -39,7 +39,7 @@ describe("Clinican Notes", function () {
 		});
 		// setup current user and one patient for them, with a journal entry where clinician is set to true
 		before(function () {
-			return auth.createTestUser().then(u => {
+			return auth.createTestUser(undefined, true).then(u => {
 				user = u;
 				return patients.createMyPatient({}, u);
 			}).then(p => {

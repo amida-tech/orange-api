@@ -48,7 +48,7 @@ describe("Users", function () {
                 // generate promise to create each user
                 var promises = [];
                 var create = function (data) {
-                    return auth.createTestUser(data);
+                    return auth.createTestUser(data, true);
                 };
 
                 // create 1 user with a custom name

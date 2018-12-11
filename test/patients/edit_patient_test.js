@@ -106,7 +106,7 @@ describe("Patients", function () {
             var patient;
             beforeEach(function () {
                 // create a patient
-                return Q.all([auth.createTestUser(), auth.createTestUser()])
+                return Q.all([auth.createTestUser(undefined, true), auth.createTestUser(undefined, true)])
                     .spread(common.createOtherPatient({}))
                     .then(function (p) {
                         patient = p;

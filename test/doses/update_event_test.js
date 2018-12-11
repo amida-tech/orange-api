@@ -195,7 +195,7 @@ describe("Doses", function () {
             var user, patient, otherPatient;
             before(function () {
                 // setup current user and two patients for them, both with a medication
-                return auth.createTestUser().then(u => {
+                return auth.createTestUser(undefined, true).then(u => {
                     user = u;
                     return patients.createMyPatient({}, user);
                 }).then(p => {

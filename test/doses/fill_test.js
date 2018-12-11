@@ -12,7 +12,7 @@ describe("Doses", function () {
         // setup test user and patient with medication
         var patient;
         beforeEach(function () {
-            return auth.createTestUser().then(function (user) {
+            return auth.createTestUser(undefined, true).then(function (user) {
                 return patients.createMyPatient({}, user);
             }).then(function (p) {
                 patient = p;

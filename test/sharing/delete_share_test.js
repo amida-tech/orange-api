@@ -54,7 +54,7 @@ describe("Patients", function () {
             // create a new user to share the patient with
             var user;
             before(function () {
-                return auth.createTestUser({}).then(function (u) {
+                return auth.createTestUser({}, true).then(function (u) {
                     user = u;
                 });
             });

@@ -74,7 +74,7 @@ describe("Schedule", function () {
                 var patient, noneMedication, defaultMedication, suspendedMedication;
                 before(function () {
                     // create two test users
-                    return Q.all([auth.createTestUser(), auth.createTestUser()]).spread(function (me, other) {
+                    return Q.all([auth.createTestUser(undefined, true), auth.createTestUser(undefined, true)]).spread(function (me, other) {
                         // create patient and share read-only with main user
                         return patients.createOtherPatient({}, me, other).then(function (p) {
                             patient = p;
@@ -166,7 +166,7 @@ describe("Schedule", function () {
             var user, patient, otherPatient;
             beforeEach(function () {
                 // create patient user
-                return auth.createTestUser().then(function (u) {
+                return auth.createTestUser(undefined, true).then(function (u) {
                     user = u;
                 }).then(function () {
                     // create and store patients

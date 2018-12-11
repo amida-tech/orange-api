@@ -170,7 +170,7 @@ describe("Journal", function () {
             before(function () {
                 // setup user and medication
                 // setup current user and two patients for them, both with a medication
-                return auth.createTestUser()
+                return auth.createTestUser(undefined, true)
                 .then(curry(patients.createMyPatient)({}))
                 .then(p => {
                     patient = p;
