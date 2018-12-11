@@ -77,7 +77,7 @@ describe("Schedule", function () {
                 at(day3, "1500", null), // unspecified dose day 3
                 at(day3, "1700", 13), // 16:00 day 3
                 at(day3, "2130", null), // extra as_needed day 3
-                at(day3, "2200", 12)  // early before sleep day 3
+                at(day3, "2200", 12) // early before sleep day 3
             ];
         };
 
