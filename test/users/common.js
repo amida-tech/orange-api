@@ -11,17 +11,18 @@ var expect = chakram.expect;
 var userSchema = {
     required: ["email", "first_name", "last_name", "phone", "success", "role"],
     properties: {
-        success:    { type: "boolean" },
-        email:      { type: "string" },
-        first_name: { type: "string" },
-        last_name:  { type: "string" },
-        phone:      { type: "string" },
-        role:       { type: "string" },
-        avatar:     { type: "string" },
-        deviceToken:{ type: "string" },
-        gcmToken:   { type: "string" },
-        npi:        { type: "string" },
-        defaultPatientID: { type: "string" }
+        success:      { type: "boolean" },
+        email:        { type: "string" },
+        first_name:   { type: "string" },
+        last_name:    { type: "string" },
+        phone:        { type: "string" },
+        role:         { type: "string" },
+        organization: { type: "string" },
+        avatar:       { type: "string" },
+        deviceToken:  { type: "string" },
+        gcmToken:     { type: "string" },
+        npi:          { type: "string" },
+        defaultPatientID: { type: "string"}
     },
     additionalProperties: false
 };
