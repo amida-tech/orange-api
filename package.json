@@ -12,9 +12,11 @@
     "check_test_db": "cross-env NODE_ENV=test node check_test_db.js",
     "delete_db": "cross-env NODE_ENV=test node delete_db.js",
     "start": "grunt dev",
-    "test": "yarn check_test_db && cross-env NODE_ENV=test grunt test || yarn delete_db",
+    "test": "npm run check_test_db && cross-env NODE_ENV=test grunt test || npm run delete_db",
     "create-microservice-service-user": "node createAccessUser.js",
-    "test-services": "node mockScript.js"
+    "test-services": "node mockScript.js",
+    "snyk-protect": "snyk protect",
+    "prepare": "npm run snyk-protect"
   },
   "bugs": {
     "url": "https://github.com/amida-tech/orange-api/issues"
@@ -63,12 +65,12 @@
     "pdfmake": "^0.1.18",
     "request": "~2.87.0",
     "rxnorm-js": "^0.1.1",
-    "sendgrid": "^1.9.0",
     "twilio": "^3.16.0",
     "uuid": "^3.3.2",
     "winston": "^3.1.0",
     "xlsx": "^0.14.0",
-    "xtend": "^4.0.0"
+    "xtend": "^4.0.0",
+    "snyk": "^1.117.1"
   },
   "devDependencies": {
     "aglio": "~2.3.0",
@@ -98,5 +100,6 @@
   },
   "engines": {
     "node": "0.10.x"
-  }
+  },
+  "snyk": true
 }
