@@ -20,7 +20,7 @@ describe("Users", function () {
             return fixtures.create("User", data).then(function (u) {
                 user = u;
                 return u;
-            }).then(auth.genAccessToken).then(function (t) {
+            }).then((u) => auth.genAccessToken(u)).then(function (t) {
                 token = t;
                 return t;
             }).then(remove);

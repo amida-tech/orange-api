@@ -353,7 +353,7 @@ describe("Journal", function () {
             var user, patient, otherPatient;
             before(function () {
                 // setup current user and two patients for them, both with a medication
-                return auth.createTestUser().then(function (u) {
+                return auth.createTestUser(undefined, true).then(function (u) {
                     user = u;
                     // create patients
                     return Q.all([

@@ -4,7 +4,6 @@ const express = require("express");
 const cors = require("cors");
 const winstonInstance = require("./config/winston");
 const expressWinston = require("express-winston");
-
 const app = module.exports = express();
 
 // disable nagle's algorithm: significantly slows down piping to res, as is
@@ -156,14 +155,14 @@ var auth = require("./lib/controllers/helpers/auth.js");
 patientRouter.use(auth.authenticate); // find user from access token
 
 patientRouter.use("/habits", require("./lib/controllers/habits.js"));
-patientRouter.use("/doctors", require("./lib/controllers/doctors.js"));
 patientRouter.use("/emergencyContacts", require("./lib/controllers/emergency_contacts.js"));
 patientRouter.use("/documentSignatures", require("./lib/controllers/document_signatures.js"));
-patientRouter.use("/pharmacies", require("./lib/controllers/pharmacies.js"));
 patientRouter.use("/medications", require("./lib/controllers/medications.js"));
 patientRouter.use("/journal", require("./lib/controllers/journal.js"));
 patientRouter.use("/doses", require("./lib/controllers/doses.js"));
 patientRouter.use("/schedule", require("./lib/controllers/schedule.js"));
+patientRouter.use("/doctors", require("./lib/controllers/doctors.js"));
+patientRouter.use("/pharmacies", require("./lib/controllers/pharmacies.js"));
 patientRouter.use("/events", require("./lib/controllers/events.js"));
 
 // nest patient-specific resources under /patients/:id

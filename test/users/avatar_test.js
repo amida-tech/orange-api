@@ -58,7 +58,7 @@ describe("Users", function () {
         // create a user and try and set their avatar
         var setAUser = function (image) {
             return fixtures.create("User").then(function (u) {
-              return auth.genAccessToken(u);
+              return auth.genAccessToken(u, true);
             }).then(curry(setUser)(image));
         };
 
@@ -73,7 +73,7 @@ describe("Users", function () {
         // create a user and try and view their avatar
         var getAUser = function () {
             return fixtures.create("User").then(function (u) {
-              return auth.genAccessToken(u);
+              return auth.genAccessToken(u, true);
             }).then(getUser);
         };
 
@@ -153,10 +153,10 @@ describe("Users", function () {
             var user;
             var token;
             before(function () {
-                return auth.createTestUser().then(function (u) {
+                return auth.createTestUser(undefined, true).then(function (u) {
                     user = u;
                     return u;
-                }).then(auth.genAccessToken).then(function (t) {
+                }).then((u) => auth.genAccessToken(u, true)).then(function (t) {
                     token = t;
                 });
             });

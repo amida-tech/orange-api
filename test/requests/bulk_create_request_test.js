@@ -45,7 +45,7 @@ describe("Requests", function () {
                 return Promise.all(createUserPromises);
             });
             before(function () {
-                return auth.createTestUser().then(function (u) {
+                return auth.createTestUser(undefined, true).then(function (u) {
                     patientUser = u;
                 });
             });
