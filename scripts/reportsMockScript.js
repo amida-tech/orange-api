@@ -10,8 +10,8 @@ const adminPassword = (process.argv[7] ? `${process.argv[7]}`: `@TestTest1`);
 const firstName = faker.name.firstName().toLowerCase();
 const lastName = faker.name.lastName().toLowerCase();
 const phoneNumber = faker.phone.phoneNumberFormat().split('-').join('');
-// const email = firstName + "+patient@amida.com";
-const email = "jaylen+patient@amida.com";
+const email = firstName + "+patient@amida.com";
+// const email = "jaylen+patient@amida.com";
 const password = "Testtest1!";
 const doctorEmail = "mholmes@amida-demo.com";
 const access = ["read","write","default"];
@@ -150,8 +150,8 @@ const seedMessages = function (patientArgs) {
     const firstName2 = faker.name.firstName().toLowerCase();
     const lastName2 = faker.name.lastName().toLowerCase();
     const phoneNumber2 = faker.phone.phoneNumberFormat().split('-').join('');
-    // const email2 = firstName2+"+clinician@amida.com";
-    const email2 = "joe+clinician@amida.com";
+    const email2 = firstName2+"+clinician@amida.com";
+    // const email2 = "joe+clinician@amida.com";
     const password2 = "Testtest1!";
     var authToken2 = '';
     var threadID = null;
@@ -248,15 +248,15 @@ const seedMessages = function (patientArgs) {
 
 
     // Create a second user inside the seedMessages function call
-    // createUser(newUserArgs, function(response) {
-    //     if (response.email) {
-    //         console.log("Created User2: ", response.email);
-    //         console.log(" ✅ Orange-API and Auth Service are working correctly to create users and authenticate");
-    //         testArray.push({test: 'auth & orange-api', pass: true});
-    //     } else {
-    //         console.log(" ❌ Orange-API and Auth Service are not working correctly together");
-    //         testArray.push({test: 'auth & orange-api', pass: false});
-    //     }
+    createUser(newUserArgs, function(response) {
+        if (response.email) {
+            console.log("Created User2: ", response.email);
+            console.log(" ✅ Orange-API and Auth Service are working correctly to create users and authenticate");
+            testArray.push({test: 'auth & orange-api', pass: true});
+        } else {
+            console.log(" ❌ Orange-API and Auth Service are not working correctly together");
+            testArray.push({test: 'auth & orange-api', pass: false});
+        }
 
         // Get first user's patient and share it with the new user
         getPatients(patientArgs, function(response){
@@ -298,11 +298,11 @@ const seedMessages = function (patientArgs) {
                     // });
             });
         });
-    // });
+    });
 }
 
-// createUser(userArgs, function(response) {
-    // console.log("Created User: ", response.email);
+createUser(userArgs, function(response) {
+    console.log("Created User: ", response.email);
     authenticateUser(authArgs, function (response) {
         authToken = response;
         const patientArgs = {
@@ -312,7 +312,7 @@ const seedMessages = function (patientArgs) {
         };
         seedMessages(patientArgs);
     });
-// });
+});
 
 
 
