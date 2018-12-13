@@ -6,6 +6,7 @@ var mongoose    = require("mongoose"),
     fs          = require("fs"),
     config      = require("./config.js");
 
+var scheduleMedicationReminders = require("./scheduleMedicationReminders.js");
 var server; // express server
 var gfs; // gridfs client
 
@@ -37,6 +38,11 @@ async.waterfall([
         var app = require("./app.js");
         app.set("gridfs", gfs);
         server = app.listen(config.port, callback);
+    },
+
+    function (callback) {
+        scheduleMedicationReminders();
+        callback();
     }
 ], function (err) {
     if (err) throw err;
