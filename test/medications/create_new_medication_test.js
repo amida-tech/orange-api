@@ -327,7 +327,7 @@ describe("Medications", function () {
             // setup current user and two patients for them, both with a doctor and pharmacy
             var user, patient, otherPatient;
             before(function () {
-                return auth.createTestUser().then((u) => {
+                return auth.createTestUser(undefined, true).then((u) => {
                     user = u;
                     return patients.createMyPatient({}, user);
                 }).then(p => {
@@ -376,7 +376,7 @@ describe("Medications", function () {
             // setup test user and patient
             var user, patient;
             before(function () {
-                return auth.createTestUser().then(function (u) {
+                return auth.createTestUser(undefined, true).then(function (u) {
                     user = u;
                 }).then(function () {
                     return patients.createMyPatient({}, user);
@@ -515,4 +515,3 @@ describe("Medications", function () {
         });
     });
 });
-

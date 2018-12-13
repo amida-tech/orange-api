@@ -26,7 +26,7 @@ describe("Medications", function () {
             // setup a test user
             var user;
             before(function () {
-                return auth.createTestUser().then(function (u) {
+                return auth.createTestUser(undefined, true).then(function (u) {
                     user = u;
                 });
             });
@@ -42,7 +42,7 @@ describe("Medications", function () {
             // setup another test patient owned by another user
             var otherPatient;
             before(function () {
-                return auth.createTestUser().then(function (other) {
+                return auth.createTestUser(undefined, true).then(function (other) {
                     return patients.createOtherPatient({}, user, other).then(function (p) {
                         otherPatient = p;
                         return Q.nbind(p.share, p)(user.email, "read", "anyone");

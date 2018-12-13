@@ -55,7 +55,7 @@ auth.genAuthHeaders = function (accessToken) {
 
 // generate access token from user, promise-style
 var currId = 0;
-auth.genAccessToken = function (user) {
+auth.genAccessToken = function (user, isAdmin) {
     currId += 1;
     // generate access token
     var deferred = Q.defer();
@@ -63,7 +63,7 @@ auth.genAccessToken = function (user) {
         id: currId,
         username: user.email,
         email: user.email,
-        scopes: [user.role]
+        scopes: isAdmin ? ["admin", user.role] : [user.role]
     });
     deferred.resolve(token);
     return deferred.promise;
@@ -75,7 +75,7 @@ auth.genAdminAccessToken = function () {
     var token = signJWT({
         id: 0,
         username: "admin",
-        email: "admin@dm.n",
+        email: "admin@admin.com",
         scopes: ["admin"]
     });
     deferred.resolve(token);
@@ -84,12 +84,12 @@ auth.genAdminAccessToken = function () {
 
 // create a new user from the factory and generate an access token,
 // returning user with user.accessToken present
-auth.createTestUser = function (data) {
+auth.createTestUser = function (data, isAdmin) {
     var user;
     return userFixtures.create("User", data).then(function (u) {
         user = u;
         return user;
-    }).then(auth.genAccessToken).then(function (t) {
+    }).then((user) => auth.genAccessToken(user, isAdmin)).then(function (t) {
         user.accessToken = t;
         return user;
     });

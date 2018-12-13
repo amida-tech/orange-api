@@ -94,7 +94,7 @@ module.exports.itRequiresValidEntryId = function (endpoint) {
         var user, patient, otherPatient;
         before(function () {
             // setup current user and two patients for them, one with a journal entry
-            return auth.createTestUser().then(function (u) {
+            return auth.createTestUser(undefined, true).then(function (u) {
                 user = u;
                 // create patients
                 return Q.all([

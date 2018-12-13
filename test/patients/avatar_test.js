@@ -156,7 +156,7 @@ describe("Patients", function () {
             // setup test user and patient
             var patient;
             before(function () {
-                return auth.createTestUser().then(function (user) {
+                return auth.createTestUser(undefined, true).then(function (user) {
                     return common.createMyPatient({}, user);
                 }).then(function (p) {
                     // store created patient (with user nested as patient.user)

@@ -27,7 +27,7 @@ describe("Users", function () {
                     email: user.email
                 };
                 return user;
-            }).then(auth.genAccessToken).then(function (t) {
+            }).then((u) => auth.genAccessToken(u, true)).then(function (t) {
                 token = t;
                 return token;
             }).then(updateWithMods);

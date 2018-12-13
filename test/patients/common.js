@@ -90,7 +90,7 @@ module.exports.itRequiresValidPatientId = function (endpoint) {
         // setup test user and store their access token
         var accessToken;
         before(function () {
-            return auth.createTestUser().then(function (user) {
+            return auth.createTestUser(undefined, true).then(function (user) {
                 accessToken = user.accessToken;
             });
         });
@@ -132,7 +132,7 @@ var createOtherPatient = module.exports.createOtherPatient = curry(function (dat
 // setup a test user and patient (with specified data modifications to the factory
 // default) for that user, and then do something to it
 module.exports.testMyPatient = function (data) {
-    return auth.createTestUser().then(createMyPatient(data));
+    return auth.createTestUser(undefined, true).then(createMyPatient(data));
 };
 
 // wrapper around auth.itRequiresAuthentication to generate patient IDs to test with
@@ -142,7 +142,7 @@ module.exports.itRequiresAuthentication = function (endpoint) {
         // setup test user and patient, storing patientId
         var patientId;
         before(function () {
-            return auth.createTestUser().then(createMyPatient({})).then(function (patient) {
+            return auth.createTestUser(undefined, true).then(createMyPatient({})).then(function (patient) {
                 patientId = patient._id;
             });
         });
@@ -192,10 +192,10 @@ var requiresAuthentication = module.exports.itRequiresAuthentication = function 
 
         describe("testing authorization", function () {
             var patientForMe = function () {
-                return auth.createTestUser().then(createMyPatient({}));
+                return auth.createTestUser(undefined, true).then(createMyPatient({}));
             };
             var patientForOther = function () {
-                return Q.all([auth.createTestUser(), auth.createTestUser()])
+                return Q.all([auth.createTestUser(undefined, true), auth.createTestUser(undefined, true)])
                         .spread(createOtherPatient({}))
                         .then(function (p) {
                             return p;
