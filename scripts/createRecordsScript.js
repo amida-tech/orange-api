@@ -3,7 +3,6 @@ const moment = require('moment')
 const jwt = require('jsonwebtoken')
 const client = new Client();
 const createJournalEntryUrl = 'http://localhost:5000/v1/patients/2739/journal'
-// const authToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MjYxLCJ1dWlkIjoiNDg0OGYwYzMtZTIzYi00MDU0LWIxZTktNTQzNmJjYTljMmMzIiwidXNlcm5hbWUiOiJidWlsZGVyQGFtaWRhLmNvbSIsImVtYWlsIjoiYnVpbGRlckBhbWlkYS5jb20iLCJzY29wZXMiOlsiIl0sImlhdCI6MTUzNjkzNzM5MCwiZXhwIjoxNTM3MDIzMzkwfQ.Sa_ommra_IQbHVolgJNK27yZ9k3E6aOAtjYKlQV7P4g';
 
 // function to make journal entries
 const createJournalEntry = function(journalArgs, patientID, callback) {
@@ -23,11 +22,9 @@ module.exports.createMoodEntries = function(authToken, patientID, days) {
   let date = moment().endOf('day').subtract(days, 'days')
   for (var y=0; y<days; y++) {
     date.add(1, 'days')
-    // console.log('Day date', date);
     const hourlydate = moment(date)
     for (var x = 0; x<10; x++ ) {
       hourlydate.subtract(2, 'hours')
-      // console.log('Time date', hourlydate)
       const moodSeverity = Math.floor(Math.random() * 9) + 1;
       const providedDate = moment(hourlydate).utc().toISOString()
       const journalArgs = {
@@ -66,7 +63,6 @@ module.exports.createMeditationEntries = function(authToken, patientID, days) {
     meditations.push(moment(hourlydate).subtract(7, 'hours'))
     meditations.push(moment(hourlydate).subtract(13, 'hours'))
     meditations.push(moment(hourlydate).subtract(15, 'hours'))
-    // console.log('meditations', meditations)
     meditations.map((event) => {
       const doesMeditationHappen = Math.random();
       if (doesMeditationHappen > 0.25) {
@@ -104,7 +100,6 @@ module.exports.createMedicationAdherence = function(authToken, patientID, medica
     date.add(1, 'days')
     const hourlydate = moment(date).subtract(13, 'hours')
 
-    // console.log('meditations', medications)
     medications.map((med) => {
       const medicationTaken = Math.random();
       const providedDate = moment(hourlydate).utc().toISOString()
@@ -121,9 +116,9 @@ module.exports.createMedicationAdherence = function(authToken, patientID, medica
         }
       }
       createDose(doseArgs, patientID, function(response) {
-        // if (response.status === 'ERROR') {
+        if (response.status === 'ERROR') {
           console.log("UNSuccesful createJournalEntry", response, doseArgs);
-        // }
+        }
       });
     })
       
