@@ -47,6 +47,9 @@ function getGfs() {
 }
 require("./lib/models/user/user.js")(getGfs);
 require("./lib/models/patient/patient.js")(getGfs);
+require("./lib/models/reminder_notification");
+require("./scheduleMedicationReminders.js");
+
 
 // CORS
 const corsDomains = config.accessControlAllowOrigin.split(",").map(function (domain) {
