@@ -11,17 +11,17 @@ const bufferInMilliseconds = 5000;
 function checkIfSent(key) {
   return new Promise((resolve, reject) => {
    ReminderNotification.findOneAndUpdate(
-   {_id: key, sent: true}, // find a document with that filter
-   {_id: key, sent: true}, // document to insert when nothing was found
-   {upsert: true, new: false, runValidators: true}, // options
-   function (err, doc) { // callback
-       if (err) {
-           reject(err)
-       } else {
-           resolve(doc)
-       }
-   }
-  );
+     {_id: key, sent: true},
+     {_id: key, sent: true},
+     {upsert: true, new: false, runValidators: true},
+     function (err, doc) {
+         if (err) {
+             reject(err)
+         } else {
+             resolve(doc)
+         }
+     }
+   );
   })
 }
 
@@ -63,7 +63,7 @@ function sendMedicationReminders() {
               });
           });
           Patient.formatSchedule(items, function (err, result) {
-              if (err) return next(err);
+              if (err) return err;
               var schedule = result.schedule;
               schedule.forEach((item) => {
                 const notificationDate = new Date(item.notification);
