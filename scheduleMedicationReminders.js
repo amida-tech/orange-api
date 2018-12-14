@@ -67,7 +67,7 @@ function sendMedicationReminders() {
               var schedule = result.schedule;
               schedule.forEach((item) => {
                 const notificationDate = new Date(item.notification);
-                if (notificationDate >= startTime && notificationDate <= endTime) {
+                if (!Object.keys(item).includes('took_medication') && notificationDate >= startTime && notificationDate <= endTime) {
                   sendNotifications(patient, item, user)
                 }
               })
