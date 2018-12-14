@@ -33,6 +33,7 @@ function sendNotifications(patient, item, user) {
        const dateFormat = item.type === 'time' ? 'h:mm a' : 'MMM Do YY'
        const notificationTitle = 'Reminder'
        const notificationMessage = `Your scheduled task is due by ${moment(item.date).tz(patient.tz).format(dateFormat)}`
+       console.log("SENDING NOTIFICATION: ", notificationMessage);
        user.sendPushNotification({
            notificationType: "MEDICATION_REMINDER",
            title: notificationTitle,
@@ -45,6 +46,7 @@ function sendNotifications(patient, item, user) {
 
 
 function sendMedicationReminders() {
+   console.log("CHECKING FOR NOTIFICATIONS");
    const time = Date.now()
    const intervalInMilliseconds = intervalInMinutes * 60 * 1000;
    const startTime = new Date(time - bufferInMilliseconds)
