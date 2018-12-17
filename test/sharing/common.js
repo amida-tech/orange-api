@@ -44,7 +44,7 @@ module.exports.itRequiresValidShareId = function (ep) {
         var user, patient, otherPatient, share;
         before(function () {
             // setup current user and two patients for them, one with a share
-            return auth.createTestUser().then(function (u) {
+            return auth.createTestUser(undefined, true).then(function (u) {
                 user = u;
                 // create patients
                 return Q.all([

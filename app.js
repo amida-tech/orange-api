@@ -1,9 +1,9 @@
 "use strict";
 // Web
 const express = require("express");
-const bunyan = require("express-bunyan-logger");
-const bunyanLogstash  = require("bunyan-logstash");
-
+const cors = require("cors");
+const winstonInstance = require("./config/winston");
+const expressWinston = require("express-winston");
 const app = module.exports = express();
 
 // disable nagle's algorithm: significantly slows down piping to res, as is
@@ -15,35 +15,8 @@ app.use(function(req, res, next){
 
 // Logging
 var config = require("./config.js");
-var streams = [];
-if (typeof config.logger.file !== "undefined") {
-    streams.push({
-        level: config.logger.file.level,
-        path: config.logger.file.path
-    });
-}
-if (typeof config.logger.stdout !== "undefined") {
-    streams.push({
-        level: config.logger.stdout.level,
-        stream: process.stdout
-    });
-}
-if (typeof config.logger.logstash !== "undefined") {
-    console.log(config.logger.logstash);
-    streams.push({
-        level: config.logger.logstash.level,
-        type: "raw",
-        stream: bunyanLogstash.createStream({
-            host: config.logger.logstash.host,
-            port: config.logger.logstash.port
-        })
-    });
-}
-var logger = bunyan({
-    name: "logger",
-    streams: streams
-});
-app.use(logger);
+
+
 
 // Database setup in run.js
 
@@ -53,6 +26,7 @@ app.use(logger);
 // in patient.js, so don't require them again here
 require("./lib/models/counter.js"); // Require first
 require("./lib/models/rxnorm.js");
+require("./lib/models/formulary_entry.js");
 // Patient and User require a getter function for a gridfs client (set as an express
 // setting in run.js but may not be immediately accessible hence the getter function)
 function getGfs() {
@@ -60,16 +34,35 @@ function getGfs() {
 }
 require("./lib/models/user/user.js")(getGfs);
 require("./lib/models/patient/patient.js")(getGfs);
+require("./lib/models/reminder_notification");
+require("./scheduleMedicationReminders.js");
+
 
 // CORS
-app.use(function (req, res, next) {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Credentials", true);
-    res.header("Access-Control-Allow-Headers",
-            "Origin, X-Requested-With, Content-Type, Accept, Authorization, X-Client-Secret");
-    res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-    next();
+const corsDomains = config.accessControlAllowOrigin.split(",").map(function (domain) {
+  return domain.trim();
 });
+
+app.use(cors({
+  origin: function (origin, callback) {
+    // TODO: Figure out why origin is coming through as undefined, which seems to be
+    // happening because this is running inside a docker container, fix the problem,
+    // and remove the `origin === undefined` clause.
+    if (corsDomains.indexOf(origin) !== -1 || corsDomains.indexOf("*") !== -1 || config.accessControlAllowOrigin === "*" || origin === undefined) {
+      // Cors passes!
+      callback(null, true);
+    } else {
+      console.warn(`WARNING: cors failed. Make sure you have your ACCESS_CONTROL_ALLOW_ORIGIN environment variable set correctly. For this request, origin was: ${origin}`);
+      // This will make it so that no Access-Control-... headers are returned on
+      // the OPTIONS request, and requests from domains not in the list will fail.
+      // Also, requests from mobile apps and REST tools hit this case, but they still work.
+      callback(null, false);
+    }
+  },
+  credentials: true,
+  allowedHeaders: "Origin, X-Requested-With, Content-Type, Accept, Authorization, X-Client-Secret",
+  methods: "GET, POST, PUT, DELETE, OPTIONS"
+}));
 
 // Prevent caching
 app.disable("etag");
@@ -92,10 +85,8 @@ app.use(function (req, res, next) {
     return jsonParser(req, res, next);
 });
 
-if (process.env.NODE_ENV !== "test") {
-    const passportAuth = require("./lib/controllers/helpers/passport.js")();
-    app.use(passportAuth.initialize());
-}
+const passportAuth = require("./lib/controllers/helpers/passport.js")();
+app.use(passportAuth.initialize());
 
 // every API request needs to have a client secret posted. this is a fixed hexstring
 // that's just read from config.js and directly compared.
@@ -118,6 +109,21 @@ app.use(function (req, res, next) {
 });
 
 
+// enable detailed API logging without logging JWT
+if (config.logLevel === "debug") {
+    expressWinston.requestWhitelist.push("body");
+    expressWinston.responseWhitelist.push("body");
+} else {
+    expressWinston.requestWhitelist = ["url", "method", "httpVersion", "originalUrl", "query"];
+    expressWinston.responseWhitelist = ["statusCode", "responseTime"];
+}
+app.use(expressWinston.logger({
+    winstonInstance,
+    meta: true, // optional: log meta data about request (defaults to true)
+    msg: "HTTP {{req.method}} {{req.url}} {{res.statusCode}} {{res.responseTime}}ms",
+    colorStatus: true // Color the status code (default green, 3XX cyan, 4XX yellow, 5XX red).
+}));
+
 
 // App-level router containing all routes
 var router = express.Router();
@@ -134,6 +140,8 @@ router.use("/user", require("./lib/controllers/users.js"));
 // External APIs
 router.use("/npi", require("./lib/controllers/npi.js"));
 router.use("/rxnorm", require("./lib/controllers/rxnorm.js"));
+
+router.use("/formulary", require("./lib/controllers/formulary_entries.js"));
 
 // User sharing
 router.use("/", require("./lib/controllers/requests.js"));
@@ -152,12 +160,14 @@ var auth = require("./lib/controllers/helpers/auth.js");
 patientRouter.use(auth.authenticate); // find user from access token
 
 patientRouter.use("/habits", require("./lib/controllers/habits.js"));
-patientRouter.use("/doctors", require("./lib/controllers/doctors.js"));
-patientRouter.use("/pharmacies", require("./lib/controllers/pharmacies.js"));
+patientRouter.use("/emergencyContacts", require("./lib/controllers/emergency_contacts.js"));
+patientRouter.use("/documentSignatures", require("./lib/controllers/document_signatures.js"));
 patientRouter.use("/medications", require("./lib/controllers/medications.js"));
 patientRouter.use("/journal", require("./lib/controllers/journal.js"));
 patientRouter.use("/doses", require("./lib/controllers/doses.js"));
 patientRouter.use("/schedule", require("./lib/controllers/schedule.js"));
+patientRouter.use("/doctors", require("./lib/controllers/doctors.js"));
+patientRouter.use("/pharmacies", require("./lib/controllers/pharmacies.js"));
 patientRouter.use("/events", require("./lib/controllers/events.js"));
 
 // nest patient-specific resources under /patients/:id

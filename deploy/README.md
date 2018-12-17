@@ -1,5 +1,4 @@
-There are two options for deployment: a traditional deployment with Ansible (and vagrant for testing
-locally), and using docker containers. To deploy traditionally, see the `traditional` directory
+There are two options for deployment: a traditional deployment with Ansible, and using docker containers. To deploy traditionally, see the `traditional` directory
 and the documentation within.
 
 To deploy using docker, just configure config.js in your local directory and then use `docker-compose` to

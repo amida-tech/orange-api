@@ -35,27 +35,22 @@ describe("Clinican Notes", function () {
 		before(function () {
 			return auth.createTestUser({ "role": "clinician" }).then(function (u) {
 				clinicianUser = u;
-
 			});
-
 		});
 		// setup current user and one patient for them, with a journal entry where clinician is set to true
 		before(function () {
-			return auth.createTestUser().then(function (u) {
+			return auth.createTestUser(undefined, true).then(u => {
 				user = u;
-				// create patient
-				return patients.createMyPatient({}, user).then(function (p) {
-					patient = p;
-					Q.npost(patient, "share",
-						[clinicianUser.email, "default", "prime"]);
-				}).then(function () {
-					// setup journal entry for Patient
-					return Q.nbind(patient.createJournalEntry, patient)({
-						text: "Clinican Note",
-						date: (new Date()).toISOString(),
-						creator: "adam@west.com",
-						role: "clinician"
-					});
+				return patients.createMyPatient({}, u);
+			}).then(p => {
+				patient = p;
+				return Q.npost(patient, "share", [clinicianUser.email, "default", "prime"]);
+			}).then(() => {
+				return Q.nbind(patient.createJournalEntry, patient)({
+					text: "Clinician Note",
+					date: {utc: (new Date()).toISOString(), timezone:  "America/Los_Angeles"},
+					creator: clinicianUser.email,
+					role: "clinician"
 				});
 			});
 		});
@@ -90,7 +85,7 @@ describe("Clinican Notes", function () {
 		});
 
 		it("Asserts that note created by Clincian API user is marked as a clinican note", function () {
-			var modifications = { text: "New clinican note", date: (new Date()).toISOString() };
+			var modifications = { text: "New clinican note", date: { utc: (new Date()).toISOString(), timezone: "America/Los_Angeles"} };
 			return createNote(modifications, patient._id, clinicianUser.accessToken).then(function (response) {
 				expect(response.body.role).to.deep.equal("clinician");
 			});

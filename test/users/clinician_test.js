@@ -12,7 +12,7 @@ describe("Users", function () {
         // setup a test non-clinician user with
         var user;
         before(function () {
-            return auth.createTestUser().then(function (u) {
+            return auth.createTestUser(undefined, true).then(function (u) {
                 user = u;
             });
         });

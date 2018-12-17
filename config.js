@@ -2,12 +2,18 @@
 //import Joi from 'joi';
 const Joi = require("joi");
 // require and configure dotenv, will load vars in .env in PROCESS.ENV
-require('dotenv').config();
-
+const dotenv = require('dotenv');
+if (process.env.NODE_ENV === 'test') {
+    console.log('using env.test')
+    dotenv.config({ path: '.env.test' });
+} else {
+    dotenv.config();
+}
 // define validation for all the env vars
 const envVarsSchema = Joi.object({
-    NOTIFICATION_EMAIL_FROM: Joi.string().email()
-        .default('orange@amida-tech.com'),
+    LOG_LEVEL: Joi.string()
+        .default('info'),
+    NOTIFICATION_EMAIL_FROM: Joi.string().email(),
     NOTIFICATION_SENDGRID_API_KEY: Joi.string().allow('')
         .description('Email Notification Sendgrid API Key'),
     TWILIO_TEXT_FROM: Joi.string()
@@ -20,48 +26,32 @@ const envVarsSchema = Joi.object({
         .default(149343912420944),
     FACEBOOK_CLIENT_SECRET: Joi.string()
         .default('66db0a9b905a5d12867a112ad8b83b6c'),
-    FACEBOOK_CALLBACK_URL: Joi.string()
-        .default('http://localhost:5000/v1/auth/facebook/callback'),
+    FACEBOOK_CALLBACK_URL: Joi.string(),
     FACEBOOK_PROFILE_FIELDS: Joi.array().items(Joi.string())
         .default(['id', 'name', 'displayName', 'picture', 'email']),
-    MONGO_URI: Joi.string()
-        .default('mongodb://localhost/orange-api'),
-    ZEROPC: Joi.string()
-        .default('tcp://127.0.0.1:4242'),
+    MONGO_URI: Joi.string(),
     EXPRESS_PORT: Joi.number()
         .default(5000),
     X_CLIENT_SECRET: Joi.string().required()
         .description('X_CLIENT_SECRET is required. Its value must match the value of X_CLIENT_SECRET specified any client that calls this API.'),
     JWT_SECRET: Joi.string().required()
         .description('JWT Secret required to sign'),
+    ACCESS_CONTROL_ALLOW_ORIGIN: Joi.string().required()
+        .description('set to "null" to enable mobile apps. !!ARH add more better descriptionz.'),
+    ORANGE_ALLOW_PUBLIC_REGISTRATION: Joi.bool().default(false)
+        .description('Allows anyone to create an account if this is true'),
     AUTH_MICROSERVICE_URL: Joi.string().allow('')
-        .description('Auth microservice endpoint')
-        .default('http://localhost:4000/api/v1'),
-    MONGO_SSL: Joi.boolean()
+        .description('Auth microservice endpoint'),
+    MONGO_SSL_ENABLED: Joi.boolean()
         .default(false)
         .description('Enable SSL connection to MongoDB'),
-    MONGO_CERT_CA: Joi.string()
+    MONGO_CA_CERT: Joi.string()
         .description('SSL certificate CA'), // Certificate itself, not a filename
-    PUSH_NOTIFICATION_ENABLED: Joi.boolean()
+    PUSH_NOTIFICATIONS_ENABLED: Joi.boolean()
         .default(false),
-    PUSH_NOTIFICATION_KEYID: Joi.string()
-        .default('iAmTheKeyId'),
-    PUSH_NOTIFICATION_TEAMID: Joi.string()
-        .default('iAmThePrefixOfTheIOSAppId'),
-    PUSH_NOTIFICATION_APN_ENV: Joi.string()
-        .default('development'),
-    PUSH_NOTIFICATION_TOPIC: Joi.string()
-        .default('com.amida.orangeIgnite'),
-    PUSH_NOTIFICATION_FIREBASE_SERVER_KEY: Joi.string()
-        .optional(),
-    PUSH_NOTIFICATION_FIREBASE_URL: Joi.string()
-        .default('https://fcm.googleapis.com/fcm/send'),
-    PUSH_NOTIFICATION_MICROSERVICE_ACCESS_KEY: Joi.string(),
-    PUSH_NOTIFICATION_MICROSERVICE_PASSWORD: Joi.string(),
-    PUSH_NOTIFICATION_SEND_APN: Joi.boolean()
-        .default(false),
-    NOTIFICATION_SERVICE_URL: Joi.string()
-        .default('http://localhost:4003/api'),
+    PUSH_NOTIFICATIONS_SERVICE_USER_USERNAME: Joi.string(),
+    PUSH_NOTIFICATIONS_SERVICE_USER_PASSWORD: Joi.string(),
+    NOTIFICATION_MICROSERVICE_URL: Joi.string(),
 }).unknown()
     .required();
 
@@ -72,27 +62,22 @@ if (error) {
 }
 
 const config = module.exports = {
+    logLevel: envVars.LOG_LEVEL,
     secret: envVars.X_CLIENT_SECRET,
     jwtSecret: envVars.JWT_SECRET,
+    accessControlAllowOrigin: envVars.ACCESS_CONTROL_ALLOW_ORIGIN,
+    allowPublicRegistration: envVars.ORANGE_ALLOW_PUBLIC_REGISTRATION,
     authServiceAPI: envVars.AUTH_MICROSERVICE_URL,
     mongo: envVars.MONGO_URI,
-    zerorpc: envVars.ZEROPC,
     port: envVars.EXPRESS_PORT,
-    ssl: envVars.MONGO_SSL,
-    ssl_ca_cert: envVars.MONGO_CERT_CA,
+    sslEnabled: envVars.MONGO_SSL_ENABLED,
+    sslCaCert: envVars.MONGO_CA_CERT,
 
-    //Notification related
-    keyId: envVars.PUSH_NOTIFICATION_KEYID,
-    teamId: envVars.PUSH_NOTIFICATION_TEAMID,
-    apnENV: envVars.PUSH_NOTIFICATION_APN_ENV,
-    pushTopic: envVars.PUSH_NOTIFICATION_TOPIC,
-    firebaseServerKey: envVars.PUSH_NOTIFICATION_FIREBASE_SERVER_KEY,
-    firebaseAPIUrl: envVars.PUSH_NOTIFICATION_FIREBASE_URL,
-    microserviceAccessKey: envVars.PUSH_NOTIFICATION_MICROSERVICE_ACCESS_KEY,
-    microservicePassword: envVars.PUSH_NOTIFICATION_MICROSERVICE_PASSWORD,
-    enablePushNotifications: envVars.PUSH_NOTIFICATION_ENABLED,
-    sendAPN: envVars.PUSH_NOTIFICATION_SEND_APN,
-    notificationServiceAPI: envVars.NOTIFICATION_SERVICE_URL,
+    // Notification related
+    pushNotificationsServiceUserUsername: envVars.PUSH_NOTIFICATIONS_SERVICE_USER_USERNAME,
+    pushNotificationsServiceUserPassword: envVars.PUSH_NOTIFICATIONS_SERVICE_USER_PASSWORD,
+    pushNotificationsEnabled: envVars.PUSH_NOTIFICATIONS_ENABLED,
+    notificationServiceAPI: envVars.NOTIFICATION_MICROSERVICE_URL,
 
     email: {
       from: envVars.NOTIFICATION_EMAIL_FROM,

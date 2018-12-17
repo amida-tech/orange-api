@@ -1,7 +1,7 @@
 FROM        centos:centos7
 MAINTAINER  Amida Ops <ops@amida.com>
 
-# Enable EPEL, git, Node.js/npm and zeromq
+# Enable EPEL, git, Node.js/npm
 RUN yum -y update; yum clean all && \
     yum -y install epel-release; yum clean all
 
@@ -18,6 +18,7 @@ RUN npm install -g node-gyp
 # Copy package.json and install app dependencies
 # (do this before we copy over the rest of the source for caching reasons)
 COPY    package.json /tmp/package.json
+COPY    package-lock.json /tmp/package-lock.json
 RUN     cd /tmp && npm install --production
 RUN     mkdir -p /src && cp -a /tmp/node_modules /src/
 WORKDIR /src
@@ -25,9 +26,7 @@ WORKDIR /src
 # Copy app source
 # .dockerignore crucially means we don't copy node_modules
 COPY . /src
-COPY ./.env.docker /src/.env
 # COPY ./iosKey.p8 /src/iosKey.p8
 
 EXPOSE 5000
-ENV NODE_ENV production
 CMD ["node", "run.js"]

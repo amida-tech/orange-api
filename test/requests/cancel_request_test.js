@@ -25,12 +25,12 @@ describe("Requests", function () {
             // we only allow one open request per user at a time)
             var userA, userB, request;
             beforeEach(function () {
-                return auth.createTestUser().then(function (u) {
+                return auth.createTestUser(undefined, true).then(function (u) {
                     userA = u;
                 });
             });
             beforeEach(function () {
-                return auth.createTestUser().then(function (u) {
+                return auth.createTestUser(undefined, true).then(function (u) {
                     userB = u;
                 });
             });

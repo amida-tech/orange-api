@@ -31,6 +31,7 @@ var patientSchema = module.exports.schema = {
         phone:          { type: "string" },
         creator:        { type: "string" },
         me:             { type: "boolean" },
+        instructorEmail: { type: ["string", "null"] },
         meditations:    {
             type:           "object",
             required:       ["count", "sum"],
@@ -89,7 +90,7 @@ module.exports.itRequiresValidPatientId = function (endpoint) {
         // setup test user and store their access token
         var accessToken;
         before(function () {
-            return auth.createTestUser().then(function (user) {
+            return auth.createTestUser(undefined, true).then(function (user) {
                 accessToken = user.accessToken;
             });
         });
@@ -131,7 +132,7 @@ var createOtherPatient = module.exports.createOtherPatient = curry(function (dat
 // setup a test user and patient (with specified data modifications to the factory
 // default) for that user, and then do something to it
 module.exports.testMyPatient = function (data) {
-    return auth.createTestUser().then(createMyPatient(data));
+    return auth.createTestUser(undefined, true).then(createMyPatient(data));
 };
 
 // wrapper around auth.itRequiresAuthentication to generate patient IDs to test with
@@ -141,7 +142,7 @@ module.exports.itRequiresAuthentication = function (endpoint) {
         // setup test user and patient, storing patientId
         var patientId;
         before(function () {
-            return auth.createTestUser().then(createMyPatient({})).then(function (patient) {
+            return auth.createTestUser(undefined, true).then(createMyPatient({})).then(function (patient) {
                 patientId = patient._id;
             });
         });
@@ -191,10 +192,10 @@ var requiresAuthentication = module.exports.itRequiresAuthentication = function 
 
         describe("testing authorization", function () {
             var patientForMe = function () {
-                return auth.createTestUser().then(createMyPatient({}));
+                return auth.createTestUser(undefined, true).then(createMyPatient({}));
             };
             var patientForOther = function () {
-                return Q.all([auth.createTestUser(), auth.createTestUser()])
+                return Q.all([auth.createTestUser(undefined, true), auth.createTestUser(undefined, true)])
                         .spread(createOtherPatient({}))
                         .then(function (p) {
                             return p;
@@ -283,6 +284,18 @@ module.exports.itRequiresWriteAuthorization = requiresAuthentication({
     primeRead: false,
     primeWrite: true
 }, testAuthorizationSuccessful, testAuthorizationFailed);
+module.exports.itRequiresOnlyMeAuthorization = requiresAuthentication({
+    unassociated: false,
+    me: true,
+    explicitRead: false,
+    explicitWrite: false,
+    anyoneRead: false,
+    anyoneWrite: false,
+    familyRead: false,
+    familyWrite: false,
+    primeRead: false,
+    primeWrite: false
+}, testAuthorizationSuccessful, testAuthorizationFailed);
 
 // test read authorization for avatar endpoint (don't check success: true in a JSON
 // response, but just check HTTP response codes)
@@ -341,4 +354,3 @@ module.exports.itRequiresReadListAuthorization = function (slug) {
         primeWrite: true
     }, testAuthorizationListSuccessful(slug), testAuthorizationListFailed(slug));
 };
-

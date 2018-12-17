@@ -12,7 +12,7 @@ describe("Doses", function () {
         // setup test user and patient with medication
         var patient;
         beforeEach(function () {
-            return auth.createTestUser().then(function (user) {
+            return auth.createTestUser(undefined, true).then(function (user) {
                 return patients.createMyPatient({}, user);
             }).then(function (p) {
                 patient = p;
@@ -33,7 +33,7 @@ describe("Doses", function () {
             return Q.nbind(patient.createDose, patient)({
                 medication_id: patient.medications[0]._id,
                 // date irrelevant as long as it's after fill_date above
-                date: (new Date()).toISOString(),
+                date: {utc: (new Date()).toISOString(), timezone:  "America/Los_Angeles"},
                 taken: true,
                 creator: "adam@west.com",
                 notes: ""

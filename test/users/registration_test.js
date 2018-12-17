@@ -10,12 +10,52 @@ var User = mongoose.model("User");
 
 describe("Users", function () {
     describe("Registration Endpoint (POST /user)", function () {
-        // the endpoint
-        var register = function (data) {
+        var registerNoAuth = function (data) {
             return fixtures.build("User", data).then(function (user) {
                 // auth.genAuthHeaders(undefined) sets X-Client-Secret for us, and doesn't set any
                 // access token header
                 return chakram.post("http://localhost:5000/v1/user", user, auth.genAuthHeaders(undefined));
+            });
+        };
+
+        // check access token authentication
+        auth.itRequiresAuthentication(registerNoAuth);
+
+        const programAdministratorUser = {
+            email: "pa@example.com",
+            role: "programAdministrator"
+        };
+        let adminHeaders;
+        var registerAsAdmin = function (data) {
+            return auth.genAdminAccessToken()
+            .then(auth.genAuthHeaders)
+            .then(function (headers) {
+                adminHeaders = headers;
+            })
+            .then(function () {
+                return fixtures.build("User", data);
+            })
+            .then(function (user) {
+                return chakram.post("http://localhost:5000/v1/user", user, adminHeaders);
+            });
+        };
+        it("returns a successful response as admin even though admin doesn't have a user", function () {
+            // this also creates the programAdministrator user that will be used for the rest of the tests
+            return expect(registerAsAdmin(programAdministratorUser)).to.be.a.user.registerSuccess;
+        });
+
+        var register = function (data) {
+            let programAdministratorHeaders;
+            return auth.genAccessToken(programAdministratorUser, true)
+            .then(auth.genAuthHeaders)
+            .then(function (headers) {
+                programAdministratorHeaders = headers;
+            })
+            .then(function () {
+                return fixtures.build("User", data);
+            })
+            .then(function (user) {
+                return chakram.post("http://localhost:5000/v1/user", user, programAdministratorHeaders);
             });
         };
 
@@ -34,8 +74,8 @@ describe("Users", function () {
         it("rejects a null email", function () {
             return expect(register({ email: null })).to.be.an.api.error(400, "email_required");
         });
-        it("requires a role", function () {
-            return expect(register({ role: undefined })).to.be.an.api.error(400, "invalid_role");
+        it("rejects a null role", function () {
+            return expect(register({ role: null })).to.be.an.api.error(400, "invalid_role");
         });
         it("rejects a role not in enum", function () {
             return expect(register({ role: "notintheenum" })).to.be.an.api.error(400, "invalid_role");
@@ -92,7 +132,7 @@ describe("Users", function () {
                 user.first_name = user.firstName;
                 user.last_name = user.lastName;
 
-                return chakram.post("http://localhost:5000/v1/user", user, headers).then(function () {
+                return chakram.post("http://localhost:5000/v1/user", user, adminHeaders).then(function () {
                     return user;
                 });
             };
@@ -104,7 +144,7 @@ describe("Users", function () {
                     if (err) {
                         deferred.reject(err);
                     }
-                    deferred.resolve(auth.genAccessToken(user));
+                    deferred.resolve(auth.genAccessToken(user, true));
                 });
                 return deferred.promise;
             };

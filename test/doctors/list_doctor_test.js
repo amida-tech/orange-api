@@ -35,7 +35,7 @@ describe("Doctors", function () {
             // setup two patients
             var patient, otherPatient;
             before(function () {
-                return auth.createTestUser().then(function (user) {
+                return auth.createTestUser(undefined, true).then(function (user) {
                     return patients.createMyPatient({}, user).then(function (p) {
                         patient = p;
                         return patients.createMyPatient({}, user).then(function (p) {

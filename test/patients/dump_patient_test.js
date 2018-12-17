@@ -37,7 +37,7 @@ describe("Patients", function () {
             // setup test user
             var user;
             before(function () {
-                return auth.createTestUser().then(function (u) {
+                return auth.createTestUser(undefined, true).then(function (u) {
                     user = u;
                 });
             });
@@ -47,7 +47,7 @@ describe("Patients", function () {
             var patient;
             before(function () {
                 // create patient
-                return auth.createTestUser().then(curry(common.createOtherPatient)({}, user)).then(function (p) {
+                return auth.createTestUser(undefined, true).then(curry(common.createOtherPatient)({}, user)).then(function (p) {
                     patient = p;
                     // share patient
                     return Q.nbind(patient.share, patient)(user.email, "default", "anyone");
@@ -93,7 +93,7 @@ describe("Patients", function () {
             var shownEntry;
             before(function () {
                 return Q.nbind(patient.createJournalEntry, patient)({
-                    date: (new Date()).toISOString(),
+                    date: {utc: (new Date()).toISOString(), timezone: "America/Los_Angeles"},
                     text: "example journal entry",
                     creator: "adam@west.com",
                     medication_ids: [shownMed._id]
@@ -105,7 +105,7 @@ describe("Patients", function () {
             // create journal entry we have no access to
             before(function () {
                 return Q.nbind(patient.createJournalEntry, patient)({
-                    date: (new Date()).toISOString(),
+                    date: {utc: (new Date()).toISOString(), timezone: "America/Los_Angeles"},
                     text: "example journal entry",
                     creator: "adam@west.com",
                     medication_ids: [hiddenMed._id]
@@ -117,7 +117,7 @@ describe("Patients", function () {
             before(function () {
                 return Q.nbind(patient.createDose, patient)({
                     medication_id: shownMed._id,
-                    date: (new Date()).toISOString(),
+                    date: {utc: (new Date()).toISOString(), timezone: "America/Los_Angeles"},
                     creator: "adam@west.com",
                     taken: true
                 }).then(function (d) {
@@ -129,7 +129,7 @@ describe("Patients", function () {
             before(function () {
                 return Q.nbind(patient.createDose, patient)({
                     medication_id: hiddenMed._id,
-                    date: (new Date()).toISOString(),
+                    date: {utc: (new Date()).toISOString(), timezone: "America/Los_Angeles"},
                     creator: "adam@west.com",
                     taken: true
                 });

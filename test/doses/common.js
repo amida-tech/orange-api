@@ -20,7 +20,10 @@ var doseSchema = module.exports.schema = {
     properties: {
         success:        { type: "boolean" },
         id:             { type: "number" },
-        date:           { type: "string" },
+        date:           {
+            utc:        { type: "string" },
+            timezone:   { type: "number"}
+        },
         dose:           {
             type:           ["object", "null"],
             required:       ["quantity", "unit"],
@@ -78,7 +81,7 @@ module.exports.itRequiresValidDoseId = function (endpoint) {
         var user, patient, otherPatient;
         before(function () {
             // setup current user and two patients for them, one with a dose
-            return auth.createTestUser().then(function (u) {
+            return auth.createTestUser(undefined, true).then(function (u) {
                 user = u;
                 // create patients
                 return Q.all([
@@ -94,7 +97,7 @@ module.exports.itRequiresValidDoseId = function (endpoint) {
                     // setup dose for otherPatient
                     return Q.nbind(otherPatient.createDose, otherPatient)({
                         medication_id: otherPatient.medications[0]._id,
-                        date: (new Date()).toISOString(),
+                        date: {utc: (new Date()).toISOString(), timezone:  "America/Los_Angeles"},
                         taken: true,
                         creator: "adam@west.com",
                         notes: "foobar"

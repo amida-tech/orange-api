@@ -17,7 +17,7 @@ describe("Patients", function () {
         // data modifications to the factory default) for that user
         var createPatient = function (data) {
             // create full patient data from factory
-            return auth.createTestUser().then(function (user) {
+            return auth.createTestUser(undefined, true).then(function (user) {
                 return fixtures.build("Patient", data).then(function (patient) {
                     // explicitly set access_X fields because they're permisisons.X in patient
                     // model so the fixture doesn't handle them
@@ -144,7 +144,7 @@ describe("Patients", function () {
             });
         });
         it("uses my email address", function () {
-            return auth.createTestUser().then(function (user) {
+            return auth.createTestUser(undefined, true).then(function (user) {
                 return create({
                     first_name: "Test"
                 }, user.accessToken).then(function (response) {
@@ -154,7 +154,7 @@ describe("Patients", function () {
             });
         });
         it("uses my email address even if another is passed", function () {
-            return auth.createTestUser().then(function (user) {
+            return auth.createTestUser(undefined, true).then(function (user) {
                 return create({
                     first_name: "Test",
                     email: "notmy.email@address.com"

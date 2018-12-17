@@ -45,7 +45,7 @@ describe("Patients", function () {
         // check it requires a valid and authenticated/authorized patient and user
         patients.itRequiresAuthentication(curry(remove)(1));
         patients.itRequiresValidPatientId(curry(remove)(1));
-        patients.itRequiresWriteAuthorization(curry(removePatientShare)({}));
+        patients.itRequiresOnlyMeAuthorization(curry(removePatientShare)({}));
 
         // check it requires a valid shareid
         common.itRequiresValidShareId(remove);
@@ -54,7 +54,7 @@ describe("Patients", function () {
             // create a new user to share the patient with
             var user;
             before(function () {
-                return auth.createTestUser({}).then(function (u) {
+                return auth.createTestUser({}, true).then(function (u) {
                     user = u;
                 });
             });

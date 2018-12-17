@@ -20,13 +20,13 @@ describe("API", function () {
             var headers = {};
             if (typeof secret !== "undefined") headers["X-Client-Secret"] = secret;
 
-            return chakram.post("http://localhost:5000/v1/user", user, { headers: headers });
+            return chakram.get("http://localhost:5000/v1/npi/42", { headers: headers });
         });
     };
 
 
     it("accepts a valid client secret", function () {
-        return expect(endpoint(secret)).to.be.an.api.genericSuccess();
+        return expect(endpoint(secret)).to.have.status(200);
     });
     it("rejects a nonpresent client secret", function () {
         return expect(endpoint(undefined)).to.be.an.api.error(401, "invalid_client_secret");
