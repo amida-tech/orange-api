@@ -1,7 +1,7 @@
 #!/bin/bash
 
 PROJECT_NAME=SUD-core-api
-PROJECT_VER=1.0
+PROJECT_VER=1.7
 
 RESULT_FILE=${PROJECT_NAME}-${PROJECT_VER}
 TEMP_FILE=${PROJECT_NAME}-${PROJECT_VER}-${BUILD_NUMBER}
@@ -27,7 +27,7 @@ sourceanalyzer -clean
 
 echo "=========================="
 echo "Scanning"
-sourceanalyzer -scan -f $TEMP_FILE.fpr -Xmx8192M ./createAccessUser.js ./static/login.html ./app.js ./config.js ./run.js ./lib
+sourceanalyzer -scan -f $TEMP_FILE.fpr -Xmx8192M ./scheduleMedicationReminders.js ./static/login.html ./app.js ./config.js ./run.js ./lib
 
 echo "=========================="
 echo "Merging"
