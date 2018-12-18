@@ -20,12 +20,12 @@ describe("Requests", function () {
             // setup two users to test with (beforeEach so we can play around with requests)
             var me, otherUser;
             beforeEach(function () {
-                return auth.createTestUser().then(function (u) {
+                return auth.createTestUser(undefined, true).then(function (u) {
                     me = u;
                 });
             });
             beforeEach(function () {
-                return auth.createTestUser().then(function (u) {
+                return auth.createTestUser(undefined, true).then(function (u) {
                     otherUser = u;
                 });
             });

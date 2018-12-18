@@ -26,7 +26,7 @@ describe("Habits", function () {
         // patient ID of patient we can access, and access token
         var patientId, accessToken;
         beforeEach(function () {
-            return auth.createTestUser().then(patients.createMyPatient({})).then(function (patient) {
+            return auth.createTestUser(undefined, true).then(patients.createMyPatient({})).then(function (patient) {
                 patientId = patient._id;
                 accessToken = patient.user.accessToken;
             });

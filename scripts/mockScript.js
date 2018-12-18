@@ -1,5 +1,6 @@
 const Client = require('node-rest-client').Client;
 const faker = require('faker');
+import createJournalEntry from './createRecordsScript'
 
 //Notification Service Admin User Credentials
 const adminUsername = (process.argv[6] ? `${process.argv[6]}`: `oucuYaiN6pha3ahphiiT`);
@@ -9,18 +10,25 @@ const adminPassword = (process.argv[7] ? `${process.argv[7]}`: `@TestTest1`);
 const firstName = faker.name.firstName().toLowerCase();
 const lastName = faker.name.lastName().toLowerCase();
 const phoneNumber = faker.phone.phoneNumberFormat().split('-').join('');
-const email = firstName + "@amida.com";
+const email = firstName + "+patient@amida.com";
 const password = "Testtest1!";
 const doctorEmail = "mholmes@amida-demo.com";
 const access = ["read","write","default"];
 const testArray = [];
 
 //URL's
-const authUrl = `${process.argv[2]}/auth/login`;  //"http://localhost:4000/api/v1/auth/login"
-const patientsUrl = `${process.argv[3]}/patients`;   //"http://localhost:5000/v1/patients"
-const createUserUrl = `${process.argv[3]}/user`;    //"http://localhost:5000/v1/user"
-const messagingUrl = `${process.argv[4]}/threads`;   //"http://localhost:4001/api/v1/threads"
-const notificationsUrl = `${process.argv[5]}/notifications/sendPushNotifications`;   //"http://localhost:4003/api/notifications/sendPushNotifications";
+// const authUrl = `${process.argv[2]}/auth/login`;  //"http://localhost:4000/api/v1/auth/login"
+// const patientsUrl = `${process.argv[3]}/patients`;   //"http://localhost:5000/v1/patients"
+// const createUserUrl = `${process.argv[3]}/user`;    //"http://localhost:5000/v1/user"
+// const messagingUrl = `${process.argv[4]}/threads`;   //"http://localhost:4001/api/v1/threads"
+// const notificationsUrl = `${process.argv[5]}/notifications/sendPushNotifications`;   //"http://localhost:4003/api/notifications/sendPushNotifications";
+
+const authUrl = "http://localhost:4000/api/v1/auth/login"
+const patientsUrl = "http://localhost:5000/v1/patients"
+const createUserUrl = "http://localhost:5000/v1/user"
+const messagingUrl = "http://localhost:4001/api/v1/threads"
+const notificationsUrl = "http://localhost:4003/api/notifications/sendPushNotifications";
+
 
 var authToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NywidXNlcm5hbWUiOiJSdWJ5ZUBhbWlkYS5jb20iLCJlbWFpbCI6IlJ1YnllQGFtaWRhLmNvbSIsInNjb3BlcyI6WyIiXSwiaWF0IjoxNTIwMjY5OTA5LCJleHAiOjE1MjAyNzY1MDl9.lBsjsQtHxuI8E5C7VHaxkulZZugkbk0FFYl_rT580Bo';
 const client = new Client();
@@ -123,7 +131,7 @@ const sendNotification = function () {
                 console.log(" ✅ Notification service running and configured with microservice Admin user");
                 testArray.push({test: 'auth & orange-api', pass: true});
             } else {
-                console.log(" ❌ Orange-API and Auth Service are not working correctly together");
+                console.log(" ❌ Notification service not functioning / not configured with microservice Admin user");
                 testArray.push({test: 'auth & orange-api', pass: false});
             }
         });
@@ -136,7 +144,7 @@ const seedMessages = function (patientArgs) {
     const firstName2 = faker.name.firstName();
     const lastName2 = faker.name.lastName();
     const phoneNumber2 = faker.phone.phoneNumberFormat().split('-').join('');
-    const email2 = firstName2+"@amida.com";
+    const email2 = firstName2+"+clinician@amida.com";
     const password2 = "Testtest1!";
     var authToken2 = '';
     var threadID = null;
@@ -196,7 +204,7 @@ const seedMessages = function (patientArgs) {
             console.log(" ❌ Orange-API and Auth Service are not working correctly together");
             testArray.push({test: 'auth & orange-api', pass: false});
         }
-        sendNotification();
+        // sendNotification();
 
         // Get first user's patient and share it with the new user
         getPatients(patientArgs, function(response){
@@ -205,7 +213,7 @@ const seedMessages = function (patientArgs) {
                 headers: {"Content-Type": "application/json", "X-Client-Secret" : "testsecret", "Authorization":"Bearer "+authToken},
                 data: {
                     "email": email2,
-                    "access": "read",
+                    "access": "write",
                     "group": "family"
                 }
             };
@@ -215,6 +223,7 @@ const seedMessages = function (patientArgs) {
                     authenticateUser(authArgs, function (response) {
                         authToken2 = response;
                         createThread(createThreadArgs, function (response){
+                            console.log("debug: ", response);
                             console.log("Created Thread At: ", response.createdAt);
                             threadID = response.ThreadId;
 

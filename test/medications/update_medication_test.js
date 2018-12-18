@@ -45,7 +45,7 @@ describe("Medications", function () {
         it("does not let me update medications for the wrong patient", function () {
             // setup current user and two patients for them, one with a medication
             var user, patient, otherPatient;
-            var setup = auth.createTestUser().then(function (u) {
+            var setup = auth.createTestUser(undefined, true).then(function (u) {
                 user = u;
                 // create patients
                 return Q.all([
@@ -276,7 +276,7 @@ describe("Medications", function () {
             // setup current user and two patients for them, both with a doctor and pharmacy
             var user, patient, otherPatient;
             before(function () {
-                return auth.createTestUser().then((u) => {
+                return auth.createTestUser(undefined, true).then((u) => {
                     user = u;
                     return patients.createMyPatient({}, user);
                 }).then(p => {

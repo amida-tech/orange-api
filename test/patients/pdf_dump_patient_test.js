@@ -41,7 +41,7 @@ describe("Patients", function () {
             // setup test user
             var user;
             before(function () {
-                return auth.createTestUser().then(function (u) {
+                return auth.createTestUser(undefined, true).then(function (u) {
                     user = u;
                 });
             });
@@ -51,7 +51,7 @@ describe("Patients", function () {
             var patient;
             before(function () {
                 // create patient
-                return auth.createTestUser().then(curry(common.createOtherPatient)({}, user)).then(function (p) {
+                return auth.createTestUser(undefined, true).then(curry(common.createOtherPatient)({}, user)).then(function (p) {
                     patient = p;
                     // share patient
                     return Q.nbind(patient.share, patient)(user.email, "default", "anyone");

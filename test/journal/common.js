@@ -35,6 +35,8 @@ var entrySchema = module.exports.schema = {
         activityMinutes:    { type: "number" },
         meditation:         { type: "boolean" },
         meditationLength:   { type: "number" },
+        meditationDifficulty: { type: "string" },
+        meditationRequestedAssistance: { type: "boolean" },
         role:               { type: "string" },
         creator:            { type: "string" },
         hashtags: {
@@ -93,7 +95,7 @@ module.exports.itRequiresValidEntryId = function (endpoint) {
         var user, patient, otherPatient;
         before(function () {
             // setup current user and two patients for them, one with a journal entry
-            return auth.createTestUser().then(function (u) {
+            return auth.createTestUser(undefined, true).then(function (u) {
                 user = u;
                 // create patients
                 return Q.all([

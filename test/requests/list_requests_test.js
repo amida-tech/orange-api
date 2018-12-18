@@ -28,7 +28,7 @@ describe("Requests", function () {
             // setup test user
             var me;
             before(function () {
-                return auth.createTestUser().then(function (u) {
+                return auth.createTestUser(undefined, true).then(function (u) {
                     me = u;
                 });
             });
@@ -38,7 +38,7 @@ describe("Requests", function () {
                 // generate promise to create each user and request
                 var promises = [];
                 var create = function (data) {
-                    return auth.createTestUser(data).then(function (u) {
+                    return auth.createTestUser(data, true).then(function (u) {
                         return Q.npost(u, "makeRequest", [me.email]);
                     });
                 };

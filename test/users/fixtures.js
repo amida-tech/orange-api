@@ -9,8 +9,9 @@ var monky = module.exports = new Monky(mongoose);
 monky.factory("User", {
     email:          "foo#n@bar.com",
     phone:          "6177140000",
-    first_name:     "Foo #n",
-    last_name:      "Bar",
-    role:           "user"
+    firstName:      "Foo #n",
+    lastName:       "bar #n",
+    role:           "user",
+    organization:   "amida"
 });
 /*eslint-enable key-spacing */

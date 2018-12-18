@@ -50,6 +50,13 @@ API for Orange medication management app. RESTful and implemented in Node & Mong
     - Database Address
 - `npm install`
 
+### Enabling VA Formulary Search
+orange-api has an endpoint for searching for medications in the VA Formulary. This is enabled by populating a collection in MongoDB with the contents of the VA Formulary.
+
+The latest spreadsheet that contains the VA Formulary can be downloaded from [here](https://www.pbm.va.gov/NationalFormulary.asp), and is included in the repo for convenience.
+
+Import the data from the spreadsheet into MongoDB with the npm script `import_va_formulary`. For example, `npm run import_va_formulary`.
+
 ## Enabling Push Notifications
 
 Note: This is optional. These steps are in their own section because this setup is complicated and not required if you don't need to develop/test push notifications.
@@ -186,6 +193,10 @@ All requests made to this API must have HTTP header `x-client-secret` with a val
 - Don't forget that if your client is running on a port other than 80 or 443, you will have to specify this as well, as in `http://localhost:12345`.
 - To enable all domains (which is insecure and therefore should only be done in development), set to `*` or `'something.com, doesntmatter.com, *'`
 
+##### `ORANGE_ALLOW_PUBLIC_REGISTRATION` [`false`]
+
+If true, the user registration endpoint is public. If false, only users with `admin` or `programAdministrator` scope can create users.
+
 ##### `MONGO_URI` (Required)
 
 MongoDB connection URI.
@@ -232,58 +243,29 @@ The URL of the Notification Service API.
 
 ##### `PUSH_NOTIFICATIONS_ENABLED` (Required) [`false`]
 
-**WARNING**: When `true`, the other push notification-related environment variables must be set correctly. Not doing so is an unsupported state that is error and crash prone.
+##### `PUSH_NOTIFICATIONS_SERVICE_USER_USERNAME` (Required)
 
-##### `PUSH_NOTIFICATIONS_SERVICE_USER_USERNAME`
-
-The username of the service user that authenticates against `amida-auth-microservice` and performs requests against the `amida-notification-microservice` API.
+The username of the service user on the Auth Service. This user is named as such because original is only performed push-notifications-related requests. However, this user now performs a variety of functions.
 - `.env.example` sets this to `oucuYaiN6pha3ahphiiT`, which is for development only. In production, set this to a different value.
 
-##### `PUSH_NOTIFICATIONS_SERVICE_USER_PASSWORD`
+##### `PUSH_NOTIFICATIONS_SERVICE_USER_PASSWORD` (Required)
 
 The password of the user specified by `PUSH_NOTIFICATIONS_SERVICE_USER_USERNAME`.
 - `.env.example` sets this to `@TestTest1`, which is for development only. In production, set this to a different value.
 
-### Integration With Apple Push Notifications for iOS
+##### `PUSH_NOTIFICATIONS_APN_ENABLED` (Deprecated)
 
-Note: iOS push notifications do not and cannot work in development.
+##### `PUSH_NOTIFICATIONS_APN_ENV` (Deprecated)
 
-##### `PUSH_NOTIFICATIONS_APN_ENABLED` (Required) [`false`]
+##### `PUSH_NOTIFICATIONS_APN_TEAM_ID` (Deprecated)
 
-Enable Apple Push Notifications.
+##### `PUSH_NOTIFICATIONS_APN_KEY_ID` (Deprecated)
 
-**WARNING**: You can only send Apple push notifications if your host is configured with SSL termination. Without this Apple may permanently invalidate the key you use to send the push notification.
+##### `PUSH_NOTIFICATIONS_APN_TOPIC` (Deprecated)
 
-##### `PUSH_NOTIFICATIONS_APN_ENV` [`development`]
+#####  `PUSH_NOTIFICATIONS_FCM_API_URL` (Deprecated)
 
-Apple Push Notification environment.
-- Valid values are `development` and `production`.
-- When using Test Flight, set to `production.`
-
-##### `PUSH_NOTIFICATIONS_APN_TEAM_ID`
-
-The ID of the Amida "team" in Apple Developer Console.
-- The value is the prefix of iOS app ID.
-- Production value stored in Amida's password vault.
-
-##### `PUSH_NOTIFICATIONS_APN_KEY_ID`
-
-Tells apple to use this key to encrypt the payload of push notifications that Apple sends to end-user devices.
-- Value stored in Amida's password vault.
-
-##### `PUSH_NOTIFICATIONS_APN_TOPIC` [`com.amida.orangeIgnite`]
-
-The Apple Developer Console name of this app.
-
-### Integration With Firebase Cloud Messaging for Android
-
-Note: Unlike iOS push notifications, Android push notifications do work in development.
-
-`PUSH_NOTIFICATIONS_FCM_API_URL` URL of Google Android Firebase service.
-
-`PUSH_NOTIFICATIONS_FCM_SERVER_KEY` Identifies to Google that a server belonging to Amida is making this push notification request.
-- Value stored in Amida's password vault.
-- Alternatively, this can be obtained from the Team's Firebase console. Note that the `Server key` is different from `API key`. The later is configured on a device for receiving notifications.
+##### `PUSH_NOTIFICATIONS_FCM_SERVER_KEY` (Deprecated)
 
 # Contributing
 
@@ -297,7 +279,7 @@ is in `app.js` and database connection/etc is in `run.js`. `config.js` contains 
 and database hosts.
 
 Tests are in `test/`, structured as directories for each resource group containing e2e tests, and sometimes `unit/` directories inside those containing
-`unit` tests. Grunt (`gruntfile.js`) is used to run tests (`yarn test`) and can also be used to spin up a development server (`grunt server:dev`), although `node run.js` is much quicker to start up and will work for all endpoints apart from those that rely on schedule matching
+`unit` tests. Grunt (`gruntfile.js`) is used to run tests (`npm test`) and can also be used to spin up a development server (`grunt server:dev`), although `node run.js` is much quicker to start up and will work for all endpoints apart from those that rely on schedule matching
 (`/patients/:id/schedule`, `/patients/:id.json` and `/patients/:id.pdf`). Please verify you have a `.env.test` file before running tests
 
 Controllers are in in `lib/controllers` and models in `lib/models`. Most are standard CRUD controllers, with various CRUD helper functions used (mainly as

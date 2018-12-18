@@ -11,6 +11,8 @@ if (process.env.NODE_ENV === 'test') {
 }
 // define validation for all the env vars
 const envVarsSchema = Joi.object({
+    LOG_LEVEL: Joi.string()
+        .default('info'),
     NOTIFICATION_EMAIL_FROM: Joi.string().email(),
     NOTIFICATION_SENDGRID_API_KEY: Joi.string().allow('')
         .description('Email Notification Sendgrid API Key'),
@@ -36,6 +38,8 @@ const envVarsSchema = Joi.object({
         .description('JWT Secret required to sign'),
     ACCESS_CONTROL_ALLOW_ORIGIN: Joi.string().required()
         .description('set to "null" to enable mobile apps. !!ARH add more better descriptionz.'),
+    ORANGE_ALLOW_PUBLIC_REGISTRATION: Joi.bool().default(false)
+        .description('Allows anyone to create an account if this is true'),
     AUTH_MICROSERVICE_URL: Joi.string().allow('')
         .description('Auth microservice endpoint'),
     MONGO_SSL_ENABLED: Joi.boolean()
@@ -45,19 +49,8 @@ const envVarsSchema = Joi.object({
         .description('SSL certificate CA'), // Certificate itself, not a filename
     PUSH_NOTIFICATIONS_ENABLED: Joi.boolean()
         .default(false),
-    PUSH_NOTIFICATIONS_APN_KEY_ID: Joi.string(),
-    PUSH_NOTIFICATIONS_APN_TEAM_ID: Joi.string(),
-    PUSH_NOTIFICATIONS_APN_ENV: Joi.string()
-        .default('development'),
-    PUSH_NOTIFICATIONS_APN_TOPIC: Joi.string()
-        .default('com.amida.orangeIgnite'),
-    PUSH_NOTIFICATIONS_FCM_SERVER_KEY: Joi.string()
-        .optional(),
-    PUSH_NOTIFICATIONS_FCM_API_URL: Joi.string(),
     PUSH_NOTIFICATIONS_SERVICE_USER_USERNAME: Joi.string(),
     PUSH_NOTIFICATIONS_SERVICE_USER_PASSWORD: Joi.string(),
-    PUSH_NOTIFICATIONS_APN_ENABLED: Joi.boolean()
-        .default(false),
     NOTIFICATION_MICROSERVICE_URL: Joi.string(),
 }).unknown()
     .required();
@@ -69,9 +62,11 @@ if (error) {
 }
 
 const config = module.exports = {
+    logLevel: envVars.LOG_LEVEL,
     secret: envVars.X_CLIENT_SECRET,
     jwtSecret: envVars.JWT_SECRET,
     accessControlAllowOrigin: envVars.ACCESS_CONTROL_ALLOW_ORIGIN,
+    allowPublicRegistration: envVars.ORANGE_ALLOW_PUBLIC_REGISTRATION,
     authServiceAPI: envVars.AUTH_MICROSERVICE_URL,
     mongo: envVars.MONGO_URI,
     port: envVars.EXPRESS_PORT,
@@ -79,16 +74,9 @@ const config = module.exports = {
     sslCaCert: envVars.MONGO_CA_CERT,
 
     // Notification related
-    apnKeyId: envVars.PUSH_NOTIFICATIONS_APN_KEY_ID,
-    apnTeamId: envVars.PUSH_NOTIFICATIONS_APN_TEAM_ID,
-    apnEnv: envVars.PUSH_NOTIFICATIONS_APN_ENV,
-    apnTopic: envVars.PUSH_NOTIFICATIONS_APN_TOPIC,
-    fcmServerKey: envVars.PUSH_NOTIFICATIONS_FCM_SERVER_KEY,
-    fcmApiUrl: envVars.PUSH_NOTIFICATIONS_FCM_API_URL,
     pushNotificationsServiceUserUsername: envVars.PUSH_NOTIFICATIONS_SERVICE_USER_USERNAME,
     pushNotificationsServiceUserPassword: envVars.PUSH_NOTIFICATIONS_SERVICE_USER_PASSWORD,
     pushNotificationsEnabled: envVars.PUSH_NOTIFICATIONS_ENABLED,
-    apnEnabled: envVars.PUSH_NOTIFICATIONS_APN_ENABLED,
     notificationServiceAPI: envVars.NOTIFICATION_MICROSERVICE_URL,
 
     email: {

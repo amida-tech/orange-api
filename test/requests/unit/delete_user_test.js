@@ -13,17 +13,17 @@ describe("Requests", function () {
         // setup three users
         var alice, bob, carol;
         before(function () {
-            return auth.createTestUser().then(function (u) {
+            return auth.createTestUser(undefined, true).then(function (u) {
                 alice = u;
             });
         });
         before(function () {
-            return auth.createTestUser().then(function (u) {
+            return auth.createTestUser(undefined, true).then(function (u) {
                 bob = u;
             });
         });
         before(function () {
-            return auth.createTestUser().then(function (u) {
+            return auth.createTestUser(undefined, true).then(function (u) {
                 carol = u;
             });
         });

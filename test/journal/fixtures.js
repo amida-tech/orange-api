@@ -12,6 +12,8 @@ monky.factory("JournalEntry", {
     medication_ids: [],
     mood: "Happy!",
     moodSeverity: 10,
+    meditationDifficulty: "EASY",
+    meditationRequestedAssistance: false,
     activity: "jogging",
     activityMinutes: 56,
     sideEffect: "affected side",
