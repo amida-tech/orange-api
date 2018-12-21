@@ -2,7 +2,7 @@
   "author": "Amida",
   "name": "orange-api",
   "description": "API for Orange medication adherance apps",
-  "version": "0.99.0",
+  "version": "1.7.1",
   "repository": {
     "type": "git",
     "url": "git@github.com:amida-tech/orange-api.git"
