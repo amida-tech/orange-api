@@ -35,6 +35,7 @@ var entrySchema = module.exports.schema = {
         activityMinutes:    { type: "number" },
         meditation:         { type: "boolean" },
         meditationLength:   { type: "number" },
+        meditationTaken:   { type: "boolean" },
         meditationDifficulty: { type: "string" },
         meditationRequestedAssistance: { type: "boolean" },
         role:               { type: "string" },
