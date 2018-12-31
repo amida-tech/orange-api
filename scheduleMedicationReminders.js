@@ -43,8 +43,26 @@ function sendNotifications(patient, item, user) {
 
 }
 
+function sendMeditationReminder(patient, user, date, time) {
+  const key = `${patient._id}_${date}_${time}`
+  checkIfSent(key).then((result) => {
 
-function sendMedicationReminders() {
+   if (!result) {
+       const notificationTitle = 'Meditation Reminder'
+       const suffix = time === '11am' ? 'before noon' : 'this evening';
+       const notificationMessage = `Remember to meditate ${suffix}`
+       user.sendPushNotification({
+           notificationType: "MEDITATION_REMINDER",
+           title: notificationTitle,
+           body: notificationMessage
+       });
+   }
+  });
+
+}
+
+
+function sendReminders() {
    const time = Date.now()
    const intervalInMilliseconds = intervalInMinutes * 60 * 1000;
    const startTime = new Date(time - bufferInMilliseconds)
@@ -54,6 +72,16 @@ function sendMedicationReminders() {
    User.find({}, function(err, users) {
     users.forEach((user) => {
      Patient.findOne({ creator: user.email, me: true }).exec().then((patient) => {
+      const startOfDay = moment().tz(patient.tz).startOf('day');
+      const today = startOfDay.format('YYYY-MM-DD');
+      const elevenAMInPatientTZ = startOfDay.add(11, 'hours').toDate();
+      const sixPMInPatientTZ = startOfDay.add(18, 'hours').toDate();
+      if (elevenAMInPatientTZ >= startTime && elevenAMInPatientTZ <= endTime) {
+        sendMeditationReminder(patient, user, today, '11am')
+      }
+      if (sixPMInPatientTZ >= startTime && sixPMInPatientTZ <= endTime) {
+        sendMeditationReminder(patient, user, today, '6pm')
+      }
       patient.generateScheduleResults(startTimeISO, endTimeISO, user, null, user._id, function (err, items) {
           if (err) return err;
           items = items.map(function (medItems) {
@@ -79,4 +107,4 @@ function sendMedicationReminders() {
 
 }
 
-cron.schedule(`*/${intervalInMinutes} * * * *`, sendMedicationReminders);
+cron.schedule(`*/${intervalInMinutes} * * * *`, sendReminders);
