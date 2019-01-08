@@ -69,7 +69,7 @@ describe("Requests", function () {
                 });
             });
 
-            it("accepts an email address for a user we've got a closed request to", function () {
+            it("rejects an email address for a user we've got a closed request to", function () {
                 // create
                 return create({
                     email: otherUser.email
@@ -85,6 +85,25 @@ describe("Requests", function () {
                         return expect(create({
                             email: otherUser.email
                         }, me.accessToken)).to.be.an.api.error(400, "already_requested");
+                    });
+                });
+            });
+
+            it("accepts an email address for a user we've got a closed rejected request to", function () {
+                // create
+                return create({
+                    email: otherUser.email
+                }, me.accessToken).then(function (resp) {
+                    return expect(resp).to.be.a.requested.createSuccess;
+
+                    return closeRequest({
+                        status: "rejected"
+                    }, resp.body.id, otherUser.accessToken).then(function() {
+
+                        // create again
+                        return expect(create({
+                            email: otherUser.email
+                        }, me.accessToken)).to.be.a.requested.createSuccess;
                     });
                 });
             });
