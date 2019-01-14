@@ -1,60 +1,14 @@
 #!/bin/bash
 
-# ORANGE_DEMO_CLINICIAN_EMAIL
-# ORANGE_DEMO_CLINICIAN_PASSWORD
-# ORANGE_DEMO_PATIENTS=['patient_one', 'patient_two']
+echo 'ORANGE_DEMO_PATIENTS is:';
+echo $ORANGE_DEMO_PATIENTS;
 
-# ./reportsMockScript.js
+echo 'looping...';
+for i in `seq 0 1`; do
+  PATIENT_EMAIL=$(echo $ORANGE_DEMO_PATIENTS | jq ".[$i].email")
+  PATIENT_PASSWORD=$(echo $ORANGE_DEMO_PATIENTS | jq ".[$i].password")
+  echo "Making API call with email $PATIENT_EMAIL and password $PATIENT_PASSWORD";
+  node ./reportsMockScript.js $AUTH_MICROSERVICE_URL $ORANGE_API_URL $X_CLIENT_SECRET $PATIENT_EMAIL $PATIENT_PASSWORD;
+  echo "Done with loop $i";
+done
 
-echo "hi hi hi hi hi";
-
-# curl -s "http://api.icndb.com/jokes/random" | jq '.value.joke'
-
-# {
-#   "clinician": {
-#     "email": "scott+democlinician@verizon.net"
-#     "password": "Test123!"
-#   },
-#   "patients": [
-#     {
-#       "email": "demopatient1@amida.com",
-#       "password": "Test123!"
-#     },
-#     {
-#       "email": "demopatient1@amida.com",
-#       "password": "Test123!"
-#     },
-#     {
-#       "email": "demopatient1@amida.com",
-#       "password": "Test123!"
-#     },
-#     {
-#       "email": "demopatient1@amida.com",
-#       "password": "Test123!"
-#     },
-#     {
-#       "email": "demopatient1@amida.com",
-#       "password": "Test123!"
-#     },
-#     {
-#       "email": "demopatient1@amida.com",
-#       "password": "Test123!"
-#     },
-#     {
-#       "email": "demopatient1@amida.com",
-#       "password": "Test123!"
-#     },
-#     {
-#       "email": "demopatient1@amida.com",
-#       "password": "Test123!"
-#     },
-#     {
-#       "email": "demopatient1@amida.com",
-#       "password": "Test123!"
-#     },
-#     {
-#       "email": "demopatient1@amida.com",
-#       "password": "Test123!"
-#     },
-#   ]
-# }
