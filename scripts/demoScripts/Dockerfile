@@ -20,9 +20,4 @@ RUN apk upgrade
 RUN apk add jq
 RUN apk add bash
 
-# RUN chmod 777 /app/create-demo-data.sh
-RUN pwd
-RUN ls -la
-# RUN cat /app/create-demo-data.sh
-
 ENTRYPOINT ["./create-demo-data.sh"]
