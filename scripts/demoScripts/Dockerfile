@@ -12,8 +12,8 @@ RUN yum -y update; yum clean all && \
 RUN curl -sL https://rpm.nodesource.com/setup_8.x | bash - && \
     yum -y install nodejs; yum -y install npm; yum clean all
 
-# Install the ever-beloved node-gyp
-RUN npm install -g node-gyp
+# # Install the ever-beloved node-gyp
+# RUN npm install -g node-gyp
 
 # Copy package.json and install app dependencies
 # (do this before we copy over the rest of the source for caching reasons)
@@ -24,9 +24,6 @@ RUN     mkdir -p /src && cp -a /tmp/node_modules /src/
 WORKDIR /src
 
 # Copy app source
-# .dockerignore crucially means we don't copy node_modules
 COPY . /src
-# COPY ./iosKey.p8 /src/iosKey.p8
 
-EXPOSE 5000
-CMD ["node", "run.js"]
+ENTRYPOINT bashScript.sh
