@@ -125,14 +125,14 @@ const produceData = function (patientArgs) {
 
 
     // Create mock data for moods, meditations, and medication adherence events
-    createMoodEntries(patientsUrl, clientSecret, authToken, defaultPatientId, 3)
-    createMeditationEntries(patientsUrl, clientSecret, authToken, defaultPatientId, 3)
+    createMoodEntries(patientsUrl, clientSecret, authToken, defaultPatientId, 1)
+    createMeditationEntries(patientsUrl, clientSecret, authToken, defaultPatientId, 1)
         
     if (!init) {
       getMedications(medArgs, defaultPatientId, function(response){
         const medications = response.medications
 
-        createMedicationAdherence(patientsUrl, clientSecret, authToken, defaultPatientId, medications, 3);
+        createMedicationAdherence(patientsUrl, clientSecret, authToken, defaultPatientId, medications, 1);
 
       });
     } else {
