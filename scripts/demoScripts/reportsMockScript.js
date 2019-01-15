@@ -10,11 +10,12 @@ const clientSecret = process.argv[4];
 const email = process.argv[5].replace(/^"(.*)"$/, '$1'); 
 const password = process.argv[6].replace(/^"(.*)"$/, '$1');
 
+// TODO: JCB once this script creates medications we will need to do the same regex replace on these values
 // Email and password of the clinician
-const email2 = process.argv[7].replace(/^"(.*)"$/, '$1');
-const password2 = process.argv[8].replace(/^"(.*)"$/, '$1'); 
+const email2 = process.argv[7];
+const password2 = process.argv[8]; 
 
-// Init value
+// Init value determines if we are creating medications for each user or not
 const init = (process.argv[9] ? process.argv[9]: false);
 
 var authToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NywidXNlcm5hbWUiOiJSdWJ5ZUBhbWlkYS5jb20iLCJlbWFpbCI6IlJ1YnllQGFtaWRhLmNvbSIsInNjb3BlcyI6WyIiXSwiaWF0IjoxNTIwMjY5OTA5LCJleHAiOjE1MjAyNzY1MDl9.lBsjsQtHxuI8E5C7VHaxkulZZugkbk0FFYl_rT580Bo';
