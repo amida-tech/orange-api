@@ -7,12 +7,12 @@ const patientsUrl = `${process.argv[3]}/patients`;   //"http://localhost:5000/v1
 const clientSecret = process.argv[4];
 
 // Email and password of the patient
-const email = process.argv[5]; 
-const password = process.argv[6];
+const email = process.argv[5].replace(/^"(.*)"$/, '$1'); 
+const password = process.argv[6].replace(/^"(.*)"$/, '$1');
 
 // Email and password of the clinician
-const email2 = process.argv[7]; // "clinician+jonah@amida.com";
-const password2 = process.argv[8]; // "Testtest1!";
+const email2 = process.argv[7].replace(/^"(.*)"$/, '$1');
+const password2 = process.argv[8].replace(/^"(.*)"$/, '$1'); 
 
 // Init value
 const init = (process.argv[9] ? process.argv[9]: false);
@@ -22,6 +22,7 @@ const client = new Client();
 
 
 const authenticateUser = function(authArgs, callback) {
+  console.log("AuthArgs", authArgs);
   client.post(authUrl, authArgs, function (data, response) {
     callback(data.token);
   });
@@ -43,7 +44,7 @@ const getMedications = function(medArgs, patientId, callback) {
   });
 };
 
-const authArgs = {
+const authArgsPatient = {
   headers : {"Content-Type": "application/json", "X-Client-Secret" : clientSecret},
   data: {
     "username":     email,
@@ -57,7 +58,7 @@ const produceData = function (patientArgs) {
 
   var authToken2 = '';
 
-  const authArgs = {
+  const authArgsClinician = {
     headers : {"Content-Type": "application/json", "X-Client-Secret" : clientSecret},
     data: {
       "username":     email2,
@@ -136,7 +137,7 @@ const produceData = function (patientArgs) {
 
       });
     } else {
-      authenticateUser(authArgs, function (response) {
+      authenticateUser(authArgsClinician, function (response) {
         authToken2 = response;
         // Add two medications to the user
         // let medications = []
@@ -159,13 +160,14 @@ const produceData = function (patientArgs) {
   });
 }
 
-authenticateUser(authArgs, function (response) {
+authenticateUser(authArgsPatient, function (response) {
     authToken = response;
     const patientArgs = {
         headers: {"Content-Type": "application/json", "X-Client-Secret" : clientSecret, "Authorization":"Bearer "+authToken},
         data: {
         }
     };
+    console.log("checking authToken", response)
     produceData(patientArgs);
 });
 

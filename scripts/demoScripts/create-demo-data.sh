@@ -4,7 +4,7 @@ echo 'ORANGE_DEMO_PATIENTS is:';
 echo $ORANGE_DEMO_PATIENTS;
 
 echo 'looping...';
-for i in `seq 0 1`; do
+for i in `seq 0 10`; do
   PATIENT_EMAIL=$(echo $ORANGE_DEMO_PATIENTS | jq ".[$i].email")
   PATIENT_PASSWORD=$(echo $ORANGE_DEMO_PATIENTS | jq ".[$i].password")
   echo "Making API call with email $PATIENT_EMAIL and password $PATIENT_PASSWORD";
