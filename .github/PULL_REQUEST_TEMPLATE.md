@@ -1,4 +1,5 @@
 # Related Tickets
+<!-- If there is no Jira ticket for this PR, say why not. -->
 - [ORANGE-###](https://jira.amida-tech.com/browse/ORANGE-###)
 
 # Other Repos' PR(s) Intended to Work With This PR
@@ -15,7 +16,7 @@
 # Readiness
 <!--- Check all that apply, please provide context when a condition cannot be met. -->
 1. [ ] This PR has full test coverage (If this PR fixes a bug, you _must_ add test cases respresentative of the bug).
-2. [ ] This PR passes all tests.
+2. [ ] This PR passes all automated tests.
 3. [ ] This PR has no linting errors.
 4. [ ] This PR has no hardcoded UI strings or other obvious issues.
 5. [ ] This PR has been updated to include all changes from develop.
