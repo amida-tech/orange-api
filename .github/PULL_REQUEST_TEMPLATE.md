@@ -8,7 +8,7 @@
 # How Things Worked (or Didn't) Before This PR
 <!-- You may say "See Jira Ticket X" if the Jira ticket has this info -->
 
-# How Things Works Now 
+# How Things Works Now (And How to Test)
 <!-- Include test setup, testing steps, and expected results -->
 <!-- You may say "See Jira Ticket X" if the Jira ticket has this info -->
 
