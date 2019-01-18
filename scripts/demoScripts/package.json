@@ -3,9 +3,6 @@
   "version": "1.0.0",
   "description": "",
   "main": "createRecordsScript.js",
-  "scripts": {
-    "test": "source sampleRun.txt && ./create-demo-data.sh"
-  },
   "author": "",
   "license": "ISC",
   "devDependencies": {
