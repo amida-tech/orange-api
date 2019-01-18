@@ -8,7 +8,7 @@ docker run \
 -e ORANGE_API_URL=http://localhost:5000/v1 \
 -e X_CLIENT_SECRET=testsecret \
 -e ORANGE_DEMO_PATIENTS='[ { "email": "patient1@amida.com", "password": "Testpassword3" }, { "email": "patient2@amida.com", "password": "Testpassword2" } ]' \
-demo-data-generator:01 
+amidatech/orange-api-mock-data-generator:0.0.2 
 ```
 
 ### Sample run line for bash:
