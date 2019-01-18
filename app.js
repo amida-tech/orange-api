@@ -35,7 +35,7 @@ function getGfs() {
 require("./lib/models/user/user.js")(getGfs);
 require("./lib/models/patient/patient.js")(getGfs);
 require("./lib/models/reminder_notification");
-require("./scheduleMedicationReminders.js");
+require("./scheduleReminderNotifications.js");
 
 
 // CORS
