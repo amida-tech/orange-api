@@ -25,7 +25,7 @@ function checkIfSent(key) {
   })
 }
 
-function sendNotifications(patient, item, user) {
+function sendMedicationReminder (patient, item, user) {
   const key = `${patient._id}_${item.medication_id}_${item.notification}`
   checkIfSent(key).then((result) => {
 
@@ -96,7 +96,7 @@ function sendReminders() {
               schedule.forEach((item) => {
                 const notificationDate = new Date(item.notification);
                 if (!Object.keys(item).includes('took_medication') && notificationDate >= startTime && notificationDate <= endTime) {
-                  sendNotifications(patient, item, user)
+                  sendMedicationReminder(patient, item, user)
                 }
               })
           });
