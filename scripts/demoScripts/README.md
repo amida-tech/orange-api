@@ -1,5 +1,5 @@
 ### System Requirements
--jq
+- [jq](https://stedolan.github.io/jq/)
 
 ### Sample run command for docker container:
 ```
