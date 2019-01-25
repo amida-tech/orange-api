@@ -69,13 +69,13 @@ function sendReminders() {
    const startTimeISO = startTime.toISOString();
    const endTime = new Date(time + intervalInMilliseconds + bufferInMilliseconds);
    const endTimeISO = endTime.toISOString();
-   User.find({}, function(err, users) {
+   User.find({ role: "user" }, function(err, users) {
     users.forEach((user) => {
      Patient.findOne({ creator: user.email, me: true }).exec().then((patient) => {
       const startOfDay = moment().tz(patient.tz).startOf('day');
       const today = startOfDay.format('YYYY-MM-DD');
-      const elevenAMInPatientTZ = startOfDay.add(11, 'hours').toDate();
-      const sixPMInPatientTZ = startOfDay.add(18, 'hours').toDate();
+      const elevenAMInPatientTZ = moment(today).hours(11).toDate();
+      const sixPMInPatientTZ = moment(today).hours(18).toDate();
       if (elevenAMInPatientTZ >= startTime && elevenAMInPatientTZ <= endTime) {
         sendMeditationReminder(patient, user, today, '11am')
       }
