@@ -23,7 +23,6 @@ const client = new Client();
 
 
 const authenticateUser = function(authArgs, callback) {
-  console.log("AuthArgs", authArgs);
   client.post(authUrl, authArgs, function (data, response) {
     callback(data.token);
   });
@@ -168,7 +167,6 @@ authenticateUser(authArgsPatient, function (response) {
         data: {
         }
     };
-    console.log("checking authToken", response)
     produceData(patientArgs);
 });
 
