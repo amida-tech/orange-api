@@ -13,9 +13,9 @@ MongoClient.connect(config.mongo, function(err, client) {
             throw err;
         }
         if (result) {
-            console.log(`Database ${config.mongo.split('/').slice(-1)[0]} deleted successfully`);
+            console.log(`Database ${config.mongo.split('/').slice(-1)[0]} deleted successfully.`);
         } else {
-            console.log(`Database ${config.mongo.split('/').slice(-1)[0]} want NOT deleted`);
+            console.log(`Database ${config.mongo.split('/').slice(-1)[0]} NOT deleted.`);
         }
         client.close();
     });

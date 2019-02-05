@@ -16,7 +16,7 @@ MongoClient.connect(url, function(err, client) {
     const databaseName = config.mongo.split('/').slice(-1)[0];
     const res = dbs.databases.find((_database) => _database.name === databaseName)
     if (err || res) {
-      console.log(`Database Check Failed. Please check to see if the database "${databaseName}" already exists if so please delete it`);
+      console.log(`Database "${databaseName}" already exists. It will not be overwritten or automatically deleted so as to not let developers accidentally wipe their data. If you want to run the unit test suite on this database, first manually delete this DB.`);
       client.close();
       process.exit(1);
     } else {
