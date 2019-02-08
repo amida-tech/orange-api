@@ -185,9 +185,9 @@ A description of what the variable is or does.
 
 All requests made to this API must have HTTP header `x-client-secret` with a value that matches this environment variable.
 
-##### `ACCESS_CONTROL_ALLOW_ORIGIN`
+##### `ACCESS_CONTROL_ALLOW_ORIGIN` (Required)
 
-(Required) An **array** of domains, including protocol and port. Self-explanatory if you understand [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS).
+An **array** of domains, including protocol and port. Self-explanatory if you understand [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS).
 
 Note: If `req.origin` is not found in your `ACCESS_CONTROL_ALLOW_ORIGIN` array, `orange-api` will print `req.origin` to stdout. You can use that to figure out how to set this value.
 
