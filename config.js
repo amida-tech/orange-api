@@ -4,7 +4,7 @@ const Joi = require("joi");
 // require and configure dotenv, will load vars in .env in PROCESS.ENV
 const dotenv = require('dotenv');
 if (process.env.NODE_ENV === 'test') {
-    console.log('using env.test')
+    console.log('config.js: Using .env.test')
     dotenv.config({ path: '.env.test' });
 } else {
     dotenv.config();
