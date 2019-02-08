@@ -191,9 +191,10 @@ An **array** of domains, including protocol and port. Self-explanatory if you un
 
 Note: If `req.origin` is not found in your `ACCESS_CONTROL_ALLOW_ORIGIN` array, `orange-api` will print `req.origin` to stdout. You can use that to figure out how to set this value.
 
-- To enable all domains (which is insecure and therefore should only be done in development), set to `["*"]` or `["http://something.com", "http://doesntmatter.com", "*"]`
-- When using Postman, Postman sets the origin to something like `chrome-extension://fhbjgbiflinjbdggehcddcbncdddomop`.
 - Don't forget that if your client is running on https and/or a port other than 80 or 443, you will have to specify this as well, as in `["https://localhost:12345"]`.
+- To enable all domains (which is insecure and therefore should only be done in development), set to `["*"]` or `["http://something.com", "http://doesntmatter.com", "*"]`
+- When using Postman, Postman sets the origin to something like `chrome-extension://fhbjgbiflinjbdggehcddcbncdddomop`. However, Postman probably ignores the `Access-Control-Allow-Origin` header of the OPTIONS response, so you might not need to set this.
+- Phones don't set the origin header, so `req.origin` is undefined in their requests. However, this is ok because they ignore the CORS-related headers on any OPTIONs respones anyway.
 
 ##### `ORANGE_ALLOW_PUBLIC_REGISTRATION` [`false`]
 
