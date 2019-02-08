@@ -187,11 +187,13 @@ All requests made to this API must have HTTP header `x-client-secret` with a val
 
 ##### `ACCESS_CONTROL_ALLOW_ORIGIN`
 
-(Required) Self-explanatory if you understand [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS). Note: HTTP header `Access-Control-Allow-Origin` only works on requests made from browsers; this was setup in our app such that, according to the npm CORS repo [official documentation](https://www.npmjs.com/package/cors), CORS should not at all apply when using mobile apps or rest tools. However, see note about Postman below. Also note, if this is is failing, `orange-api` will print to stdout that it failed and what it thinks the origin is of the request. You can use that to figure out how to set this value.
-- When using Postman, Postman sets the origin to `chrome-extension://fhbjgbiflinjbdggehcddcbncdddomop`, or something like that (see following sentence for clarity), so you must the this variable to this value. If this exact value does not work, the `orange-api` prints an error message to stdout saying that CORS failed and specifying what the origin should be set to.
-- To set multiple domains, place in quotes and separate the domains with commas like this: `"http://domain1.com, https://domain2.com"`
-- Don't forget that if your client is running on a port other than 80 or 443, you will have to specify this as well, as in `http://localhost:12345`.
-- To enable all domains (which is insecure and therefore should only be done in development), set to `*` or `'something.com, doesntmatter.com, *'`
+(Required) An **array** of domains, including protocol and port. Self-explanatory if you understand [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS).
+
+Note: If `req.origin` is not found in your `ACCESS_CONTROL_ALLOW_ORIGIN` array, `orange-api` will print `req.origin` to stdout. You can use that to figure out how to set this value.
+
+- To enable all domains (which is insecure and therefore should only be done in development), set to `["*"]` or `["http://something.com", "http://doesntmatter.com", "*"]`
+- When using Postman, Postman sets the origin to something like `chrome-extension://fhbjgbiflinjbdggehcddcbncdddomop`.
+- Don't forget that if your client is running on https and/or a port other than 80 or 443, you will have to specify this as well, as in `["https://localhost:12345"]`.
 
 ##### `ORANGE_ALLOW_PUBLIC_REGISTRATION` [`false`]
 
