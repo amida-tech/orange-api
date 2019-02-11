@@ -112,12 +112,14 @@ if (config.logLevel === "debug") {
     expressWinston.requestWhitelist = ["url", "method", "httpVersion", "originalUrl", "query"];
     expressWinston.responseWhitelist = ["statusCode", "responseTime"];
 }
-app.use(expressWinston.logger({
-    winstonInstance,
-    meta: true, // optional: log meta data about request (defaults to true)
-    msg: "HTTP {{req.method}} {{req.url}} {{res.statusCode}} {{res.responseTime}}ms",
-    colorStatus: true // Color the status code (default green, 3XX cyan, 4XX yellow, 5XX red).
-}));
+if (process.env.NODE_ENV !== 'test'){
+  app.use(expressWinston.logger({
+      winstonInstance,
+      meta: true, // optional: log meta data about request (defaults to true)
+      msg: "HTTP {{req.method}} {{req.url}} {{res.statusCode}} {{res.responseTime}}ms",
+      colorStatus: true // Color the status code (default green, 3XX cyan, 4XX yellow, 5XX red).
+  }));
+}
 
 
 // App-level router containing all routes
