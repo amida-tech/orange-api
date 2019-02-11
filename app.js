@@ -35,27 +35,22 @@ function getGfs() {
 require("./lib/models/user/user.js")(getGfs);
 require("./lib/models/patient/patient.js")(getGfs);
 require("./lib/models/reminder_notification");
-require("./scheduleMedicationReminders.js");
-
-
-// CORS
-const corsDomains = config.accessControlAllowOrigin.split(",").map(function (domain) {
-  return domain.trim();
-});
+require("./scheduleReminderNotifications.js");
 
 app.use(cors({
   origin: function (origin, callback) {
-    // TODO: Figure out why origin is coming through as undefined, which seems to be
-    // happening because this is running inside a docker container, fix the problem,
-    // and remove the `origin === undefined` clause.
-    if (corsDomains.indexOf(origin) !== -1 || corsDomains.indexOf("*") !== -1 || config.accessControlAllowOrigin === "*" || origin === undefined) {
-      // Cors passes!
+    if (config.accessControlAllowOrigin.indexOf(origin) !== -1 || config.accessControlAllowOrigin.indexOf("*") !== -1) {
+      // This sets `Access-Control-Allow-Origin` header to whatever req.origin is and sets other `Access-Control-...` headers.
       callback(null, true);
     } else {
-      console.warn(`WARNING: cors failed. Make sure you have your ACCESS_CONTROL_ALLOW_ORIGIN environment variable set correctly. For this request, origin was: ${origin}`);
-      // This will make it so that no Access-Control-... headers are returned on
-      // the OPTIONS request, and requests from domains not in the list will fail.
-      // Also, requests from mobile apps and REST tools hit this case, but they still work.
+      // Only console.warn() when origin !== 'undefined', becuase, for example...
+      // - When phones make requests, origin is undefined, but that's OK because phones don't care about what the OPTIONS response's `Access-Control-...` headers are set to.
+      // - When the brower is on the same domain as the server it is making a reqeust to, origin is undefined, but that's OK because the browser, being at the same domain, won't care about what the OPTIONS response's `Access-Control-...` headers are set to (I think).
+      if (origin !== "undefined") {
+        console.warn(`WARNING: req.origin is ${origin}, but CORS headers were not set because this origin is not in the list of allowed origins.`);
+      }
+
+      // This will make it so that no Access-Control-... headers are returned on the OPTIONS request.
       callback(null, false);
     }
   },

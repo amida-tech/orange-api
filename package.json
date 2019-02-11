@@ -9,10 +9,8 @@
   },
   "scripts": {
     "import_va_formulary": "node import_va_formulary.js VANF-October_2018.xls",
-    "check_test_db": "cross-env NODE_ENV=test node check_test_db.js",
-    "delete_db": "cross-env NODE_ENV=test node delete_db.js",
     "start": "grunt dev",
-    "test": "npm run check_test_db && cross-env NODE_ENV=test grunt test || npm run delete_db",
+    "test": "grunt test",
     "create-microservice-service-user": "node createAccessUser.js",
     "test-services": "node mockScript.js",
     "snyk-protect": "snyk protect",

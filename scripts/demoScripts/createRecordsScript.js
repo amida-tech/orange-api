@@ -2,33 +2,32 @@ const Client = require('node-rest-client').Client;
 const moment = require('moment')
 const jwt = require('jsonwebtoken')
 const client = new Client();
-const createJournalEntryUrl = 'http://localhost:5000/v1/patients/2739/journal'
 
 // function to make journal entries
-const createJournalEntry = function(journalArgs, patientID, callback) {
-  client.post(`http://localhost:5000/v1/patients/${patientID}/journal`, journalArgs, function (data, response) {
+const createJournalEntry = function(baseUrl, journalArgs, patientID, callback) {
+  client.post(`${baseUrl}/${patientID}/journal`, journalArgs, function (data, response) {
     callback(data);
   });
 }
 
-const createDose = function(doseArgs, patientID, callback) {
-  client.post(`http://localhost:5000/v1/patients/${patientID}/doses`, doseArgs, function (data, response) {
+const createDose = function(baseUrl, doseArgs, patientID, callback) {
+  client.post(`${baseUrl}/${patientID}/doses`, doseArgs, function (data, response) {
     callback(data);
   });
 }
 
-module.exports.createMoodEntries = function(authToken, patientID, days) {
+module.exports.createMoodEntries = function(baseUrl, clientSecret, authToken, patientID, days) {
   const user = jwt.decode(authToken)
   let date = moment().endOf('day').subtract(days, 'days')
   for (var y=0; y<days; y++) {
     date.add(1, 'days')
     const hourlydate = moment(date)
-    for (var x = 0; x<10; x++ ) {
-      hourlydate.subtract(2, 'hours')
+    for (var x = 0; x<4; x++ ) {
+      hourlydate.subtract(5, 'hours')
       const moodSeverity = Math.floor(Math.random() * 9) + 1;
       const providedDate = moment(hourlydate).utc().toISOString()
       const journalArgs = {
-        headers: { "Content-Type": "application/json", "X-Client-Secret" : "testsecret", "Authorization":"Bearer "+authToken},
+        headers: { "Content-Type": "application/json", "X-Client-Secret" : clientSecret, "Authorization":"Bearer "+authToken},
         data: {  
           date: { 
             utc: providedDate,
@@ -40,9 +39,9 @@ module.exports.createMoodEntries = function(authToken, patientID, days) {
           moodSeverity
         }
       }
-      createJournalEntry(journalArgs, patientID, function(response) {
+      createJournalEntry(baseUrl, journalArgs, patientID, function(response) {
         if (response.status === 'ERROR') {
-          console.log("UNSuccesful createJournalEntry", response, journalArgs);
+          console.log("UNSuccesful createMoodEntries", response, journalArgs);
         }
       });
     }
@@ -50,7 +49,7 @@ module.exports.createMoodEntries = function(authToken, patientID, days) {
 
 }
 
-module.exports.createMeditationEntries = function(authToken, patientID, days) {
+module.exports.createMeditationEntries = function(baseUrl, clientSecret, authToken, patientID, days) {
   const user = jwt.decode(authToken)
   let date = moment().endOf('day').subtract(days, 'days')
   for (var y=0; y<days; y++) {
@@ -68,7 +67,7 @@ module.exports.createMeditationEntries = function(authToken, patientID, days) {
       if (doesMeditationHappen > 0.25) {
         const providedDate = moment(event).utc().toISOString()
         const journalArgs = {
-          headers: { "Content-Type": "application/json", "X-Client-Secret" : "testsecret", "Authorization":"Bearer "+authToken},
+          headers: { "Content-Type": "application/json", "X-Client-Secret" : clientSecret, "Authorization":"Bearer "+authToken},
           data: {  
             date: { 
               utc: providedDate,
@@ -80,9 +79,9 @@ module.exports.createMeditationEntries = function(authToken, patientID, days) {
             activityMinutes: 20
           }
         }
-        createJournalEntry(journalArgs, patientID, function(response) {
+        createJournalEntry(baseUrl, journalArgs, patientID, function(response) {
           if (response.status === 'ERROR') {
-            console.log("UNSuccesful createJournalEntry", response, journalArgs);
+            console.log("UNSuccesful createMeditationEntries", response, journalArgs);
           }
         });
       }
@@ -93,7 +92,7 @@ module.exports.createMeditationEntries = function(authToken, patientID, days) {
 }
 
 
-module.exports.createMedicationAdherence = function(authToken, patientID, medications, days) {
+module.exports.createMedicationAdherence = function(baseUrl, clientSecret, authToken, patientID, medications, days) {
   const user = jwt.decode(authToken)
   let date = moment().endOf('day').subtract(days, 'days')
   for (var y=0; y<days; y++) {
@@ -104,7 +103,7 @@ module.exports.createMedicationAdherence = function(authToken, patientID, medica
       const medicationTaken = Math.random();
       const providedDate = moment(hourlydate).utc().toISOString()
       const doseArgs = {
-        headers: { "Content-Type": "application/json", "X-Client-Secret" : "testsecret", "Authorization":"Bearer "+authToken},
+        headers: { "Content-Type": "application/json", "X-Client-Secret" : clientSecret, "Authorization":"Bearer "+authToken},
         data: {  
           date: { 
             utc: providedDate,
@@ -115,7 +114,7 @@ module.exports.createMedicationAdherence = function(authToken, patientID, medica
           scheduled: 0
         }
       }
-      createDose(doseArgs, patientID, function(response) {
+      createDose(baseUrl, doseArgs, patientID, function(response) {
         if (response.status === 'ERROR') {
           console.log("UNSuccesful createJournalEntry", response, doseArgs);
         }
