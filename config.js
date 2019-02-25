@@ -13,7 +13,7 @@ if (process.env.NODE_ENV === 'test') {
 const envVarsSchema = Joi.object({
     LOG_LEVEL: Joi.string()
         .default('info'),
-    NOTIFICATION_EMAIL_FROM: Joi.string().email(),
+    NOTIFICATION_EMAIL_FROM: Joi.string().email().required(),
     NOTIFICATION_SENDGRID_API_KEY: Joi.string().allow('')
         .description('Email Notification Sendgrid API Key'),
     TWILIO_TEXT_FROM: Joi.string()
