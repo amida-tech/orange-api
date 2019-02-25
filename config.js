@@ -4,7 +4,7 @@ const Joi = require("joi");
 // require and configure dotenv, will load vars in .env in PROCESS.ENV
 const dotenv = require('dotenv');
 if (process.env.NODE_ENV === 'test') {
-    console.log('using env.test')
+    console.log('config.js: Using .env.test')
     dotenv.config({ path: '.env.test' });
 } else {
     dotenv.config();
@@ -13,7 +13,7 @@ if (process.env.NODE_ENV === 'test') {
 const envVarsSchema = Joi.object({
     LOG_LEVEL: Joi.string()
         .default('info'),
-    NOTIFICATION_EMAIL_FROM: Joi.string().email(),
+    NOTIFICATION_EMAIL_FROM: Joi.string().email().required(),
     NOTIFICATION_SENDGRID_API_KEY: Joi.string().allow('')
         .description('Email Notification Sendgrid API Key'),
     TWILIO_TEXT_FROM: Joi.string()
@@ -36,8 +36,8 @@ const envVarsSchema = Joi.object({
         .description('X_CLIENT_SECRET is required. Its value must match the value of X_CLIENT_SECRET specified any client that calls this API.'),
     JWT_SECRET: Joi.string().required()
         .description('JWT Secret required to sign'),
-    ACCESS_CONTROL_ALLOW_ORIGIN: Joi.string().required()
-        .description('set to "null" to enable mobile apps. !!ARH add more better descriptionz.'),
+    ACCESS_CONTROL_ALLOW_ORIGIN: Joi.array()
+        .items(Joi.string()),
     ORANGE_ALLOW_PUBLIC_REGISTRATION: Joi.bool().default(false)
         .description('Allows anyone to create an account if this is true'),
     AUTH_MICROSERVICE_URL: Joi.string().allow('')

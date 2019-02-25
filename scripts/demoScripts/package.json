@@ -1,0 +1,14 @@
+{
+  "name": "demoscripts",
+  "version": "1.0.0",
+  "description": "",
+  "main": "createRecordsScript.js",
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "jsonwebtoken": "^8.4.0",
+    "moment": "^2.23.0",
+    "node-jq": "^1.5.0",
+    "node-rest-client": "^3.1.0"
+  }
+}

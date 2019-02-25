@@ -1,5 +1,4 @@
 "use strict";
-var config = require("./config.js");
 module.exports = function (grunt) {
     // load all grunt task libraries
     require("load-grunt-tasks")(grunt);
@@ -12,7 +11,7 @@ module.exports = function (grunt) {
 
     // clean up code and run tests
     grunt.registerTask("default", ["eslint", "test"]);
-    grunt.registerTask("test", ["env:test", "dropDatabase", "server:test", "mochaTest:all"]);
+    grunt.registerTask("test", ["env:test", "dropDatabase", "server:test", "mochaTest:all", "dropDatabase"]);
 
     // watch for changes and regenerate test PDF each time (for pdf development testing)
     grunt.registerTask("generateTestPdf", ["express:dev", "exec:testPdf"]);
@@ -30,6 +29,15 @@ module.exports = function (grunt) {
 
     var mongoose = require("mongoose");
     grunt.registerTask("dropDatabase", function () {
+        if (process.env.NODE_ENV !== "test") {
+          console.error("gruntfile.js: Task 'dropDatabase': NODE_ENV !== 'test'. Therefore, aborting so as to not accidentally drop the wrong database. Ensure NODE_ENV === 'test', or just delete your DB manually.");
+          process.exit(1);
+        }
+
+        // Config must be required here, rather than at the top of the file, because here (and not
+        // at the top of file) NODE_ENV=test. Config isn't used anywhere else anyway.
+        var config = require("./config.js");
+
         // force grunt into async
         var done = this.async();
         var options = {
@@ -46,7 +54,7 @@ module.exports = function (grunt) {
             if (err) return done(err);
             mongoose.connection.db.dropDatabase(function (err) {
                 if (err) return done(err);
-                console.log("Database dropped");
+                console.log(`gruntfile.js: Database '${config.mongo}' dropped.`);
                 mongoose.connection.close(done);
             });
         });

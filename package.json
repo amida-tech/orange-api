@@ -2,17 +2,15 @@
   "author": "Amida",
   "name": "orange-api",
   "description": "API for Orange medication adherance apps",
-  "version": "1.7.1",
+  "version": "1.8.0-rc.2",
   "repository": {
     "type": "git",
     "url": "git@github.com:amida-tech/orange-api.git"
   },
   "scripts": {
     "import_va_formulary": "node import_va_formulary.js VANF-October_2018.xls",
-    "check_test_db": "cross-env NODE_ENV=test node check_test_db.js",
-    "delete_db": "cross-env NODE_ENV=test node delete_db.js",
     "start": "grunt dev",
-    "test": "npm run check_test_db && cross-env NODE_ENV=test grunt test || npm run delete_db",
+    "test": "grunt test",
     "create-microservice-service-user": "node createAccessUser.js",
     "test-services": "node mockScript.js",
     "snyk-protect": "snyk protect",
@@ -53,7 +51,7 @@
     "moment": "^2.22.2",
     "moment-timezone": "^0.5.21",
     "mongodb": "^3.1.1",
-    "mongoose": "^5.2.4",
+    "mongoose": "^5.2.12",
     "mongoose-unique-validator": "^2.0.1",
     "node-cron": "^2.0.3",
     "node-geocoder": "^2.22.0",
