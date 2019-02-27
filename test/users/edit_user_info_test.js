@@ -49,17 +49,11 @@ describe("Users", function () {
                 return request.then(auth.checkTokenWorks(token));
             });
 
-            it("allows a null first_name", function () {
-                return updateUser({}, { first_name: null }).then(function (response) {
-                    expect(response).to.be.a.user.success;
-                    expect(response.body.first_name).to.equal("");
-                });
+            it("rejects a null first_name", function () {
+              return expect(updateUser({}, { first_name: null })).to.be.an.api.error(400, "FIRST_NAME_REQUIRED")
             });
-            it("allows a blank first_name", function () {
-                return updateUser({}, { first_name: "" }).then(function (response) {
-                    expect(response).to.be.a.user.success;
-                    expect(response.body.first_name).to.equal("");
-                });
+            it("rejects a blank first_name", function () {
+                return expect(updateUser({}, { first_name: "" })).to.be.an.api.error(400, "FIRST_NAME_REQUIRED")
             });
         });
 

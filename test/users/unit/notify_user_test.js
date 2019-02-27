@@ -32,7 +32,10 @@ describe("Users", function () {
         var notify = function (email, phone, data) {
             // mock mailer so we don't make actual sendgrid requests
             data.mailer = {
-                send: function (details, callback) {
+                emptyRequest: function (requestConfig) {
+                    return requestConfig;
+                },
+                API: function (details, callback) {
                     mailSpy(details);
                     callback();
                 }
@@ -103,16 +106,16 @@ describe("Users", function () {
         it("sends emails by default", function () {
             return notifyMail("testuser@amida-demo.com", "", {}).then(function (data) {
                 // should send to the right email
-                expect(data.to).to.equal("testuser@amida-demo.com");
+                expect(data.body.personalizations[0].to[0].email).to.equal("testuser@amida-demo.com");
                 // should come from an email address
-                expect(data.from).to.be.a("string");
-                expect(data.from.length).to.be.above(0);
+                expect(data.body.from.email).to.be.a("string");
+                expect(data.body.from.email.length).to.be.above(0);
                 // should have a default subject
-                expect(data.subject).to.be.a("string");
-                expect(data.subject.length).to.be.above(0);
+                expect(data.body.subject).to.be.a("string");
+                expect(data.body.subject.length).to.be.above(0);
                 // should have a default body
-                expect(data.html).to.be.a("string");
-                expect(data.html.length).to.be.above(0);
+                expect(data.body.content[0].value).to.be.a("string");
+                expect(data.body.content[0].value.length).to.be.above(0);
             });
         });
 
@@ -121,8 +124,8 @@ describe("Users", function () {
                 subject: "testsubject",
                 body: "testbody"
             }).then(function (data) {
-                expect(data.subject).to.equal("testsubject");
-                expect(data.html).to.equal("testbody");
+                expect(data.body.subject).to.equal("testsubject");
+                expect(data.body.content[0].value).to.equal("testbody");
             });
         });
 
@@ -144,16 +147,16 @@ describe("Users", function () {
                 sendText: false
             }).then(function (data) {
                 // should send to the right email
-                expect(data.to).to.equal("testuser@amida-demo.com");
+                expect(data.body.personalizations[0].to[0].email).to.equal("testuser@amida-demo.com");
                 // should come from an email address
-                expect(data.from).to.be.a("string");
-                expect(data.from.length).to.be.above(0);
+                expect(data.body.from.email).to.be.a("string");
+                expect(data.body.from.email.length).to.be.above(0);
                 // should have a default subject
-                expect(data.subject).to.be.a("string");
-                expect(data.subject.length).to.be.above(0);
+                expect(data.body.subject).to.be.a("string");
+                expect(data.body.subject.length).to.be.above(0);
                 // should have a default body
-                expect(data.html).to.be.a("string");
-                expect(data.html.length).to.be.above(0);
+                expect(data.body.content[0].value).to.be.a("string");
+                expect(data.body.content[0].value.length).to.be.above(0);
             });
         });
 
@@ -173,14 +176,14 @@ describe("Users", function () {
                 text: "testtext"
             }).then(function (data) {
                 // should send to the right email address
-                expect(data.to).to.equal("testuser@amida-demo.com");
+                expect(data.body.personalizations[0].to[0].email).to.equal("testuser@amida-demo.com");
                 // should come from an email address
-                expect(data.from).to.be.a("string");
-                expect(data.from.length).to.be.above(0);
+                expect(data.body.from.email).to.be.a("string");
+                expect(data.body.from.email.length).to.be.above(0);
                 // should have the correct subject and body
-                expect(data.subject).to.equal("testsubject");
+                expect(data.body.subject).to.equal("testsubject");
                 // should have the specified body
-                expect(data.html).to.equal("testbody");
+                expect(data.body.content[0].value).to.equal("testbody");
             });
         });
 
@@ -189,15 +192,15 @@ describe("Users", function () {
                 text: "testtext"
             }).then(function (data) {
                 // should send to the right email address
-                expect(data.to).to.equal("testuser@amida-demo.com");
+                expect(data.body.personalizations[0].to[0].email).to.equal("testuser@amida-demo.com");
                 // should come from an email address
-                expect(data.from).to.be.a("string");
-                expect(data.from.length).to.be.above(0);
+                expect(data.body.from.email).to.be.a("string");
+                expect(data.body.from.email.length).to.be.above(0);
                 // should have a default subject
-                expect(data.subject).to.be.a("string");
-                expect(data.subject.length).to.be.above(0);
+                expect(data.body.subject).to.be.a("string");
+                expect(data.body.subject.length).to.be.above(0);
                 // should have a default body
-                expect(data.html).to.equal("testtext");
+                expect(data.body.content[0].value).to.equal("testtext");
             });
         });
 
@@ -211,14 +214,14 @@ describe("Users", function () {
                 }
             }).then(function (data) {
                 // should send to the right email address
-                expect(data.to).to.equal("testuser@amida-demo.com");
+                expect(data.body.personalizations[0].to[0].email).to.equal("testuser@amida-demo.com");
                 // should come from an email address
-                expect(data.from).to.be.a("string");
-                expect(data.from.length).to.be.above(0);
+                expect(data.body.from.email).to.be.a("string");
+                expect(data.body.from.email.length).to.be.above(0);
                 // should have the subject specified in the template (see views/test/email_subject.handlebars)
-                expect(data.subject).to.equal("Test subject 5 testuser@amida-demo.com");
+                expect(data.body.subject).to.equal("Test subject 5 testuser@amida-demo.com");
                 // should have the body specified in the template (see views/test/email_body.handlebars)
-                expect(data.html).to.equal("<b>Hello</b> testuser@amida-demo.com");
+                expect(data.body.content[0].value).to.equal("<b>Hello</b> testuser@amida-demo.com");
             });
         });
 
