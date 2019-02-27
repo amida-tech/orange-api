@@ -129,29 +129,31 @@ const produceData = function (patientArgs) {
     createMoodEntries(patientsUrl, clientSecret, authToken, defaultPatientId, 1)
     createMeditationEntries(patientsUrl, clientSecret, authToken, defaultPatientId, 1)
         
+    // If we are using existing users, create a medication adherence event
     if (!init) {
       getMedications(medArgs, defaultPatientId, function(response){
         const medications = response.medications
 
-        createMedicationAdherence(patientsUrl, clientSecret, authToken, defaultPatientId, medications, 1);
+        createMedicationAdherence(patientsUrl, clientSecret, authToken, defaultPatientId, medications, 31);
 
       });
     } else {
+
+      // Else, add two medications to the new user
       authenticateUser(authArgsClinician, function (response) {
         authToken2 = response;
-        // Add two medications to the user
-        // let medications = []
-        // createMedication(ibuMedArgs, defaultPatientId, function (response) {
-        //   console.log("created MEd!!", response);
-        //   medications.push(response)
-        //   createMedication(aspirinMedArgs, defaultPatientId, function (response) {
-        //     console.log("Created MEd 2!!", response);
-        //     medications.push(response)
-        //     createMedicationAdherence(authToken, defaultPatientId, medications, 20);
+        let medications = []
+        createMedication(ibuMedArgs, defaultPatientId, function (response) {
+          console.log("created first medication", response);
+          medications.push(response)
+          createMedication(aspirinMedArgs, defaultPatientId, function (response) {
+            console.log("created second medication", response);
+            medications.push(response)
+            createMedicationAdherence(authToken, defaultPatientId, medications, 20);
 
 
-        //   });
-        // });
+          });
+        });
       });
     }
 
