@@ -44,7 +44,6 @@ function sendMedicationReminder (patient, item, user) {
 function sendMeditationReminder(patient, user, date, time) {
     const key = `${patient._id}_${date}_${time}`
     checkIfSent(key).then((result) => {
-
         if (!result) {
             const notificationTitle = 'Meditation Reminder'
             const suffix = time === '11am' ? 'before noon' : 'this evening';
@@ -66,18 +65,19 @@ function sendReminders() {
     const startTimeISO = startTime.toISOString();
     const endTime = new Date(time + intervalInMilliseconds + bufferInMilliseconds);
     const endTimeISO = endTime.toISOString();
+
     User.find({ role: "user" }, function(err, users) {
         users.forEach((user) => {
             Patient.findOne({ creator: user.email, me: true }).exec().then((patient) => {
-                const startOfDay = moment().tz(patient.tz).startOf('day');
-                const today = startOfDay.format('YYYY-MM-DD');
-                const elevenAMInPatientTZ = moment(today).hours(11).toDate();
-                const sixPMInPatientTZ = moment(today).hours(18).toDate();
-                if (elevenAMInPatientTZ >= startTime && elevenAMInPatientTZ <= endTime) {
-                    sendMeditationReminder(patient, user, today, '11am')
+                const beginningOfTodayInPatientTz = moment().tz(patient.tz).startOf('day');
+                const elevenAmInPatientTz = moment(beginningOfTodayInPatientTz).hours(11);
+                const sixPmInPatientTz    = moment(beginningOfTodayInPatientTz).hours(18);
+
+                if (elevenAmInPatientTz >= startTime && elevenAmInPatientTz <= endTime) {
+                    sendMeditationReminder(patient, user, beginningOfTodayInPatientTz.format('YYYY-MM-DD'), '11am');
                 }
-                if (sixPMInPatientTZ >= startTime && sixPMInPatientTZ <= endTime) {
-                    sendMeditationReminder(patient, user, today, '6pm')
+                if (sixPmInPatientTz >= startTime && sixPmInPatientTz <= endTime) {
+                    sendMeditationReminder(patient, user, beginningOfTodayInPatientTz.format('YYYY-MM-DD'), '6pm')
                 }
                 patient.generateScheduleResults(startTimeISO, endTimeISO, user, null, user._id, function (err, items) {
                     if (err) return err;

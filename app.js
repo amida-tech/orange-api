@@ -46,8 +46,8 @@ app.use(cors({
       // Only console.warn() when origin !== 'undefined', becuase, for example...
       // - When phones make requests, origin is undefined, but that's OK because phones don't care about what the OPTIONS response's `Access-Control-...` headers are set to.
       // - When the brower is on the same domain as the server it is making a reqeust to, origin is undefined, but that's OK because the browser, being at the same domain, won't care about what the OPTIONS response's `Access-Control-...` headers are set to (I think).
-      if (origin !== "undefined") {
-        console.warn(`WARNING: req.origin is ${origin}, but CORS headers were not set because this origin is not in the list of allowed origins.`);
+      if (origin !== undefined) {
+        console.warn(`WARNING: req.origin is ${origin}, and CORS headers were not set because this origin is not in the list of allowed origins.`);
       }
 
       // This will make it so that no Access-Control-... headers are returned on the OPTIONS request.
