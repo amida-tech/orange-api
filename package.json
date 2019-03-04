@@ -11,6 +11,7 @@
     "import_va_formulary": "node import_va_formulary.js VANF-October_2018.xls",
     "start": "grunt dev",
     "test": "grunt test",
+    "lint": "grunt lint",
     "create-microservice-service-user": "node createAccessUser.js",
     "test-services": "node mockScript.js",
     "snyk-protect": "snyk protect",

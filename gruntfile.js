@@ -13,6 +13,9 @@ module.exports = function (grunt) {
     grunt.registerTask("default", ["eslint", "test"]);
     grunt.registerTask("test", ["env:test", "dropDatabase", "server:test", "mochaTest:all", "dropDatabase"]);
 
+    // lint
+    grunt.registerTask("lint", ["eslint"]);
+
     // watch for changes and regenerate test PDF each time (for pdf development testing)
     grunt.registerTask("generateTestPdf", ["express:dev", "exec:testPdf"]);
     grunt.registerTask("report", ["generateTestPdf", "watch:pdf"]);
