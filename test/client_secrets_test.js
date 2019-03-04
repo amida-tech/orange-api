@@ -20,13 +20,26 @@ describe("API", function () {
             var headers = {};
             if (typeof secret !== "undefined") headers["X-Client-Secret"] = secret;
 
-            return chakram.get("http://localhost:5000/v1/npi/42", { headers: headers });
+            return chakram.get("http://localhost:5000/v1/", { headers: headers });
         });
     };
 
 
+    var endpointUnsecure = function (secret) {
+        // want an endpoint that doesn't require any other authenticate, so we
+        // try and register a user
+        return fixtures.build("User", {}).then(function (user) {
+            var headers = {};
+            if (typeof secret !== "undefined") headers["X-Client-Secret"] = secret;
+
+            return chakram.get("http://localhost:5000/v1/health", { headers: headers });
+        });
+    };
+
+
+
     it("accepts a valid client secret", function () {
-        return expect(endpoint(secret)).to.have.status(200);
+        return expect(endpointUnsecure(secret)).to.have.status(200);
     });
     it("rejects a nonpresent client secret", function () {
         return expect(endpoint(undefined)).to.be.an.api.error(401, "invalid_client_secret");
