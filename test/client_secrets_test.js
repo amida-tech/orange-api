@@ -26,14 +26,10 @@ describe("API", function () {
 
 
     var endpointUnsecure = function (secret) {
-        // want an endpoint that doesn't require any other authenticate, so we
-        // try and register a user
-        return fixtures.build("User", {}).then(function (user) {
-            var headers = {};
-            if (typeof secret !== "undefined") headers["X-Client-Secret"] = secret;
+        var headers = {};
+        if (typeof secret !== "undefined") headers["X-Client-Secret"] = secret;
 
-            return chakram.get("http://localhost:5000/v1/health", { headers: headers });
-        });
+        return chakram.get("http://localhost:5000/v1/health", { headers: headers });
     };
 
 
