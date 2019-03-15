@@ -1,5 +1,8 @@
 # Orange API
 
+[![dependencies Status](https://david-dm.org/amida-tech/orange-api/status.svg)](https://david-dm.org/amida-tech/orange-api)
+[![devDependencies Status](https://david-dm.org/amida-tech/orange-api/dev-status.svg)](https://david-dm.org/amida-tech/orange-api?type=dev)
+[![Jenkins CI](https://jenkins.amida.com/buildStatus/icon?job=Orange%20API%20Build%20Develop/)](https://jenkins.amida.com/job/Orange%20API%20Build%20Develop/)
 [![Build Status](https://travis-ci.org/amida-tech/orange-api.svg?branch=master)](https://travis-ci.org/amida-tech/orange-api)
 [![Coverage Status](https://coveralls.io/repos/amida-tech/orange-api/badge.svg?branch=master)](https://coveralls.io/r/amida-tech/orange-api?branch=master)
 
