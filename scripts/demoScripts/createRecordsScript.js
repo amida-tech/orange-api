@@ -1,6 +1,11 @@
+const util = require('util');
+
+const axios = require('axios');
 const Client = require('node-rest-client').Client;
 const moment = require('moment')
 const jwt = require('jsonwebtoken')
+const logger = require ('./winston.js');
+
 const client = new Client();
 
 // function to make journal entries
@@ -10,10 +15,27 @@ const createJournalEntry = function(baseUrl, journalArgs, patientID, callback) {
   });
 }
 
-const createDose = function(baseUrl, doseArgs, patientID, callback) {
-  client.post(`${baseUrl}/${patientID}/doses`, doseArgs, function (data, response) {
-    callback(data);
-  });
+async function createDose (clientSecret, token, baseUrl, patientId, body) {
+  let username;
+  try {
+    username = jwt.decode(token).username;
+    const response = await axios({
+      method: 'post',
+      url: `${baseUrl}/${patientId}/doses`,
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Client-Secret': clientSecret,
+        'Authorization': `Bearer ${token}`
+      },
+      data: body
+    });
+    logger.debug(`Creating dose successful for user ${username}. Response body is:`, response.data);
+    return response.data;
+  } catch (e) {
+    logger.info(`Creating dose failed for user ${username}`);
+    logger.debug(util.inspect(e));
+    // TODO: Perhaps do something here.
+  }
 }
 
 module.exports.createMoodEntries = function(baseUrl, clientSecret, authToken, patientID, days) {
@@ -92,14 +114,13 @@ module.exports.createMeditationEntries = function(baseUrl, clientSecret, authTok
 }
 
 
-module.exports.createMedicationAdherence = function(baseUrl, clientSecret, authToken, patientID, medications, days) {
-  const user = jwt.decode(authToken)
+module.exports.createMedicationAdherence = async function (baseUrl, clientSecret, authToken, patientID, medications, days) {
   let date = moment().endOf('day').subtract(days, 'days')
   for (var y=0; y<days; y++) {
     date.add(1, 'days')
     const hourlydate = moment(date).subtract(13, 'hours')
 
-    medications.map((med) => {
+    for (let med of medications) {
       const medicationTaken = Math.random();
       const providedDate = moment(hourlydate).utc().toISOString()
       const doseArgs = {
@@ -114,13 +135,17 @@ module.exports.createMedicationAdherence = function(baseUrl, clientSecret, authT
           scheduled: 0
         }
       }
-      createDose(baseUrl, doseArgs, patientID, function(response) {
-        if (response.status === 'ERROR') {
-          console.log("UNSuccesful createJournalEntry", response, doseArgs);
-        }
+
+      await createDose(clientSecret, authToken, baseUrl, patientID, {
+        date: {
+          utc: providedDate,
+          timezone:"America/New_York"
+        },
+        medication_id: med.id,
+        taken: (medicationTaken > 0.2),
+        scheduled: 0
       });
-    })
-      
+    }
   }
 
 }
