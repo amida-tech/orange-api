@@ -1,14 +1,13 @@
 {
-  "name": "demoscripts",
+  "name": "orange-api-mock-data-generator",
   "version": "1.0.0",
   "description": "",
   "main": "createRecordsScript.js",
   "author": "",
   "license": "ISC",
-  "devDependencies": {
+  "dependencies": {
     "jsonwebtoken": "^8.4.0",
     "moment": "^2.23.0",
-    "node-jq": "^1.5.0",
     "node-rest-client": "^3.1.0"
   }
 }
