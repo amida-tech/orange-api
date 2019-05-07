@@ -1,4 +1,7 @@
 "use strict";
+
+console.log("app.js task/houli-travis-test");
+
 // Web
 const express = require("express");
 const cors = require("cors");
