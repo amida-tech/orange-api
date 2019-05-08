@@ -203,6 +203,11 @@ Note: If `req.origin` is not found in your `ACCESS_CONTROL_ALLOW_ORIGIN` array, 
 
 If true, the user registration endpoint is public. If false, only users with `admin` or `programAdministrator` scope can create users.
 
+##### `EMAIL_VERIFICATION_INIT_PAGE_URL`
+
+URL of the webpage the user must go to to start the email verification process. This gets pluggged into in the new-user welcome email.
+- Should be `https://domain-of-your-orange-web.whatever/verify-email`.
+
 ##### `MONGO_URI` (Required)
 
 MongoDB connection URI.
