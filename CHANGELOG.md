@@ -1,6 +1,7 @@
 # Changelog
 
 ## [Unreleased]
+- HTTP status code is defaulted to 500 for errors that do not specify status codes.
 
 ### Added
 - Mock data generation script.
