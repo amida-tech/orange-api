@@ -215,6 +215,8 @@ MongoDB connection URI.
 
 Enable SSL for the connection to MongoDB.
 - In production, set to true.
+- If this is truthy, then `MONGO_CA_CERT` must be set with a valid value (the value/contents (not filename) of CA bundle that is able to verify the cert being used by the MongoDB you are trying to connect to is valid).
+- An easy way to set this in development is `MONGO_CA_CERT=$(cat /path/to/your-ca-bundle.pem) grunt dev`.
 
 ##### `MONGO_CA_CERT`
 
