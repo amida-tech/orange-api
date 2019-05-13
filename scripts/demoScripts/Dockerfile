@@ -4,7 +4,7 @@ FROM node:10.15.0-alpine as builder
 WORKDIR /app/
 COPY . /app/
 
-RUN npm install
+RUN npm install --production
 
 # Runner Image
 FROM node:10.15.0-alpine

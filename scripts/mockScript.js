@@ -1,6 +1,5 @@
 const Client = require('node-rest-client').Client;
 const faker = require('faker');
-import createJournalEntry from './createRecordsScript'
 
 //Notification Service Admin User Credentials
 const adminUsername = (process.argv[6] ? `${process.argv[6]}`: `oucuYaiN6pha3ahphiiT`);
