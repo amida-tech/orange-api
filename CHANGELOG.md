@@ -1,7 +1,13 @@
 # Changelog
 
 ## [Unreleased]
+### Added
+- Environment variable `EMAIL_VERIFICATION_INIT_PAGE_URL`. See README for details.
+
+### Changed
 - HTTP status code is defaulted to 500 for errors that do not specify status codes.
+
+## [Prior to 1.9.0]
 
 ### Added
 - Mock data generation script.
