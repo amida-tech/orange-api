@@ -1,6 +1,6 @@
 # Changelog
 
-## [1.9.0] -- 2019-05-16
+## [1.9.0] -- 2019-05-21
 ### Added
 - Environment variable `EMAIL_VERIFICATION_INIT_PAGE_URL`. See README for details.
 
