@@ -1,14 +1,16 @@
 {
-  "name": "demoscripts",
-  "version": "1.0.0",
+  "name": "orange-api-mock-data-generator",
+  "version": "0.0.5",
   "description": "",
-  "main": "createRecordsScript.js",
+  "main": "reportsMockScript.js",
   "author": "",
   "license": "ISC",
-  "devDependencies": {
+  "dependencies": {
+    "axios": "^0.18.0",
     "jsonwebtoken": "^8.4.0",
     "moment": "^2.23.0",
-    "node-jq": "^1.5.0",
-    "node-rest-client": "^3.1.0"
+    "node-rest-client": "^3.1.0",
+    "winston": "^3.2.1",
+    "winston-json-formatter": "^0.10.0"
   }
 }

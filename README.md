@@ -203,6 +203,11 @@ Note: If `req.origin` is not found in your `ACCESS_CONTROL_ALLOW_ORIGIN` array, 
 
 If true, the user registration endpoint is public. If false, only users with `admin` or `programAdministrator` scope can create users.
 
+##### `EMAIL_VERIFICATION_INIT_PAGE_URL`
+
+URL of the webpage the user must go to to start the email verification process. This gets pluggged into in the new-user welcome email.
+- Should be `https://domain-of-your-orange-web.whatever/verify-email`.
+
 ##### `MONGO_URI` (Required)
 
 MongoDB connection URI.
@@ -215,6 +220,8 @@ MongoDB connection URI.
 
 Enable SSL for the connection to MongoDB.
 - In production, set to true.
+- If this is truthy, then `MONGO_CA_CERT` must be set with a valid value (the value/contents (not filename) of CA bundle that is able to verify the cert being used by the MongoDB you are trying to connect to is valid).
+- An easy way to set this in development is `MONGO_CA_CERT=$(cat /path/to/your-ca-bundle.pem) grunt dev`.
 
 ##### `MONGO_CA_CERT`
 

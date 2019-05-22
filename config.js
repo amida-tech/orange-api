@@ -3,12 +3,14 @@
 const Joi = require("joi");
 // require and configure dotenv, will load vars in .env in PROCESS.ENV
 const dotenv = require('dotenv');
+
 if (process.env.NODE_ENV === 'test') {
     console.log('config.js: Using .env.test')
     dotenv.config({ path: '.env.test' });
 } else {
     dotenv.config();
 }
+
 // define validation for all the env vars
 const envVarsSchema = Joi.object({
     LOG_LEVEL: Joi.string()
@@ -40,6 +42,7 @@ const envVarsSchema = Joi.object({
         .items(Joi.string()),
     ORANGE_ALLOW_PUBLIC_REGISTRATION: Joi.bool().default(false)
         .description('Allows anyone to create an account if this is true'),
+    EMAIL_VERIFICATION_INIT_PAGE_URL: Joi.string(),
     AUTH_MICROSERVICE_URL: Joi.string().allow('')
         .description('Auth microservice endpoint'),
     MONGO_SSL_ENABLED: Joi.boolean()
@@ -61,12 +64,13 @@ if (error) {
     throw new Error(`Config validation error: ${error.message}`);
 }
 
-const config = module.exports = {
+const config = {
     logLevel: envVars.LOG_LEVEL,
     secret: envVars.X_CLIENT_SECRET,
     jwtSecret: envVars.JWT_SECRET,
     accessControlAllowOrigin: envVars.ACCESS_CONTROL_ALLOW_ORIGIN,
     allowPublicRegistration: envVars.ORANGE_ALLOW_PUBLIC_REGISTRATION,
+    emailVerificationInitPageUrl: envVars.EMAIL_VERIFICATION_INIT_PAGE_URL,
     authServiceAPI: envVars.AUTH_MICROSERVICE_URL,
     mongo: envVars.MONGO_URI,
     port: envVars.EXPRESS_PORT,
@@ -100,3 +104,5 @@ const config = module.exports = {
       profileFields: envVars.FACEBOOK_PROFILE_FIELDS,
     }
 }
+
+module.exports = config;

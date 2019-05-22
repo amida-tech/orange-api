@@ -16,11 +16,9 @@ async.waterfall([
             useNewUrlParser: true
         };
         if (config.sslEnabled) {
-            options.server = {};
-            options.server.ssl = config.sslEnabled;
-            if (config.sslCaCert) {
-                options.server.sslCA = config.sslCaCert;
-            }
+            options.ssl = config.sslEnabled;
+            options.sslValidate = true;
+            options.sslCA = config.sslCaCert;
         }
         mongoose.connect(config.mongo, options, callback).catch((err) => {
             console.error(err);
