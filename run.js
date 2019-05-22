@@ -17,7 +17,9 @@ async.waterfall([
         };
         if (config.sslEnabled) {
             options.ssl = config.sslEnabled;
-            options.sslValidate = true;
+            // Commented out by ARH on 2019-05-22 because was breaking production.
+            // Hot"fix" commenting this out because we need to get production back up and running while we figure out how to get this properly working.
+            // options.sslValidate = true;
             options.sslCA = config.sslCaCert;
         }
         mongoose.connect(config.mongo, options, callback).catch((err) => {
