@@ -153,7 +153,7 @@ docker network create {DOCKER_NETWORK_NAME}
 docker run -d --name amida-orange-api-db --network {DOCKER_NETWORK_NAME} mongo:3.6
 ```
 
-4. Create a `.env` file for use by this service's docker container. A good starting point is this repo's `.env.production` file. For additional details, see the next step.
+4. Create a `.env` file for use by this service's docker container. A good starting point is this repo's `.env.example` file. For additional details, see the next step.
 
 5. Configure push notifications according to the [Enabling Push Notifications](#Enabling-Push-Notifications) subsection under [Development Setup and Run](#Development-Setup-and-Run)
 
@@ -211,10 +211,6 @@ URL of the webpage the user must go to to start the email verification process. 
 ##### `MONGO_URI` (Required)
 
 MongoDB connection URI.
-- `.env.production` sets this to `mongodb://amida-orange-api-db:27017/orange-api` which assumes:
-  - `amida-orange-api-db` is the name of the docker container running MongoDB.
-  - The docker container running MongoDB and this service's container are a part of the same docker network.
-  - Until we update the mongoose version, you must specify the port number, else you get this error: https://stackoverflow.com/questions/51156334/unhandled-rejection-mongoerror-port-must-be-specified
 
 ##### `MONGO_SSL_ENABLED` (Required) [`false`]
 
@@ -232,11 +228,6 @@ Only used when `MONGO_SSL_ENABLED=true`. Specifies an SSL cert to trust for the 
 ##### `AUTH_MICROSERVICE_URL` (Required)
 
 The URL of the Auth Service API.
-- The URL of the staging Auth Service server is `https://orange-auth-staging.amida-services.com/api/v1`
-- `.env.production` sets this to `http://amida-auth-microservice:4000/api/v1`, which assumes:
-  - `amida-auth-microservice` is the name of the docker container running the Auth Service.
-  - `4000` is the port the Auth Service is running on in its container.
-  - The Auth Service's docker container and this service's docker container are a part of the same docker network.
 
 ##### `JWT_SECRET` (Required)
 
@@ -248,23 +239,16 @@ Must match value of the JWT secret being used by your `amida-auth-microservice` 
 ##### `NOTIFICATION_MICROSERVICE_URL`
 
 The URL of the Notification Service API.
-- The URL of the staging Notification Server is `https://orange-notification-staging.amida-services.com/api`
-- `.env.production` sets this to `http://amida-notification-microservice:4003/api`, which assumes:
-  - `amida-notification-microservice` is the name of the docker container running the Notification Service.
-  - `4003` is the port the Notification Service is running on in its container.
-  - The Notification Service's docker container and this service's docker container are a part of the same docker network.
 
 ##### `PUSH_NOTIFICATIONS_ENABLED` (Required) [`false`]
 
 ##### `PUSH_NOTIFICATIONS_SERVICE_USER_USERNAME` (Required)
 
 The username of the service user on the Auth Service. This user is named as such because original is only performed push-notifications-related requests. However, this user now performs a variety of functions.
-- `.env.example` sets this to `oucuYaiN6pha3ahphiiT`, which is for development only. In production, set this to a different value.
 
 ##### `PUSH_NOTIFICATIONS_SERVICE_USER_PASSWORD` (Required)
 
 The password of the user specified by `PUSH_NOTIFICATIONS_SERVICE_USER_USERNAME`.
-- `.env.example` sets this to `@TestTest1`, which is for development only. In production, set this to a different value.
 
 ##### `PUSH_NOTIFICATIONS_APN_ENABLED` (Deprecated)
 
