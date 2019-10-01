@@ -43,7 +43,7 @@
     "express-winston": "^3.0.0",
     "faker": "^4.1.0",
     "gulp": "^4.0.0",
-    "handlebars": "~4.0.0",
+    "handlebars": "~4.3.0",
     "image-type": "^3.0.0",
     "inflected": "^1.1.6",
     "joi": "^13.4.0",
