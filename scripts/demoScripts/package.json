@@ -6,7 +6,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "axios": "^0.18.0",
+    "axios": "^0.21.1",
     "jsonwebtoken": "^8.4.0",
     "moment": "^2.23.0",
     "node-rest-client": "^3.1.0",
