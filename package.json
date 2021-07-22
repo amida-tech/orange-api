@@ -70,7 +70,7 @@
     "twilio": "^3.16.0",
     "uuid": "^3.3.2",
     "winston": "^3.1.0",
-    "xlsx": "^0.14.0",
+    "xlsx": "^0.17.0",
     "xtend": "^4.0.0"
   },
   "devDependencies": {
